@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afc17fddd9f3c4dfa99021ec3068287e, type: 3}
+  m_Name: LevelPlayID
+  m_EditorClassIdentifier: 
+  enable: 0
+  androidAppKey: 20a29dc05
+  iOSAppKey: 2361c5d75
+  androidInterstitialId: vbi9gzfmy0u2yuv5
+  androidRewardedId: h4mmck3mcrwi1s37
+  iOSInterstitialId: yxrlsbt39ute72zh
+  iOSRewardedId: 9n70gr1jn4a7bopd
+  testMode: 0

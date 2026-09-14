@@ -1,0 +1,119 @@
+﻿// // ©2015 - Present Candy Smith
+// // All rights reserved
+// // Redistribution of this software is strictly not allowed.
+// // Copy of this software can be obtained from unity asset store only.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// // FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+// // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// // THE SOFTWARE.
+
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Level;
+using SweetSugar.Scripts.TargetScripts.TargetSystem;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SweetSugar.Scripts.GUI
+{
+    /// <summary>
+    /// Target icons GUI handler. Appears on the top game panel 
+    /// </summary>
+    public class TargetGUIGroup : MonoBehaviour
+    {
+        public HorizontalLayoutGroup hg;
+        public List<TargetGUI> list = new List<TargetGUI>();
+        public TextMeshProUGUI description;
+        HorizontalLayoutGroup group;
+
+        void OnEnable()
+        {
+            DisableImages();
+            StartCoroutine(WaitForTarget());
+            LevelManager.OnLevelLoaded += OnLevelLoaded;
+            if (LevelManager.GetGameStatus() > GameState.PrepareGame)
+                OnLevelLoaded();
+        }
+
+        private void DisableImages()
+        {
+            ClearTargets();
+            description.gameObject.SetActive(false);
+            foreach (var item in list)
+            {
+                item.gameObject.SetActive(false);
+            }
+        }
+
+        private void OnDisable()
+        {
+
+            LevelManager.OnLevelLoaded -= OnLevelLoaded;
+
+        }
+
+        private void OnLevelLoaded()
+        {
+            group = GetComponent<HorizontalLayoutGroup>();
+            if (group != null)
+            {
+                if (LevelData.THIS.IsTargetByNameExist("JellyBlock"))
+                { group.spacing = 50; /*description.gameObject.SetActive(true);*/ }
+                else
+                { group.spacing = 0; /*description.gameObject.SetActive(false);*/ }
+
+            }
+        }
+
+        IEnumerator WaitForTarget()
+        {
+            yield return new WaitUntil(() => LevelManager.THIS.levelLoaded);
+            yield return new WaitUntil(() => LevelManager.THIS.levelData.GetTargetSprites().Length > 0);
+
+            ClearTargets();
+            SetTargets();
+        }
+
+        void SetTargets()
+        {
+            LevelData levelData = LevelManager.THIS.levelData;
+            SetDescription(LevelManager.THIS.levelData.GetFirstTarget(true)?.GetDescription());
+            var targets = levelData.GetTargetContainersForUI();
+            if (transform.parent.parent.parent.name == "PreFailed")
+            {
+                targets = levelData.GetTargetCounters().Where(i => !i.IsTotalTargetReached()).ToArray();
+            }
+            for (var i = 0; i < targets.Length; i++)
+            {
+                var subTargetContainer = targets[i];
+                list[i].SetSprite((Sprite) targets[i].extraObject);
+                list[i].gameObject.SetActive(true);
+                list[i].BindTargetGUI(subTargetContainer);
+            }
+        }
+
+        private void SetDescription(string descr)
+        {
+            description.text = descr;
+            if (descr != "")
+            {
+                hg.padding.left = 58;
+                hg.padding.right = 63;
+            }
+        }
+
+        void ClearTargets()
+        {
+            hg.padding.left = 10;
+            hg.padding.right = 10;
+
+            description.gameObject.SetActive(false);
+        }
+    }
+}
