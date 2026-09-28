@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4db5ef986208641a9a215549dea98f11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instanceID: 0
   Combinable: 1
   CombinableWithBonus: 1
   DestroyByNeighbour: 0
@@ -85,8 +84,7 @@ MonoBehaviour:
     TargetMarmaladePositions: []
     order: 0
   dontDestroyForThisCombine: 0
-  plusTime: {fileID: 1878829736143161323, guid: 535904d866a8443818687390ecdbcebb,
-    type: 3}
+  plusTime: {fileID: 1878829736143161323, guid: 535904d866a8443818687390ecdbcebb, type: 3}
   plusTimeObj: {fileID: 0}
   explodedItem: {fileID: 0}
   colorableComponent: {fileID: 0}
@@ -107,20 +105,22 @@ MonoBehaviour:
   Sprites:
   - level: 0
     Sprites:
-    - {fileID: 21300000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
-    - {fileID: 21300000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
-    - {fileID: 21300000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
-    - {fileID: 21300000, guid: 184e1f54b83be4d56bd5262c7c2395ff, type: 3}
-    - {fileID: 21300000, guid: 0f9770a23cda149a98876ec06ccb224c, type: 3}
-    - {fileID: 21300000, guid: 00609a7a5bb9f4a9b89633edcfd97d78, type: 3}
+    - {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+    - {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+    - {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+    - {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+    - {fileID: 21300000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+    - {fileID: 21300000, guid: 3f65329291a7936438cdff57e4db5cd8, type: 3}
+    - {fileID: 21300000, guid: 85a30a146fb49cd438747f047591dafd, type: 3}
   - level: 1
     Sprites:
-    - {fileID: 21300000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
-    - {fileID: 21300000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
-    - {fileID: 21300000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
-    - {fileID: 21300000, guid: 184e1f54b83be4d56bd5262c7c2395ff, type: 3}
-    - {fileID: 21300000, guid: 0f9770a23cda149a98876ec06ccb224c, type: 3}
-    - {fileID: 21300000, guid: 00609a7a5bb9f4a9b89633edcfd97d78, type: 3}
+    - {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+    - {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+    - {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+    - {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+    - {fileID: 21300000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+    - {fileID: 21300000, guid: 3f65329291a7936438cdff57e4db5cd8, type: 3}
+    - {fileID: 21300000, guid: 85a30a146fb49cd438747f047591dafd, type: 3}
   randomEditorSprite: {fileID: 0}
   directSpriteRenderer: {fileID: 0}
   RandomColorOnAwake: 1
@@ -132,6 +132,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190504}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -155,7 +156,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,12 +168,11 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!95 &9544942
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -185,6 +186,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -224,6 +226,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &212884413575958298
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -239,6 +242,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -260,10 +268,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
+  m_MaskInteraction: 2
+  m_Sprite: {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -272,5 +282,5 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []

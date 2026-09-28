@@ -25,7 +25,7 @@ namespace SweetSugar.Scripts.GUI
 		
 		void OnEnable ()
 		{
-			transform.Find ("Image/Buttons/BuyLife/Price").GetComponent<TextMeshProUGUI> ().text = "" + CostIfRefill;
+			transform.Find ("Image/Buttons/BuyLife/Price").GetComponent<TextMeshProUGUI> ().text = RoyalAves.Meta.CoinFormat.Short(CostIfRefill); // Correio Mágico: 10k from 10,000
 			if (!LevelManager.THIS.enableInApps)
 				transform.Find ("Image/Buttons/BuyLife").gameObject.SetActive (false);
 		

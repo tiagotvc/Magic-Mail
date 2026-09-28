@@ -25,12 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &8200000
 AudioSource:
@@ -41,9 +42,9 @@ AudioSource:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243563922851460108, guid: e1c8d71b852244333ad7ea451637a953,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 243563922851460108, guid: e1c8d71b852244333ad7ea451637a953, type: 2}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -173,8 +174,7 @@ MonoBehaviour:
   block_destroy: {fileID: 8300000, guid: 001b26c53812f544ebb222a6e8caea3a, type: 3}
   wrongMatch: {fileID: 8300000, guid: e6653e2b681eb084296d7e7c2cb51594, type: 3}
   noMatch: {fileID: 8300000, guid: b490f266258c54f4b92be29ff1bc86af, type: 3}
-  appearStipedColorBomb: {fileID: 8300000, guid: 7eec7fef5401ff446896db206f64ce5a,
-    type: 3}
+  appearStipedColorBomb: {fileID: 8300000, guid: 7eec7fef5401ff446896db206f64ce5a, type: 3}
   appearPackage: {fileID: 8300000, guid: 8774a50f1f3cbc24eb4149fd8e4a3237, type: 3}
   destroyPackage: {fileID: 8300000, guid: ff50ce15df285d8439647ee563a30b94, type: 3}
   colorBombExpl: {fileID: 8300000, guid: 53a82dadcae8aee489a59de08c6fcdf7, type: 3}

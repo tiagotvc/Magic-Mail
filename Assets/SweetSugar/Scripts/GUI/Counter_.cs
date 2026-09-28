@@ -142,7 +142,7 @@ namespace SweetSugar.Scripts.GUI
 
             if (name == "FailedPrice")
             {
-                txt.text = "" + LevelManager.THIS.FailedCost;
+                txt.text = RoyalAves.Meta.CoinFormat.Short(LevelManager.THIS.FailedCost); // Correio Mágico: 10k from 10,000
             }
 
             if (name == "FailedDescription")
@@ -153,7 +153,7 @@ namespace SweetSugar.Scripts.GUI
 
             if (name == "Gems")
             {
-                txt.text = "" + InitScript.Gems;
+                txt.text = RoyalAves.Meta.CoinFormat.Short(InitScript.Gems); // Correio Mágico: 10k from 10,000
             }
 
             if (name == "TargetScore")

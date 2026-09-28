@@ -1,0 +1,94 @@
+{
+  "missions": [
+    {
+      "id": "first",
+      "name": "Primeira entrega",
+      "goal": 1,
+      "coins": 100
+    },
+    {
+      "id": "route",
+      "name": "Rota expressa",
+      "goal": 3,
+      "coins": 200
+    },
+    {
+      "id": "postal",
+      "name": "Correio em festa",
+      "goal": 5,
+      "coins": 300
+    },
+    {
+      "id": "master",
+      "name": "Mestre das entregas",
+      "goal": 10,
+      "coins": 500
+    }
+  ],
+  "album": {
+    "reward": 500,
+    "cards": [
+      {
+        "sprite": "envelope",
+        "title": "Primeira carta"
+      },
+      {
+        "sprite": "gift",
+        "title": "Entrega especial"
+      },
+      {
+        "sprite": "key",
+        "title": "Chave da agência"
+      },
+      {
+        "sprite": "stamp",
+        "title": "Selo dourado"
+      },
+      {
+        "sprite": "bow",
+        "title": "Laço expresso"
+      },
+      {
+        "sprite": "plane",
+        "title": "Correio aéreo"
+      },
+      {
+        "sprite": "rocket",
+        "title": "Entrega a jato"
+      },
+      {
+        "sprite": "bomb",
+        "title": "Pacote surpresa"
+      },
+      {
+        "sprite": "orb",
+        "title": "Magia postal"
+      },
+      {
+        "sprite": "manager",
+        "title": "Avenaldo"
+      }
+    ]
+  },
+  "bonusRoutes": {
+    "unlockAfterLevels": [
+      5,
+      10
+    ],
+    "moves": 20,
+    "coinsPerPiece": 1
+  },
+  "teams": {
+    "createCost": 100,
+    "emblems": [
+      "✉",
+      "★",
+      "⚡",
+      "☘",
+      "♜",
+      "⚓",
+      "♦",
+      "♥"
+    ]
+  }
+}

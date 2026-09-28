@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using RoyalAves.Meta;
 using SweetSugar.Scripts.AdsEvents;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.GUI.Boost;
@@ -193,7 +194,7 @@ namespace SweetSugar.Scripts.GUI
                     var priceText = ReferenceRestorer.GetTextComponent(item, "Buy/Price");
                     
                     if (countText != null)
-                        countText.text = "" + LevelManager.THIS.gemsProducts[i].count;
+                        countText.text = RoyalAves.Meta.CoinFormat.Short(LevelManager.THIS.gemsProducts[i].count); // Correio Mágico: 10k from 10,000
                     
                     if (priceText != null)
                         priceText.text = "" + LevelManager.THIS.gemsProducts[i].price;
@@ -207,6 +208,8 @@ namespace SweetSugar.Scripts.GUI
                         stars[i].SetActive(false);
                 }
             }
+            else if (name == "MenuFailed" && LobbyController.Instance != null)
+                HideScoreRows();
 
             GameObject videoButton = ReferenceRestorer.FindVideoButton(transform, imageVideo, bannerButtonsVideo);
             
@@ -293,7 +296,11 @@ namespace SweetSugar.Scripts.GUI
 
             if (name == "MenuFailed")
             {
-                if (LevelManager.Score < LevelManager.THIS.levelData.star1)
+                if (LobbyController.Instance != null)
+                {
+                    HideScoreRows();
+                }
+                else if (LevelManager.Score < LevelManager.THIS.levelData.star1)
                 {
                     TargetCheck(false, 2);
                 }
@@ -325,6 +332,20 @@ namespace SweetSugar.Scripts.GUI
             if (name == "failed")
                 gameObject.transform.parent.gameObject.SetActive(false);
 
+        }
+
+        // Correio Mágico (lobby in the scene): levels are not scored, so the failed popup hides its stars, best score and
+        // the "Get one star" goal row. Called on enable and again after the popup animation, which may turn them back on.
+        static readonly string[] ScoreRows =
+            { "Star1", "Star2", "Star3", "BestScore", "TargetDescription2", "TargetCheck2", "TargetUnCheck2" };
+
+        void HideScoreRows()
+        {
+            foreach (var row in ScoreRows)
+            {
+                var child = transform.Find("Image/" + row);
+                if (child != null) child.gameObject.SetActive(false);
+            }
         }
 
         void TargetCheck(bool check, int n = 1)
@@ -531,7 +552,9 @@ namespace SweetSugar.Scripts.GUI
             var i = pack.transform.GetSiblingIndex();
             
             var countText = ReferenceRestorer.GetTextComponent(pack.transform, "Count");
-            InitScript.waitedPurchaseGems = int.Parse(countText != null 
+            // Correio Mágico: the pack label shows "10k" from 10,000, so the real amount comes from the product list
+            // (same index as the purchase ID below).
+            InitScript.waitedPurchaseGems = i < LevelManager.THIS.gemsProducts.Count ? LevelManager.THIS.gemsProducts[i].count : int.Parse(countText != null 
                 ? countText.text.Replace("x ", "") 
                 : pack.transform.Find("Count").GetComponent<TextMeshProUGUI>().text.Replace("x ", ""));
                 
@@ -569,7 +592,9 @@ namespace SweetSugar.Scripts.GUI
             SoundBase.Instance.PlayOneShot(SoundBase.Instance.click);
             
             var priceText = ReferenceRestorer.GetTextComponent(button.transform, "Price");
-            int price = int.Parse(priceText != null ? priceText.text : "0");
+            // Correio Mágico: the price label shows "10k" from 10,000, so the real price comes from the life shop.
+            var lifeShop = button.GetComponentInParent<LifeShop>();
+            int price = lifeShop != null ? lifeShop.CostIfRefill : int.Parse(priceText != null ? priceText.text : "0");
             
             if (InitScript.Gems >= price)
             {

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c6cdb960d3aee40876c2f7e922c2fc, type: 3}
+  m_Name: GerenteExpressoes
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Characters.ManagerExpressionSet
+  neutral: {fileID: 21300000, guid: 95c60c63847e6a04eaef72358ce297e3, type: 3}
+  blinkHalf: {fileID: 21300000, guid: ba4f9d8a008ebac469e81c652bd97c7f, type: 3}
+  blinkClosed: {fileID: 21300000, guid: f830c31d57e4a3c4b95294b5553e9d2b, type: 3}
+  lookLeft: {fileID: 21300000, guid: 6aa8506080ce1d449ab51cd953a242f2, type: 3}
+  lookRight: {fileID: 21300000, guid: 555a9ff55bc3e5747afa1c79bbb61b1e, type: 3}
+  thinking: {fileID: 21300000, guid: 733efbcfddfee4749aa5982b3456d101, type: 3}
+  happy: {fileID: 21300000, guid: 3e673801cae683f47b959d061dde8728, type: 3}
+  confident: {fileID: 21300000, guid: d71edfb1bd4a24741bfe6e0b246e272c, type: 3}
+  surprised: {fileID: 21300000, guid: 6aff05678bf907b4d90390674d81ed17, type: 3}
+  nervous:
+  - {fileID: 21300000, guid: ebee958d650240142b649a9e48201811, type: 3}
+  - {fileID: 21300000, guid: 9c07dd12f427bf94f9b56b87b05b7cf1, type: 3}
+  - {fileID: 21300000, guid: c8897989881cc394c9d49af169e039bc, type: 3}
+  relieved: {fileID: 21300000, guid: 3c78aa0366c4a7e49a33c54338a532c4, type: 3}
+  victory: {fileID: 21300000, guid: fa13b4fd90e10914391acaab28dce3f4, type: 3}
+  sad: {fileID: 21300000, guid: 477324b2f5c301343b6b98679266c9ac, type: 3}
+  crying: {fileID: 21300000, guid: 3d5ca081c22af2a478709841880c66b8, type: 3}
+  smile: {fileID: 21300000, guid: 3c1986efd6d29934f8759bb8f62514d8, type: 3}
+  smileOpen: {fileID: 21300000, guid: ff442bfef52032645b76af596820c973, type: 3}
+  worryLight: {fileID: 21300000, guid: 04577779240b56b489975113bfb9a8e7, type: 3}
+  worryMid: {fileID: 21300000, guid: 61896cd02b394b04180982251e863716, type: 3}
+  worryHigh: {fileID: 21300000, guid: acf05f8fa1e9af94f8e6aa051c21323a, type: 3}
+  reliefStart: {fileID: 21300000, guid: e20312339eaf9054f8f1b393a6c92876, type: 3}
+  reliefSoft: {fileID: 21300000, guid: 1baac1fa89332914b980503d916cb4c0, type: 3}

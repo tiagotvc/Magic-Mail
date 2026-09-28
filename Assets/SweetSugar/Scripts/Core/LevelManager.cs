@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Meta;
 using SweetSugar.Scriptable.Rewards;
 using SweetSugar.Scripts.AdsEvents;
 using SweetSugar.Scripts.Blocks;
@@ -396,9 +397,12 @@ namespace SweetSugar.Scripts.Core
                         if (CurrentSubLevel != GetLastSubLevel())
                             ChangeSubLevel();
                         break;
-                    case GameState.Win://shows MenuComplete
+                    case GameState.Win://shows MenuComplete, or the Correio Mágico envelope when the lobby is in the scene
                         OnMenuComplete?.Invoke();
-                        MenuReference.THIS.MenuComplete.gameObject.SetActive(true);
+                        if (LobbyController.Instance != null)
+                            LobbyController.Instance.ShowVictory(currentLevel);
+                        else
+                            MenuReference.THIS.MenuComplete.gameObject.SetActive(true);
                         SoundBase.Instance.PlayOneShot(SoundBase.Instance.complete[1]);
                         if(winRewardAmount > 0)
                             InitScript.Instance.ShowGemsReward(winRewardAmount);// InitScript.Instance.ShowGemsReward(10);
@@ -470,18 +474,20 @@ namespace SweetSugar.Scripts.Core
                 currentLevel = 1;
             LoadLevel(currentLevel);
         }
-        //enable map
+        //enable map. When the Correio Mágico lobby (LobbyController) is in the scene it replaces the path map
         public void EnableMap(bool enable)
         {
             bool isRun = false;
             if (Camera.main == null)
                 return;
+            var mapCamera = Camera.main.GetComponent<MapCamera>();
+            var useLobby = LobbyController.Instance != null;
             Camera.main.orthographicSize = 5.3f;
             if (enable)
             {
                 ComponentCache.ClearAllCaches();
-                Camera.main.GetComponent<MapCamera>()
-                    .SetPosition(new Vector2(0, GetComponent<Camera>().transform.position.y));
+                if (!useLobby)
+                    mapCamera.SetPosition(new Vector2(0, GetComponent<Camera>().transform.position.y));
                 if (FindObjectOfType<RestartLevel>() == null && DebugSettings.AI && DebugSettings.testLevel > 0)
                 {
                     PlayerPrefs.SetInt("OpenLevel", DebugSettings.testLevel);
@@ -489,7 +495,7 @@ namespace SweetSugar.Scripts.Core
                 }
                 else
                 {
-                    if (Camera.main.GetComponent<MapCamera>().enabled == enable)
+                    if (!useLobby && mapCamera.enabled == enable)
                     {
                         isRun = true;
                         setNumbers();
@@ -521,12 +527,17 @@ namespace SweetSugar.Scripts.Core
                 }
             }
 
-            Camera.main.GetComponent<MapCamera>().enabled = enable;
-            LevelsMap.SetActive(!enable);
-            LevelsMap.SetActive(enable);
+            mapCamera.enabled = enable && !useLobby;
+            if (useLobby)
+                LevelsMap.SetActive(false);
+            else
+            {
+                LevelsMap.SetActive(!enable);
+                LevelsMap.SetActive(enable);
+            }
             Level.SetActive(!enable);
 
-            if (!isRun && Camera.main.GetComponent<MapCamera>().isActiveAndEnabled)
+            if (!isRun && mapCamera.isActiveAndEnabled)
                 setNumbers();
 
             if (!enable)
@@ -888,21 +899,34 @@ namespace SweetSugar.Scripts.Core
         public int destLoopIterations;
         //Animations after win
           private IEnumerator PreWinAnimationsCor()
-          { 
-              tapToSkip = Instantiate((GameObject) Resources.Load("Prefabs/TapToSkip"),MenuReference.THIS.transform);
+          {
+            // Correio Mágico (lobby in the scene): every win is worth one star, so the score bonus round (remaining moves
+            // turned into bonuses, "tap to skip") and the "Complete" banner are not played: the level goes straight to the
+            // envelope screen.
+            var oneStarWin = LobbyController.Instance != null;
+            if (!oneStarWin)
+                tapToSkip = Instantiate((GameObject) Resources.Load("Prefabs/TapToSkip"),MenuReference.THIS.transform);
             if (!InitScript.Instance.losingLifeEveryGame && InitScript.lifes < InitScript.Instance.CapOfLife)
                 InitScript.Instance.AddLife(1);
-                
-            CompleteWord.SetActive(true);
+
+            if (!oneStarWin)
+                CompleteWord.SetActive(true);
 
             var limit = Mathf.Clamp(levelData.limit, 0, 5);
 
-            if(!skipWin)
+            if (oneStarWin)
+            {
+                stars = 1;
+                skipWin = false;
+                // One frame, so gameStatus = Win is not set from inside the PreWinAnimations setter call.
+                yield return null;
+            }
+            else if(!skipWin)
             {
                 var c1 = StartCoroutine(PreWinLoop(limit));
                 yield return c1;
             }
-            if(skipWin)
+            if(skipWin && !oneStarWin)
             {
                 Score += limit * Random.Range(500, 3000) / levelData.colorLimit;
                 CheckStars();
@@ -1132,9 +1156,47 @@ namespace SweetSugar.Scripts.Core
                 return;
             if (lastTouchedItem != null)
             {
+                // A tap: released on the same piece without dragging it towards a neighbour.
+                var tapped = lastTouchedItem.switchDirection == Vector3.zero && ItemAt(pos) == lastTouchedItem;
                 lastTouchedItem.dragThis = false;
                 lastTouchedItem.switchDirection = Vector3.zero;
+                if (tapped && LobbyController.Instance != null)
+                    ActivateTappedBonus(lastTouchedItem);
             }
+        }
+
+        static Item ItemAt(Vector2 pos)
+        {
+            var hit = Physics2D.OverlapPoint(pos, 1 << LayerMask.NameToLayer("Item"));
+            return hit != null ? hit.GetComponent<Item>() : null;
+        }
+
+        // Correio Mágico: tapping a bonus piece fires it, as in the web prototype, and costs one move.
+        void ActivateTappedBonus(Item item)
+        {
+            var type = item.currentType;
+            var isBonus = type == ItemsTypes.HORIZONTAL_STRIPED || type == ItemsTypes.VERTICAL_STRIPED ||
+                          type == ItemsTypes.PACKAGE || type == ItemsTypes.MULTICOLOR || type == ItemsTypes.MARMALADE;
+            if (!isBonus || gameStatus != GameState.Playing || DragBlocked || findMatchesStarted || item.destroying || item.falling)
+                return;
+            if (levelData.limitType == LIMIT.MOVES)
+                levelData.limit--;
+            moveID++;
+            lastDraggedItem = item;
+            DragBlocked = true;
+            if (type == ItemsTypes.MULTICOLOR)
+            {
+                // Without a partner, the card bomb clears the most common piece on the board.
+                var target = field.GetItems()
+                    .Where(i => i != null && i.currentType == ItemsTypes.NONE && i.Combinable && !i.destroying)
+                    .GroupBy(i => i.color).OrderByDescending(g => g.Count()).FirstOrDefault()?.First();
+                if (target != null)
+                {
+                    item.Check(item, target);
+                    return;
+                }
+            }
+            item.DestroyItem(true);
         }
 
         void MouseDownRight(Vector2 pos)

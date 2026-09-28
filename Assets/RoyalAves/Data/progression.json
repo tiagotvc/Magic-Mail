@@ -1,0 +1,117 @@
+{
+  "areas": [
+    {
+      "id": "central",
+      "name": "Saguão Central",
+      "next": "",
+      "tasks": [
+        {
+          "id": "counter",
+          "name": "Restaurar o balcão",
+          "cost": 1,
+          "sprite": "deco-layer-counter"
+        },
+        {
+          "id": "carpets",
+          "name": "Colocar os tapetes",
+          "cost": 1,
+          "sprite": "deco-layer-carpet"
+        },
+        {
+          "id": "tube",
+          "name": "Instalar o tubo postal",
+          "cost": 2,
+          "sprite": "deco-layer-tube"
+        },
+        {
+          "id": "bike",
+          "name": "Preparar a bike postal",
+          "cost": 2,
+          "sprite": "deco-layer-bike"
+        },
+        {
+          "id": "bird",
+          "name": "Receber a ave mensageira",
+          "cost": 3,
+          "sprite": "deco-layer-bird"
+        }
+      ],
+      "reward": {
+        "coins": 250,
+        "boosters": [
+          {
+            "type": "cannon",
+            "count": 1
+          },
+          {
+            "type": "cap",
+            "count": 1
+          },
+          {
+            "type": "arrow",
+            "count": 1
+          },
+          {
+            "type": "hammer",
+            "count": 1
+          }
+        ]
+      }
+    }
+  ],
+  "lives": {
+    "max": 5,
+    "refillMinutes": 30,
+    "refillAllCost": 500
+  },
+  "continueOffer": {
+    "cost": 900,
+    "moves": 5
+  },
+  "boosters": {
+    "freePerAttempt": 3,
+    "extraUnitCost": 100,
+    "types": [
+      {
+        "type": "cannon",
+        "name": "Canhão Postal",
+        "sprite": "cannon"
+      },
+      {
+        "type": "cap",
+        "name": "Boné do Mensageiro",
+        "sprite": "cap"
+      },
+      {
+        "type": "arrow",
+        "name": "Arco Expresso",
+        "sprite": "arrow"
+      },
+      {
+        "type": "hammer",
+        "name": "Martelo Postal",
+        "sprite": "hammer"
+      }
+    ]
+  },
+  "powerups": [
+    {
+      "type": "rocket",
+      "name": "Foguete",
+      "sprite": "rocket",
+      "cost": 150
+    },
+    {
+      "type": "bomb",
+      "name": "Pacote Explosivo",
+      "sprite": "bomb",
+      "cost": 200
+    },
+    {
+      "type": "rainbow",
+      "name": "Bomba de Cartas",
+      "sprite": "orb",
+      "cost": 250
+    }
+  ]
+}

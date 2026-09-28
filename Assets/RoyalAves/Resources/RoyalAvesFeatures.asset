@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac71a8b99027a44b85dd70c7d64dac2, type: 3}
+  m_Name: RoyalAvesFeatures
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.LobbyFeaturesConfig
+  missions:
+  - id: first
+    title: Primeira entrega
+    goal: 1
+    coins: 100
+  - id: route
+    title: Rota expressa
+    goal: 3
+    coins: 200
+  - id: postal
+    title: Correio em festa
+    goal: 5
+    coins: 300
+  - id: master
+    title: Mestre das entregas
+    goal: 10
+    coins: 500
+  bonusRoutesAfter: 050000000a000000i
+  bonusRouteMoves: 20
+  album:
+  - title: Primeira carta
+    picture: {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+  - title: Entrega especial
+    picture: {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+  - title: "Chave da ag\xEAncia"
+    picture: {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+  - title: Selo dourado
+    picture: {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+  - title: "La\xE7o expresso"
+    picture: {fileID: 21300000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+  - title: "Correio a\xE9reo"
+    picture: {fileID: 21300000, guid: 7f8e49e7047445b47a7928ccdc3e8e5c, type: 3}
+  - title: Entrega a jato
+    picture: {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
+  - title: Pacote surpresa
+    picture: {fileID: 21300000, guid: c65ff628518816e4ca80c110360010f0, type: 3}
+  - title: Magia postal
+    picture: {fileID: 21300000, guid: cd948794b0e335146a9514e2aa2306c1, type: 3}
+  - title: A Gerente
+    picture: {fileID: 21300000, guid: 95c60c63847e6a04eaef72358ce297e3, type: 3}
+  albumReward: 500
+  teamCreateCost: 100
+  teamEmblems:
+  - {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+  - {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+  - {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+  - {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+  - {fileID: 21300000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+  - {fileID: 21300000, guid: 3f65329291a7936438cdff57e4db5cd8, type: 3}
+  - {fileID: 21300000, guid: 85a30a146fb49cd438747f047591dafd, type: 3}
+  - {fileID: 21300000, guid: cd948794b0e335146a9514e2aa2306c1, type: 3}
+  livesRefillCost: 500
+  avatars:
+  - {fileID: 21300000, guid: 95c60c63847e6a04eaef72358ce297e3, type: 3}
+  - {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+  - {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+  - {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+  - {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+  card: {fileID: 21300000, guid: eb1199a1f00600643a5a40932e953adb, type: 3}
+  buttonGreen: {fileID: 21300000, guid: 795bfb78df1aacc41acc0df7183ea4c5, type: 3}
+  buttonBlue: {fileID: 21300000, guid: a7629bac051a6d34f99368cd59f490df, type: 3}
+  pill: {fileID: 21300000, guid: 908b2c50375d2d047b4d10d1f2eef822, type: 3}
+  darkBox: {fileID: 21300000, guid: 9e587bc6b9b44604fa9601ec261a23a2, type: 3}
+  barBackground: {fileID: 21300000, guid: 5ed76329f997df84fb02111438f5cbbb, type: 3}
+  barFill: {fileID: 21300000, guid: 8c1440ba99b2d5346a2f24fd4a077993, type: 3}
+  token: {fileID: 21300000, guid: ee70e1c7682b6914d9236f7cb2f17d1a, type: 3}
+  coin: {fileID: 21300000, guid: 14d7c3bfc8ba3e549bcdb308895b6821, type: 3}
+  star: {fileID: 21300000, guid: 070601b4dcb61324db989cf7ab24098c, type: 3}
+  heart: {fileID: 21300000, guid: 4527a4fffccae264fabee42cf6f9f098, type: 3}
+  chest: {fileID: 21300000, guid: c6c4499becc73ba4583ce23322341302, type: 3}
+  iconEvents: {fileID: 21300000, guid: 9f404b4d2ff0b2d49a5f0c3374f08e45, type: 3}
+  iconRecords: {fileID: 21300000, guid: 8d740007bd87f344e89e1c435870cf0e, type: 3}
+  iconTeams: {fileID: 21300000, guid: bfc74ce2f2cbc4f49be51b4b8becb9e1, type: 3}
+  iconCollection: {fileID: 21300000, guid: aca23e633ee8b7e4ca6f367f1fc58171, type: 3}
+  displayFont: {fileID: 11400000, guid: 866b4301ef1c73d4dbc8e392640e02c2, type: 2}
+  postalFont: {fileID: 11400000, guid: b888493b10c33a444837557740d5d437, type: 2}
+  postalMaterial: {fileID: 2100000, guid: 8d23eb6f996e2cf47a7d1e57f75a9914, type: 2}

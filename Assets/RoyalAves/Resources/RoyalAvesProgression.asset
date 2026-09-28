@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c99a6ee31ece884c9aa77805295ab47, type: 3}
+  m_Name: RoyalAvesProgression
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.AreaProgressionConfig
+  starsPerFirstWin: 1
+  coinsPerPoint: 0.8
+  replayCoinShare: 1
+  startingCoins: 0
+  boosterPackPrice: 1500
+  continuePrice: 900
+  areas:
+  - id: agencia
+    title: "Ag\xEAncia dos Correios"
+    background: {fileID: 21300000, guid: 64005ab3f1b7aea48ac6063b636e05b2, type: 3}
+    tasks:
+    - id: jardim
+      title: Jardim e flores
+      starCost: 1
+      layer: {fileID: 21300000, guid: f50e93c94963f1e42932b38f0e18d1c3, type: 3}
+      icon: {fileID: 21300000, guid: fd8e5297b3705254383d5c53e71b8d6f, type: 3}
+    - id: bancos
+      title: Bancos e tapete
+      starCost: 1
+      layer: {fileID: 21300000, guid: 0d44523ed6de77b4f8dcaca0f754e4ba, type: 3}
+      icon: {fileID: 21300000, guid: ac87e1b4fefd9ad4db9260b3b479b97b, type: 3}
+    - id: luz
+      title: "Poste e lampi\xF5es"
+      starCost: 2
+      layer: {fileID: 21300000, guid: c28b6b691e1ea3944b34d7cae146ed8c, type: 3}
+      icon: {fileID: 21300000, guid: 84962bb0f8c67eb4699fc8d68e14b1b1, type: 3}
+    - id: correio
+      title: Encomendas e caixa de correio
+      starCost: 2
+      layer: {fileID: 21300000, guid: 339f4437255b16d4d9a82d5804987cb3, type: 3}
+      icon: {fileID: 21300000, guid: 9f043c5f10e4fda439d6592e376cfb04, type: 3}
+    - id: estofados
+      title: Estofados da sala de espera
+      starCost: 3
+      layer: {fileID: 21300000, guid: 318edebc64638c54fa968d99eee4d5c1, type: 3}
+      icon: {fileID: 21300000, guid: 0f08a6a46c78b8a4894c61c88ebe1853, type: 3}
+    - id: mesinha
+      title: "Mesinha de ch\xE1"
+      starCost: 3
+      layer: {fileID: 21300000, guid: 23f0434a0fcfcf143a4f465106310d05, type: 3}
+      icon: {fileID: 21300000, guid: 9b8ab6feeec624c4e9857a5f56cd796f, type: 3}
+    reward:
+      coins: 250
+      boosters: []

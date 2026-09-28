@@ -26,14 +26,29 @@ namespace SweetSugar.Scripts.GUI
         public DayReward[] days;
         public TextMeshProUGUI description;
         int currentDay;
+        // Correio Mágico: the day labels show "10k" from 10,000, so their real amounts are read once and kept here.
+        int[] amounts;
+
+        void ReadAmounts()
+        {
+            if (amounts != null) return;
+            amounts = new int[days.Length];
+            for (var day = 0; day < days.Length; day++)
+            {
+                amounts[day] = int.Parse(days[day].count.text);
+                days[day].count.text = RoyalAves.Meta.CoinFormat.Short(amounts[day]);
+            }
+        }
+
         void OnEnable()
         {
             if (ServerTime.THIS.dateReceived)
                 CheckDaily();
             else 
                 ServerTime.OnDateReceived += CheckDaily;
-            var count = int.Parse(days[currentDay].count.text);
-            description.text = "You got " + count + " coins";
+            ReadAmounts();
+            var count = amounts[currentDay];
+            description.text = "You got " + RoyalAves.Meta.CoinFormat.Short(count) + " coins";
         }
 
         private void CheckDaily()
@@ -64,9 +79,10 @@ namespace SweetSugar.Scripts.GUI
             PlayerPrefs.SetInt("LatestDay", currentDay);
             PlayerPrefs.SetString("DateReward", ServerTime.THIS.serverTime.ToString());
             PlayerPrefs.Save();
-            var count = int.Parse(days[currentDay].count.text);
+            ReadAmounts();
+            var count = amounts[currentDay];
             InitScript.Instance.AddGems(count);
-            description.text = "You got " + count + " coins";
+            description.text = "You got " + RoyalAves.Meta.CoinFormat.Short(count) + " coins";
             gameObject.SetActive(false);
         }
 

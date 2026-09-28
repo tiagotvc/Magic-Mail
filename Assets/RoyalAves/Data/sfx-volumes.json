@@ -1,0 +1,80 @@
+{
+  "note": "Os WAV estão normalizados; use volume para reproduzir o mix da versão web.",
+  "clips": [
+    {
+      "clip": "sfx_match_1",
+      "webSound": "match combo 1",
+      "volume": 0.065
+    },
+    {
+      "clip": "sfx_match_2",
+      "webSound": "match combo 2",
+      "volume": 0.064
+    },
+    {
+      "clip": "sfx_match_3",
+      "webSound": "match combo 3",
+      "volume": 0.065
+    },
+    {
+      "clip": "sfx_match_4",
+      "webSound": "match combo 4",
+      "volume": 0.066
+    },
+    {
+      "clip": "sfx_match_5",
+      "webSound": "match combo 5",
+      "volume": 0.066
+    },
+    {
+      "clip": "sfx_rocket",
+      "webSound": "rocket",
+      "volume": 0.042
+    },
+    {
+      "clip": "sfx_bomb",
+      "webSound": "bomb",
+      "volume": 0.105
+    },
+    {
+      "clip": "sfx_ice_hit",
+      "webSound": "ice-hit",
+      "volume": 0.238
+    },
+    {
+      "clip": "sfx_ice_clear",
+      "webSound": "ice-clear",
+      "volume": 0.288
+    },
+    {
+      "clip": "sfx_grass_hit",
+      "webSound": "grass-hit",
+      "volume": 0.043
+    },
+    {
+      "clip": "sfx_grass_clear",
+      "webSound": "grass-clear",
+      "volume": 0.073
+    },
+    {
+      "clip": "sfx_ui_tap",
+      "webSound": "ui",
+      "volume": 0.032
+    },
+    {
+      "clip": "sfx_restore",
+      "webSound": "deco",
+      "volume": 0.072
+    },
+    {
+      "clip": "sfx_win_tone",
+      "webSound": "win-tone",
+      "volume": 0.094
+    },
+    {
+      "clip": "sfx_fail_tone",
+      "webSound": "fail-tone",
+      "volume": 0.059
+    }
+  ]
+}

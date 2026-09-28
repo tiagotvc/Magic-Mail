@@ -1,0 +1,120 @@
+{
+  "_leia": "cx/cy = centro do objecto em fraccao do fundo (0..1). w = largura em fraccao da largura do fundo. Mexa nos numeros e volte a correr montar.py.",
+  "fundo": "bg-agencia-sem-upgrades.png",
+  "camadas": [
+    {
+      "ficheiro": "04_vegetacao_e_flores.png",
+      "nome": "04-vegetacao-e-flores",
+      "objectos": [
+        {
+          "esperado": "1030x394",
+          "o_que": "faixa de vegetacao",
+          "cx": 0.5,
+          "cy": 0.288,
+          "w": 1.0
+        }
+      ]
+    },
+    {
+      "ficheiro": "06_bancos_e_tapete.png",
+      "nome": "06-bancos-e-tapete",
+      "objectos": [
+        {
+          "esperado": "589x226",
+          "o_que": "tapete redondo",
+          "cx": 0.5,
+          "cy": 0.73,
+          "w": 0.68
+        },
+        {
+          "esperado": "401x244",
+          "o_que": "banco esquerdo",
+          "cx": 0.195,
+          "cy": 0.307,
+          "w": 0.19
+        },
+        {
+          "esperado": "402x240",
+          "o_que": "banco direito",
+          "cx": 0.845,
+          "cy": 0.307,
+          "w": 0.19
+        }
+      ]
+    },
+    {
+      "ficheiro": "03_poste_e_lampadas.png",
+      "nome": "03-poste-e-lampadas",
+      "objectos": [
+        {
+          "esperado": "139x439",
+          "o_que": "poste de rua",
+          "cx": 0.075,
+          "cy": 0.222,
+          "w": 0.115
+        },
+        {
+          "esperado": "101x157",
+          "o_que": "lampada de parede E",
+          "cx": 0.405,
+          "cy": 0.212,
+          "w": 0.055
+        },
+        {
+          "esperado": "99x149",
+          "o_que": "lampada de parede D",
+          "cx": 0.672,
+          "cy": 0.208,
+          "w": 0.055
+        }
+      ]
+    },
+    {
+      "ficheiro": "05_encomendas_e_caixa_correio.png",
+      "nome": "05-encomendas-e-caixa-correio",
+      "objectos": [
+        {
+          "esperado": "474x335",
+          "o_que": "encomendas e caixa",
+          "cx": 0.905,
+          "cy": 0.508,
+          "w": 0.24
+        }
+      ]
+    },
+    {
+      "ficheiro": "01_estofados_roxos_almofadas.png",
+      "nome": "01-estofados-roxos",
+      "objectos": [
+        {
+          "esperado": "489x440",
+          "o_que": "sofa roxo",
+          "cx": 0.28,
+          "cy": 0.637,
+          "w": 0.34
+        },
+        {
+          "esperado": "276x338",
+          "o_que": "dois pufes",
+          "cx": 0.72,
+          "cy": 0.598,
+          "w": 0.32
+        }
+      ]
+    },
+    {
+      "ficheiro": "02_mesinha_flores_cha_biscoitos.png",
+      "nome": "02-mesinha-e-cha",
+      "objectos": [
+        {
+          "esperado": "384x358",
+          "o_que": "mesinha com cha",
+          "cx": 0.487,
+          "cy": 0.596,
+          "w": 0.31
+        }
+      ]
+    }
+  ],
+  "_ordem": "As camadas sao desenhadas nesta ordem, de tras para a frente - e e tambem a ordem de compra no lobby."
+}

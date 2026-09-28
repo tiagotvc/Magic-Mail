@@ -751,6 +751,10 @@ namespace SweetSugar.Scripts
             StartCoroutine(showTipCor(nextMoveItems));
         }
 
+        [Header("Dicas")]
+        [Tooltip("Segundos parado até a dica aparecer (a busca por jogadas já espera 1 s depois de cada movimento).")]
+        [Min(0)] public float tipDelaySeconds = 5f;
+
         //show tip coroutine
         IEnumerator showTipCor(List<Item> nextMoveItems)
         {
@@ -771,8 +775,9 @@ namespace SweetSugar.Scripts
             tipID = LevelManager.THIS.moveID;
             //while (!LevelManager.This.DragBlocked && allowShowTip)
             //{
-            yield return new WaitForSeconds(1);
-            if (LevelManager.THIS.DragBlocked && !allowShowTip && tipID != LevelManager.THIS.moveID)
+            yield return new WaitForSeconds(tipDelaySeconds);
+            // A move during the wait makes this tip stale; the search restarts after every move anyway.
+            if (LevelManager.THIS.DragBlocked || LevelManager.THIS.findMatchesStarted || tipID != LevelManager.THIS.moveID)
             {
                 corCount--;
                 yield break;

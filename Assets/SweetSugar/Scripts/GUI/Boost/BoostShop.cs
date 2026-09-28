@@ -55,6 +55,8 @@ namespace SweetSugar.Scripts.GUI.Boost
         BoostType boostType;
 
         public List<BoostProduct> boostProducts = new List<BoostProduct>();
+        // Correio Mágico: the price label shows "10k" from 10,000, so the price of the pack on show is kept here.
+        int currentPrice;
 
 
         private void OnEnable()
@@ -73,6 +75,7 @@ namespace SweetSugar.Scripts.GUI.Boost
 
             boostType = boost.boostType;
             callback = callbackL;
+            currentPrice = boost.GemPrices;
             gameObject.SetActive(true);
 
             if (boost.boostIconObject != null)
@@ -89,7 +92,7 @@ namespace SweetSugar.Scripts.GUI.Boost
                 if (countText != null)
                     countText.text = "x" + boost.count;
                 if (priceText != null)
-                    priceText.text = "" + boost.GemPrices;
+                    priceText.text = RoyalAves.Meta.CoinFormat.Short(boost.GemPrices); // Correio Mágico: 10k from 10,000
                 buyBoostButton.gameObject.SetActive(true);
             }
 
@@ -118,8 +121,10 @@ namespace SweetSugar.Scripts.GUI.Boost
             if (countText == null || priceText == null)
                 return;
 
-            if (!int.TryParse(countText.text.Replace("x", ""), out var count) ||
-                !int.TryParse(priceText.text, out var price))
+            if (!int.TryParse(countText.text.Replace("x", ""), out var count))
+                return;
+            var price = currentPrice;
+            if (price <= 0 && !int.TryParse(priceText.text, out price))
                 return;
 
             GetComponent<AnimationEventManager>()?.BuyBoost(boostType, price, count, callback);

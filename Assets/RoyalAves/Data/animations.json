@@ -1,0 +1,85 @@
+{
+  "note": "Tempos em segundos. Referência: src/styles.css e src/app.js da versão web.",
+  "envelopeOpen": {
+    "frames": [
+      "envelope-open-1",
+      "envelope-open-2",
+      "envelope-open-3",
+      "envelope-open-4",
+      "envelope-open-5"
+    ],
+    "frameTimes": [
+      {
+        "time": 0,
+        "frame": 1
+      },
+      {
+        "time": 1,
+        "frame": 2
+      },
+      {
+        "time": 1.1,
+        "frame": 3
+      },
+      {
+        "time": 1.2,
+        "frame": 4
+      },
+      {
+        "time": 1.55,
+        "frame": 5
+      }
+    ],
+    "drop": {
+      "start": 0.3,
+      "duration": 0.55
+    },
+    "wobble": {
+      "start": 0.75,
+      "duration": 0.28,
+      "repeat": 2
+    },
+    "burst": {
+      "start": 1.18,
+      "duration": 0.7
+    },
+    "starOut": {
+      "start": 1.22,
+      "duration": 0.85
+    },
+    "continueEnabledAt": 1.5
+  },
+  "obstacles": {
+    "ice": {
+      "states": [
+        "ice",
+        "ice-cracked"
+      ],
+      "overlayOpacity": 0.78,
+      "drawnAbovePiece": true,
+      "shardSeconds": 0.65
+    },
+    "grass": {
+      "states": [
+        "grass",
+        "grass-sparse"
+      ],
+      "drawnAbovePiece": false,
+      "leafSeconds": 0.72
+    },
+    "particles": {
+      "onHit": 7,
+      "onClear": 11
+    }
+  },
+  "room": {
+    "note": "Cada deco-layer-* tem o tamanho do fundo (941x1672) com o móvel já no lugar; empilhe na ordem das tarefas.",
+    "layerOrder": [
+      "deco-layer-counter",
+      "deco-layer-carpet",
+      "deco-layer-tube",
+      "deco-layer-bike",
+      "deco-layer-bird"
+    ]
+  }
+}

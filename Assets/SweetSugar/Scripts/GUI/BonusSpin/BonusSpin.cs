@@ -41,6 +41,8 @@ namespace SweetSugar.Scripts.GUI.BonusSpin
         public TextMeshProUGUI priceButton;
         [Header("Prices range for first and seconds spins")]
         public int[] spinPrice;
+        // Correio Mágico: the button shows "10k" from 10,000, so the price itself is kept here.
+        int currentPrice;
 
     public GameObject closeButton;
     public UnityEvent OnSpin;
@@ -53,7 +55,8 @@ namespace SweetSugar.Scripts.GUI.BonusSpin
         var i =  Mathf.Clamp( PlayerPrefs.GetInt("Spinned", 0),0,spinPrice.Length-1);
         if(i>0)
         {
-            priceButton.text = "" + spinPrice[i];
+            currentPrice = spinPrice[i];
+            priceButton.text = RoyalAves.Meta.CoinFormat.Short(currentPrice);
             coins.SetActive(true);
         }
         else
@@ -85,9 +88,9 @@ namespace SweetSugar.Scripts.GUI.BonusSpin
          
             return;
         }
-        if (InitScript.Gems >= int.Parse(priceButton.text))
+        if (InitScript.Gems >= currentPrice)
         {
-            InitScript.Instance.SpendGems(int.Parse(priceButton.text));
+            InitScript.Instance.SpendGems(currentPrice);
             StartSpin();
         }
         else

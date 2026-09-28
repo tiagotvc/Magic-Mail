@@ -24,9 +24,12 @@ namespace SweetSugar.Scripts.GUI
 
 		private void OnEnable()
 		{
-			anim.SetTrigger("Game");
+			if (Playing) anim.SetTrigger("Game");
 			LevelManager.OnCombo += OnCombo;
 		}
+
+		// Correio Mágico turns the confectioner off (the manager takes her place); her animator then has nothing to play.
+		bool Playing => anim != null && anim.isActiveAndEnabled;
 
 		private void OnDisable()
 		{
@@ -36,7 +39,7 @@ namespace SweetSugar.Scripts.GUI
 
 		void OnCombo()
 		{
-			anim.SetTrigger("Cool");
+			if (Playing) anim.SetTrigger("Cool");
 
 		}
 	}

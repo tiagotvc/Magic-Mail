@@ -1,0 +1,661 @@
+{
+  "board": {
+    "columns": 6,
+    "rows": 7,
+    "cellIndex": "row * columns + column, a partir do canto superior esquerdo"
+  },
+  "pieces": [
+    {
+      "type": "envelope",
+      "name": "envelopes",
+      "sprite": "envelope"
+    },
+    {
+      "type": "gift",
+      "name": "presentes",
+      "sprite": "gift"
+    },
+    {
+      "type": "key",
+      "name": "chaves douradas",
+      "sprite": "key"
+    },
+    {
+      "type": "stamp",
+      "name": "selos",
+      "sprite": "stamp"
+    },
+    {
+      "type": "bow",
+      "name": "laços",
+      "sprite": "bow"
+    }
+  ],
+  "specials": [
+    {
+      "type": "row",
+      "name": "Foguete horizontal",
+      "sprite": "rocket"
+    },
+    {
+      "type": "column",
+      "name": "Foguete vertical",
+      "sprite": "rocket"
+    },
+    {
+      "type": "plane",
+      "name": "Avião de Papel",
+      "sprite": "plane"
+    },
+    {
+      "type": "bomb",
+      "name": "Pacote Explosivo",
+      "sprite": "bomb"
+    },
+    {
+      "type": "rainbow",
+      "name": "Bomba de Cartas",
+      "sprite": "orb"
+    }
+  ],
+  "levels": [
+    {
+      "id": 1,
+      "name": "Fase 1",
+      "subtitle": "Primeiras entregas",
+      "moves": 24,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "envelope",
+          "count": 12
+        },
+        {
+          "type": "gift",
+          "count": 10
+        }
+      ],
+      "crates": [],
+      "parcels": [],
+      "voids": [],
+      "blockers": [],
+      "grass": [],
+      "ice": [],
+      "initial": [],
+      "tip": "Junte 3 peças iguais para preparar as primeiras entregas."
+    },
+    {
+      "id": 2,
+      "name": "Fase 2",
+      "subtitle": "Correio a jato",
+      "moves": 23,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "key",
+          "count": 12
+        },
+        {
+          "type": "stamp",
+          "count": 12
+        }
+      ],
+      "crates": [
+        18,
+        23,
+        30,
+        35
+      ],
+      "parcels": [],
+      "voids": [],
+      "blockers": [],
+      "grass": [],
+      "ice": [],
+      "initial": [
+        {
+          "cell": 6,
+          "piece": "key"
+        },
+        {
+          "cell": 7,
+          "piece": "key"
+        },
+        {
+          "cell": 8,
+          "piece": "gift"
+        },
+        {
+          "cell": 9,
+          "piece": "key"
+        },
+        {
+          "cell": 14,
+          "piece": "key"
+        },
+        {
+          "cell": 27,
+          "piece": "stamp"
+        },
+        {
+          "cell": 28,
+          "piece": "stamp"
+        },
+        {
+          "cell": 33,
+          "piece": "stamp"
+        },
+        {
+          "cell": 34,
+          "piece": "bow"
+        },
+        {
+          "cell": 40,
+          "piece": "stamp"
+        }
+      ],
+      "tip": "4 em linha criam um foguete. Um quadrado 2×2 cria um avião!"
+    },
+    {
+      "id": 3,
+      "name": "Fase 3",
+      "subtitle": "Abrindo caminho",
+      "moves": 24,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "crate",
+          "count": 8
+        },
+        {
+          "type": "envelope",
+          "count": 10
+        }
+      ],
+      "crates": [
+        14,
+        15,
+        19,
+        20,
+        21,
+        22,
+        26,
+        27
+      ],
+      "parcels": [],
+      "voids": [],
+      "blockers": [],
+      "grass": [],
+      "ice": [],
+      "initial": [],
+      "tip": "Combine ao lado das caixas ou use poderes para abrir caminho."
+    },
+    {
+      "id": 4,
+      "name": "Fase 4",
+      "subtitle": "Entrega especial",
+      "moves": 25,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "bow",
+          "count": 12
+        },
+        {
+          "type": "gift",
+          "count": 10
+        },
+        {
+          "type": "parcel",
+          "count": 4
+        }
+      ],
+      "crates": [],
+      "parcels": [
+        18,
+        23,
+        30,
+        35
+      ],
+      "voids": [],
+      "blockers": [],
+      "grass": [],
+      "ice": [],
+      "initial": [
+        {
+          "cell": 6,
+          "piece": "gift"
+        },
+        {
+          "cell": 7,
+          "piece": "gift"
+        },
+        {
+          "cell": 8,
+          "piece": "bow"
+        },
+        {
+          "cell": 9,
+          "piece": "gift"
+        },
+        {
+          "cell": 10,
+          "piece": "gift"
+        },
+        {
+          "cell": 14,
+          "piece": "gift"
+        },
+        {
+          "cell": 24,
+          "piece": "bow"
+        },
+        {
+          "cell": 25,
+          "piece": "bow"
+        },
+        {
+          "cell": 26,
+          "piece": "envelope"
+        },
+        {
+          "cell": 27,
+          "piece": "bow"
+        },
+        {
+          "cell": 32,
+          "piece": "bow"
+        },
+        {
+          "cell": 38,
+          "piece": "bow"
+        }
+      ],
+      "tip": "Pacotes precisam de 2 acertos. Combine em L, T ou 5 em linha!"
+    },
+    {
+      "id": 5,
+      "name": "Fase 5",
+      "subtitle": "Grande expedição",
+      "moves": 26,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "envelope",
+          "count": 8
+        },
+        {
+          "type": "key",
+          "count": 8
+        },
+        {
+          "type": "stamp",
+          "count": 8
+        },
+        {
+          "type": "crate",
+          "count": 6
+        }
+      ],
+      "crates": [
+        8,
+        9,
+        19,
+        22,
+        32,
+        33
+      ],
+      "parcels": [
+        18,
+        23
+      ],
+      "voids": [],
+      "blockers": [],
+      "grass": [],
+      "ice": [],
+      "initial": [],
+      "tip": "Última expedição! Use os poderes e boosters para concluir as entregas."
+    },
+    {
+      "id": 6,
+      "name": "Fase 6",
+      "subtitle": "Jardim postal",
+      "moves": 24,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "grass",
+          "count": 6
+        },
+        {
+          "type": "key",
+          "count": 10
+        },
+        {
+          "type": "bow",
+          "count": 10
+        }
+      ],
+      "crates": [],
+      "parcels": [],
+      "voids": [
+        0,
+        5,
+        36,
+        41
+      ],
+      "blockers": [],
+      "grass": [
+        {
+          "cell": 14,
+          "hp": 2
+        },
+        {
+          "cell": 15,
+          "hp": 2
+        },
+        {
+          "cell": 20,
+          "hp": 1
+        },
+        {
+          "cell": 21,
+          "hp": 1
+        },
+        {
+          "cell": 26,
+          "hp": 1
+        },
+        {
+          "cell": 27,
+          "hp": 1
+        }
+      ],
+      "ice": [],
+      "initial": [],
+      "tip": "Combine peças sobre a grama para limpá-la. Grama dupla precisa de 2 combinações."
+    },
+    {
+      "id": 7,
+      "name": "Fase 7",
+      "subtitle": "Gelo express",
+      "moves": 25,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "ice",
+          "count": 8
+        },
+        {
+          "type": "stamp",
+          "count": 12
+        },
+        {
+          "type": "gift",
+          "count": 10
+        }
+      ],
+      "crates": [],
+      "parcels": [],
+      "voids": [
+        0,
+        1,
+        4,
+        5,
+        6,
+        11,
+        30,
+        35,
+        36,
+        37,
+        40,
+        41
+      ],
+      "blockers": [],
+      "grass": [],
+      "ice": [
+        {
+          "cell": 14,
+          "hp": 1
+        },
+        {
+          "cell": 15,
+          "hp": 1
+        },
+        {
+          "cell": 20,
+          "hp": 2
+        },
+        {
+          "cell": 21,
+          "hp": 2
+        },
+        {
+          "cell": 26,
+          "hp": 1
+        },
+        {
+          "cell": 27,
+          "hp": 1
+        },
+        {
+          "cell": 8,
+          "hp": 1
+        },
+        {
+          "cell": 9,
+          "hp": 1
+        }
+      ],
+      "initial": [],
+      "tip": "Quebre o gelo combinando peças por cima! Gelo duplo precisa de 2 acertos."
+    },
+    {
+      "id": 8,
+      "name": "Fase 8",
+      "subtitle": "Fortaleza do correio",
+      "moves": 26,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "grass",
+          "count": 4
+        },
+        {
+          "type": "crate",
+          "count": 4
+        },
+        {
+          "type": "envelope",
+          "count": 12
+        }
+      ],
+      "crates": [
+        19,
+        20,
+        21,
+        22
+      ],
+      "parcels": [],
+      "voids": [
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        9,
+        10
+      ],
+      "blockers": [
+        13,
+        16
+      ],
+      "grass": [
+        {
+          "cell": 25,
+          "hp": 2
+        },
+        {
+          "cell": 26,
+          "hp": 2
+        },
+        {
+          "cell": 31,
+          "hp": 1
+        },
+        {
+          "cell": 32,
+          "hp": 1
+        }
+      ],
+      "ice": [],
+      "initial": [],
+      "tip": "Bloqueadores de pedra não podem ser destruídos. Trabalhe ao redor deles!"
+    },
+    {
+      "id": 9,
+      "name": "Fase 9",
+      "subtitle": "Triagem congelada",
+      "moves": 27,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "ice",
+          "count": 6
+        },
+        {
+          "type": "parcel",
+          "count": 2
+        },
+        {
+          "type": "key",
+          "count": 10
+        },
+        {
+          "type": "stamp",
+          "count": 10
+        }
+      ],
+      "crates": [],
+      "parcels": [
+        19,
+        22
+      ],
+      "voids": [
+        12,
+        17,
+        24,
+        29
+      ],
+      "blockers": [],
+      "grass": [],
+      "ice": [
+        {
+          "cell": 14,
+          "hp": 2
+        },
+        {
+          "cell": 15,
+          "hp": 2
+        },
+        {
+          "cell": 20,
+          "hp": 1
+        },
+        {
+          "cell": 21,
+          "hp": 1
+        },
+        {
+          "cell": 26,
+          "hp": 1
+        },
+        {
+          "cell": 27,
+          "hp": 1
+        }
+      ],
+      "initial": [],
+      "tip": "Combine perto dos pacotes e quebre o gelo para liberar o caminho!"
+    },
+    {
+      "id": 10,
+      "name": "Fase 10",
+      "subtitle": "Grande inauguração",
+      "moves": 30,
+      "colors": 5,
+      "goals": [
+        {
+          "type": "grass",
+          "count": 4
+        },
+        {
+          "type": "ice",
+          "count": 4
+        },
+        {
+          "type": "crate",
+          "count": 4
+        },
+        {
+          "type": "envelope",
+          "count": 8
+        },
+        {
+          "type": "gift",
+          "count": 8
+        }
+      ],
+      "crates": [
+        26,
+        27,
+        32,
+        33
+      ],
+      "parcels": [],
+      "voids": [],
+      "blockers": [
+        19,
+        22
+      ],
+      "grass": [
+        {
+          "cell": 2,
+          "hp": 2
+        },
+        {
+          "cell": 3,
+          "hp": 2
+        },
+        {
+          "cell": 8,
+          "hp": 1
+        },
+        {
+          "cell": 9,
+          "hp": 1
+        }
+      ],
+      "ice": [
+        {
+          "cell": 14,
+          "hp": 2
+        },
+        {
+          "cell": 15,
+          "hp": 2
+        },
+        {
+          "cell": 20,
+          "hp": 1
+        },
+        {
+          "cell": 21,
+          "hp": 1
+        }
+      ],
+      "initial": [],
+      "tip": "A grande inauguração! Use tudo o que aprendeu para completar o hall!"
+    }
+  ]
+}

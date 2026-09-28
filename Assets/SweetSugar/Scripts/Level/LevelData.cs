@@ -225,6 +225,10 @@ namespace SweetSugar.Scripts.Level
                 .Select(o => o.icon).ToArray(), -1, i.targetType.GetTarget(),i.NotFinishUntilMoveOut, i)).ToList();
                 TargetCounters = _TargetCounters.ToList();//subTargetsContainers.ToArray();
                 TargetCounters.RemoveAll(i => i.targetLevel.setCount == SetCount.Manually && i.count == 0);
+                // Correio Mágico: a level is won by its goals only. The hidden "Stars" goal that Sweet Sugar adds to every
+                // level (reach the star1 score) is dropped, unless it is the level's only goal.
+                if (TargetCounters.Any(i => !i.IsTargetStars()))
+                    TargetCounters.RemoveAll(i => i.IsTargetStars());
             }
             targetObject.subTargetContainers = subTargetsContainers.ToArray();
             if (targetObject.subTargetContainers.Length > 0)
