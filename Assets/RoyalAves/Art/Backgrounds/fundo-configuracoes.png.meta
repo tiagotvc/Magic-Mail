@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f94f107333d4fb84d85d1d2e79284729
+guid: 15bde6e326684a7a975fd3a4b591848a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5728283479027679254
-    second: moldura-metas-azul_0
+      213: -2914503216214332612
+    second: fundo-configuracoes_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 180, z: 0, w: 400}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -154,13 +154,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: moldura-metas-azul_0
+      name: fundo-configuracoes_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 934
-        height: 1555
+        width: 1080
+        height: 1920
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,8 +169,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aeff0db868c0180b0800000000000000
-      internalID: -5728283479027679254
+      spriteID: c3bafcc34ca9d87d0800000000000000
+      internalID: -2914503216214332612
       vertices: []
       indices: 
       edges: []

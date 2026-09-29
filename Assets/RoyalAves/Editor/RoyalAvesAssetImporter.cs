@@ -45,6 +45,7 @@ namespace RoyalAves.EditorTools
         {
             ["moldura-metas-caixa-correio"] = new Vector4(0, 190, 0, 340),
             ["moldura-bege"] = new Vector4(0, 361, 0, 490),
+            ["moldura-metas-azul"] = new Vector4(0, 180, 0, 400), // stars window: band with the wax seal on top
         };
 
         // Game screen frames that are stretched to fit: the board frame grows with the grid (the levels use 17 different

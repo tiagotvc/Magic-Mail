@@ -27,7 +27,9 @@ namespace SweetSugar.Scripts.GUI
         // Update is called once per frame
         void Update()
         {
-            textDest.text = "+1" + LocalizationManager.GetText(0, "life after") + textSource.text;
+            // Correio Mágico: Portuguese sentence; the source shows a time ("12:50") or a word when the lives are full.
+            var time = textSource.text;
+            textDest.text = time.Contains(":") ? "+1 vida em " + time : "Vidas cheias!";
         }
     }
 }

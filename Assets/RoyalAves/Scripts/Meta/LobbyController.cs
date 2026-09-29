@@ -120,6 +120,8 @@ namespace RoyalAves.Meta
         RectTransform areaFill;
 
         LobbyMenus menus;
+        StarsInfoPopup starsPopup;
+        SettingsScreen settingsScreen;
         LobbyFeaturesConfig features;
         Vector2? managerAvatarPosition, managerAvatarSize;
 
@@ -149,8 +151,12 @@ namespace RoyalAves.Meta
 
             playButton.onClick.AddListener(Play);
             areaButton.onClick.AddListener(OpenArea);
-            if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings); // the scene may remove the gear
-            coinsButton.onClick.AddListener(OpenInventory);
+            if (settingsButton == null) settingsButton = GearFromScene();
+            if (settingsButton != null)
+                settingsButton.onClick.AddListener(ToggleSettings);
+            coinsButton.onClick.AddListener(OpenCoinShop);
+            var coinIcon = SiblingButton(coinsButton, "Coin");
+            if (coinIcon != null) coinIcon.onClick.AddListener(OpenCoinShop);
             livesButton.onClick.AddListener(() =>
             {
                 if (InitScript.lifes < InitScript.Instance.CapOfLife)
@@ -184,9 +190,53 @@ namespace RoyalAves.Meta
             else if (features == null)
                 Debug.LogWarning("Royal Aves: falta Resources/" + LobbyFeaturesConfig.ResourcePath + " (menu Royal Aves > Criar telas do menu inferior).");
 
+            // Stars counter (its frame and the star beside it) opens "Ganhe Estrelas".
+            var starsButton = starsText.GetComponentInParent<Button>(true);
+            if (features != null && starsButton != null)
+            {
+                starsPopup = StarsInfoPopup.Create((RectTransform)content.transform, features, PlayClick);
+                starsButton.onClick.AddListener(starsPopup.Open);
+                var starIcon = SiblingButton(starsButton, "Star");
+                if (starIcon != null) starIcon.onClick.AddListener(starsPopup.Open);
+            }
+
+            // Settings as a screen of its own, in place of Sweet Sugar's little window. It lives inside the prefab
+            // (menu Royal Aves > Criar tela de configurações), so here it is only found and given the tap sound.
+            settingsScreen = content.GetComponentInChildren<SettingsScreen>(true);
+            if (settingsScreen != null) settingsScreen.OnTap = PlayClick;
+
             modal.SetActive(false);
             restoreEffect.SetActive(false);
             content.SetActive(false); // shown when LevelManager enters the Map state
+        }
+
+        void OpenCoinShop() => OpenSweetSugarMenu(MenuReference.THIS != null ? MenuReference.THIS.GemsShop : null);
+
+        // A picture drawn beside a HUD button (the coin beside the coins frame) becomes a button with the same click look.
+        static Button SiblingButton(Button button, string pictureName)
+        {
+            var picture = button.transform.parent.Find(pictureName)?.GetComponent<Image>();
+            if (picture == null) return null;
+            picture.raycastTarget = true;
+            var copy = picture.GetComponent<Button>();
+            if (copy == null) copy = picture.gameObject.AddComponent<Button>();
+            copy.transition = button.transition;
+            copy.colors = button.colors;
+            copy.spriteState = button.spriteState;
+            copy.targetGraphic = picture;
+            return copy;
+        }
+
+        // game.unity swaps the prefab's Gear for a plain picture of the gear (config-tela-inicial); it becomes the button.
+        Button GearFromScene()
+        {
+            var picture = GetComponentsInChildren<Image>(true).FirstOrDefault(i => i.name.StartsWith("config-tela-inicial"));
+            if (picture == null) return null;
+            picture.raycastTarget = true;
+            var button = picture.GetComponent<Button>();
+            if (button == null) button = picture.gameObject.AddComponent<Button>();
+            button.targetGraphic = picture;
+            return button;
         }
 
         void OnDestroy()
@@ -1015,6 +1065,29 @@ namespace RoyalAves.Meta
         void ComingSoon(string title)
         {
             ShowModal(null, title, "Em breve no Correio Mágico.", art: true, primary: "Voltar");
+        }
+
+        // The lobby gear works as a switch: one tap opens Sweet Sugar's settings window, the next one closes it.
+        // Closing is a plain SetActive(false) on purpose. Sweet Sugar's own AnimationEventManager.CloseMenu sends the
+        // player back to the title screen when a window named "Settings" is closed in the Map state, which is exactly
+        // what the lobby must not do.
+        void ToggleSettings()
+        {
+            if (settingsScreen != null)
+            {
+                if (settingsScreen.IsOpen) settingsScreen.Close();
+                else settingsScreen.Open();
+                return;
+            }
+
+            var menu = MenuReference.THIS != null ? MenuReference.THIS.Settings : null;
+            if (menu != null && menu.activeInHierarchy)
+            {
+                PlayClick();
+                menu.SetActive(false);
+                return;
+            }
+            OpenSweetSugarMenu(menu);
         }
 
         void OpenSweetSugarMenu(GameObject menu)
