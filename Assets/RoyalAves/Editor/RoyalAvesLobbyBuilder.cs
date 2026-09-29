@@ -160,12 +160,15 @@ namespace RoyalAves.EditorTools
                 var layers = Stretch(Node("Layers", room));
 
                 // HUD, from the prototype grid: 14.5cqw | 1fr | 1.12fr | 0.9fr | 11.5cqw, gap 1.5cqw, margins 3.3cqw.
+                // The top gap itself is NOT a cqw value: it must stay exactly 60 device pixels below the safe area
+                // on every device, so SafeAreaTopOffset drives anchoredPosition.y at runtime instead of a fixed Cq().
                 var hud = Node("HUD", content);
                 hud.anchorMin = new Vector2(0, 1);
                 hud.anchorMax = Vector2.one;
                 hud.pivot = new Vector2(0.5f, 1);
-                hud.anchoredPosition = new Vector2(0, -Cq(3.2f));
+                hud.anchoredPosition = new Vector2(0, -60f);
                 hud.sizeDelta = new Vector2(0, Cq(14));
+                hud.gameObject.AddComponent<SafeAreaTopOffset>();
                 var x = Cq(3.3f);
                 var gap = Cq(1.5f);
                 var unit = (Width - 2 * x - Cq(14.5f) - Cq(11.5f) - 4 * gap) / 3.02f;
