@@ -86,26 +86,34 @@ namespace RoyalAves.EditorTools
         public static TMP_FontAsset Postal => LoadOrCreate("CorreioMagico.ttf", "CorreioMagico SDF");
 
         /// The outlined material of the postal texts (created on first use), for runtime screens that apply it themselves.
-        public static Material PostalMaterialAsset => Postal != null ? PostalMaterial(Postal) : null;
+        public static Material PostalMaterialAsset => Postal != null ? PostalMaterial(Postal, "CorreioMagico Postal") : null;
 
-        public static void ApplyPostal(TextMeshProUGUI label)
+        /// Counters (Count, Value, "0/5", ...): the original postal material. Unchanged so nothing
+        /// that already uses it shifts look.
+        public static void ApplyPostal(TextMeshProUGUI label) => ApplyPostalVariant(label, "CorreioMagico Postal");
+
+        /// Status/labels ("Cheio", ...): its own material clone, so tuning one never touches the other —
+        /// this is what Count and Label shared before and why editing one moved both.
+        public static void ApplyPostalLabel(TextMeshProUGUI label) => ApplyPostalVariant(label, "CorreioMagico Postal Label");
+
+        static void ApplyPostalVariant(TextMeshProUGUI label, string materialName)
         {
             var font = Postal;
             if (font == null) return;
             label.font = font;
-            var material = PostalMaterial(font);
+            var material = PostalMaterial(font, materialName);
             if (material != null) label.fontSharedMaterial = material;
             label.color = Color.white;
             label.enableVertexGradient = true;
             label.colorGradient = new VertexGradient(PostalTop, PostalTop, PostalBottom, PostalBottom);
         }
 
-        static Material PostalMaterial(TMP_FontAsset font)
+        static Material PostalMaterial(TMP_FontAsset font, string materialName)
         {
-            var path = Folder + "CorreioMagico Postal.mat";
+            var path = Folder + materialName + ".mat";
             var material = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (material != null || font.material == null) return material;
-            material = new Material(font.material) { name = "CorreioMagico Postal" };
+            material = new Material(font.material) { name = materialName };
             material.EnableKeyword(ShaderUtilities.Keyword_Outline);
             material.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.22f);
             material.SetColor(ShaderUtilities.ID_OutlineColor, PostalOutline);
