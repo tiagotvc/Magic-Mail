@@ -484,7 +484,7 @@ namespace RoyalAves.EditorTools
         {
             var frame = RectIn(Node("Frame", column), new Vector2(0, 0.5f), new Vector2(1, 0.5f), new Vector2(0, -Cq(4.6f)), new Vector2(0, Cq(4.6f)));
             var button = AddSlicedButton(frame, "hud-frame");
-            text = AddPostalText(RectIn(Node(textName, frame), Vector2.zero, Vector2.one, new Vector2(Cq(7), 0), new Vector2(-Cq(2.3f), Cq(0.5f))), "0", fontSize, TextAlignmentOptions.Right);
+            text = AddPostalText(RectIn(Node(textName, frame), Vector2.zero, Vector2.one, new Vector2(Cq(7), 0), new Vector2(-Cq(2.3f), Cq(0.5f))), "0", fontSize, TextAlignmentOptions.Right, asLabel: textName == "Label");
             return button;
         }
 
@@ -573,11 +573,14 @@ namespace RoyalAves.EditorTools
         }
 
         // The prototype's "postal-text": the CorreioMagico font with its cream-to-orange letters and blue outline.
+        // asLabel picks the independent "Label" material (status texts like "Cheio") instead of the
+        // counter one (Count, Value, ...), so tuning one's outline/underlay never moves the other.
         static TextMeshProUGUI AddPostalText(RectTransform rect, string text, float size,
-            TextAlignmentOptions alignment = TextAlignmentOptions.Center)
+            TextAlignmentOptions alignment = TextAlignmentOptions.Center, bool asLabel = false)
         {
             var label = AddText(rect, text, size, Color.white, alignment);
-            RoyalAvesFonts.ApplyPostal(label);
+            if (asLabel) RoyalAvesFonts.ApplyPostalLabel(label);
+            else RoyalAvesFonts.ApplyPostal(label);
             return label;
         }
 
