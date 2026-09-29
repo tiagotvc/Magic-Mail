@@ -121,6 +121,7 @@ namespace RoyalAves.Meta
 
         LobbyMenus menus;
         StarsInfoPopup starsPopup;
+        SettingsScreen settingsScreen;
         LobbyFeaturesConfig features;
         Image[] navBackgrounds;
         Sprite navActiveSprite;
@@ -154,8 +155,7 @@ namespace RoyalAves.Meta
             areaButton.onClick.AddListener(OpenArea);
             if (settingsButton == null) settingsButton = GearFromScene();
             if (settingsButton != null)
-                settingsButton.onClick.AddListener(() =>
-                    OpenSweetSugarMenu(MenuReference.THIS != null ? MenuReference.THIS.Settings : null));
+                settingsButton.onClick.AddListener(ToggleSettings);
             coinsButton.onClick.AddListener(OpenCoinShop);
             var coinIcon = SiblingButton(coinsButton, "Coin");
             if (coinIcon != null) coinIcon.onClick.AddListener(OpenCoinShop);
@@ -204,6 +204,11 @@ namespace RoyalAves.Meta
                 var starIcon = SiblingButton(starsButton, "Star");
                 if (starIcon != null) starIcon.onClick.AddListener(starsPopup.Open);
             }
+
+            // Settings as a screen of its own, in place of Sweet Sugar's little window. It lives inside the prefab
+            // (menu Royal Aves > Criar tela de configurações), so here it is only found and given the tap sound.
+            settingsScreen = content.GetComponentInChildren<SettingsScreen>(true);
+            if (settingsScreen != null) settingsScreen.OnTap = PlayClick;
 
             modal.SetActive(false);
             restoreEffect.SetActive(false);
@@ -1079,6 +1084,29 @@ namespace RoyalAves.Meta
         void ComingSoon(string title)
         {
             ShowModal(null, title, "Em breve no Correio Mágico.", art: true, primary: "Voltar");
+        }
+
+        // The lobby gear works as a switch: one tap opens Sweet Sugar's settings window, the next one closes it.
+        // Closing is a plain SetActive(false) on purpose. Sweet Sugar's own AnimationEventManager.CloseMenu sends the
+        // player back to the title screen when a window named "Settings" is closed in the Map state, which is exactly
+        // what the lobby must not do.
+        void ToggleSettings()
+        {
+            if (settingsScreen != null)
+            {
+                if (settingsScreen.IsOpen) settingsScreen.Close();
+                else settingsScreen.Open();
+                return;
+            }
+
+            var menu = MenuReference.THIS != null ? MenuReference.THIS.Settings : null;
+            if (menu != null && menu.activeInHierarchy)
+            {
+                PlayClick();
+                menu.SetActive(false);
+                return;
+            }
+            OpenSweetSugarMenu(menu);
         }
 
         void OpenSweetSugarMenu(GameObject menu)

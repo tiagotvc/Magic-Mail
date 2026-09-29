@@ -89,6 +89,12 @@ namespace RoyalAves.Meta
         public Sprite confirmBox;
         public Sprite buttonRed;
 
+        [Header("Tela de configurações (engrenagem do lobby)")]
+        [Tooltip("Fundo de tela cheia, na proporção 9:16.")]
+        public Sprite settingsBackground;
+        [Tooltip("Cabeçalho padrão: a tira de couro com a placa dourada, onde vai o título.")]
+        public Sprite settingsHeader;
+
         public TMP_FontAsset displayFont;
         public TMP_FontAsset postalFont;
         public Material postalMaterial;

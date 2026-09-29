@@ -758,6 +758,10 @@ namespace SweetSugar.Scripts
         //show tip coroutine
         IEnumerator showTipCor(List<Item> nextMoveItems)
         {
+            // "Dica" in the lobby's settings screen: with it off, no move is ever pointed out.
+            if (PlayerPrefs.GetInt("Hint", 1) <= -80)
+                yield break;
+
             changeTipAI = false;
             gotTip = true;
             corCount++;
