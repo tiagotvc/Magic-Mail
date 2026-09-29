@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1c6cdb960d3aee40876c2f7e922c2fc, type: 3}
+  m_Name: Avatar01Expressoes
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Characters.ManagerExpressionSet
+  neutral: {fileID: 21300000, guid: a620d22574d2cb952235b2c32bce4a77, type: 3}
+  blinkHalf: {fileID: 0}
+  blinkClosed: {fileID: 0}
+  lookLeft: {fileID: 0}
+  lookRight: {fileID: 0}
+  thinking: {fileID: 0}
+  happy: {fileID: 0}
+  confident: {fileID: 0}
+  surprised: {fileID: 0}
+  nervous:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  relieved: {fileID: 0}
+  victory: {fileID: 0}
+  sad: {fileID: 0}
+  crying: {fileID: 0}
+  smile: {fileID: 0}
+  smileOpen: {fileID: 0}
+  worryLight: {fileID: 0}
+  worryMid: {fileID: 0}
+  worryHigh: {fileID: 0}
+  reliefStart: {fileID: 0}
+  reliefSoft: {fileID: 0}

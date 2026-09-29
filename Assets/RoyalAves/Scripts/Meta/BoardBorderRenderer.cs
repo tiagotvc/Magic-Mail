@@ -32,7 +32,9 @@ namespace RoyalAves.Meta
         static readonly List<GameObject> containers = new List<GameObject>();
         static bool subscribed;
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        // Disabled for now (was drawing doubled up with the board's own frame). Put the
+        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] attribute back
+        // above this method once that's sorted out.
         static void AutoInit()
         {
             if (subscribed) return; // guards against a second domain-reload style re-entry

@@ -279,6 +279,9 @@ namespace RoyalAves.EditorTools
                 var target = active ? AddSliced(cell, "nav-active", raycast: true) : AddImage(cell, null, new Color(1, 1, 1, 0), raycast: true);
                 var button = cell.gameObject.AddComponent<Button>();
                 button.targetGraphic = target;
+                // Sem isso o Button sobrescreve a cor do gráfico (sprite/alpha 0) pela Normal Color
+                // branca opaca assim que o jogo roda — o próprio BottomNavController cuida do feedback visual.
+                button.transition = Selectable.Transition.None;
                 var iconSize = active ? new Vector2(Cq(17), Cq(16)) : new Vector2(Cq(13), Cq(12));
                 AddImage(Place(Node("Icon", cell), new Vector2(0.5f, 1), new Vector2(0, active ? -Cq(3) : -Cq(6.5f)), iconSize), LoadSprite(icons[i]));
                 AddText(RectIn(Node("Label", cell), Vector2.zero, new Vector2(1, 0), new Vector2(0, Cq(1.2f)), new Vector2(0, Cq(4.4f))), labels[i], Cq(2.7f), Cream);

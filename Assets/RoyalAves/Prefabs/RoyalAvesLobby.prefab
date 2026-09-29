@@ -10307,6 +10307,7 @@ GameObject:
   - component: {fileID: 4330388573540996951}
   - component: {fileID: 2106457758679777097}
   - component: {fileID: 3572238655637431723}
+  - component: {fileID: 3662921805821764}
   m_Layer: 5
   m_Name: Gerente
   m_TagString: Untagged
@@ -10351,7 +10352,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -10361,7 +10362,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 95c60c63847e6a04eaef72358ce297e3, type: 3}
+  m_Sprite: {fileID: 4787860183605844707, guid: 72413e943f6d044479c48a4f07624f9f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -10378,13 +10379,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6921029177421905660}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 094eeb06f9318c840a1c579c45cef0f7, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Characters.ManagerFace
   mood: 1
-  expressions: {fileID: 0}
+  expressions: {fileID: 11400000, guid: 49667efbd5d3f58b408c213c13b5c11b, type: 2}
   blinkEvery: {x: 2.2, y: 5}
   glanceEvery: {x: 5, y: 11}
   glanceFor: {x: 0.7, y: 1.4}
@@ -10397,6 +10398,25 @@ MonoBehaviour:
   nervousSeconds: 10
   easyLead: 0.2
   smileOnCombo: 1
+  breathing: 0.012
+--- !u!114 &3662921805821764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6921029177421905660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80fb68607cdd2b96866bb7ae9bc899a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Characters.AvatarIdleAnimator
+  neutral: {fileID: 4787860183605844707, guid: 72413e943f6d044479c48a4f07624f9f, type: 3}
+  smiles:
+  - {fileID: 3696680265289340740, guid: 72413e943f6d044479c48a4f07624f9f, type: 3}
+  - {fileID: -6634221455086472513, guid: 72413e943f6d044479c48a4f07624f9f, type: 3}
+  smileEvery: {x: 5, y: 10}
+  smileFor: {x: 2.5, y: 4}
   breathing: 0.012
 --- !u!1 &6987851824941570586
 GameObject:

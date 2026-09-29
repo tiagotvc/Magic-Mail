@@ -121,8 +121,6 @@ namespace RoyalAves.Meta
 
         LobbyMenus menus;
         LobbyFeaturesConfig features;
-        Image[] navBackgrounds;
-        Sprite navActiveSprite;
         Vector2? managerAvatarPosition, managerAvatarSize;
 
         readonly List<Image> layers = new List<Image>();
@@ -177,14 +175,11 @@ namespace RoyalAves.Meta
             }
 
             // Bottom-menu screens (Eventos, Recordes, Coleção, Equipes, Inventário, Perfil), built over the lobby.
-            navBackgrounds = navButtons.Select(b => b != null ? b.targetGraphic as Image : null).ToArray();
-            navActiveSprite = navBackgrounds.Length > HomeTab && navBackgrounds[HomeTab] != null ? navBackgrounds[HomeTab].sprite : null;
             features = LobbyFeaturesConfig.Instance;
             if (features != null && navButtons.Length > 0 && navButtons[0] != null)
             {
                 menus = LobbyMenus.Create((RectTransform)content.transform, (RectTransform)navButtons[0].transform.parent, features,
                     PlayLevelFromMenu, (title, copy) => ShowModal(null, title, copy, primary: "Voltar"), Refresh);
-                menus.Opened += HighlightNav;
             }
             else if (features == null)
                 Debug.LogWarning("Royal Aves: falta Resources/" + LobbyFeaturesConfig.ResourcePath + " (menu Royal Aves > Criar telas do menu inferior).");
@@ -989,20 +984,6 @@ namespace RoyalAves.Meta
             if (level < 1 || level > LevelCount()) return;
             Log($"nível {level} escolhido no menu; abrindo o pré-nível do Sweet Sugar");
             OpenLevelPopup(level);
-        }
-
-        // The navigation cell of the open screen gets the raised "active" background; Inventário and Perfil have none.
-        void HighlightNav(LobbyMenus.Route route)
-        {
-            var tab = Array.IndexOf(TabRoutes, route);
-            for (var i = 0; i < navBackgrounds.Length; i++)
-            {
-                var background = navBackgrounds[i];
-                if (background == null) continue;
-                var on = i == tab;
-                background.sprite = on ? navActiveSprite : null;
-                background.color = on ? Color.white : Color.clear;
-            }
         }
 
         // The avatar chosen in Perfil: the first is the animated manager, the others a picture in her place.
