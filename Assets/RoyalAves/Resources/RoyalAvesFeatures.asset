@@ -86,6 +86,28 @@ MonoBehaviour:
   iconRecords: {fileID: 21300000, guid: 8d740007bd87f344e89e1c435870cf0e, type: 3}
   iconTeams: {fileID: 21300000, guid: bfc74ce2f2cbc4f49be51b4b8becb9e1, type: 3}
   iconCollection: {fileID: 21300000, guid: aca23e633ee8b7e4ca6f367f1fc58171, type: 3}
+  starsFrame: {fileID: 21300000, guid: f94f107333d4fb84d85d1d2e79284729, type: 3}
+  starsArrow: {fileID: 21300000, guid: 1125dfc3f0db4f5f91fd6f71a7bb4e14, type: 3}
+  closeCircle: {fileID: 21300000, guid: 2da84d926fe0b7f468a0bbcf96665cb1, type: 3}
+  closeX: {fileID: 21300000, guid: 9e05405b4fa67f548855d2d14fb12bf1, type: 3}
+  starsBoardPieces:
+  - {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+  - {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
+  - {fileID: 21300000, guid: d63c7c04dfacd564ab25ce33a3aa428d, type: 3}
+  - {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+  - {fileID: 21300000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+  - {fileID: 21300000, guid: 3f65329291a7936438cdff57e4db5cd8, type: 3}
+  - {fileID: 21300000, guid: 85a30a146fb49cd438747f047591dafd, type: 3}
+  gameMenuGearOpen: {fileID: 21300000, guid: fa3f85c2ba5c42ae8cca3b94a3986c3b, type: 3}
+  gameMenuExit: {fileID: 21300000, guid: 2b4182b615fc404584d0496057acbb76, type: 3}
+  gameMenuMusicOn: {fileID: 21300000, guid: 778274c101b34d0bb01b81db7aa1a50d, type: 3}
+  gameMenuMusicOff: {fileID: 21300000, guid: ebc5fbd87f814d00b155994627625fb4, type: 3}
+  gameMenuSoundOn: {fileID: 21300000, guid: 1ab59dd4ab104a7d9dcf52b31a6ae5c1, type: 3}
+  gameMenuSoundOff: {fileID: 21300000, guid: 924507e77adc4091afba6d8a4e40a278, type: 3}
+  gameMenuVibrationOn: {fileID: 21300000, guid: 4f74f326ff6e435fb63d7d751dd97d1c, type: 3}
+  gameMenuVibrationOff: {fileID: 21300000, guid: b426d5a32edc4a82b8843c015cf37149, type: 3}
+  confirmBox: {fileID: 21300000, guid: a8219add1b067fa4ab64e7db21691a6e, type: 3}
+  buttonRed: {fileID: 21300000, guid: b566532ef91a2b2468eb70e90e09bbf7, type: 3}
   displayFont: {fileID: 11400000, guid: 866b4301ef1c73d4dbc8e392640e02c2, type: 2}
   postalFont: {fileID: 11400000, guid: b888493b10c33a444837557740d5d437, type: 2}
   postalMaterial: {fileID: 2100000, guid: 8d23eb6f996e2cf47a7d1e57f75a9914, type: 2}

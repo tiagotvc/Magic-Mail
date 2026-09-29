@@ -68,6 +68,27 @@ namespace RoyalAves.Meta
         public Sprite iconRecords;
         public Sprite iconTeams;
         public Sprite iconCollection;
+        [Header("Janela das estrelas (toque no contador de estrelas)")]
+        public Sprite starsFrame;
+        public Sprite starsArrow;
+        public Sprite closeCircle;
+        public Sprite closeX;
+        [Tooltip("Peças do tabuleirinho 3x3, repetidas em ordem.")]
+        public List<Sprite> starsBoardPieces = new List<Sprite>();
+
+        [Header("Menu da tela de jogo (sobe da engrenagem)")]
+        public Sprite gameMenuGearOpen;
+        public Sprite gameMenuExit;
+        public Sprite gameMenuMusicOn;
+        public Sprite gameMenuMusicOff;
+        public Sprite gameMenuSoundOn;
+        public Sprite gameMenuSoundOff;
+        public Sprite gameMenuVibrationOn;
+        public Sprite gameMenuVibrationOff;
+        [Tooltip("Caixa do aviso \"Sair da fase?\" e o botão vermelho de sair.")]
+        public Sprite confirmBox;
+        public Sprite buttonRed;
+
         public TMP_FontAsset displayFont;
         public TMP_FontAsset postalFont;
         public Material postalMaterial;

@@ -120,6 +120,34 @@ namespace RoyalAves.EditorTools
             EditorUtility.DisplayDialog("Moedas de teste", $"+{amount} moedas. Total agora: {total}.", "OK");
         }
 
+        // Testing aid: five lives. Sweet Sugar keeps at most CapOfLife (5), so this fills the lives up. With the game
+        // running they go straight to Sweet Sugar; stopped, they go to the saved progress (PlayerPrefs "Lifes").
+        [MenuItem("Royal Aves/Teste: +5 vidas")]
+        static void GiveTestLives()
+        {
+            const int amount = 5;
+            if (EditorApplication.isPlaying && InitScript.Instance != null)
+            {
+                InitScript.Instance.AddLife(amount);
+                if (LobbyController.Instance != null) LobbyController.Instance.RefreshNow();
+            }
+            else
+            {
+                // As with the coins: a first launch would reset the lives, so it is marked done.
+                if (PlayerPrefs.GetInt("Lauched") == 0)
+                {
+                    PlayerPrefs.SetInt("Music", 1);
+                    PlayerPrefs.SetInt("Sound", 1);
+                    PlayerPrefs.SetInt("Lauched", 1);
+                }
+                PlayerPrefs.SetInt("Lifes", Mathf.Min(PlayerPrefs.GetInt("Lifes") + amount, amount));
+                PlayerPrefs.Save();
+            }
+            var total = EditorApplication.isPlaying ? InitScript.lifes : PlayerPrefs.GetInt("Lifes");
+            Debug.Log($"[Correio Mágico] +{amount} vidas de teste; agora: {total}");
+            EditorUtility.DisplayDialog("Vidas de teste", $"+{amount} vidas. Total agora: {total}.", "OK");
+        }
+
         // Testing aid: ten more stars to spend on the area's upgrades. Saved at once; with the game running the lobby's star
         // counter updates too (MetaProgress.Changed).
         [MenuItem("Royal Aves/Teste: +10 estrelas")]

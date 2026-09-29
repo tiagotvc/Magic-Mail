@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: f94f107333d4fb84d85d1d2e79284729
+guid: f4a5a64e27f18bc4cb087abc70ab80bc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5728283479027679254
-    second: moldura-metas-azul_0
+      213: 392273111125031280
+    second: "bot\xE3o-play-nivel_0"
+  - first:
+      213: 7606617222073841686
+    second: "bot\xE3o-play-nivel_1"
+  - first:
+      213: -971225234260293418
+    second: "bot\xE3o-play-nivel_2"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,11 +54,11 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 180, z: 0, w: 400}
+  spriteBorder: {x: 420, y: 330, z: 420, w: 330}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -128,13 +134,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: moldura-metas-azul_0
+      name: "bot\xE3o-play-nivel_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 934
-        height: 1555
+        x: 69
+        y: 56
+        width: 1843
+        height: 725
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,8 +149,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aeff0db868c0180b0800000000000000
-      internalID: -5728283479027679254
+      spriteID: 0797b83f052a17500800000000000000
+      internalID: 392273111125031280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "bot\xE3o-play-nivel_1"
+      rect:
+        serializedVersion: 2
+        x: 1481
+        y: 768
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6187418df02209960800000000000000
+      internalID: 7606617222073841686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "bot\xE3o-play-nivel_2"
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 37
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d805039bc38582f0800000000000000
+      internalID: -971225234260293418
       vertices: []
       indices: 
       edges: []
@@ -162,7 +212,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "bot\xE3o-play-nivel_0": 392273111125031280
+      "bot\xE3o-play-nivel_1": 7606617222073841686
+      "bot\xE3o-play-nivel_2": -971225234260293418
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
