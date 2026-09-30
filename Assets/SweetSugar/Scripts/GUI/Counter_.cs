@@ -28,6 +28,10 @@ namespace SweetSugar.Scripts.GUI
         private float lastTime;
         bool alert;
 
+        // Magic Mail: "Limit" used to snap back to a hardcoded scale every 0.5s (see UpdateText below), undoing any
+        // size the designer set on it in the Editor. This captures that size once and reuses it instead.
+        Vector3? restingScale;
+
         private LevelData _thisLevelData;
 
         public LevelData ThisLevelData
@@ -54,6 +58,7 @@ namespace SweetSugar.Scripts.GUI
         void OnEnable()
         {
             lastTime = 0;
+            if (restingScale == null) restingScale = transform.localScale;
             UpdateText();
             alert = false; StartCoroutine(UpdateRare());
             if (name == "Limit") StartCoroutine(TimeTick());
@@ -88,7 +93,7 @@ namespace SweetSugar.Scripts.GUI
                 if (ThisLevelData.limitType == LIMIT.MOVES)
                 {
                     txt.text = "" + Mathf.Clamp(ThisLevelData.limit, 0, ThisLevelData.limit);
-                    txt.transform.localScale = Vector3.one;
+                    txt.transform.localScale = restingScale ?? Vector3.one;
                     if (ThisLevelData.limit <= 5)
                     {
                         txt.color = new Color(255f / 255f, 132f / 255, 222f / 255);
@@ -109,7 +114,7 @@ namespace SweetSugar.Scripts.GUI
                     var minutes = Mathf.FloorToInt(ThisLevelData.limit / 60F);
                     var seconds = Mathf.FloorToInt(ThisLevelData.limit - minutes * 60);
                     txt.text = "" + $"{minutes:00}:{seconds:00}";
-                    txt.transform.localScale = Vector3.one * 0.68f;
+                    txt.transform.localScale = (restingScale ?? Vector3.one) * 0.68f;
                     txt.fontSize = 80;
                     if (ThisLevelData.limit <= 5 && LevelManager.THIS.gameStatus == GameState.Playing)
                     {

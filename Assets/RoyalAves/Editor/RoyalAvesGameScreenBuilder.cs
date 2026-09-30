@@ -121,7 +121,6 @@ namespace RoyalAves.EditorTools
                     EditorSceneManager.RestoreSceneManagerSetup(setup);
             }
 
-            AddBoardFrame(log);
 
             EditorUtility.DisplayDialog("Tela de jogo", "Aplicado:\n- " + string.Join("\n- ", log), "OK");
         }
@@ -407,75 +406,6 @@ namespace RoyalAves.EditorTools
             rect.sizeDelta = new Vector2(size, size);
             rect.anchoredPosition = spot;
             rect.localScale = Vector3.one;
-        }
-
-        // ---------- board ----------
-
-        [MenuItem("Royal Aves/Aplicar moldura do tabuleiro")]
-        static void BoardOnlyFromMenu()
-        {
-            if (!RoyalAvesTools.CanRunTool()) return;
-            RoyalAvesReskin.EnsureImportSettings();
-            var log = new List<string>();
-            AddBoardFrame(log);
-            EditorUtility.DisplayDialog("Moldura do tabuleiro", "- " + string.Join(FrameNewLine, log) +
-                FrameBlankLine + "Espessura, folga e profundidade ficam no proprio asset, no Inspector. " +
-                "Os cantos alternativos (-b) estao na mesma pasta, e para os trocar basta arrasta-los para os campos.", "OK");
-        }
-
-        // The pieces the user drew, all normalised to the same 256 px band by the import step.
-        static readonly string[] FramePieces =
-            { "canto-cima-esq", "canto-cima-dir", "canto-baixo-esq", "canto-baixo-dir", "faixa-horizontal", "faixa-vertical" };
-
-        // The frame is not put in game.unity and gameStatic.unity: it assembles itself when the game starts, from
-        // this asset (BoardFrame.Spawn). One place to configure, both scenes served, Sweet Sugar scenes untouched.
-        static void AddBoardFrame(List<string> log)
-        {
-            var art = FramePieces.Select(n => AssetDatabase.LoadAssetAtPath<Sprite>(Art + "Moldura/" + n + ".png")).ToArray();
-            if (art.Any(a => a == null))
-            {
-                log.Add("moldura do tabuleiro: faltam pecas em " + Art + "Moldura (" + string.Join(", ", FramePieces) + ")");
-                return;
-            }
-            var path = "Assets/RoyalAves/Resources/" + BoardFrameSettings.ResourcePath + ".asset";
-            var settings = AssetDatabase.LoadAssetAtPath<BoardFrameSettings>(path);
-            var made = settings == null;
-            if (made)
-            {
-                settings = ScriptableObject.CreateInstance<BoardFrameSettings>();
-                AssetDatabase.CreateAsset(settings, path);
-            }
-            // Only the pieces are set; the fitting stays as the user left it in the Inspector.
-            settings.cornerTopLeft = art[0];
-            settings.cornerTopRight = art[1];
-            settings.cornerBottomLeft = art[2];
-            settings.cornerBottomRight = art[3];
-            settings.edgeHorizontal = art[4];
-            settings.edgeVertical = art[5];
-            EditorUtility.SetDirty(settings);
-            AssetDatabase.SaveAssets();
-            log.Add((made ? "moldura do tabuleiro criada em " : "moldura do tabuleiro actualizada em ") + path +
-                    " (4 cantos + 2 faixas, montada sozinha ao entrar no jogo)");
-            RemoveStrayFrames(log);
-        }
-
-        // An earlier version put the frame in the scene, and a run that failed half way could leave the bare object
-        // behind. It has no business in a scene now, so any that is open gets cleared out.
-        static void RemoveStrayFrames(List<string> log)
-        {
-            var removed = 0;
-            for (var i = 0; i < SceneManager.sceneCount; i++)
-            {
-                var scene = SceneManager.GetSceneAt(i);
-                if (!scene.isLoaded) continue;
-                foreach (var stray in scene.GetRootGameObjects().Where(g => g.name == "MolduraTabuleiro").ToList())
-                {
-                    Object.DestroyImmediate(stray);
-                    EditorSceneManager.MarkSceneDirty(scene);
-                    removed++;
-                }
-            }
-            if (removed > 0) log.Add($"objectos MolduraTabuleiro soltos removidos das cenas abertas: {removed} (grave a cena)");
         }
 
         // ---------- helpers ----------
