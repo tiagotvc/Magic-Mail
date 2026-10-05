@@ -19,6 +19,38 @@ MonoBehaviour:
   boosterPackPrice: 1500
   continuePrice: 900
   areas:
+  - id: entrada
+    title: Entrada da Agência
+    background: {fileID: 21300000, guid: 64005ab3f1b7aea48ac6063b636e05b2, type: 3}
+    tasks:
+    - id: relogio
+      title: "Consertar o rel\xF3gio"
+      starCost: 1
+      layer: {fileID: 0}
+      icon: {fileID: 0}
+    - id: tapete
+      title: Tapete
+      starCost: 1
+      layer: {fileID: 0}
+      icon: {fileID: 0}
+    - id: mesa
+      title: Mesa
+      starCost: 2
+      layer: {fileID: 0}
+      icon: {fileID: 0}
+    - id: carrinho
+      title: Carrinho
+      starCost: 2
+      layer: {fileID: 0}
+      icon: {fileID: 0}
+    - id: armario
+      title: "Arm\xE1rio"
+      starCost: 3
+      layer: {fileID: 0}
+      icon: {fileID: 0}
+    reward:
+      coins: 300
+      boosters: []
   - id: agencia
     title: "Ag\xEAncia dos Correios"
     background: {fileID: 21300000, guid: 64005ab3f1b7aea48ac6063b636e05b2, type: 3}
