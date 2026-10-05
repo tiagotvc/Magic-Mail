@@ -184,13 +184,23 @@ namespace SweetSugar.Scripts.Core
                 }
 
                 if (activatedBoost == null) return;
-                if (activatedBoost.type != BoostType.ExtraMoves && activatedBoost.type != BoostType.ExtraTime) return;
-                if (THIS.levelData.limitType == LIMIT.MOVES)
-                    THIS.levelData.limit += 5;
-                else
-                    THIS.levelData.limit += 30;
-
-                ActivatedBoost = null;
+                // Correio Mágico: ExtraMoves virou a flecha (destrói uma linha escolhida no tabuleiro), então
+                // não aplica mais na hora - ela agora espera o toque, igual martelo/canhão (ver MouseDown).
+                if (activatedBoost.type == BoostType.ExtraTime)
+                {
+                    if (THIS.levelData.limitType == LIMIT.MOVES)
+                        THIS.levelData.limit += 5;
+                    else
+                        THIS.levelData.limit += 30;
+                    ActivatedBoost = null;
+                }
+                // Correio Mágico: FreeMove virou o chapéu (embaralha as peças existentes), aplica na hora, sem
+                // precisar de toque no tabuleiro - igual ExtraTime acima.
+                else if (activatedBoost.type == BoostType.FreeMove)
+                {
+                    THIS.ShuffleBoard();
+                    ActivatedBoost = null;
+                }
             }
         }
         //score gain on this game
@@ -1119,13 +1129,14 @@ namespace SweetSugar.Scripts.Core
                     if (THIS.ActivatedBoost.type == BoostType.ExplodeArea &&
                         lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
-                        SoundBase.Instance.PlayOneShot(SoundBase.Instance.boostBomb);
-                        THIS.DragBlocked = true;
-                        var obj = Instantiate(Resources.Load("Boosts/area_explosion"), lastTouchedItem.transform.position,
-                            lastTouchedItem.transform.rotation) as GameObject;
-                        obj.GetComponent<SpriteRenderer>().sortingOrder = 4;
-                        obj.GetComponent<BoostAnimation>().square = lastTouchedItem.square;
-                        THIS.ActivatedBoost = null;
+                        // Correio Mágico: ExplodeArea virou o canhão (destrói a coluna tocada).
+                        THIS.DestroyLine(lastTouchedItem, false);
+                    }
+                    else if (THIS.ActivatedBoost.type == BoostType.ExtraMoves &&
+                             lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
+                    {
+                        // Correio Mágico: ExtraMoves virou a flecha (destrói a linha tocada).
+                        THIS.DestroyLine(lastTouchedItem, true);
                     }
                     else if (THIS.ActivatedBoost.type == BoostType.Bomb &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
@@ -1628,6 +1639,73 @@ namespace SweetSugar.Scripts.Core
                     effect.transform.Rotate(Vector3.back, 90);
                 Destroy(effect, 1);
             }
+        }
+
+        // Correio Mágico: flecha (linha) e canhão (coluna) - reaproveita o efeito visual e as listas de
+        // linha/coluna que os itens listrados (ItemStriped) já usam, só que disparado pelo toque no tabuleiro
+        // em vez de um match.
+        public void DestroyLine(Item target, bool horizontal)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
+            StripedShow(target.gameObject, horizontal);
+            var square = target.square;
+            var items = horizontal ? GetRow(square) : GetColumn(square);
+            foreach (var item in items)
+                if (item != null) item.DestroyItem(true);
+            var squares = horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col);
+            if (squares.Any(i => i.type == SquareTypes.JellyBlock))
+                levelData.GetTargetObject().CheckSquares(squares.ToArray());
+            squares.ForEach(i => i.DestroyBlock());
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay());
+        }
+
+        // Correio Mágico: chapéu - embaralha as peças já existentes no tabuleiro, trocando-as de lugar (de
+        // verdade, com movimento) em vez de só trocar as cores em pé quieto. Não sorteia peça nova nenhuma, só
+        // redistribui as que já estão lá.
+        public void ShuffleBoard()
+        {
+            var items = field.GetItems(true).Where(i => i != null && !i.falling && !i.destroying).ToList();
+            if (items.Count < 2) return;
+            DragBlocked = true;
+            StartCoroutine(ShuffleBoardCor(items));
+        }
+
+        private IEnumerator ShuffleBoardCor(List<Item> items)
+        {
+            var squares = items.Select(i => i.square).ToList();
+            var shuffled = new List<Square>(squares);
+            for (var i = shuffled.Count - 1; i > 0; i--)
+            {
+                var j = Random.Range(0, i + 1);
+                (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
+            }
+
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.noMatch);
+
+            var startPositions = items.Select(i => i.transform.position).ToList();
+            var targetPositions = shuffled.Select(s => s.transform.position + Vector3.back * 0.2f).ToList();
+            const float duration = 0.45f;
+            var t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                var f = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / duration));
+                for (var i = 0; i < items.Count; i++)
+                    items[i].transform.position = Vector3.Lerp(startPositions[i], targetPositions[i], f);
+                yield return null;
+            }
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                items[i].transform.position = targetPositions[i];
+                items[i].square = shuffled[i];
+                shuffled[i].Item = items[i];
+            }
+
+            DragBlocked = false;
+            StartCoroutine(FindMatchDelay());
         }
 
         //popup score, to use - enable "Popup score" in editor

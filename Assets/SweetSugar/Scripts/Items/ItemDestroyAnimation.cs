@@ -37,6 +37,9 @@ namespace SweetSugar.Scripts.Items
             started = true;
             var thisItem = GetComponent<Item>();
 
+            var animator = GetComponent<Animator>();
+            if (animator != null && animator.runtimeAnimatorController != null) animator.SetTrigger("Explode");
+
             GameObject go = Instantiate(Resources.Load("Prefabs/Effects/_ExplosionAround") as GameObject);//LevelManager.THIS.GetExplAroundPool();
             if (go != null)
             {

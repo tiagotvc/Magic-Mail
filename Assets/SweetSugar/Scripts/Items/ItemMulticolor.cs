@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
@@ -144,21 +145,148 @@ namespace SweetSugar.Scripts.Items
 
         #endregion
 
+        // The beam touches the pieces of the colour one by one; each one gets a glow. Only when all of them are selected do
+        // they explode together.
         private void DestroyColor(int p)
         {
             SoundBase.Instance.PlayOneShot(SoundBase.Instance.colorBombExpl);
 
             var items = LevelManager.THIS.field.GetItemsByColor(p).Where(i => !i.Equals(GetParentItem())).ToArray();
-            StartCoroutine(IterateItems(items, item =>
-            {
-                CreateLightning(transform.position, item.transform.position);
-                item.DestroyItem(true, true, this, true);
-            }, () =>
-            {
-                LevelManager.THIS.FindMatches();
-                SmoothDestroy();
+            StartCoroutine(SelectThenExplode(items));
+        }
 
-            }));
+        private IEnumerator SelectThenExplode(Item[] items)
+        {
+            var selected = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            // Flagged as destroying from the start: the normal matcher skips them, so same-colour pieces lined up by the
+            // beam can't explode on their own before it reaches them. The flag is cleared right before they explode.
+            foreach (var item in items)
+                if (item != null) item.destroying = true;
+
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                CreateLightning(transform.position, item.transform.position);
+                highlights.Add(MakeHighlight(item));
+                selected.Add(item);
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All selected: a short pause so the outline pulses, then everything explodes at once.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var item in selected)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.destroying = false;
+                item.DestroyItem(true, true, this, true);
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            LevelManager.THIS.FindMatches();
+            SmoothDestroy();
+        }
+
+        const float BeamStepDelay = 0.08f;
+        const float PulsePeriod = 0.3f;
+        // Neon: a bright inner outline and a wider, softer halo behind it.
+        const float OutlineSpread = 1.12f;
+        const float HaloSpread = 1.32f;
+        const float HaloStrength = 0.5f;
+        static readonly Color NeonColor = new Color(0.35f, 0.9f, 1f, 1f);
+
+        // The yellow copies drawn under a selected piece (one per sprite of the piece), and the piece's own orders, so
+        // they can be put back when it explodes.
+        private class SelectionHighlight
+        {
+            public readonly List<OutlineCopy> Outlines = new List<OutlineCopy>();
+            public readonly List<(SpriteRenderer renderer, int order)> Raised = new List<(SpriteRenderer, int)>();
+        }
+
+        private class OutlineCopy
+        {
+            public SpriteRenderer Renderer;
+            public float Spread;
+            public float Strength;
+        }
+
+        // Each sprite of the piece gets a bigger neon copy under it. Raising the piece one order makes the copy show as an
+        // outline that follows the piece's own silhouette.
+        private static SelectionHighlight MakeHighlight(Item item)
+        {
+            var highlight = new SelectionHighlight();
+            foreach (var renderer in item.GetComponentsInChildren<SpriteRenderer>())
+            {
+                if (!renderer.enabled || renderer.sprite == null) continue;
+                var order = renderer.sortingOrder;
+                highlight.Outlines.Add(MakeCopy(renderer, HaloSpread, HaloStrength, order));
+                highlight.Outlines.Add(MakeCopy(renderer, OutlineSpread, 1f, order));
+                renderer.sortingOrder = order + 1;
+                highlight.Raised.Add((renderer, order));
+            }
+            return highlight;
+        }
+
+        // One shared material: a flat neon silhouette (RoyalAves/NeonSilhouette), so the colour of the piece's art doesn't show.
+        static Material neonMaterial;
+
+        private static Material NeonMaterial()
+        {
+            if (neonMaterial == null)
+            {
+                var shader = Shader.Find("RoyalAves/NeonSilhouette");
+                if (shader == null) Debug.LogWarning("Shader RoyalAves/NeonSilhouette não encontrado; o destaque sai sem neon.");
+                neonMaterial = new Material(shader);
+                neonMaterial.SetColor("_NeonColor", NeonColor);
+            }
+            return neonMaterial;
+        }
+
+        private static OutlineCopy MakeCopy(SpriteRenderer renderer, float spread, float strength, int order)
+        {
+            var copy = new GameObject("SelectOutline");
+            copy.transform.SetParent(renderer.transform, false);
+            var outline = copy.AddComponent<SpriteRenderer>();
+            outline.sprite = renderer.sprite;
+            outline.flipX = renderer.flipX;
+            outline.flipY = renderer.flipY;
+            outline.sharedMaterial = NeonMaterial();
+            outline.color = Color.white;
+            outline.sortingOrder = order;
+            return new OutlineCopy { Renderer = outline, Spread = spread, Strength = strength };
+        }
+
+        // Bright at the start of each pulse, fading but never gone, then bright again.
+        private IEnumerator PulseOutlines(List<SelectionHighlight> highlights)
+        {
+            while (true)
+            {
+                var phase = (Time.time % PulsePeriod) / PulsePeriod;
+                var intensity = Mathf.Lerp(1f, 0.7f, phase);
+                foreach (var highlight in highlights)
+                    foreach (var outline in highlight.Outlines)
+                    {
+                        if (outline.Renderer == null) continue;
+                        var color = Color.white;
+                        color.a = intensity * outline.Strength;
+                        outline.Renderer.color = color;
+                        outline.Renderer.transform.localScale = Vector3.one * (outline.Spread + 0.06f * intensity);
+                    }
+                yield return null;
+            }
+        }
+
+        private static void Restore(SelectionHighlight highlight)
+        {
+            foreach (var outline in highlight.Outlines)
+                if (outline.Renderer != null) Destroy(outline.Renderer.gameObject);
+            foreach (var (renderer, order) in highlight.Raised)
+                if (renderer != null) renderer.sortingOrder = order;
         }
 
         private IEnumerator IterateItems(Item[] items, Action<Item> iterateItem, Action onFinished = null)

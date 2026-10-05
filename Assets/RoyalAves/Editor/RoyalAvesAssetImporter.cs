@@ -79,7 +79,8 @@ namespace RoyalAves.EditorTools
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Sprite;
-            importer.spriteImportMode = SpriteImportMode.Single;
+            // The dinamite sheet is a 5x2 grid of frames (sliced by RoyalAvesDinamiteBuilder), so it must stay Multiple.
+            importer.spriteImportMode = assetPath == RoyalAvesDinamiteBuilder.SheetPath ? SpriteImportMode.Multiple : SpriteImportMode.Single;
             importer.spritePixelsPerUnit = PixelsPerUnit(assetPath);
             importer.alphaIsTransparency = true;
             importer.mipmapEnabled = false;

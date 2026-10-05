@@ -1,11 +1,12 @@
 // Puts Correio Mágico's boosters in the game's booster bar (the buttons under the board, in every orientation of the
-// game scene) instead of Sweet Sugar's candy art:
-// - Martelo Postal on "Bomb" (breaks one piece), Canhão Postal on "Explode area", Boné do Mensageiro on "Free move"
-//   (swap two pieces) and Arco Expresso on "Extra moves";
-// - the yellow booster button, the grey locked button, the amount in a red badge and the "+" (none left) in a green
-//   badge, both at the bottom right, as on the level start window;
-// - the settings gear of the game (CanvasGlobal/SettingsButton) becomes the lobby's gear.
-// Only the pictures change: each booster still does what Sweet Sugar's did.
+// game scene) instead of Sweet Sugar's candy art, left to right: Martelo Postal (destroys one piece), Arco Expresso
+// (destroys the touched row), Canhão Postal (destroys the touched column), Boné do Mensageiro (shuffles the board's
+// existing pieces). Each picture is still anchored to a stock Sweet Sugar slot ("Bomb", "ExtraMoves", "ExplodeArea",
+// "FreeMove"), but that slot no longer does what it originally did in the template - see LevelManager.DestroyLine/
+// ShuffleBoard and the ActivatedBoost setter for the actual gameplay logic.
+// Also sets: the yellow booster button, the grey locked button, the amount in a red badge and the "+" (none left) in
+// a green badge, both at the bottom right, as on the level start window; and the settings gear of the game
+// (CanvasGlobal/SettingsButton) becomes the lobby's gear.
 // Menu: Royal Aves > Aplicar reforços do jogo.
 using System.Collections.Generic;
 using System.Linq;
@@ -34,13 +35,17 @@ namespace RoyalAves.EditorTools
             [BoostType.ExtraMoves] = ("Boosters/arrow", "Arco Expresso"),
         };
 
-        // What plays on the board when a booster fires. Both clips (Animation/random_color_boost.anim and
-        // bomb_boost.controller) animate only m_LocalScale - a punch on one still picture - so swapping that picture
-        // is all it takes: the hammer where Sweet Sugar drew its wand, the cannon where it drew its bomb.
+        // Da esquerda pra direita na barra: marreta, flecha, canhão, chapéu.
+        static readonly BoostType[] DesiredOrder =
+            { BoostType.Bomb, BoostType.ExtraMoves, BoostType.ExplodeArea, BoostType.FreeMove };
+
+        // What plays on the board when the martelo fires. The clip (bomb_boost.controller) animates only
+        // m_LocalScale - a punch on one still picture - so swapping that picture is all it takes: the hammer where
+        // Sweet Sugar drew its wand. Flecha/canhão/chapéu não passam mais por essa animação (ver
+        // LevelManager.DestroyLine/ShuffleBoard), só o martelo ainda usa esse prefab.
         static readonly Dictionary<string, BoostType> Effects = new Dictionary<string, BoostType>
         {
             ["Assets/SweetSugar/Resources/Boosts/simple_explosion.prefab"] = BoostType.Bomb,
-            ["Assets/SweetSugar/Resources/Boosts/area_explosion.prefab"] = BoostType.ExplodeArea,
         };
 
         [MenuItem("Royal Aves/Aplicar reforços do jogo")]
@@ -66,6 +71,7 @@ namespace RoyalAves.EditorTools
                 var scene = EditorSceneManager.OpenScene(GameScene, OpenSceneMode.Single);
                 var boosts = scene.GetRootGameObjects().SelectMany(r => r.GetComponentsInChildren<BoostIcon>(true))
                     .Where(b => PathOf(b.transform).Contains("OrientationPanel")).ToList();
+                ReorderBoostTypes(boosts, log);
                 foreach (var boost in boosts)
                 {
                     Restyle(boost, button, locked, badge, plus);
@@ -100,8 +106,29 @@ namespace RoyalAves.EditorTools
             RestyleEffects(log);
 
             EditorUtility.DisplayDialog("Reforços do jogo", "Aplicado:\n- " + string.Join("\n- ", log.Distinct()) +
-                "\n\nSó as imagens mudaram: cada reforço continua com o efeito do Sweet Sugar " +
-                "(martelo quebra 1 peça, canhão explode uma área, boné troca 2 peças, arco dá +5 movimentos).", "OK");
+                "\n\nOrdem: martelo, flecha, canhão, chapéu. Martelo destrói 1 peça, flecha destrói a linha tocada, " +
+                "canhão destrói a coluna tocada, chapéu embaralha as peças do tabuleiro.", "OK");
+        }
+
+        // Atribui martelo/flecha/canhão/chapéu (DesiredOrder) aos ícones de cada barra da esquerda pra direita,
+        // pela posição x atual de cada um - funciona em qualquer variante de orientação sem depender de nomes.
+        static void ReorderBoostTypes(List<BoostIcon> boosts, List<string> log)
+        {
+            var groups = boosts.Where(b => DesiredOrder.Contains(b.type)).GroupBy(b => b.transform.parent);
+            foreach (var group in groups)
+            {
+                var ordered = group.OrderBy(b => ((RectTransform)b.transform).anchoredPosition.x).ToList();
+                if (ordered.Count != DesiredOrder.Length)
+                {
+                    log.Add($"{PathOf(group.Key)}: esperava {DesiredOrder.Length} reforços, achei {ordered.Count} - ordem não mexida");
+                    continue;
+                }
+                for (var i = 0; i < ordered.Count; i++)
+                {
+                    ordered[i].type = DesiredOrder[i];
+                    Dirty(ordered[i]);
+                }
+            }
         }
 
         static void Restyle(BoostIcon boost, Sprite button, Sprite locked, Sprite badge, Sprite plus)

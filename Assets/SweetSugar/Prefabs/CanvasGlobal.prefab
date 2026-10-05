@@ -34195,10 +34195,10 @@ MonoBehaviour:
   rewardedBoosterCount: 1
   boostProducts:
   - boostType: 0
-    icon: {fileID: 21300000, guid: efc89d4055b614c599197610a67ed3d3, type: 3}
-    description: Gives you the 5 extra moves
+    icon: {fileID: 21300000, guid: 6882d6ac67a3b1e4fa0fbbc33a955d01, type: 3}
+    description: "Destr\xF3i uma linha inteira"
     descriptionLocalizationRefrence: 65
-    name: Extra moves
+    name: Arco Expresso
     nameLocalizationReference: 27
     count: 3
     GemPrices: 1500
@@ -34231,10 +34231,10 @@ MonoBehaviour:
     GemPrices: 1500
     boostIconObject: {fileID: 7077250884570717136}
   - boostType: 4
-    icon: {fileID: 21300000, guid: 49dfa212e626344fcb96ee0ac5353a8d, type: 3}
-    description: Destroy one item
+    icon: {fileID: 21300000, guid: 64f85696118027a46b937ef8ba84b046, type: 3}
+    description: "Destr\xF3i uma pe\xE7a"
     descriptionLocalizationRefrence: 69
-    name: Bomb
+    name: Martelo Postal
     nameLocalizationReference: 78
     count: 3
     GemPrices: 1500
@@ -34249,19 +34249,19 @@ MonoBehaviour:
     GemPrices: 1500
     boostIconObject: {fileID: 7244978135499785976}
   - boostType: 6
-    icon: {fileID: 21300000, guid: 42c88f570081d42b4b5a50939afff8e4, type: 3}
-    description: Switch items
+    icon: {fileID: 21300000, guid: f39035d9def76e94b8ca525ab1ea5775, type: 3}
+    description: "Embaralha as pe\xE7as do tabuleiro"
     descriptionLocalizationRefrence: 71
-    name: Free move
+    name: "Bon\xE9 do Mensageiro"
     nameLocalizationReference: 79
     count: 3
     GemPrices: 1500
     boostIconObject: {fileID: 6449448067746004998}
   - boostType: 7
-    icon: {fileID: 21300000, guid: 83b436029e41c4909ba40e2251803713, type: 3}
-    description: Destroy the items in an area
+    icon: {fileID: 21300000, guid: da08e0ad31d487b43b0dbc398c6fdc7c, type: 3}
+    description: "Destr\xF3i uma coluna inteira"
     descriptionLocalizationRefrence: 72
-    name: Explode area
+    name: "Canh\xE3o Postal"
     nameLocalizationReference: 80
     count: 3
     GemPrices: 1500
@@ -67041,7 +67041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63395f4513e648b5b53c4800cea705ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-
 --- !u!1 &8504621029408051113
 GameObject:
   m_ObjectHideFlags: 0

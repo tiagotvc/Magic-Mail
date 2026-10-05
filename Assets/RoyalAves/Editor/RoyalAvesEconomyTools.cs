@@ -159,6 +159,20 @@ namespace RoyalAves.EditorTools
             EditorUtility.DisplayDialog("Estrelas de teste", $"+{amount} estrelas. Total agora: {MetaProgress.Stars}.", "OK");
         }
 
+        // Testing aid: five Pacote explosivo boosters in the inventory, to pick on the pre-level screen (it turns two pieces
+        // into dinamites when the level starts). Sweet Sugar keeps the count in PlayerPrefs under the BoostType name.
+        [MenuItem("Royal Aves/Teste: +5 pacotes explosivos")]
+        static void GiveTestPackages()
+        {
+            const int amount = 5;
+            var key = "" + BoostType.Packages;
+            PlayerPrefs.SetInt(key, PlayerPrefs.GetInt(key) + amount);
+            PlayerPrefs.Save();
+            var total = PlayerPrefs.GetInt(key);
+            Debug.Log($"[Correio Mágico] +{amount} pacotes explosivos de teste; agora: {total}");
+            EditorUtility.DisplayDialog("Pacotes explosivos de teste", $"+{amount} pacotes explosivos. Total agora: {total}.", "OK");
+        }
+
         static int SetBoosterPrices(IEnumerable<BoostShop> shops, int price)
         {
             var packs = 0;

@@ -575,8 +575,7 @@ namespace SweetSugar.Scripts.Items
                 bool shouldRevertSwap = false;
 
                 // No matches found and not using special boosts/combinations
-                bool noValidMatches = !combines2.Any() && !IsSwitchBonus() &&
-                                      LevelManager.THIS.ActivatedBoost.type != BoostType.FreeMove;
+                bool noValidMatches = !combines2.Any() && !IsSwitchBonus();
 
                 // Special item combinations that are allowed/disallowed
                 bool invalidItemCombination = NotContainsBoth(ItemsTypes.MULTICOLOR, ItemsTypes.MULTICOLOR) ||
@@ -611,15 +610,9 @@ namespace SweetSugar.Scripts.Items
                 }
                 else
                 {
-                    if (LevelManager.THIS.ActivatedBoost.type != BoostType.FreeMove)
-                    {
-                        if (LevelManager.THIS.levelData.limitType == LIMIT.MOVES)
-                            LevelManager.THIS.levelData.limit--;
-                        LevelManager.THIS.moveID++;
-                    }
-
-                    if (LevelManager.THIS.ActivatedBoost.type == BoostType.FreeMove)
-                        LevelManager.THIS.ActivatedBoost = null;
+                    if (LevelManager.THIS.levelData.limitType == LIMIT.MOVES)
+                        LevelManager.THIS.levelData.limit--;
+                    LevelManager.THIS.moveID++;
 
                     LevelManager.THIS.lastDraggedItem = this;
                     LevelManager.THIS.lastSwitchedItem = switchItem;
