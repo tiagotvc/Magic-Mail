@@ -17,8 +17,8 @@ namespace RoyalAves.Meta
         [Min(0)] public int starsPerFirstWin = 1;
 
         [Header("Moedas por nível vencido")]
-        [Tooltip("Moedas por ponto feito no nível (0,025 = 2000 pontos dão 50 moedas; ~600 pontos, desempenho regular na fase 1, dão ~15).")]
-        [Min(0)] public float coinsPerPoint = 0.025f;
+        [Tooltip("Moedas por ponto feito no nível (0,8 = 80% dos pontos viram moedas; 2.000 pontos dão 1.600 moedas).")]
+        [Min(0)] public float coinsPerPoint = 0.8f;
         [Tooltip("Parte das moedas dada ao jogar de novo um nível já vencido (1 = o mesmo, 0,25 = um quarto, 0 = nada).")]
         [Range(0, 1)] public float replayCoinShare = 1f;
 

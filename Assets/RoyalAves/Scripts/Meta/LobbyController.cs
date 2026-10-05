@@ -119,6 +119,11 @@ namespace RoyalAves.Meta
         const float AreaBarInset = 6; // inside the pill's gold border
         RectTransform areaFill;
 
+        [Tooltip("Partícula dourada usada no efeito de \"construção\" dos estágios de área (Content/areas/<id>/Estagio_*).")]
+        [SerializeField] Sprite stageSparkle;
+        [Tooltip("Textura de fogo (AllIn1SpriteShader/Textures/fire2.png) para a borda do \"dissolve reverso\" dos estágios.")]
+        [SerializeField] Texture2D stageBurnTexture;
+
         LobbyMenus menus;
         StarsInfoPopup starsPopup;
         SettingsScreen settingsScreen;
@@ -194,7 +199,7 @@ namespace RoyalAves.Meta
             var starsButton = starsText.GetComponentInParent<Button>(true);
             if (features != null && starsButton != null)
             {
-                starsPopup = StarsInfoPopup.Create((RectTransform)content.transform, features, PlayClick);
+                starsPopup = StarsInfoPopup.Create((RectTransform)content.transform, features, PlayClick, Play);
                 starsButton.onClick.AddListener(starsPopup.Open);
                 var starIcon = SiblingButton(starsButton, "Star");
                 if (starIcon != null) starIcon.onClick.AddListener(starsPopup.Open);
@@ -545,6 +550,7 @@ namespace RoyalAves.Meta
             var done = Mathf.Min(MetaProgress.TasksDone, area.tasks.Count);
             for (var i = 0; i < layers.Count; i++)
                 layers[i].gameObject.SetActive(i < done && layers[i].sprite != null);
+            SyncAreaStages(area, done);
 
             if (!coinsFlying) coinsText.text = CoinText(InitScript.Gems); // FlyCoins counts it up
             ApplyAvatar();
@@ -712,6 +718,91 @@ namespace RoyalAves.Meta
             }
         }
 
+        // Hand-placed decoration stages for richer areas (Content/areas/<id>/Estagio_*), alongside the
+        // single-sprite "layers" above. Areas without a matching folder (old-style, sprite-only areas)
+        // just skip all of this — AreaStageRoot returns null and every call below no-ops.
+        Transform AreaStageRoot(AreaDefinition area) =>
+            area == null ? null : content.transform.Find($"areas/{area.id}");
+
+        // Instantly matches every stage's visibility to how many tasks are already done — for when the lobby
+        // opens or the area changes, so progress already made doesn't replay its build-up animation.
+        void SyncAreaStages(AreaDefinition area, int done)
+        {
+            var root = AreaStageRoot(area);
+            if (root == null) return;
+            for (var i = 0; i < root.childCount; i++)
+                SetStageState(root.GetChild(i), i < done);
+        }
+
+        // The animated counterpart of SyncAreaStages: plays only for the stage that was just unlocked.
+        // Hides the "before" pieces instantly (nothing to animate there), but leaves activating the
+        // "after" piece(s) entirely to AreaStageReveal.Play — doing it here first would flash them at
+        // full visibility for a frame before the reveal coroutine resets them to animate in from zero.
+        void RevealAreaStage(AreaDefinition area, int index)
+        {
+            var root = AreaStageRoot(area);
+            if (root == null || index < 0 || index >= root.childCount) return;
+            var stage = root.GetChild(index);
+            for (var i = 0; i < stage.childCount; i++)
+            {
+                var child = stage.GetChild(i);
+                if (child.name == "quebrado" || child.name.StartsWith("seta_")) child.gameObject.SetActive(false);
+            }
+            var fixedPiece = stage.Find("consertado");
+            var pieces = fixedPiece != null
+                ? new[] { (RectTransform)fixedPiece }
+                : AllChildren(stage);
+            StartCoroutine(AreaStageReveal.Play(this, (RectTransform)stage, pieces, stageSparkle, stageBurnTexture));
+        }
+
+        // Prefers the currently visible pieces (excluding "consertado", which a before/after stage parks
+        // off to the side until it's needed — averaging it in would skew the position badly). But a plain
+        // stage has EVERY piece inactive until it's bought, so when nothing is active yet, falls back to
+        // averaging all of them anyway — a piece's position is still valid even while inactive.
+        static Vector3 StageCenter(Transform stage)
+        {
+            if (stage.childCount == 0) return stage.position;
+            var activeSum = Vector3.zero;
+            var activeCount = 0;
+            var allSum = Vector3.zero;
+            for (var i = 0; i < stage.childCount; i++)
+            {
+                var child = stage.GetChild(i);
+                allSum += child.position;
+                if (!child.gameObject.activeSelf || child.name == "consertado") continue;
+                activeSum += child.position;
+                activeCount++;
+            }
+            return activeCount > 0 ? activeSum / activeCount : allSum / stage.childCount;
+        }
+
+        // A stage can be a plain "hidden until bought" group, or hold its own before/after pieces: a
+        // "quebrado" (broken) piece plus "seta_*" hint arrows shown before buying, swapped for a
+        // "consertado" (fixed) piece once bought — e.g. the broken clock with arrows pointing at it.
+        // Anything else inside (like "suporte", the wall bracket) is left alone either way.
+        static void SetStageState(Transform stage, bool unlocked)
+        {
+            var hasBeforeAfter = false;
+            for (var i = 0; i < stage.childCount; i++)
+            {
+                var child = stage.GetChild(i);
+                if (child.name == "consertado") { child.gameObject.SetActive(unlocked); hasBeforeAfter = true; }
+                else if (child.name == "quebrado" || child.name.StartsWith("seta_"))
+                {
+                    child.gameObject.SetActive(!unlocked);
+                    hasBeforeAfter = true;
+                }
+            }
+            stage.gameObject.SetActive(hasBeforeAfter || unlocked);
+        }
+
+        static RectTransform[] AllChildren(Transform parent)
+        {
+            var result = new RectTransform[parent.childCount];
+            for (var i = 0; i < result.Length; i++) result[i] = (RectTransform)parent.GetChild(i);
+            return result;
+        }
+
         void Play()
         {
             if (restoring) return;
@@ -849,10 +940,12 @@ namespace RoyalAves.Meta
             if (restoring) return;
             PlayClick();
             if (MetaProgress.IsAreaComplete(config)) OpenAreaComplete();
+            else if (AreaStageRoot(MetaProgress.CurrentArea(config)) != null) OpenAreaHotspot();
             else OpenDecorations();
         }
 
         // As in the prototype: the next upgrade plus one preview; the rest appear one per purchase.
+        // Used as a fallback for areas with no hand-placed Estagio_* stages (OpenAreaHotspot needs those).
         void OpenDecorations()
         {
             var area = MetaProgress.CurrentArea(config);
@@ -867,6 +960,130 @@ namespace RoyalAves.Meta
                 if (visible) taskRows[i].Show(area.tasks[index], i == 0, MetaProgress.Stars >= area.tasks[index].starCost);
             }
             ShowModal(decorationsExtra, area.title, primary: "Fechar");
+            SetLobbyChromeVisible(false);
+            StartCoroutine(RestoreChromeWhenModalCloses());
+        }
+
+        // The real area view: no modal at all. HUD/nav get out of the way (like OpenDecorations) and a
+        // freshly built "Restaurar ★ n" tag floats in world space right over the piece it unlocks, taken
+        // from the hand-placed Estagio_* stage. Built from scratch (not the old list's LobbyTaskRow) so it
+        // never depends on a specific prefab object surviving whatever the area's hierarchy gets rebuilt into.
+        GameObject hotspotClose, hotspotTag;
+        TextMeshProUGUI hotspotTagText;
+
+        void OpenAreaHotspot()
+        {
+            SetLobbyChromeVisible(false);
+            if (content.transform.Find("Actions") is Transform actions) actions.gameObject.SetActive(false);
+            ShowHotspotCloseButton();
+            if (!ShowHotspotTag()) CloseAreaHotspot(); // area already complete somehow — nothing to show
+        }
+
+        // Positions the tag over the next unbought stage; returns false if there is none left.
+        bool ShowHotspotTag()
+        {
+            var area = MetaProgress.CurrentArea(config);
+            var root = AreaStageRoot(area);
+            var done = Mathf.Min(MetaProgress.TasksDone, area.tasks.Count);
+            if (root == null || done >= area.tasks.Count || done >= root.childCount) return false;
+            var stage = root.GetChild(done);
+            var task = area.tasks[done];
+            if (hotspotTag == null) BuildHotspotTag();
+            hotspotTag.SetActive(true);
+            hotspotTagText.text = $"{task.title}\n★ {task.starCost}";
+            var rect = (RectTransform)hotspotTag.transform;
+            rect.SetAsLastSibling();
+            // .position is world space, where 1 unit is NOT 1 pixel on a ScreenSpaceCamera canvas (it's
+            // tiny) — landing on the stage's world position is fine, but nudging it up needs to happen in
+            // anchoredPosition (pixel space) instead, or "80" would fling it far off-screen.
+            rect.position = StageCenter(stage);
+            rect.anchoredPosition += new Vector2(0f, 80f);
+            return true;
+        }
+
+        // Without enough stars, buying would just silently fail — instead, same as the prototype's "Ganhe
+        // diamantes": open the explainer that sends the player into a level, since that's how stars are earned.
+        void HotspotTagClicked()
+        {
+            var area = MetaProgress.CurrentArea(config);
+            var done = Mathf.Min(MetaProgress.TasksDone, area.tasks.Count);
+            if (done < area.tasks.Count && MetaProgress.Stars < area.tasks[done].starCost)
+            {
+                PlayClick();
+                starsPopup?.Open();
+                return;
+            }
+            BuyShownTask(0);
+        }
+
+        void BuildHotspotTag()
+        {
+            hotspotTag = new GameObject("HotspotTag", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            var rect = (RectTransform)hotspotTag.transform;
+            rect.SetParent(content.transform, false);
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+            rect.sizeDelta = new Vector2(260f, 100f);
+            var background = hotspotTag.GetComponent<Image>();
+            background.color = new Color(0.2f, 0.65f, 0.25f, 0.95f);
+            var button = hotspotTag.GetComponent<Button>();
+            button.targetGraphic = background;
+            button.onClick.AddListener(HotspotTagClicked);
+
+            var textGo = new GameObject("Text", typeof(RectTransform));
+            var textRect = (RectTransform)textGo.transform;
+            textRect.SetParent(rect, false);
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = new Vector2(10f, 6f);
+            textRect.offsetMax = new Vector2(-10f, -6f);
+            hotspotTagText = textGo.AddComponent<TextMeshProUGUI>();
+            hotspotTagText.alignment = TextAlignmentOptions.Center;
+            hotspotTagText.fontSize = 26f;
+            hotspotTagText.color = Color.white;
+            hotspotTagText.raycastTarget = false;
+        }
+
+        void ShowHotspotCloseButton()
+        {
+            if (hotspotClose != null) { hotspotClose.SetActive(true); return; }
+            hotspotClose = new GameObject("HotspotClose", typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+            var rect = (RectTransform)hotspotClose.transform;
+            rect.SetParent(content.transform, false);
+            rect.SetAsLastSibling();
+            rect.anchorMin = rect.anchorMax = new Vector2(0, 1);
+            rect.pivot = new Vector2(0, 1);
+            rect.sizeDelta = new Vector2(84, 84);
+            rect.anchoredPosition = new Vector2(24, -24);
+            var image = hotspotClose.GetComponent<Image>();
+            image.sprite = modalClose.image.sprite;
+            image.preserveAspect = true;
+            var button = hotspotClose.GetComponent<Button>();
+            button.targetGraphic = image;
+            button.onClick.AddListener(() => { PlayClick(); CloseAreaHotspot(); });
+        }
+
+        void CloseAreaHotspot()
+        {
+            SetLobbyChromeVisible(true);
+            if (content.transform.Find("Actions") is Transform actions) actions.gameObject.SetActive(true);
+            if (hotspotClose != null) hotspotClose.SetActive(false);
+            if (hotspotTag != null) hotspotTag.SetActive(false);
+        }
+
+        // Like the prototype's area view: the top HUD and bottom nav get out of the way while picking an
+        // upgrade, so the room itself (with the window over it) is what's on screen. Restored the moment the
+        // modal closes, however it closes ("Fechar" or the X) — both just set modal inactive.
+        void SetLobbyChromeVisible(bool visible)
+        {
+            if (content.transform.Find("HUD") is Transform hud) hud.gameObject.SetActive(visible);
+            if (content.transform.Find("Nav") is Transform nav) nav.gameObject.SetActive(visible);
+        }
+
+        IEnumerator RestoreChromeWhenModalCloses()
+        {
+            yield return new WaitUntil(() => !modal.activeSelf);
+            SetLobbyChromeVisible(true);
         }
 
         void BuyShownTask(int row)
@@ -876,42 +1093,57 @@ namespace RoyalAves.Meta
             var index = MetaProgress.TasksDone;
             if (!MetaProgress.BuyNextTask(config)) return; // Changed refreshes the lobby and turns the new layer on
             modal.SetActive(false);
-            StartCoroutine(Restore(area.tasks[index], index));
+            StartCoroutine(Restore(area, area.tasks[index], index));
         }
 
-        // The prototype's arrival: a flash, the upgrade's token drops in with its name and its layer fades into the room.
-        IEnumerator Restore(AreaTask task, int index)
+        // The prototype's arrival: a flash, the upgrade's token drops in with its name and its layer fades into the
+        // room. Skipped in the area hotspot view (SetLobbyChromeVisible/ShowHotspotTag) — there the piece builds
+        // itself right where it stands (AreaStageReveal), so the full-screen token-drop toast is redundant noise.
+        IEnumerator Restore(AreaDefinition area, AreaTask task, int index)
         {
+            var inHotspot = hotspotClose != null && hotspotClose.activeSelf;
             restoring = true;
             if (restoreSound != null && SoundBase.Instance != null) SoundBase.Instance.PlayOneShot(restoreSound);
-            restoreIcon.sprite = task.icon;
-            restoreIcon.enabled = task.icon != null;
-            restoreLabel.text = task.title;
-            restoreEffect.SetActive(true);
             var layer = index < layers.Count ? layers[index] : null;
             // The effect covers the whole lobby and takes every tap, so it is turned off even if the coroutine is cut
             // short (the lobby hidden, the scene reloaded): otherwise nothing in the lobby would answer again.
-            try
+            if (!inHotspot)
             {
-                for (var t = 0f; t < restoreSeconds; t += Time.unscaledDeltaTime)
+                try
                 {
-                    var p = t / restoreSeconds;
-                    var drop = Mathf.Clamp01(p / 0.6f);
-                    restoreGlow.alpha = Mathf.Sin(p * Mathf.PI);
-                    restoreToken.localScale = Vector3.one * BackOut(drop);
-                    restoreToken.anchoredPosition = new Vector2(0, Mathf.Lerp(420, 120, 1 - (1 - drop) * (1 - drop)));
-                    restoreLabelBox.localScale = Vector3.one * BackOut(Mathf.Clamp01((p - 0.2f) / 0.5f));
-                    if (layer != null) layer.color = new Color(1, 1, 1, Mathf.Clamp01(p * 1.5f));
-                    yield return null;
+                    restoreIcon.sprite = task.icon;
+                    restoreIcon.enabled = task.icon != null;
+                    restoreLabel.text = task.title;
+                    restoreEffect.SetActive(true);
+                    for (var t = 0f; t < restoreSeconds; t += Time.unscaledDeltaTime)
+                    {
+                        var p = t / restoreSeconds;
+                        var drop = Mathf.Clamp01(p / 0.6f);
+                        restoreGlow.alpha = Mathf.Sin(p * Mathf.PI);
+                        restoreToken.localScale = Vector3.one * BackOut(drop);
+                        restoreToken.anchoredPosition = new Vector2(0, Mathf.Lerp(420, 120, 1 - (1 - drop) * (1 - drop)));
+                        restoreLabelBox.localScale = Vector3.one * BackOut(Mathf.Clamp01((p - 0.2f) / 0.5f));
+                        if (layer != null) layer.color = new Color(1, 1, 1, Mathf.Clamp01(p * 1.5f));
+                        yield return null;
+                    }
+                }
+                finally
+                {
+                    if (restoreEffect != null) restoreEffect.SetActive(false);
+                    restoring = false;
                 }
             }
-            finally
-            {
-                if (restoreEffect != null) restoreEffect.SetActive(false);
-                restoring = false;
-            }
+            else restoring = false;
             if (layer != null) layer.color = Color.white;
+            // Before Refresh(): Refresh -> SyncAreaStages would otherwise instantly show the just-bought
+            // stage at full visibility (done already counts it), flashing it before the reveal plays.
+            RevealAreaStage(area, index);
             Refresh();
+            if (inHotspot)
+            {
+                if (MetaProgress.IsAreaComplete(config)) CloseAreaHotspot();
+                else ShowHotspotTag(); // moves the tag to the next stage
+            }
             if (MetaProgress.IsAreaComplete(config)) OpenAreaComplete();
         }
 

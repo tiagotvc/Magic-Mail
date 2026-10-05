@@ -27,14 +27,18 @@ namespace RoyalAves.Meta
         static readonly Color PostalTop = new Color32(0xFB, 0xFC, 0xE8, 0xFF);
         static readonly Color PostalBottom = new Color32(0xEE, 0x9A, 0x10, 0xFF);
 
-        Action onClick;
+        Action onClick, onContinue;
 
-        public static StarsInfoPopup Create(RectTransform parent, LobbyFeaturesConfig art, Action onClick)
+        /// "onClick" fires on every open/close (the click sound). "onContinue" fires only from the green
+        /// "Continuar" button (not the X) — the prototype sends the player straight into a level from here,
+        /// since that is how stars are actually earned.
+        public static StarsInfoPopup Create(RectTransform parent, LobbyFeaturesConfig art, Action onClick, Action onContinue = null)
         {
             var root = Node("JanelaEstrelas", parent);
             Stretch(root);
             var popup = root.gameObject.AddComponent<StarsInfoPopup>();
             popup.onClick = onClick;
+            popup.onContinue = onContinue;
 
             var dim = root.gameObject.AddComponent<Image>();
             dim.color = Dim;
@@ -99,7 +103,7 @@ namespace RoyalAves.Meta
             goImage.raycastTarget = true;
             var goButton = go.gameObject.AddComponent<Button>();
             goButton.targetGraphic = goImage;
-            goButton.onClick.AddListener(popup.Close);
+            goButton.onClick.AddListener(() => { popup.Close(); popup.onContinue?.Invoke(); });
             var goText = Text(go, "Continuar", 80, Cream, art.displayFont);
             Stretch(goText.rectTransform);
             goText.rectTransform.offsetMin = new Vector2(24, 22);
