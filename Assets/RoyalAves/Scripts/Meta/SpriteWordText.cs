@@ -34,7 +34,7 @@ namespace RoyalAves.Meta
                 return;
             }
             if (label == null) label = GetComponent<TextMeshProUGUI>();
-            label.text = words.Get(key).ToUpperInvariant();
+            label.text = SpriteFontText.ToSpriteTags(words.Get(key).ToUpperInvariant());
         }
     }
 }

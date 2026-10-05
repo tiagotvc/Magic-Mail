@@ -121,7 +121,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -229,78 +229,78 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: A
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_0"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 1045
+        x: 28
+        y: 1015
         width: 209
-        height: 209
+        height: 203
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000001
+      spriteID: 55e50bce5cbf2004b8595b5cd775a6a6
+      internalID: 1329282750
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: B
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_1"
       rect:
         serializedVersion: 2
-        x: 209
-        y: 1045
-        width: 209
-        height: 209
+        x: 222
+        y: 1011
+        width: 206
+        height: 208
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 11, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000002
+      spriteID: d7bb6b78df15ada4086364dc6dd08001
+      internalID: -1865535086
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: C
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_2"
       rect:
         serializedVersion: 2
-        x: 418
-        y: 1045
-        width: 209
-        height: 209
+        x: 428
+        y: 1015
+        width: 206
+        height: 206
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000003
+      spriteID: 10d3bbc0d6b53d5418a9dbac2c9ca6cd
+      internalID: -464834769
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: D
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_3"
       rect:
         serializedVersion: 2
-        x: 627
-        y: 1045
-        width: 209
+        x: 623
+        y: 1019
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -308,21 +308,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000004
+      spriteID: 97e8fc3dce79c5f449b7305d1b0a469a
+      internalID: 840183068
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: E
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_4"
       rect:
         serializedVersion: 2
-        x: 836
-        y: 1045
-        width: 209
+        x: 831
+        y: 1021
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -330,21 +330,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000005
+      spriteID: c7f6503e74d5d034381f4bce9116e5a2
+      internalID: 807994885
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: F
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_5"
       rect:
         serializedVersion: 2
-        x: 1045
-        y: 1045
-        width: 209
+        x: 1020
+        y: 1019
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -352,21 +352,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000006
+      spriteID: 2c79d5dae0703f04dbb0040519294a88
+      internalID: 11395124
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: G
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_6"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 836
-        width: 209
+        x: 30
+        y: 802
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -374,21 +374,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000007
+      spriteID: a393519ba8e3f97409be7b12ae6c33a7
+      internalID: 1480403202
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: H
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_7"
       rect:
         serializedVersion: 2
-        x: 209
-        y: 836
-        width: 209
+        x: 239
+        y: 807
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -396,21 +396,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000008
+      spriteID: c7519fc0f4cdaf24a95273a534a271a1
+      internalID: -1704497958
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: I
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_8"
       rect:
         serializedVersion: 2
-        x: 418
-        y: 836
-        width: 209
+        x: 428
+        y: 804
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -418,21 +418,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000009
+      spriteID: 4f69100961eecfd4ab1acd246c11090f
+      internalID: -362061450
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: J
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_9"
       rect:
         serializedVersion: 2
-        x: 627
-        y: 836
-        width: 209
+        x: 622
+        y: 798
+        width: 211
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -440,21 +440,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000010
+      spriteID: caf44362de730e14596afffa7cdce914
+      internalID: -1586262865
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: K
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_10"
       rect:
         serializedVersion: 2
-        x: 836
-        y: 836
-        width: 209
+        x: 823
+        y: 802
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -462,21 +462,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000011
+      spriteID: 40010620615ac6143ab8397db8c5ff36
+      internalID: -1507952050
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: L
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_11"
       rect:
         serializedVersion: 2
-        x: 1045
-        y: 836
-        width: 209
+        x: 1022
+        y: 800
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -484,21 +484,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000012
+      spriteID: 060ac5515ef69254fb1c7520bb3b9569
+      internalID: -107557411
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: M
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_12"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 627
-        width: 209
+        x: 10
+        y: 583
+        width: 220
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -506,43 +506,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000013
+      spriteID: 633fd6633513e7f4a8c75fef4c5eec4b
+      internalID: -1029084317
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: N
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_13"
       rect:
         serializedVersion: 2
-        x: 209
-        y: 627
-        width: 209
+        x: 227
+        y: 586
+        width: 201
         height: 209
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      alignment: 9
+      pivot: {x: 0.52494204, y: 0.35249496}
+      border: {x: 5, y: 0, z: 1, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000014
+      spriteID: b4c652fce9e6e2f41a772173e106be5f
+      internalID: -231285614
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: O
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_14"
       rect:
         serializedVersion: 2
-        x: 418
-        y: 627
-        width: 209
+        x: 428
+        y: 579
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -550,43 +550,43 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000015
+      spriteID: ad4d5ea458a00fa4abe10292d34e0e9c
+      internalID: -1015059232
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: P
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_15"
       rect:
         serializedVersion: 2
-        x: 627
-        y: 627
-        width: 209
+        x: 622
+        y: 585
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 14, y: 0, z: 6, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000016
+      spriteID: 9677d662e7e43a841b5aff34803f0abb
+      internalID: -1370761970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Q
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_16"
       rect:
         serializedVersion: 2
-        x: 836
-        y: 627
-        width: 209
+        x: 825
+        y: 581
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -594,21 +594,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000017
+      spriteID: bf8a99f33e616e34581e2888bbe95f62
+      internalID: 305973678
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: R
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_17"
       rect:
         serializedVersion: 2
-        x: 1045
-        y: 627
-        width: 209
+        x: 1032
+        y: 578
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -616,21 +616,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000018
+      spriteID: fde7d829bf4adee4f889320f9292f151
+      internalID: 593181554
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: S
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_18"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 418
-        width: 209
+        x: 19
+        y: 364
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -638,21 +638,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000019
+      spriteID: 55b3667b891b6e048a6740029aa533e6
+      internalID: -1940847664
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: T
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_19"
       rect:
         serializedVersion: 2
-        x: 209
-        y: 418
-        width: 209
+        x: 222
+        y: 369
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -660,109 +660,109 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000020
+      spriteID: 4c774b6e05b781c429c641fcdd790e76
+      internalID: 12728787
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: U
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_20"
       rect:
         serializedVersion: 2
-        x: 418
-        y: 418
-        width: 209
+        x: 425
+        y: 364
+        width: 202
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 4, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000021
+      spriteID: 01a1848442f8f0d469809a571bd5318f
+      internalID: 1442329595
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: V
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_21"
       rect:
         serializedVersion: 2
-        x: 627
-        y: 418
-        width: 209
+        x: 623
+        y: 370
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 2, y: 0, z: 11, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000022
+      spriteID: 6adc6830e463a614380c3362930184e1
+      internalID: -710164610
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: W
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_22"
       rect:
         serializedVersion: 2
-        x: 836
-        y: 418
-        width: 209
+        x: 807
+        y: 369
+        width: 232
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 11, y: 0, z: 4, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000023
+      spriteID: dae894c813f0f59439656109fb225602
+      internalID: 967076400
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: X
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_23"
       rect:
         serializedVersion: 2
-        x: 1045
-        y: 418
-        width: 209
+        x: 1025
+        y: 366
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 11, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000024
+      spriteID: 90d97f560f83e87408b16c6b58293201
+      internalID: -53923768
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Y
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_24"
       rect:
         serializedVersion: 2
-        x: 0
-        y: 209
-        width: 209
+        x: 19
+        y: 172
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -770,21 +770,21 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000025
+      spriteID: 2de1629122936ab428d48a304945b9c5
+      internalID: -875948554
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Z
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_25"
       rect:
         serializedVersion: 2
-        x: 209
-        y: 209
-        width: 209
+        x: 224
+        y: 165
+        width: 206
         height: 209
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -792,10 +792,98 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 
-      internalID: 1000026
+      spriteID: 7ef8b9ff849814b49a4b33a75fe86427
+      internalID: -1949222637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_26"
+      rect:
+        serializedVersion: 2
+        x: 425
+        y: 167
+        width: 206
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2d6733a2bd0fc749a246606717ea225
+      internalID: 2080436999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_27"
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 163
+        width: 206
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b78f6582b9dee2f43ba4abe3c20e5798
+      internalID: 2132020119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_28"
+      rect:
+        serializedVersion: 2
+        x: 828
+        y: 167
+        width: 206
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb4eee5d14372434eb5338e27eaa834c
+      internalID: 837324454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "Cartela 6x6 de letras e n\xFAmeros dourados_29"
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 163
+        width: 206
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71602b4f5fb77b64bbdf6568a65164bd
+      internalID: 1404945075
       vertices: []
       indices: 
       edges: []
@@ -812,8 +900,40 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
-    nameFileIdTable: {}
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":206.0,"y":209.0},"gridSpriteOffset":{"x":16.0,"y":15.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      "Cartela 6x6 de letras e n\xFAmeros dourados_0": 1329282750
+      "Cartela 6x6 de letras e n\xFAmeros dourados_1": -1865535086
+      "Cartela 6x6 de letras e n\xFAmeros dourados_10": -1507952050
+      "Cartela 6x6 de letras e n\xFAmeros dourados_11": -107557411
+      "Cartela 6x6 de letras e n\xFAmeros dourados_12": -1029084317
+      "Cartela 6x6 de letras e n\xFAmeros dourados_13": -231285614
+      "Cartela 6x6 de letras e n\xFAmeros dourados_14": -1015059232
+      "Cartela 6x6 de letras e n\xFAmeros dourados_15": -1370761970
+      "Cartela 6x6 de letras e n\xFAmeros dourados_16": 305973678
+      "Cartela 6x6 de letras e n\xFAmeros dourados_17": 593181554
+      "Cartela 6x6 de letras e n\xFAmeros dourados_18": -1940847664
+      "Cartela 6x6 de letras e n\xFAmeros dourados_19": 12728787
+      "Cartela 6x6 de letras e n\xFAmeros dourados_2": -464834769
+      "Cartela 6x6 de letras e n\xFAmeros dourados_20": 1442329595
+      "Cartela 6x6 de letras e n\xFAmeros dourados_21": -710164610
+      "Cartela 6x6 de letras e n\xFAmeros dourados_22": 967076400
+      "Cartela 6x6 de letras e n\xFAmeros dourados_23": -53923768
+      "Cartela 6x6 de letras e n\xFAmeros dourados_24": -875948554
+      "Cartela 6x6 de letras e n\xFAmeros dourados_25": -1949222637
+      "Cartela 6x6 de letras e n\xFAmeros dourados_26": 2080436999
+      "Cartela 6x6 de letras e n\xFAmeros dourados_27": 2132020119
+      "Cartela 6x6 de letras e n\xFAmeros dourados_28": 837324454
+      "Cartela 6x6 de letras e n\xFAmeros dourados_29": 1404945075
+      "Cartela 6x6 de letras e n\xFAmeros dourados_3": 840183068
+      "Cartela 6x6 de letras e n\xFAmeros dourados_4": 807994885
+      "Cartela 6x6 de letras e n\xFAmeros dourados_5": 11395124
+      "Cartela 6x6 de letras e n\xFAmeros dourados_6": 1480403202
+      "Cartela 6x6 de letras e n\xFAmeros dourados_7": -1704497958
+      "Cartela 6x6 de letras e n\xFAmeros dourados_8": -362061450
+      "Cartela 6x6 de letras e n\xFAmeros dourados_9": -1586262865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -58,6 +58,10 @@ namespace RoyalAves.EditorTools
             ["barra-reforcos"] = new Vector4(16, 0, 16, 0),          // only the stitched middle repeats
         };
 
+        // Letter/digit/accent sheets for the gold sprite font (Royal Aves > Criar fonte de diálogo): these are
+        // hand-sliced into one sprite per character (Multiple mode) and must not be forced back to Single.
+        public const string DialogFolder = "Assets/RoyalAves/Art/UI/Dialog/";
+
         public const string ManagerFolder = "Assets/RoyalAves/Art/Characters/Gerente/";
         public const int ManagerMaxSize = 1024;
 
@@ -77,6 +81,7 @@ namespace RoyalAves.EditorTools
         void OnPreprocessTexture()
         {
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
+            if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
