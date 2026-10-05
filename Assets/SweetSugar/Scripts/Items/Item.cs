@@ -630,6 +630,20 @@ namespace SweetSugar.Scripts.Items
                     BonusesAnimation(this, switchItem);
                     yield return new WaitWhile(() => LevelManager.THIS.StopFall);
                     Check(this, switchItem);
+
+                    // Magic Mail: a lone special piece (the other side being an ordinary candy) has nothing in
+                    // combines2 to destroy it and no partner special for BonusesAnimation/Check's own combo, so
+                    // without this it would just sit in its new spot, never firing. Set it off the same way a tap
+                    // already does (ActivateTappedBonus), unless a real match formed too — that pipeline handles it.
+                    if (!combines2.Any())
+                    {
+                        bool IsLoneBonus(Item i) => i.currentType != ItemsTypes.NONE && i.currentType != ItemsTypes.INGREDIENT &&
+                                                     i.currentType != ItemsTypes.SPIRAL && i.currentType != ItemsTypes.TimeBomb &&
+                                                     i.Combinable && i.CombinableWithBonus && !i.destroying;
+                        if (IsLoneBonus(this) && !IsLoneBonus(switchItem)) DestroyItem(true);
+                        else if (IsLoneBonus(switchItem) && !IsLoneBonus(this)) switchItem.DestroyItem(true);
+                    }
+
                     foreach (var combine in combines2)
                     {
                         if (combine.nextType != ItemsTypes.NONE)
@@ -771,6 +785,12 @@ namespace SweetSugar.Scripts.Items
                  (Combinable || switchItem.Combinable)) || (currentType == ItemsTypes.MULTICOLOR && switchItem.currentType == ItemsTypes.MULTICOLOR))
                 return true;
             if (currentType > 0 && switchItem.currentType > 0 && (currentType != ItemsTypes.INGREDIENT && switchItem.currentType != ItemsTypes.INGREDIENT) && Combinable && switchItem.Combinable)
+                return true;
+            // Magic Mail: moving a special piece always sets it off, not only when it lands next to another special
+            // one — swapping a striped/wrapped/colour-bomb/marmalade piece into a plain candy used to be reverted
+            // whenever that swap made no new match by itself.
+            if (((currentType > 0 && currentType != ItemsTypes.INGREDIENT && Combinable) ||
+                 (switchItem.currentType > 0 && switchItem.currentType != ItemsTypes.INGREDIENT && switchItem.Combinable)))
                 return true;
             if (!Combinable && !switchItem.Combinable && currentType != ItemsTypes.MULTICOLOR && switchItem.currentType != ItemsTypes.MULTICOLOR)
                 return false;

@@ -89,6 +89,16 @@ namespace RoyalAves.Meta
             Save();
         }
 
+        /// Testing aid (menu Royal Aves > Ir para o nível...): jumps straight to any level, as if every one before it
+        /// had already been won — so the lobby's "Nível N" button offers exactly this level. Levels are won in order
+        /// and there is no per-level save beyond "highest one won", so this cannot single out one level without also
+        /// marking every earlier one as won.
+        public static void SetNextLevel(int level)
+        {
+            Data.highestLevelWon = Mathf.Max(0, level - 1);
+            Save();
+        }
+
         /// Upgrades are bought in order; returns false without enough stars.
         public static bool BuyNextTask(AreaProgressionConfig config)
         {

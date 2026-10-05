@@ -65,6 +65,12 @@ namespace SweetSugar.Scripts.GUI
 
         void Check()
         {
+            // Magic Mail: this in-game hand tutorial has no way to close itself. HandTutorial.AnimateHand only
+            // demonstrates the move (it never plays it for real) and loops forever, while the "Tutorial" overlay's
+            // dark backdrop blocks every tap — including the real move on the board that would fire LevelManager.OnMove
+            // and dismiss it. There is no exit once it starts, so it never starts.
+            return;
+            // ReSharper disable once HeuristicUnreachableCode
             if (!checkStarted && !showed)
                 StartCoroutine(CheckTutorial());
         }
