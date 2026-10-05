@@ -57,8 +57,7 @@ namespace RoyalAves.EditorTools
             var locked = Load("UI/Buttons/botao_bloqueado");
             var badge = Load("UI/LevelStart/botao-fechar-circulo");
             var plus = Load("UI/LevelStart/selo-verde");
-            var gear = Load("UI/Buttons/configuracoes");
-            if (new[] { button, locked, badge, plus, gear }.Any(s => s == null) || Pictures.Values.Any(p => Load(p.file) == null))
+            if (new[] { button, locked, badge, plus }.Any(s => s == null) || Pictures.Values.Any(p => Load(p.file) == null))
             {
                 EditorUtility.DisplayDialog("Reforços do jogo", "Faltam imagens em Assets/RoyalAves/Art (Boosters, botao-power-ups, botao_bloqueado, selo-verde ou configuracoes).", "OK");
                 return;
@@ -92,10 +91,10 @@ namespace RoyalAves.EditorTools
             {
                 if (root.transform.Find("SettingsButton/Image")?.GetComponent<Image>() is Image gearImage)
                 {
-                    gearImage.sprite = gear;
+                    // The gear keeps the sprite it already has (the game's own icon); this builder only fixes its look.
                     gearImage.preserveAspect = true;
                     PrefabUtility.SaveAsPrefabAsset(root, CanvasGlobalPath);
-                    log.Add("engrenagem de configurações do jogo");
+                    log.Add("engrenagem de configurações do jogo (sprite mantido)");
                 }
             }
             finally

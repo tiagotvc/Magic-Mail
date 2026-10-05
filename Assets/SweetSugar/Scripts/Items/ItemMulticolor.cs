@@ -64,7 +64,7 @@ namespace SweetSugar.Scripts.Items
             }
             else if (item2.currentType == ItemsTypes.PACKAGE)
             {
-                LevelManager.THIS.StartCoroutine(SetTypeByColor(item2));
+                LevelManager.THIS.StartCoroutine(MakePackagesByColor(item2));
                 activated = true;
             }
             else if (item2.currentType == ItemsTypes.MARMALADE)
@@ -112,6 +112,54 @@ namespace SweetSugar.Scripts.Items
 
 
         #region ChangeItemTypes
+
+        // With a package: the beam makes every piece of the colour into a package, one by one, each with the neon outline.
+        // Only when all of them are ready do they explode, one at a time, in the order they were made.
+        private IEnumerator MakePackagesByColor(Item item2)
+        {
+            var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
+                .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            item2.DestroyItem();
+
+            var made = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.NextType = ItemsTypes.PACKAGE;
+                Item created = null;
+                // The new package is flagged as destroying from the moment it exists, so the matcher can't explode it early.
+                item.ChangeType(newItem => { created = newItem; newItem.destroying = true; }, false);
+                CreateLightning(transform.position, item.transform.position);
+                if (created == null) continue;
+                made.Add(created);
+                highlights.Add(MakeHighlight(created));
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All made and outlined: a short pause, then they explode one by one, in creation order.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var package in made)
+            {
+                if (package == null || !package.gameObject.activeSelf) continue;
+                package.destroying = false;
+                var explosive = package.GetComponent<ItemPackage>();
+                if (explosive != null) explosive.Destroy(package, null);
+                else package.DestroyItem(true, true, this, true);
+                yield return new WaitForSeconds(ExplodeStepDelay);
+            }
+
+            yield return new WaitForSeconds(0.4f);
+            LevelManager.THIS.FindMatches();
+            SmoothDestroy();
+        }
+
+        const float ExplodeStepDelay = 0.3f;
 
         private IEnumerator SetTypeByColor(Item item2)
         {
