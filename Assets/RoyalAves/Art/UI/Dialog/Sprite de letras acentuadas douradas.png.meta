@@ -1,91 +1,46 @@
 fileFormatVersion: 2
-guid: de17e3a5e7a8fe74c9ddb765b21eb77f
+guid: 70bc44ea8e4f4b84ea2cea70e6d9a9bb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2467240721337692468
-    second: Sprite de letras acentuadas douradas_0
+      213: 2000001
+    second: "\xC1"
   - first:
-      213: 3360622437148937847
-    second: Sprite de letras acentuadas douradas_1
+      213: 2000002
+    second: "\xC0"
   - first:
-      213: -1839320643164616268
-    second: Sprite de letras acentuadas douradas_2
+      213: 2000003
+    second: "\xC2"
   - first:
-      213: 5372928747935159666
-    second: Sprite de letras acentuadas douradas_3
+      213: 2000004
+    second: "\xC3"
   - first:
-      213: -7060598662976472137
-    second: Sprite de letras acentuadas douradas_4
+      213: 2000005
+    second: "\xC9"
   - first:
-      213: 1392214658274763262
-    second: Sprite de letras acentuadas douradas_5
+      213: 2000006
+    second: "\xCA"
   - first:
-      213: 2033748975376279512
-    second: Sprite de letras acentuadas douradas_6
+      213: 2000007
+    second: "\xCD"
   - first:
-      213: 948976462731407839
-    second: Sprite de letras acentuadas douradas_7
+      213: 2000008
+    second: "\xD3"
   - first:
-      213: 1565711471751907615
-    second: Sprite de letras acentuadas douradas_8
+      213: 2000009
+    second: "\xD4"
   - first:
-      213: -7306906730753666294
-    second: Sprite de letras acentuadas douradas_9
+      213: 2000010
+    second: "\xD5"
   - first:
-      213: 2747746791094065454
-    second: Sprite de letras acentuadas douradas_10
+      213: 2000011
+    second: "\xDA"
   - first:
-      213: 4285572110096803128
-    second: Sprite de letras acentuadas douradas_11
+      213: 2000012
+    second: "\xDC"
   - first:
-      213: 1205188408733310325
-    second: Sprite de letras acentuadas douradas_12
-  - first:
-      213: 964498614983570483
-    second: Sprite de letras acentuadas douradas_13
-  - first:
-      213: -3180126860531339780
-    second: Sprite de letras acentuadas douradas_14
-  - first:
-      213: -5103449720064998964
-    second: Sprite de letras acentuadas douradas_15
-  - first:
-      213: -1543063915831033742
-    second: Sprite de letras acentuadas douradas_16
-  - first:
-      213: 3110128514204489375
-    second: Sprite de letras acentuadas douradas_17
-  - first:
-      213: -7057467700747530375
-    second: Sprite de letras acentuadas douradas_18
-  - first:
-      213: -6240515812346423524
-    second: Sprite de letras acentuadas douradas_19
-  - first:
-      213: -6358435295277542790
-    second: Sprite de letras acentuadas douradas_20
-  - first:
-      213: 1635054896965980648
-    second: Sprite de letras acentuadas douradas_21
-  - first:
-      213: 3495977236374533439
-    second: Sprite de letras acentuadas douradas_22
-  - first:
-      213: 4630330698258111358
-    second: Sprite de letras acentuadas douradas_23
-  - first:
-      213: 7552609595339072116
-    second: Sprite de letras acentuadas douradas_24
-  - first:
-      213: -8322157092673727891
-    second: Sprite de letras acentuadas douradas_25
-  - first:
-      213: 2529547552497745876
-    second: Sprite de letras acentuadas douradas_26
-  - first:
-      213: 3872456708021994932
-    second: Sprite de letras acentuadas douradas_27
+      213: 2000013
+    second: "\xC7"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -193,6 +148,32 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -209,617 +190,287 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_0
+      name: "\xC1"
       rect:
         serializedVersion: 2
-        x: 50
-        y: 879
-        width: 289
-        height: 333
+        x: 0
+        y: 922.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43136b23d566d3220800000000000000
-      internalID: 2467240721337692468
+      spriteID: 
+      internalID: 2000001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_1
+      name: "\xC0"
       rect:
         serializedVersion: 2
-        x: 348
-        y: 889
-        width: 288
-        height: 319
+        x: 319.5
+        y: 922.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 77e487e1d4453ae20800000000000000
-      internalID: 3360622437148937847
+      spriteID: 
+      internalID: 2000002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_2
-      rect:
-        serializedVersion: 2
-        x: 621
-        y: 1171
-        width: 17
-        height: 11
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b94124ce9b6976e0800000000000000
-      internalID: -1839320643164616268
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_3
-      rect:
-        serializedVersion: 2
-        x: 643
-        y: 1146
-        width: 23
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 275d820ba3a709a40800000000000000
-      internalID: 5372928747935159666
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_4
-      rect:
-        serializedVersion: 2
-        x: 655
-        y: 889
-        width: 303
-        height: 311
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7bb70b7bce6b30e90800000000000000
-      internalID: -7060598662976472137
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_5
-      rect:
-        serializedVersion: 2
-        x: 969
-        y: 889
-        width: 284
-        height: 305
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ef12f8dfad3225310800000000000000
-      internalID: 1392214658274763262
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_6
-      rect:
-        serializedVersion: 2
-        x: 611
-        y: 1093
-        width: 31
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8d72e97fae3593c10800000000000000
-      internalID: 2033748975376279512
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_7
-      rect:
-        serializedVersion: 2
-        x: 657
-        y: 1134
-        width: 15
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fd1ff41a0117b2d00800000000000000
-      internalID: 948976462731407839
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_8
-      rect:
-        serializedVersion: 2
-        x: 946
-        y: 1116
-        width: 10
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f19c68eb9468ab510800000000000000
-      internalID: 1565711471751907615
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_9
+      name: "\xC2"
       rect:
         serializedVersion: 2
         x: 639
-        y: 1091
-        width: 11
-        height: 11
+        y: 922.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a035482ca07a89a90800000000000000
-      internalID: -7306906730753666294
+      spriteID: 
+      internalID: 2000003
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_10
+      name: "\xC3"
+      rect:
+        serializedVersion: 2
+        x: 958.5
+        y: 922.5
+        width: 319.5
+        height: 307.5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 
+      internalID: 2000004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\xC9"
       rect:
         serializedVersion: 2
         x: 0
-        y: 895
-        width: 33
-        height: 37
+        y: 615
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e2991e7f525f12620800000000000000
-      internalID: 2747746791094065454
+      spriteID: 
+      internalID: 2000005
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_11
+      name: "\xCA"
+      rect:
+        serializedVersion: 2
+        x: 319.5
+        y: 615
+        width: 319.5
+        height: 307.5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 
+      internalID: 2000006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\xCD"
+      rect:
+        serializedVersion: 2
+        x: 639
+        y: 615
+        width: 319.5
+        height: 307.5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 
+      internalID: 2000007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\xD3"
+      rect:
+        serializedVersion: 2
+        x: 958.5
+        y: 615
+        width: 319.5
+        height: 307.5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 
+      internalID: 2000008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: "\xD4"
       rect:
         serializedVersion: 2
         x: 0
-        y: 564
-        width: 282
-        height: 321
+        y: 307.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83524a1d029697b30800000000000000
-      internalID: 4285572110096803128
+      spriteID: 
+      internalID: 2000009
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_12
+      name: "\xD5"
       rect:
         serializedVersion: 2
-        x: 323
-        y: 0
-        width: 347
-        height: 888
+        x: 319.5
+        y: 307.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 57d97fde870b9b010800000000000000
-      internalID: 1205188408733310325
+      spriteID: 
+      internalID: 2000010
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_13
+      name: "\xDA"
       rect:
         serializedVersion: 2
-        x: 643
-        y: 863
-        width: 13
-        height: 12
+        x: 639
+        y: 307.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 334b3745166926d00800000000000000
-      internalID: 964498614983570483
+      spriteID: 
+      internalID: 2000011
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_14
+      name: "\xDC"
       rect:
         serializedVersion: 2
-        x: 663
-        y: 153
-        width: 293
-        height: 728
+        x: 958.5
+        y: 307.5
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cfde959287bedd3d0800000000000000
-      internalID: -3180126860531339780
+      spriteID: 
+      internalID: 2000012
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_15
-      rect:
-        serializedVersion: 2
-        x: 946
-        y: 562
-        width: 311
-        height: 328
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: cc18572d487ec29b0800000000000000
-      internalID: -5103449720064998964
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_16
-      rect:
-        serializedVersion: 2
-        x: 685
-        y: 832
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2700b274b8fe59ae0800000000000000
-      internalID: -1543063915831033742
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_17
-      rect:
-        serializedVersion: 2
-        x: 687
-        y: 826
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f96d8fec765692b20800000000000000
-      internalID: 3110128514204489375
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_18
-      rect:
-        serializedVersion: 2
-        x: 679
-        y: 816
-        width: 7
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 97f862ba486de0e90800000000000000
-      internalID: -7057467700747530375
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_19
-      rect:
-        serializedVersion: 2
-        x: 307
-        y: 735
-        width: 12
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c1712edaeeb3569a0800000000000000
-      internalID: -6240515812346423524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_20
+      name: "\xC7"
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 315
-        height: 559
+        width: 319.5
+        height: 307.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a721da199cc42c7a0800000000000000
-      internalID: -6358435295277542790
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_21
-      rect:
-        serializedVersion: 2
-        x: 358
-        y: 488
-        width: 17
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8e19be114c1e0b610800000000000000
-      internalID: 1635054896965980648
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_22
-      rect:
-        serializedVersion: 2
-        x: 871
-        y: 0
-        width: 378
-        height: 562
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f35b4f426c4348030800000000000000
-      internalID: 3495977236374533439
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_23
-      rect:
-        serializedVersion: 2
-        x: 338
-        y: 225
-        width: 19
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e7bd24ecc3d324040800000000000000
-      internalID: 4630330698258111358
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_24
-      rect:
-        serializedVersion: 2
-        x: 356
-        y: 225
-        width: 7
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4726469596240d860800000000000000
-      internalID: 7552609595339072116
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_25
-      rect:
-        serializedVersion: 2
-        x: 321
-        y: 161
-        width: 8
-        height: 13
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d625f268732c18c80800000000000000
-      internalID: -8322157092673727891
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_26
-      rect:
-        serializedVersion: 2
-        x: 738
-        y: 47
-        width: 23
-        height: 28
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4df361dc812ca1320800000000000000
-      internalID: 2529547552497745876
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Sprite de letras acentuadas douradas_27
-      rect:
-        serializedVersion: 2
-        x: 338
-        y: 0
-        width: 31
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4b5cab9dbdabdb530800000000000000
-      internalID: 3872456708021994932
+      spriteID: 
+      internalID: 2000013
       vertices: []
       indices: 
       edges: []

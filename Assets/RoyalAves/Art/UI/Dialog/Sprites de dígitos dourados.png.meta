@@ -1,40 +1,37 @@
 fileFormatVersion: 2
-guid: fc76fb73089ed1c4bb6af85ffe0e63d1
+guid: 0d37e9566bff15e40809cc5043d09fd8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6502841329440378351
-    second: "Sprites de d\xEDgitos dourados_0"
+      213: 3000000
+    second: 0
   - first:
-      213: -6144771032884621497
-    second: "Sprites de d\xEDgitos dourados_1"
+      213: 3000001
+    second: 1
   - first:
-      213: -1138600456112036805
-    second: "Sprites de d\xEDgitos dourados_2"
+      213: 3000002
+    second: 2
   - first:
-      213: 4926827127484099628
-    second: "Sprites de d\xEDgitos dourados_3"
+      213: 3000003
+    second: 3
   - first:
-      213: 1209197249400225124
-    second: "Sprites de d\xEDgitos dourados_4"
+      213: 3000004
+    second: 4
   - first:
-      213: 8678887246751655599
-    second: "Sprites de d\xEDgitos dourados_5"
+      213: 3000005
+    second: 5
   - first:
-      213: 7209584381385966377
-    second: "Sprites de d\xEDgitos dourados_6"
+      213: 3000006
+    second: 6
   - first:
-      213: -7656824945971041991
-    second: "Sprites de d\xEDgitos dourados_7"
+      213: 3000007
+    second: 7
   - first:
-      213: 5332137743638734332
-    second: "Sprites de d\xEDgitos dourados_8"
+      213: 3000008
+    second: 8
   - first:
-      213: -6996572360823976202
-    second: "Sprites de d\xEDgitos dourados_9"
-  - first:
-      213: -248655158956432475
-    second: "Sprites de d\xEDgitos dourados_10"
+      213: 3000009
+    second: 9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -142,6 +139,32 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -158,243 +181,221 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_0"
+      name: 0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 418
-        width: 326
-        height: 355
+        x: 0
+        y: 396.5
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1123affa34441c5a0800000000000000
-      internalID: -6502841329440378351
+      spriteID: 
+      internalID: 3000000
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_1"
+      name: 1
       rect:
         serializedVersion: 2
-        x: 185
-        y: 415
-        width: 80
-        height: 6
+        x: 396.6
+        y: 396.5
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 74f4dce4d4369baa0800000000000000
-      internalID: -6144771032884621497
+      spriteID: 
+      internalID: 3000001
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_2"
+      name: 2
       rect:
         serializedVersion: 2
-        x: 449
-        y: 417
-        width: 336
-        height: 363
+        x: 793.2
+        y: 396.5
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b342850fae0e230f0800000000000000
-      internalID: -1138600456112036805
+      spriteID: 
+      internalID: 3000002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_3"
+      name: 3
       rect:
         serializedVersion: 2
-        x: 838
-        y: 418
-        width: 366
-        height: 361
+        x: 1189.8
+        y: 396.5
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2ca2734b2b9f5440800000000000000
-      internalID: 4926827127484099628
+      spriteID: 
+      internalID: 3000003
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_4"
+      name: 4
       rect:
         serializedVersion: 2
-        x: 1235
-        y: 403
-        width: 298
-        height: 376
+        x: 1586.4
+        y: 396.5
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 46d31e1ed7ee7c010800000000000000
-      internalID: 1209197249400225124
+      spriteID: 
+      internalID: 3000004
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_5"
+      name: 5
       rect:
         serializedVersion: 2
-        x: 1556
-        y: 345
-        width: 410
-        height: 433
+        x: 0
+        y: 0
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa6ec4cd7f9917870800000000000000
-      internalID: 8678887246751655599
+      spriteID: 
+      internalID: 3000005
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_6"
+      name: 6
       rect:
         serializedVersion: 2
-        x: 59
-        y: 23
-        width: 325
-        height: 368
+        x: 396.6
+        y: 0
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92307befbc69d0460800000000000000
-      internalID: 7209584381385966377
+      spriteID: 
+      internalID: 3000006
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_7"
+      name: 7
       rect:
         serializedVersion: 2
-        x: 421
-        y: 15
-        width: 346
-        height: 377
+        x: 793.2
+        y: 0
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 939eb0c774e7db590800000000000000
-      internalID: -7656824945971041991
+      spriteID: 
+      internalID: 3000007
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_8"
+      name: 8
       rect:
         serializedVersion: 2
-        x: 786
-        y: 27
-        width: 388
-        height: 364
+        x: 1189.8
+        y: 0
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf52a07e60f8ff940800000000000000
-      internalID: 5332137743638734332
+      spriteID: 
+      internalID: 3000008
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_9"
+      name: 9
       rect:
         serializedVersion: 2
-        x: 1213
-        y: 22
-        width: 320
-        height: 369
+        x: 1586.4
+        y: 0
+        width: 396.6
+        height: 396.5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6fe45cbd18e27ee90800000000000000
-      internalID: -6996572360823976202
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "Sprites de d\xEDgitos dourados_10"
-      rect:
-        serializedVersion: 2
-        x: 1572
-        y: 22
-        width: 364
-        height: 370
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5a365da43799c8cf0800000000000000
-      internalID: -248655158956432475
+      spriteID: 
+      internalID: 3000009
       vertices: []
       indices: 
       edges: []
