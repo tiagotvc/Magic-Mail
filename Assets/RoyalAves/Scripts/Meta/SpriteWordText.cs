@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace RoyalAves.Meta
 {
+    // ExecuteAlways: redraws in Edit Mode too, so a key change or a sprite font rebuild shows up in the
+    // Scene view right away instead of needing a Play to see it.
+    [ExecuteAlways]
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class SpriteWordText : MonoBehaviour
     {
@@ -16,6 +19,7 @@ namespace RoyalAves.Meta
         void Awake() => label = GetComponent<TextMeshProUGUI>();
 
         void OnEnable() => Refresh();
+        void OnValidate() => Refresh();
 
         /// Switches to a different word (e.g. the level title changing level) and redraws it right away.
         public void SetKey(string newKey)

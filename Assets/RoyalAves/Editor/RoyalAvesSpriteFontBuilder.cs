@@ -53,9 +53,47 @@ namespace RoyalAves.Editor
                 "OK");
         }
 
+        // Carteila.png is the 49-character sheet (A-Z, 0-9, accents) that replaced the original 3 separate
+        // sheets: one texture, no fallback chain needed. Rebuilds DialogoLetras.asset in place, so anything
+        // already pointing at it (LevelStartTitle, SpriteWordText, ...) picks up the new art without rewiring.
+        [MenuItem("Royal Aves/Criar fonte de diálogo (prancha única)")]
+        static void BuildDialogFontSingleSheet()
+        {
+            var sheet = AssetDatabase.LoadAssetAtPath<Texture2D>(DialogFolder + "Carteila.png");
+            if (sheet == null)
+            {
+                Debug.LogError("Royal Aves: " + DialogFolder + "Carteila.png não encontrada.");
+                return;
+            }
+
+            EnsureFolder(OutputFolder);
+            var asset = BuildFromTexture(sheet, OutputFolder + "DialogoLetras.asset");
+            if (asset == null) return;
+
+            // Drop the old fallback chain, if this asset was previously built from the 3-sheet setup.
+            if (asset.fallbackSpriteAssets != null && asset.fallbackSpriteAssets.Count > 0)
+            {
+                asset.fallbackSpriteAssets.Clear();
+                EditorUtility.SetDirty(asset);
+                AssetDatabase.SaveAssets();
+            }
+
+            Selection.activeObject = asset;
+            EditorUtility.DisplayDialog("Fonte de diálogo",
+                "Atualizado " + OutputFolder + "DialogoLetras.asset a partir de Carteila.png (49 caracteres, uma prancha só).",
+                "OK");
+        }
+
+        // CorreioMagico SDF (the body font every other label on screen uses) was sampled at 90 pt
+        // (Assets/RoyalAves/Fonts/CorreioMagico SDF.asset, m_PointSize: 90). TMP renders a sprite glyph's
+        // raw pixel metrics as if they were font units at THAT point size, so a 179 px letter cell came out
+        // ~2x too big and overlapping. Scaling each glyph to its sheet's own cell height keeps it matched
+        // to body text regardless of how big the source art is.
+        const float ReferencePointSize = 90f;
+
         /// Reusable: builds (or rebuilds, if it already exists at savePath) a Sprite Asset from any texture
         /// already sliced into named sub-sprites — not tied to this specific art style.
-        public static TMP_SpriteAsset BuildFromTexture(Texture2D source, string savePath)
+        public static TMP_SpriteAsset BuildFromTexture(Texture2D source, string savePath, float targetPointSize = ReferencePointSize)
         {
             var sprites = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(source)).OfType<Sprite>().ToArray();
             if (sprites.Length == 0)
@@ -88,13 +126,17 @@ namespace RoyalAves.Editor
             for (var i = 0; i < sprites.Length; i++)
             {
                 var sprite = sprites[i];
+                var glyphScale = sprite.rect.height > 0 ? targetPointSize / sprite.rect.height : 1f;
+                // Bearing anchors the glyph bottom-left at the pen position, matching Unity's own TMP
+                // Sprite Asset generator (TMP_SpriteAssetMenu.cs). Sprite.pivot is in PIXELS, not
+                // normalised 0-1 — using it here put a ~half-cell offset on every glyph, stacking each
+                // character almost on top of the last instead of advancing the pen sideways.
                 var glyph = new TMP_SpriteGlyph
                 {
                     index = (uint)i,
-                    metrics = new GlyphMetrics(sprite.rect.width, sprite.rect.height, -sprite.pivot.x,
-                        sprite.rect.height - sprite.pivot.y, sprite.rect.width),
+                    metrics = new GlyphMetrics(sprite.rect.width, sprite.rect.height, 0, sprite.rect.height, sprite.rect.width),
                     glyphRect = new GlyphRect(sprite.rect),
-                    scale = 1f,
+                    scale = glyphScale,
                     sprite = sprite,
                 };
                 glyphTable.Add(glyph);
