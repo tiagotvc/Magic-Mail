@@ -12,10 +12,11 @@ namespace RoyalAves.Effects
         const float ExitOvershoot = 0.8f;
         const float TrailTail = 0.5f; // keeps the effect object alive long enough for the last particle to fade
         // Multiplies the flame particles' size. Their Flame object is scaled by RestScale, which shrinks them a lot.
-        const float TrailSize = 2.5f;
-        // Same speed (world units/second) and minimum time as the helix (MarmaladeFly), so both specials move alike.
-        const float FlightSpeed = 5f;
-        const float MinFlightTime = 0.5f;
+        const float TrailSize = 4f;
+        // World units/second the rocket halves travel. Faster than the helix on purpose - the rocket should feel
+        // like it's darting across the row/column, not cruising.
+        const float FlightSpeed = 9f;
+        const float MinFlightTime = 0.25f;
 
         // Every board item is scaled 0.42 at the root (Square.cs) times ~0.88 on its own resting sprite (set per
         // item this session) - these halves aren't spawned through that pipeline, so they must apply it themselves
@@ -105,10 +106,14 @@ namespace RoyalAves.Effects
             }
         }
 
-        static void BuildHalf(Transform parent, Sprite sprite, Material flameMat, Vector3 from, Vector3 to,
+        const float HalfPixelsPerUnit = 128f; // matches capsule-half-left/right.png's import setting
+
+        static void BuildHalf(Transform parent, Texture2D texture, Material flameMat, Vector3 from, Vector3 to,
             bool horizontal, int sortOrder, float duration)
         {
-            if (sprite == null) return;
+            if (texture == null) return;
+            var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
+                new Vector2(0.5f, 0.5f), HalfPixelsPerUnit);
 
             var half = new GameObject("RocketHalf");
             half.transform.SetParent(parent, true);

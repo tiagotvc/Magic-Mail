@@ -1662,6 +1662,15 @@ namespace SweetSugar.Scripts.Core
             StripedShowPass(obj, horrizontal, lineSquares, null);
         }
 
+        // Correio Mágico: no foguete horizontal, cada coluna da linha perde só 1 peça - assim que ela estoura, a
+        // gravidade (FallingDown -> WaitWhileDestroying) já deixa a peça de cima cair, porque nesse intervalo pode
+        // não haver mais nenhuma peça com "destroying" true pra essa espera perceber (o buraco daquela coluna já
+        // terminou de estourar antes do próximo da fila começar). No vertical isso não chama atenção porque a coluna
+        // inteira vai embora em sequência e a queda já leva mais tempo (distância maior). Esse tempo extra trava a
+        // queda do tabuleiro inteiro (mesmo mecanismo do GameBlocker) até a linha toda terminar de estourar + uma
+        // pausa, pra dar tempo de ver a linha vazia antes de cair.
+        const float HorizontalRowFallHold = 0.25f;
+
         // Correio Mágico: como StripedShow, mas chama onPassed uma vez por quadrado da linha/coluna no instante em que
         // a metade do foguete que voa por ele chega ali - assim as peças estouram conforme o foguete passa, e não tudo
         // de uma vez. Sem efeito de foguete, onPassed roda na hora pra todos os quadrados. Devolve quanto tempo
@@ -1675,7 +1684,15 @@ namespace SweetSugar.Scripts.Core
                 var flight = RocketSplitEffect.Play(obj, horrizontal, ordered.First().transform.position,
                     ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]));
                 if (flight > 0f)
+                {
+                    if (horrizontal)
+                    {
+                        var fallHold = new GameObject("RocketRowFallHold");
+                        fallHold.AddComponent<GameBlocker>();
+                        Destroy(fallHold, flight + HorizontalRowFallHold);
+                    }
                     return flight;
+                }
             }
 
             if (onPassed != null)
@@ -1701,9 +1718,12 @@ namespace SweetSugar.Scripts.Core
             var square = target.square;
             var squares = horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col);
             // Correio Mágico: cada peça só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
+            // Captura a peça de cada quadrado já aqui (antes do foguete voar) - ver o comentário equivalente em
+            // ItemStriped.DestroyCor sobre a gravidade puxar peças pendentes pro buraco antes da vez delas.
+            var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
             var wait = StripedShowPass(target.gameObject, horizontal, squares, sq =>
             {
-                if (sq.Item != null) sq.Item.DestroyItem(true);
+                if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
                 sq.DestroyBlock();
             });
             if (squares.Any(i => i.type == SquareTypes.JellyBlock))

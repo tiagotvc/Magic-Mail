@@ -167,7 +167,8 @@ MonoBehaviour:
   explosion: {fileID: 8300000, guid: cbf3cd2064d30e34cadb56c84ff067ef, type: 3}
   explosion2: {fileID: 8300000, guid: cbf3cd2064d30e34cadb56c84ff067ef, type: 3}
   getStarIngr: {fileID: 8300000, guid: 4111cae201742ab42a8f8c7232b7f2b8, type: 3}
-  strippedExplosion: {fileID: 8300000, guid: efcea8d4d809e5a49a88cb6bcd22e0ef, type: 3}
+  strippedExplosion: {fileID: 8300000, guid: 788d1af0906f4214ca767205281ef2cc, type: 3}
+  helixLaunch: {fileID: 8300000, guid: 65800e8cb57b482b9df2ef57c0f792ea, type: 3}
   complete:
   - {fileID: 8300000, guid: fb6d43cb1b878cd478450f5f71ca3ab2, type: 3}
   - {fileID: 8300000, guid: a3fd88a2b1a6b8a4dba7aabab447f7d7, type: 3}
@@ -177,5 +178,5 @@ MonoBehaviour:
   appearStipedColorBomb: {fileID: 8300000, guid: 7eec7fef5401ff446896db206f64ce5a, type: 3}
   appearPackage: {fileID: 8300000, guid: 8774a50f1f3cbc24eb4149fd8e4a3237, type: 3}
   destroyPackage: {fileID: 8300000, guid: ff50ce15df285d8439647ee563a30b94, type: 3}
-  colorBombExpl: {fileID: 8300000, guid: 53a82dadcae8aee489a59de08c6fcdf7, type: 3}
+  colorBombExpl: {fileID: 8300000, guid: f9783dc3c62c4e6aa91673bf24208430, type: 3}
   audioMixer: {fileID: 0}

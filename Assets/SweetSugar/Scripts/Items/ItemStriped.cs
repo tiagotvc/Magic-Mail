@@ -55,11 +55,16 @@ namespace SweetSugar.Scripts.Items
             SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.strippedExplosion);
             var sqL = GetSquaresInRow(square, itemMain.currentType);
             // Correio Mágico: cada peça da linha só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
+            // A peça de cada quadrado é capturada já aqui, antes do foguete começar a voar - senão, enquanto uma
+            // célula já destruída espera sua vez na fila, a gravidade pode puxar a peça vizinha pra preencher o
+            // buraco, e quando o callback daquela célula finalmente dispara "sq.Item" já virou null (a peça
+            // escapou pro quadrado vazio em vez de explodir).
+            var itemsAtCell = sqL.ToDictionary(sq => sq, sq => sq.Item);
             var wait = LevelManager.THIS.StripedShowPass(gameObject, item1.currentType == ItemsTypes.HORIZONTAL_STRIPED, sqL,
                 sq =>
                 {
-                    if (sq.Item != null)
-                        sq.Item.DestroyItem(true, GetItem, this);
+                    if (itemsAtCell[sq] != null)
+                        itemsAtCell[sq].DestroyItem(true, GetItem, this);
                     sq.DestroyBlock();
                 });
             square.DestroyBlock();

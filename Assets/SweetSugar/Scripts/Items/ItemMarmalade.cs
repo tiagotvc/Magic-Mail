@@ -47,6 +47,7 @@ namespace SweetSugar.Scripts.Items
             if(!noMarmaladeLaunch && !destroyStarted)
             {
                 destroyStarted = true;
+                SoundBase.Instance?.PlayOneShot(SoundBase.Instance.helixLaunch);
                 CreateMarmaladeWithType(switchItemType);
             }
             if (switchItemType == ItemsTypes.MARMALADE)
