@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 63809c434dde9f6489950666f7c974b8
+guid: 1795973616be48c38a3712cd8f219ff3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6732498961687934897
-    second: rocket-horizontal_0
+      213: 482649685539699531
+    second: capsule-half-left_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -154,23 +154,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rocket-horizontal_0
+      name: capsule-half-left_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 58
-        width: 246
-        height: 139
+        x: 0
+        y: 0
+        width: 103
+        height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f4887e95ddb5192a0800000000000000
-      internalID: -6732498961687934897
+      spriteID: 0000000000000000556a9a2979785bb6
+      internalID: 482649685539699531
       vertices: []
       indices: 
       edges: []
@@ -179,7 +179,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 00000000000000005e2aca3f82eaaf28
     internalID: 0
     vertices: []
     indices: 

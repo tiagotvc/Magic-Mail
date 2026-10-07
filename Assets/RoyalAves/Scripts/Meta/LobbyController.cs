@@ -104,7 +104,7 @@ namespace RoyalAves.Meta
 
         [Header("Diagnóstico")]
         [Tooltip("Escreve no Console cada toque (o que está sob o dedo) e cada mudança de estado do jogo.")]
-        [SerializeField] bool logDiagnostics = true;
+        [SerializeField] bool logDiagnostics = false;
 
         static readonly string[] NavTitles = { "Eventos", "Ranking", "Agência", "Equipes", "Coleção" };
         const int HomeTab = 2;

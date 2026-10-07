@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Effects;
 using RoyalAves.Meta;
 using SweetSugar.Scriptable.Rewards;
 using SweetSugar.Scripts.AdsEvents;
@@ -1092,7 +1093,12 @@ namespace SweetSugar.Scripts.Core
             if (gameStatus != GameState.Playing && gameStatus != GameState.Tutorial)
                 return;
             if (EventSystem.current.IsPointerOverGameObject(-1) && gameStatus == GameState.Playing)
+            {
+#if UNITY_EDITOR
+                LogBlockingUIObject();
+#endif
                 return;
+            }
 
             var hit = Physics2D.OverlapPoint(pos,
                 1 << LayerMask.NameToLayer("Item"));
@@ -1209,6 +1215,19 @@ namespace SweetSugar.Scripts.Core
             }
             item.DestroyItem(true);
         }
+
+#if UNITY_EDITOR
+        // Diagnostic only: identifies which UI object EventSystem.IsPointerOverGameObject saw under the tap,
+        // for tracking down taps on the board that silently do nothing because the game thinks a UI element ate them.
+        static void LogBlockingUIObject()
+        {
+            var hits = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, hits);
+            Debug.Log(hits.Count == 0
+                ? "[MagicMail] toque no tabuleiro ignorado: IsPointerOverGameObject=true mas RaycastAll não achou nada (estado preso do EventSystem)"
+                : "[MagicMail] toque no tabuleiro ignorado, bloqueado por: " + string.Join(" | ", hits.Select(h => h.gameObject.name)));
+        }
+#endif
 
         void MouseDownRight(Vector2 pos)
         {
@@ -1376,9 +1395,9 @@ namespace SweetSugar.Scripts.Core
 
 
         //Find matches with delay
-        public IEnumerator FindMatchDelay()
+        public IEnumerator FindMatchDelay(float extraDelay = 0f)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.2f + extraDelay);
             THIS.FindMatches();
         }
 
@@ -1632,6 +1651,36 @@ namespace SweetSugar.Scripts.Core
         //striped effect
         public void StripedShow(GameObject obj, bool horrizontal)
         {
+            // Correio Mágico: o foguete se parte ao meio e cada metade voa pra uma ponta da linha/coluna com um
+            // rastro de chama, em vez de só sumir. Só dispara quando dá pra achar a peça e sua posição no tabuleiro
+            // (alguns dos chamadores de StripedShow passam o quadrado, não o item) - nesse caso sobra o feixe
+            // original do Sweet Sugar como alternativa, pra sempre ter algum aviso visual.
+            var rocketItem = obj.GetComponent<Item>();
+            var lineSquares = rocketItem != null && rocketItem.square != null
+                ? (horrizontal ? GetRowSquare(rocketItem.square.row) : GetColumnSquare(rocketItem.square.col))
+                : new List<Square>();
+            StripedShowPass(obj, horrizontal, lineSquares, null);
+        }
+
+        // Correio Mágico: como StripedShow, mas chama onPassed uma vez por quadrado da linha/coluna no instante em que
+        // a metade do foguete que voa por ele chega ali - assim as peças estouram conforme o foguete passa, e não tudo
+        // de uma vez. Sem efeito de foguete, onPassed roda na hora pra todos os quadrados. Devolve quanto tempo
+        // levou até o último quadrado ser passado (0 quando não houve efeito de foguete).
+        public float StripedShowPass(GameObject obj, bool horrizontal, List<Square> line, Action<Square> onPassed)
+        {
+            if (line.Count > 1)
+            {
+                var ordered = line.OrderBy(s => horrizontal ? s.transform.position.x : s.transform.position.y).ToList();
+                var cells = line.Select(s => s.transform.position).ToList();
+                var flight = RocketSplitEffect.Play(obj, horrizontal, ordered.First().transform.position,
+                    ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]));
+                if (flight > 0f)
+                    return flight;
+            }
+
+            if (onPassed != null)
+                line.ForEach(onPassed);
+
             if (stripesEffect != null)
             {
                 var effect = Instantiate(stripesEffect, obj.transform.position, Quaternion.identity);
@@ -1639,6 +1688,7 @@ namespace SweetSugar.Scripts.Core
                     effect.transform.Rotate(Vector3.back, 90);
                 Destroy(effect, 1);
             }
+            return 0f;
         }
 
         // Correio Mágico: flecha (linha) e canhão (coluna) - reaproveita o efeito visual e as listas de
@@ -1648,17 +1698,18 @@ namespace SweetSugar.Scripts.Core
         {
             DragBlocked = true;
             SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
-            StripedShow(target.gameObject, horizontal);
             var square = target.square;
-            var items = horizontal ? GetRow(square) : GetColumn(square);
-            foreach (var item in items)
-                if (item != null) item.DestroyItem(true);
             var squares = horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col);
+            // Correio Mágico: cada peça só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
+            var wait = StripedShowPass(target.gameObject, horizontal, squares, sq =>
+            {
+                if (sq.Item != null) sq.Item.DestroyItem(true);
+                sq.DestroyBlock();
+            });
             if (squares.Any(i => i.type == SquareTypes.JellyBlock))
                 levelData.GetTargetObject().CheckSquares(squares.ToArray());
-            squares.ForEach(i => i.DestroyBlock());
             ActivatedBoost = null;
-            StartCoroutine(FindMatchDelay());
+            StartCoroutine(FindMatchDelay(wait));
         }
 
         // Correio Mágico: chapéu - embaralha as peças já existentes no tabuleiro, trocando-as de lugar (de

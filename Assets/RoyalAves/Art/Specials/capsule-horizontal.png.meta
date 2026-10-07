@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 87d476533fc2ac949afe5773768ea32c
+guid: 61a71da83e9c4d949e5b0bf14822f8f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 681075910025022618
-    second: rocket-vertical_0
+      213: 278937709380494093
+    second: capsule-horizontal_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -124,27 +124,53 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rocket-vertical_0
+      name: capsule-horizontal_0
       rect:
         serializedVersion: 2
-        x: 40
-        y: 17
-        width: 127
-        height: 246
+        x: 0
+        y: 0
+        width: 206
+        height: 155
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a9c0e128eeaa37900800000000000000
-      internalID: 681075910025022618
+      spriteID: 000000000000000013a834c905961399
+      internalID: 278937709380494093
       vertices: []
       indices: 
       edges: []
@@ -153,7 +179,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 00000000000000006c2b8041f8dd02e7
     internalID: 0
     vertices: []
     indices: 

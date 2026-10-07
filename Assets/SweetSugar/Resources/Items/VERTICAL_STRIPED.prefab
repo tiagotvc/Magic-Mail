@@ -108,22 +108,22 @@ MonoBehaviour:
   Sprites:
   - level: 0
     Sprites:
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
   - level: 0
     Sprites:
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
-    - {fileID: 21300000, guid: f785523aaaccd594a962a16a8b9be83a, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
+    - {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
   randomEditorSprite: {fileID: 0}
   directSpriteRenderer: {fileID: 0}
   RandomColorOnAwake: 1
@@ -324,13 +324,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398036439964186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.88, y: 0.88, z: 1.0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4164735158195196}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &212799017191698416
 SpriteRenderer:
   serializedVersion: 3
@@ -380,7 +380,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 2
-  m_Sprite: {fileID: 21300000, guid: 87d476533fc2ac949afe5773768ea32c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 61a71da83e9c4d949e5b0bf14822f8f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

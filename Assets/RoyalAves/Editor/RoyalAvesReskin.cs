@@ -70,7 +70,9 @@ namespace RoyalAves.EditorTools
         {
             EnsureImportSettings();
             var pieces = PieceNames.Select(n => LoadSprite(ArtRoot + "Pieces/" + n)).ToArray();
-            var bomb = LoadSprite(ArtRoot + "Specials/bomb");
+            // The package's Animator always shows its "Idle" state's sprite (dinamite-idle), so the
+            // reskin must point everywhere else at the same art, not the older bomb.png.
+            var bomb = LoadSprite(ArtRoot + "Specials/dinamite-idle");
             var map = BuildSpriteMap(pieces, bomb);
 
             var log = new StringBuilder("Correio Mágico aplicado.\n\n");
@@ -99,8 +101,11 @@ namespace RoyalAves.EditorTools
             // The 6 Sweet Sugar candy colours become the first 6 pieces; FitColors adds the 7th.
             MapColors(map, "Item", i => pieces[Mathf.Min(i, PieceCount - 1)]);
             // Correio Mágico bonus pieces have no colour: every colour of a bonus shows the same sprite.
-            MapColors(map, "HORIZONTAL_STRIPED", _ => LoadSprite(ArtRoot + "Specials/rocket-horizontal"));
-            MapColors(map, "VERTICAL_STRIPED", _ => LoadSprite(ArtRoot + "Specials/rocket"));
+            // "Rocket" (HORIZONTAL_STRIPED/VERTICAL_STRIPED) art is the emerald capsule, rotated level from its
+            // original diagonal reference art - see RocketSplitEffect for the matching split-and-fly halves.
+            MapColors(map, "HORIZONTAL_STRIPED", _ => LoadSprite(ArtRoot + "Specials/capsule-horizontal"));
+            // Same artwork as HORIZONTAL_STRIPED, rotated 90° on the prefab's transform.
+            MapColors(map, "VERTICAL_STRIPED", _ => LoadSprite(ArtRoot + "Specials/capsule-horizontal"));
             MapColors(map, "MARMALADE", _ => LoadSprite(ArtRoot + "Specials/plane"));
             MapColors(map, "MULTICOLOR", _ => LoadSprite(ArtRoot + "Specials/orb"));
             MapSprite(map, OldItemArt + "game_item_g", bomb);                                          // package wrapper

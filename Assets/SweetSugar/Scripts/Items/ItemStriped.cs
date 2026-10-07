@@ -53,22 +53,19 @@ namespace SweetSugar.Scripts.Items
             itemMain = item1;
             var square = itemMain.square;
             SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.strippedExplosion);
-            LevelManager.THIS.StripedShow(gameObject, item1.currentType == ItemsTypes.HORIZONTAL_STRIPED);
-            var itemsList = GetList(square);
-            foreach (var item in itemsList)
-            {
-                if (item != null)
-                {
-                    item.DestroyItem(true, GetItem, this);
-                }
-            }
-
             var sqL = GetSquaresInRow(square, itemMain.currentType);
+            // Correio Mágico: cada peça da linha só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
+            var wait = LevelManager.THIS.StripedShowPass(gameObject, item1.currentType == ItemsTypes.HORIZONTAL_STRIPED, sqL,
+                sq =>
+                {
+                    if (sq.Item != null)
+                        sq.Item.DestroyItem(true, GetItem, this);
+                    sq.DestroyBlock();
+                });
             square.DestroyBlock();
             if (sqL.Any(i => i.type == SquareTypes.JellyBlock))
                 LevelManager.THIS.levelData.GetTargetObject().CheckSquares(sqL.ToArray());
-            sqL.ToList().ForEach(i => i.DestroyBlock());
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.2f + wait);
             DestroyBehaviour();
         }
 
@@ -82,13 +79,6 @@ namespace SweetSugar.Scripts.Items
         public Item GetParentItem()
         {
             return transform.GetComponentInParent<Item>();
-        }
-
-        private List<Item> GetList(Square square)
-        {
-            if (itemMain.currentType == ItemsTypes.HORIZONTAL_STRIPED)
-                return LevelManager.THIS.GetRow(square);
-            return LevelManager.THIS.GetColumn(square);
         }
 
         public override void Check(Item item1, Item item2)

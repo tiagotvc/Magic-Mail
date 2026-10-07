@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Effects;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.Effects;
@@ -38,9 +39,19 @@ namespace SweetSugar.Scripts.Items
 
         private bool activated;
 
+        // The fast spin while the bomb is active (RoyalAvesColorBombSpinBuilder fills this with the 12 frames of the
+        // rotation sheet). The icon renderer is cached because Item's own renderer field is private.
+        public Sprite[] SpinFrames;
+        const float SpinFrameTime = 0.018f;
+        SpriteRenderer iconRenderer;
+        Coroutine spinRoutine;
+
         public override void InitItem()
         {
             base.InitItem();
+            EndSpin();
+            // The visible sprite is on the child "Sprite", not on this root GameObject.
+            if (iconRenderer == null) iconRenderer = GetComponentInChildren<SpriteRenderer>();
             activated = false;
         }
 
@@ -51,6 +62,7 @@ namespace SweetSugar.Scripts.Items
             if (item2 != null && ((!item2.Combinable && item2.currentType != ItemsTypes.MULTICOLOR)))
                 return;
             GetParentItem().destroying = true;
+            BeginSpin();
             if (item2.currentType == ItemsTypes.NONE)
             {
                 DestroyColor(item2.color);
@@ -70,7 +82,7 @@ namespace SweetSugar.Scripts.Items
             else if (item2.currentType == ItemsTypes.MARMALADE)
             {
                 GetParentItem().destroying = false;
-                LevelManager.THIS.StartCoroutine(SetTypeByColor(item2));
+                LevelManager.THIS.StartCoroutine(MakeMarmaladesByColor(item2));
                 activated = true;
             }
             else if (item2.currentType == ItemsTypes.MULTICOLOR)
@@ -80,6 +92,7 @@ namespace SweetSugar.Scripts.Items
                 {
                     var list = new[] { item1, item2 };
                     list.First(i => i != GetParentItem()).SmoothDestroy();
+                    EndSpin();
                     list.First(i => i == GetParentItem()).SmoothDestroy();
                 });
                 activated = true;
@@ -91,6 +104,7 @@ namespace SweetSugar.Scripts.Items
             if(activated) return;
             if (item2 == null)
             {
+                BeginSpin();
                 if (GetParentItem().square.type == SquareTypes.WireBlock)
                 {
                     GetParentItem().square.DestroyBlock();
@@ -156,10 +170,69 @@ namespace SweetSugar.Scripts.Items
 
             yield return new WaitForSeconds(0.4f);
             LevelManager.THIS.FindMatches();
+            EndSpin();
             SmoothDestroy();
         }
 
         const float ExplodeStepDelay = 0.3f;
+
+        // With a paper plane/propeller: the beam makes every piece of the colour into one, one by one, each with the
+        // neon outline. Only when all of them are ready do they take off, one at a time, in the order they were made.
+        private IEnumerator MakeMarmaladesByColor(Item item2)
+        {
+            var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
+                .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            item2.DestroyItem();
+
+            var made = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.NextType = ItemsTypes.MARMALADE;
+                Item created = null;
+                // Flagged as destroying (so the matcher can't grab it) and noMarmaladeLaunch (so Destroy() itself
+                // refuses to launch it, no matter what calls it) from the moment it exists, until its turn below.
+                item.ChangeType(newItem =>
+                {
+                    created = newItem;
+                    newItem.destroying = true;
+                    var createdPlane = newItem.GetComponent<ItemMarmalade>();
+                    if (createdPlane != null) createdPlane.noMarmaladeLaunch = true;
+                }, false);
+                CreateLightning(transform.position, item.transform.position);
+                if (created == null) continue;
+                made.Add(created);
+                highlights.Add(MakeHighlight(created));
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All made and outlined: a short pause, then they take off one by one, in creation order.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var plane in made)
+            {
+                if (plane == null || !plane.gameObject.activeSelf) continue;
+                plane.destroying = false;
+                var marmalade = plane.GetComponent<ItemMarmalade>();
+                if (marmalade != null)
+                {
+                    marmalade.noMarmaladeLaunch = false;
+                    marmalade.Destroy(plane, null);
+                }
+                else plane.DestroyItem(true, true, this, true);
+                yield return new WaitForSeconds(ExplodeStepDelay);
+            }
+
+            yield return new WaitForSeconds(0.4f);
+            LevelManager.THIS.FindMatches();
+            EndSpin();
+            SmoothDestroy();
+        }
 
         private IEnumerator SetTypeByColor(Item item2)
         {
@@ -237,6 +310,7 @@ namespace SweetSugar.Scripts.Items
 
             yield return new WaitForSeconds(0.2f);
             LevelManager.THIS.FindMatches();
+            EndSpin();
             SmoothDestroy();
         }
 
@@ -361,8 +435,36 @@ namespace SweetSugar.Scripts.Items
         private void CreateLightning(Vector3 pos1, Vector3 pos2)
         {
             var go = Instantiate(LightningPrefab, Vector3.zero, Quaternion.identity);
+            // Correio Mágico: regra geral dos power-ups (ver RoyalAves.Effects.PowerUpEffectOrder) - o raio do
+            // globo multicolorido tem que ficar acima do efeito de match comum, não empatado com ele.
+            PowerUpEffectOrder.Raise(go);
             var lightning = go.GetComponent<Lightning>();
             lightning.SetLight(pos1, pos2);
+        }
+
+        // The bomb spins fast for as long as it's active (from the moment it's touched until it explodes). Started once
+        // per activation; EndSpin runs right before the bomb destroys itself, on every path that does so.
+        private void BeginSpin()
+        {
+            if (spinRoutine != null || SpinFrames == null || SpinFrames.Length == 0) return;
+            spinRoutine = StartCoroutine(SpinCor());
+        }
+
+        private void EndSpin()
+        {
+            if (spinRoutine != null) StopCoroutine(spinRoutine);
+            spinRoutine = null;
+        }
+
+        private IEnumerator SpinCor()
+        {
+            var i = 0;
+            while (true)
+            {
+                if (iconRenderer != null) iconRenderer.sprite = SpinFrames[i % SpinFrames.Length];
+                i++;
+                yield return new WaitForSeconds(SpinFrameTime);
+            }
         }
 
         #region DoubleMulitcolor

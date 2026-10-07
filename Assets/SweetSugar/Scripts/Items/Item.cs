@@ -585,13 +585,18 @@ namespace SweetSugar.Scripts.Items
                 // Two time bombs with no matches
                 bool invalidTimeBombSwap = ContainsBoth(ItemsTypes.TimeBomb, ItemsTypes.TimeBomb) && !combines2.Any();
 
-                // Special items that cannot be combined
+                // Special items that cannot be combined. Magic Mail: a plain candy (NONE) is excluded here even when
+                // it isn't itself CombinableWithBonus — that flag is about two specials combining with each other,
+                // not about a special landing on an ordinary candy. Reverting that swap was the other half of the
+                // "moving a special always sets it off" fix above (IsSwitchBonus); this one used a different flag,
+                // so it kept reverting the swap before IsLoneBonus below ever got a chance to fire the piece.
                 bool nonCombinableSpecialItems = !combines2.Any() &&
                     list.Any(i => i.currentType != ItemsTypes.NONE &&
                                  i.currentType != ItemsTypes.TimeBomb &&
                                  i.currentType != ItemsTypes.SPIRAL &&
                                  i.currentType != ItemsTypes.INGREDIENT) &&
-                    list.Any(i => !i.CombinableWithBonus);
+                    list.Any(i => !i.CombinableWithBonus) &&
+                    !list.Any(i => i.currentType == ItemsTypes.NONE);
 
                 // Determine if we should revert the swap
                 shouldRevertSwap = (noValidMatches && invalidItemCombination) ||

@@ -67,17 +67,21 @@ namespace SweetSugar.Scripts.Items
 
         private void CreateMarmalade(ItemsTypes itemsType)
         {
-            foreach (var marmalade in marmalades)
+            // Only duplicates (both propellers take off) when combined with another paper plane; a simple activation
+            // sends just the one piece already shown at rest.
+            var launching = itemsType == ItemsTypes.MARMALADE ? marmalades : new[] { marmalades[0] };
+            for (var i = 0; i < launching.Length; i++)
             {
+                var marmalade = launching[i];
+                marmalade.gameObject.SetActive(true);
                 marmalade.targets = GetParentItem().itemForEditor.TargetMarmaladePositions;
                 if (itemsType != ItemsTypes.MARMALADE && itemsType != ItemsTypes.MULTICOLOR && itemsType != ItemsTypes.INGREDIENT)
                     marmalade.nextItemType = itemsType;
                 if (GetParentItem().square?.type == SquareTypes.JellyBlock || LevelManager.THIS.lastSwitchedItem?.square?.type == SquareTypes.JellyBlock)
                     marmalade.setJelly = true;
-                if (UnityEngine.Random.value>=0.5f)
-                    marmalade.SetDirection(Vector2.left);
-                else
-                    marmalade.SetDirection(Vector2.right);
+                // With two, each one diverges to its own side; alone, it picks a random side.
+                var toLeft = launching.Length > 1 ? i == 0 : UnityEngine.Random.value >= 0.5f;
+                marmalade.SetDirection(toLeft ? Vector2.left : Vector2.right);
                 marmalade.StartFly();
             }
 
@@ -100,7 +104,9 @@ namespace SweetSugar.Scripts.Items
         {
             destroyStarted = false;
             noMarmaladeLaunch = false;
-            marmalades.ForEachY(i => i.gameObject.SetActive(true));
+            // Only one piece shows at rest; CreateMarmalade reveals the second one when it duplicates and takes off.
+            for (var i = 0; i < marmalades.Length; i++)
+                marmalades[i].gameObject.SetActive(i == 0);
             base.InitItem();
         }
 

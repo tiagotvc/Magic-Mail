@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: c65ff628518816e4ca80c110360010f0
+guid: 92381ed11a0d4d3f9d49927ddf61ecf3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2613247888821195678
-    second: bomb_0
-  - first:
-      213: -8469204400738329757
-    second: bomb_1
-  - first:
-      213: 8114985772114671235
-    second: bomb_2
+      213: 2174215720177065382
+    second: flame-particle_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -160,67 +154,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bomb_0
+      name: flame-particle_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 5
-        width: 191
-        height: 238
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 26ce5c404e0ebbbd0800000000000000
-      internalID: -2613247888821195678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_1
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 228
-        width: 21
-        height: 23
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 36b11d32877577a80800000000000000
-      internalID: -8469204400738329757
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bomb_2
-      rect:
-        serializedVersion: 2
-        x: 208
-        y: 201
-        width: 24
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3867e3090983e9070800000000000000
-      internalID: 8114985772114671235
+      spriteID: c5974c18389982110800000000000000
+      internalID: 2174215720177065382
       vertices: []
       indices: 
       edges: []

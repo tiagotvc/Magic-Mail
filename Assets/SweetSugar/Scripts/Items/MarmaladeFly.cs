@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Effects;
 using SweetSugar.LeanTween.Framework;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
@@ -48,12 +49,33 @@ namespace SweetSugar.Scripts.Items
         private ItemMarmalade thisItem;
         public IMarmaladeTargetable TargetItem;
 
+        // The propeller blur while flying (RoyalAvesPropellerSpinBuilder fills this with the blurred frames of the
+        // rotation sheet). Cycling the sprite looks like just the blades spinning; rotating the whole object would
+        // spin the body too, which the art isn't drawn for.
+        public Sprite[] SpinFrames;
+        const float SpinFrameTime = 0.01f;
+        // How long it sits still, propeller already spinning, before taking off.
+        const float WindUpTime = 0.35f;
+        // Flight speed (world units/second) for the direct arc to the target, clamped so a close target isn't instant
+        // and a far one doesn't take forever.
+        const float FlightSpeed = 5f;
+        const float MinFlightTime = 0.5f;
+        const float MaxFlightTime = 1.4f;
+        Coroutine spinRoutine;
+        Vector2 launchDirection;
+        int flightTweenId = -1;
+
         public void StartFly()
         {
             particles.SetActive(true);
-            GetComponent<SpriteRenderer>().sortingLayerName = "ItemMask";
-            GetComponent<SpriteRenderer>().sortingOrder = 10;
+            // Correio Mágico: "Item mask" (a camada real cadastrada no projeto tem espaço no nome - "ItemMask" não
+            // existia, então a hélice nunca saía da camada "Default" e ficava empatada com os efeitos de match
+            // comuns). Ver RoyalAves.Effects.PowerUpEffectOrder pra regra geral dos power-ups.
+            GetComponent<SpriteRenderer>().sortingLayerName = PowerUpEffectOrder.SortingLayer;
+            GetComponent<SpriteRenderer>().sortingOrder = PowerUpEffectOrder.Value;
+            PowerUpEffectOrder.Raise(particles);
             canBeStarted = true;
+            if (spinRoutine == null && SpinFrames != null && SpinFrames.Length > 0) spinRoutine = StartCoroutine(SpinCor());
             if (targets != null)
             {
                 foreach (var target in targets)
@@ -94,6 +116,7 @@ namespace SweetSugar.Scripts.Items
             TargetItem = null;
         
             StopAllCoroutines();
+            spinRoutine = null;
             GetComponent<SpriteRenderer>().sortingLayerName = "Default";
             GetComponent<SpriteRenderer>().sortingOrder = originSortingOrder;
             transform.localPosition = pos;
@@ -153,43 +176,111 @@ namespace SweetSugar.Scripts.Items
         internal void SetDirection(Vector2 v)
         {
             Random.InitState(GetHashCode());
-            var seq = LeanTween.Framework.LeanTween.sequence();
-            seq.append(LeanTween.Framework.LeanTween.move(gameObject, transform.position - startDirection, animationTime ));
-            seq.append(LeanTween.Framework.LeanTween.move(gameObject, LevelManager.THIS.field.GetPosition() + Random.insideUnitCircle*3 , animationTime).setOnComplete(() =>
-            {
-                if(gameObject.activeSelf)
-                    StartCoroutine(FindTargetLoop());}));
-            LeanTween.Framework.LeanTween.scale(gameObject, Vector3.one * 1.5f, animationTime );
-            LeanTween.Framework.LeanTween.rotateAround(gameObject, Vector3.forward, 360, animationTime);
+            launchDirection = v;
+            LeanTween.Framework.LeanTween.scale(gameObject, Vector3.one * 1.5f, animationTime).setDelay(WindUpTime).setEase(LeanTweenType.easeOutBack);
+            // A gentle rock, like a helicopter hovering, on top of the propeller blur (SpinCor, already spinning since
+            // the moment it was touched). Keeps going for the whole flight; only the move tween gets cancelled below
+            // if the target needs to change mid-flight.
+            LeanTween.Framework.LeanTween.rotateZ(gameObject, 10f, 0.5f).setDelay(WindUpTime).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
+            StartCoroutine(WindUpThenFindTarget());
         }
 
-        IEnumerator FindTargetLoop()
+        IEnumerator WindUpThenFindTarget()
+        {
+            yield return new WaitForSeconds(WindUpTime);
+            while (TargetItem == null)
+            {
+                FindTarget();
+                yield return new WaitForSeconds(.01f);
+            }
+            FlyToTarget();
+        }
+
+        // One direct arc from here to the piece it's going to destroy, instead of flying to a vague point first and
+        // only then searching for a target.
+        private void FlyToTarget()
+        {
+            var start = transform.position;
+            var end = TargetItem.GetGameObject.transform.position;
+            var distance = Vector3.Distance(start, end);
+            var lift = Mathf.Max(1f, distance * 0.35f);
+            // v (the launch side) nudges the apex sideways, so the two duplicates (when there are two) arc apart
+            // instead of overlapping, even when they end up going for the same general area.
+            var apex = Vector3.Lerp(start, end, 0.5f) + Vector3.up * lift + (Vector3)(launchDirection * 0.6f);
+            var flightTime = Mathf.Clamp(distance / FlightSpeed, MinFlightTime, MaxFlightTime);
+            // The spline ignores the first and last points as actual path (they only set the tangent), so start and
+            // end are each doubled to make sure the piece truly begins and ends exactly there.
+            flightTweenId = LeanTween.Framework.LeanTween.moveSpline(gameObject, new[] { start, start, apex, end, end }, flightTime)
+                .setEase(LeanTweenType.easeInOutSine)
+                .setOnUpdate(CheckTargetUpdate)
+                .setOnComplete(ReachItem).id;
+        }
+
+        private IEnumerator SpinCor()
+        {
+            var renderer = GetComponent<SpriteRenderer>();
+            var i = 0;
+            while (true)
+            {
+                renderer.sprite = SpinFrames[i % SpinFrames.Length];
+                i++;
+                yield return new WaitForSeconds(SpinFrameTime);
+            }
+        }
+
+        // If the target becomes invalid mid-flight (destroyed by something else, falls, etc.), pause just the move
+        // (the rock and the propeller blur keep going) and head for a new one once found, from wherever it is now.
+        void CheckTargetUpdate(float f)
+        {
+            if ((TargetItem.GetItem?.destroying ?? false) || TargetItem == null || !TargetItem.GetGameObject.activeSelf)
+            {
+                LeanTween.Framework.LeanTween.pause(flightTweenId);
+                TargetItem = null;
+                StartCoroutine(ReacquireTargetThenFly());
+            }
+        }
+
+        IEnumerator ReacquireTargetThenFly()
         {
             while (TargetItem == null)
             {
                 FindTarget();
                 yield return new WaitForSeconds(.01f);
             }
-            LeanTween.Framework.LeanTween.cancel(gameObject);
-            LeanTween.Framework.LeanTween.move(gameObject, TargetItem.GetGameObject.transform, 0.4f).setEase(LeanTweenType.easeInOutBack).setOnUpdate(CheckTargetUpdate).setOnComplete(ReachItem);
-            LeanTween.Framework.LeanTween.scale(gameObject, Vector2.one*1.2f , 0.4f);
+            LeanTween.Framework.LeanTween.cancel(flightTweenId);
+            FlyToTarget();
         }
 
-        void CheckTargetUpdate(float f)
+        // Candies on the board that still count toward one of the level's "collect/match" goals.
+        private IEnumerable<IMarmaladeTargetable> FindGoalItems()
         {
-            if ((TargetItem.GetItem?.destroying ?? false) || TargetItem == null || !TargetItem.GetGameObject.activeSelf)
-            {
-                StopCoroutine(FindTargetLoop());
-                LeanTween.Framework.LeanTween.pause(gameObject);
-                TargetItem = null;
-                StartCoroutine(FindTargetLoop());
-            }
+            var goalSprites = LevelManager.THIS.levelData.TargetCounters
+                .Where(c => c.collectingAction == CollectingTypes.Destroy && !c.IsTargetStars() && c.GetCount() > 0 && c.extraObjects != null)
+                .SelectMany(c => c.extraObjects)
+                .Where(s => s != null)
+                .ToArray();
+            if (goalSprites.Length == 0) return Enumerable.Empty<IMarmaladeTargetable>();
+            return LevelManager.THIS.field.GetItems()
+                .Where(i => ArgItems(i) && goalSprites.Contains(i.GetSprite()))
+                .MarmaladeCondition(gameObject, thisItem);
         }
 
         private void FindTarget()
         {
-            //Find hard to reach alone items or cages
-            IEnumerable<IMarmaladeTargetable> items = new List<IMarmaladeTargetable>();
+            // The piece it destroys is always one of the level's current objectives, when there's one left on the
+            // board. Prefers a farther one, so the flight is actually visible, instead of grabbing whatever's
+            // closest. Falls back to the old priority chain (obstacles, ingredients, lonely items...) only when the
+            // board has no goal piece left, so it never ends up with nowhere to go.
+            var goalItems = FindGoalItems().ToArray();
+            if (goalItems.Length > 0)
+            {
+                TargetItem = goalItems.OrderByDescending(i => Vector3.Distance(transform.position, i.GetGameObject.transform.position)).First();
+                if ((Object)TargetItem != thisItem && (TargetItem.GetMarmaladeTarget == null || TargetItem.GetMarmaladeTarget == gameObject))
+                    TargetItem.GetMarmaladeTarget = gameObject;
+                return;
+            }
+
+            IEnumerable<IMarmaladeTargetable> items = Enumerable.Empty<IMarmaladeTargetable>();
             //Check square targets
             if (!items.Any())
             {
