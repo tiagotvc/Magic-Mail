@@ -41,6 +41,7 @@ namespace RoyalAves.Meta
 
         Vector2[] iconRest, labelRest;
         Vector3[] iconRestScale;
+        CanvasGroup[] labelGroups;
         int active = -1;
         Coroutine indicatorRoutine;
         Coroutine[] tabRoutines;
@@ -51,11 +52,25 @@ namespace RoyalAves.Meta
             iconRest = new Vector2[n];
             labelRest = new Vector2[n];
             iconRestScale = new Vector3[n];
+            labelGroups = new CanvasGroup[n];
             tabRoutines = new Coroutine[n];
             for (var i = 0; i < n; i++)
             {
                 if (tabs[i].icon != null) { iconRest[i] = tabs[i].icon.anchoredPosition; iconRestScale[i] = tabs[i].icon.localScale; }
-                if (tabs[i].label != null) labelRest[i] = tabs[i].label.anchoredPosition;
+                if (tabs[i].label != null)
+                {
+                    labelRest[i] = tabs[i].label.anchoredPosition;
+                    // O texto só aparece na aba ativa — um CanvasGroup dá o fade sem mexer no layout/posição,
+                    // criado na hora se o label ainda não tiver um.
+                    var group = tabs[i].label.GetComponent<CanvasGroup>();
+                    if (group == null) group = tabs[i].label.gameObject.AddComponent<CanvasGroup>();
+                    // Parte escondido por padrão — só a aba escolhida pelo Select logo abaixo acende o seu.
+                    // Sem isso, qualquer aba que nunca foi selecionada fica travada no alpha 1 (padrão do
+                    // CanvasGroup recém-criado) e o texto aparece em todas, não só na ativa.
+                    group.alpha = 0f;
+                    group.blocksRaycasts = false;
+                    labelGroups[i] = group;
+                }
                 var captured = i;
                 if (tabs[i].button != null)
                 {
@@ -105,24 +120,28 @@ namespace RoyalAves.Meta
         void AnimateTab(int index, bool toActive, bool instant)
         {
             var tab = tabs[index];
+            var group = labelGroups[index];
             if (tabRoutines[index] != null) StopCoroutine(tabRoutines[index]);
             var iconTargetPos = toActive ? iconRest[index] + new Vector2(0f, iconLift) : iconRest[index];
             var iconTargetScale = toActive ? iconRestScale[index] * iconScale : iconRestScale[index];
             var labelTargetPos = toActive ? labelRest[index] + new Vector2(0f, labelLift) : labelRest[index];
+            var labelTargetAlpha = toActive ? 1f : 0f;
             if (instant)
             {
                 if (tab.icon != null) { tab.icon.anchoredPosition = iconTargetPos; tab.icon.localScale = iconTargetScale; }
                 if (tab.label != null) tab.label.anchoredPosition = labelTargetPos;
+                if (group != null) { group.alpha = labelTargetAlpha; group.blocksRaycasts = toActive; }
                 return;
             }
-            tabRoutines[index] = StartCoroutine(AnimateTabRoutine(tab, iconTargetPos, iconTargetScale, labelTargetPos));
+            tabRoutines[index] = StartCoroutine(AnimateTabRoutine(tab, group, iconTargetPos, iconTargetScale, labelTargetPos, labelTargetAlpha));
         }
 
-        IEnumerator AnimateTabRoutine(Tab tab, Vector2 iconPos, Vector3 iconScl, Vector2 labelPos)
+        IEnumerator AnimateTabRoutine(Tab tab, CanvasGroup group, Vector2 iconPos, Vector3 iconScl, Vector2 labelPos, float labelAlpha)
         {
             var iconFromPos = tab.icon != null ? tab.icon.anchoredPosition : Vector2.zero;
             var iconFromScale = tab.icon != null ? tab.icon.localScale : Vector3.one;
             var labelFromPos = tab.label != null ? tab.label.anchoredPosition : Vector2.zero;
+            var labelFromAlpha = group != null ? group.alpha : 1f;
             var t = 0f;
             while (t < duration)
             {
@@ -134,10 +153,12 @@ namespace RoyalAves.Meta
                     tab.icon.localScale = Vector3.Lerp(iconFromScale, iconScl, f);
                 }
                 if (tab.label != null) tab.label.anchoredPosition = Vector2.Lerp(labelFromPos, labelPos, f);
+                if (group != null) group.alpha = Mathf.Lerp(labelFromAlpha, labelAlpha, f);
                 yield return null;
             }
             if (tab.icon != null) { tab.icon.anchoredPosition = iconPos; tab.icon.localScale = iconScl; }
             if (tab.label != null) tab.label.anchoredPosition = labelPos;
+            if (group != null) { group.alpha = labelAlpha; group.blocksRaycasts = labelAlpha > 0.5f; }
         }
 
         IEnumerator MoveX(RectTransform rt, float targetX, float dur)

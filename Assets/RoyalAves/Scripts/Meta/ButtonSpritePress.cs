@@ -13,8 +13,8 @@ namespace RoyalAves.Meta
     {
         [Tooltip("O que encolhe ao pressionar (com os filhos de cada um — ex.: o \"bg\" verde já carrega texto/ícone se eles forem filhos dele). Deixe vazio pra encolher este próprio objeto.")]
         [SerializeField] Transform[] targets;
-        [Tooltip("Escala ao pressionar, relativa ao tamanho normal (1 = sem efeito).")]
-        [SerializeField] float pressedScale = 0.94f;
+        [Tooltip("Escala ao pressionar (X, Y), relativa ao tamanho normal (1 = sem efeito). Um botão largo encolhido com o MESMO valor nos dois eixos parece encolher mais na largura, porque a sobra em pixels é maior no lado comprido — por isso o padrão encolhe pouco em X e mais em Y (afunda, não encolhe inteiro).")]
+        [SerializeField] Vector2 pressedScale = new Vector2(0.98f, 0.9f);
         [Tooltip("Duração da animação de encolher/voltar, em segundos.")]
         [SerializeField] float duration = 0.08f;
 
@@ -69,7 +69,8 @@ namespace RoyalAves.Meta
             for (var i = 0; i < targets.Length; i++)
             {
                 if (targets[i] == null) continue;
-                targets[i].localScale = Vector3.Lerp(normalScales[i], normalScales[i] * pressedScale, pressAmount);
+                var pressed = Vector3.Scale(normalScales[i], new Vector3(pressedScale.x, pressedScale.y, 1f));
+                targets[i].localScale = Vector3.Lerp(normalScales[i], pressed, pressAmount);
             }
         }
     }
