@@ -43,6 +43,8 @@ namespace RoyalAves.Meta
 
         [Header("Ações")]
         [SerializeField] Button playButton;
+        [Tooltip("Brilho + explosão de partículas no botão Jogar, tocado quando o lobby reabre logo após ganhar um nível.")]
+        [SerializeField] PlayButtonCelebration playCelebration;
         [SerializeField] TextMeshProUGUI playText;
         [SerializeField] Button areaButton;
         [SerializeField] TextMeshProUGUI areaLabel;
@@ -357,6 +359,7 @@ namespace RoyalAves.Meta
             {
                 StartCoroutine(FlyCoins(pendingCoins));
                 pendingCoins = 0;
+                if (playCelebration != null) playCelebration.Play();
             }
             var module = EventSystem.current != null && EventSystem.current.currentInputModule != null
                 ? EventSystem.current.currentInputModule.GetType().Name : "nenhum";
