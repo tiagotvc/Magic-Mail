@@ -15,6 +15,8 @@ namespace RoyalAves.EditorTools
     {
         public const string SheetPath = "Assets/RoyalAves/Art/Specials/dinamite-sheet.png";
         public const string IdlePath = "Assets/RoyalAves/Art/Specials/dinamite-idle.png";
+        // Anchor the red bundle rather than the canvas including the fuse; share across animation frames.
+        public static readonly Vector2 SpritePivot = new Vector2(0.5025f, 0.45f);
         // The same entrance the other power-ups play (Square.cs fires "bonus_appear" on them).
         const string AppearClipPath = "Assets/SweetSugar/Animation/horr_appearing.anim";
         const string PackagePath = "Assets/SweetSugar/Resources/Items/PACKAGE.prefab";
@@ -58,8 +60,8 @@ namespace RoyalAves.EditorTools
                 {
                     name = $"dinamite_{i:00}",
                     rect = new Rect(col * cellWidth, texture.height - (row + 1) * cellHeight, cellWidth, cellHeight),
-                    pivot = new Vector2(0.5f, 0.5f),
-                    alignment = SpriteAlignment.Center,
+                    pivot = SpritePivot,
+                    alignment = SpriteAlignment.Custom,
                     spriteID = GUID.Generate()
                 };
             }

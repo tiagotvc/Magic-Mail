@@ -217,10 +217,10 @@ namespace SweetSugar.Scripts.Level
 
         }
 
-        public void InitTargetObjects(bool forPlay=false)
+        public void InitTargetObjects(bool forPlay=false, TargetLevel targetOverride=null)
         {
             if(forPlay){
-                var targetLevel = Resources.Load<TargetLevel>("Levels/Targets/TargetLevel" + levelNum);
+                var targetLevel = targetOverride != null ? targetOverride : Resources.Load<TargetLevel>("Levels/Targets/TargetLevel" + levelNum);
                 var _TargetCounters = targetLevel.targets.Select(i => new TargetCounter(i.targetType.GetTarget().prefabs.FirstOrDefault(), i.CountDrawer.count, i.sprites
                 .Select(o => o.icon).ToArray(), -1, i.targetType.GetTarget(),i.NotFinishUntilMoveOut, i)).ToList();
                 TargetCounters = _TargetCounters.ToList();//subTargetsContainers.ToArray();
@@ -250,6 +250,11 @@ namespace SweetSugar.Scripts.Level
 
         public void SetSquareTarget(GameObject gameObject, SquareTypes _sqType, GameObject prefabLink)
         {
+            // A parcel is one objective. Its extra wrapping states are protection, not collectibles.
+            var parcel = gameObject.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
+            if (parcel != null && !parcel.CountsAsObjective) return;
+            var ink = gameObject.GetComponent<RoyalAves.Gameplay.InkFloorLayer>();
+            if (ink != null && !ink.CountsAsObjective) return;
             {
                 var squareTypeName = _sqType.ToString();
                 var subTargetContainer = TargetCounters.FirstOrDefault(i =>

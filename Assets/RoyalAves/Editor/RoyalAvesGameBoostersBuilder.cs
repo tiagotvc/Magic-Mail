@@ -39,15 +39,6 @@ namespace RoyalAves.EditorTools
         static readonly BoostType[] DesiredOrder =
             { BoostType.Bomb, BoostType.ExtraMoves, BoostType.ExplodeArea, BoostType.FreeMove };
 
-        // What plays on the board when the martelo fires. The clip (bomb_boost.controller) animates only
-        // m_LocalScale - a punch on one still picture - so swapping that picture is all it takes: the hammer where
-        // Sweet Sugar drew its wand. Flecha/canhão/chapéu não passam mais por essa animação (ver
-        // LevelManager.DestroyLine/ShuffleBoard), só o martelo ainda usa esse prefab.
-        static readonly Dictionary<string, BoostType> Effects = new Dictionary<string, BoostType>
-        {
-            ["Assets/SweetSugar/Resources/Boosts/simple_explosion.prefab"] = BoostType.Bomb,
-        };
-
         [MenuItem("Royal Aves/Aplicar reforços do jogo")]
         static void ApplyFromMenu()
         {
@@ -101,8 +92,6 @@ namespace RoyalAves.EditorTools
             {
                 PrefabUtility.UnloadPrefabContents(root);
             }
-
-            RestyleEffects(log);
 
             EditorUtility.DisplayDialog("Reforços do jogo", "Aplicado:\n- " + string.Join("\n- ", log.Distinct()) +
                 "\n\nOrdem: martelo, flecha, canhão, chapéu. Martelo destrói 1 peça, flecha destrói a linha tocada, " +
@@ -236,35 +225,6 @@ namespace RoyalAves.EditorTools
             var parts = new List<string>();
             for (; t != null; t = t.parent) parts.Insert(0, t.name);
             return string.Join("/", parts);
-        }
-
-        static void RestyleEffects(List<string> log)
-        {
-            foreach (var pair in Effects)
-            {
-                if (!Pictures.TryGetValue(pair.Value, out var picture)) continue;
-                var sprite = Load(picture.file);
-                if (sprite == null) continue;
-                var root = PrefabUtility.LoadPrefabContents(pair.Key);
-                try
-                {
-                    // Never "GetComponent(...) is T x" nor "?? AddComponent": a missing component comes back as
-                    // Unity's fake null, which passes both. Only "== null" asks Unity itself.
-                    var renderer = root.GetComponent<SpriteRenderer>();
-                    if (renderer == null)
-                    {
-                        log.Add($"animação de uso: {System.IO.Path.GetFileNameWithoutExtension(pair.Key)} sem SpriteRenderer");
-                        continue;
-                    }
-                    renderer.sprite = sprite;
-                    PrefabUtility.SaveAsPrefabAsset(root, pair.Key);
-                    log.Add($"animação de uso do {picture.name}: {System.IO.Path.GetFileNameWithoutExtension(pair.Key)}");
-                }
-                finally
-                {
-                    PrefabUtility.UnloadPrefabContents(root);
-                }
-            }
         }
 
         static Sprite Load(string path) => AssetDatabase.LoadAssetAtPath<Sprite>(Art + path + ".png");

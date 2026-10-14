@@ -50,3 +50,7 @@ Não defina símbolos à mão em Player Settings: eles serão sobrescritos. Os S
 - Remote: `tiagotvc/Magic-Mail` (**público**; o SweetSugar tem licença que proíbe redistribuição). O `gh` está logado como `ilustrejr`, e o credential manager do Git não tem login do GitHub. Para dar push:
   `git -c credential.helper= -c "credential.helper=!gh auth git-credential" push`
 - Scripts sem o cabeçalho "Candy Smith" são adições fora do template original: `AdsEvents/LevelPlayIntegration.cs`, `Editor/ExportGitStaged.cs`, `Editor/LayerTransferTool.cs`, `GUI/CharAnimationController.cs`, `GUI/Utils/ReferenceRestorer.cs`.
+
+## Memória persistente do projeto
+
+Consulte Docs/Memoria_Projeto.md para decisões visuais, mecânicas implementadas, validações e próximos passos. A sessão mais recente foi registrada como 10/10/2026 conforme solicitação do usuário.

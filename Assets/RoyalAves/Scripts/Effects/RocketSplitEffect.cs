@@ -12,7 +12,7 @@ namespace RoyalAves.Effects
         const float ExitOvershoot = 0.8f;
         const float TrailTail = 0.5f; // keeps the effect object alive long enough for the last particle to fade
         // Multiplies the flame particles' size. Their Flame object is scaled by RestScale, which shrinks them a lot.
-        const float TrailSize = 4f;
+        const float TrailSize = 2f;
         // World units/second the rocket halves travel. Faster than the helix on purpose - the rocket should feel
         // like it's darting across the row/column, not cruising.
         const float FlightSpeed = 9f;
@@ -131,6 +131,8 @@ namespace RoyalAves.Effects
             var direction = (to - from).normalized;
             var halfExtent = sprite.bounds.extents.x * ActivatedScale;
             half.transform.position = from + direction * halfExtent;
+            AddBeam(half, flameMat, sortOrder + 2, 0.11f, new Color(1f, 0.67f, 0.12f));
+            AddBeam(half, flameMat, sortOrder + 3, 0.035f, new Color(1f, 1f, 0.85f));
 
             var flame = new GameObject("Flame");
             flame.transform.SetParent(half.transform, false);
@@ -179,7 +181,7 @@ namespace RoyalAves.Effects
             shape.shapeType = ParticleSystemShapeType.Sphere;
             // Correio Mágico: raio da área de emissão - é o que dá a largura do rastro (espalhamento lateral das
             // partículas), separado do tamanho de cada partícula (TrailSize).
-            shape.radius = 0.16f;
+            shape.radius = 0.055f;
 
             var sizeOverLifetime = ps.sizeOverLifetime;
             sizeOverLifetime.enabled = true;
@@ -212,5 +214,30 @@ namespace RoyalAves.Effects
 
             ps.Play();
         }
+
+        static void AddBeam(GameObject half, Material source, int order, float width, Color color)
+        {
+            var node = new GameObject("RocketBrightWake");
+            node.transform.SetParent(half.transform, false);
+            var trail = node.AddComponent<TrailRenderer>();
+            var material = new Material(source);
+            material.SetTexture("_MainTex", Texture2D.whiteTexture);
+            node.AddComponent<RocketBeamMaterial>().ownedMaterial = material;
+            trail.sharedMaterial = material;
+            trail.time = 0.20f;
+            trail.minVertexDistance = 0.015f;
+            trail.widthMultiplier = width;
+            trail.numCapVertices = 3;
+            trail.startColor = color;
+            trail.endColor = new Color(color.r, color.g, color.b, 0f);
+            trail.sortingLayerName = PowerUpEffectOrder.SortingLayer;
+            trail.sortingOrder = order;
+        }
+    }
+
+    public sealed class RocketBeamMaterial : MonoBehaviour
+    {
+        public Material ownedMaterial;
+        void OnDestroy() { if (ownedMaterial != null) Destroy(ownedMaterial); }
     }
 }

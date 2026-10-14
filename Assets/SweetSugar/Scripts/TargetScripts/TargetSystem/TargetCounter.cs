@@ -104,6 +104,12 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             for (int i = 0; i < targetComponents.Length; i++)
             {
                 var targetComponent = targetComponents[i];
+                var parcel = targetComponent.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
+                if (parcel != null && !parcel.CountsAsObjective) continue;
+                var ink = targetComponent.GetComponent<RoyalAves.Gameplay.InkFloorLayer>();
+                if (ink != null && !ink.CountsAsObjective) continue;
+                var mailCubby = targetComponent.GetComponent<RoyalAves.Gameplay.MailCubbyCell>();
+                if (mailCubby != null && !mailCubby.CountsAsObjective) continue;
                 
                 // Skip if we're checking sublevel and component is not in the current field
                 if (subLevel)
@@ -122,11 +128,9 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
                 {
                     var sprite = spriteRenderers[j].sprite;
                     // Count if sprite matches any in extraObjects
-                    for (int k = 0; k < extraObjects.Length; k++)
-                    {
-                        if (extraObjects[k] == sprite)
-                            totalCount++;
-                    }
+                    // Several damage states can share a sprite. Count the layer once.
+                    if (extraObjects.Any(candidate => candidate == sprite))
+                        totalCount++;
                 }
             }
             
@@ -138,7 +142,14 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             var item = obj.GetComponent<ISquareItemCommon>();
             var spriteRenderers = item.GetSpriteRenderers();
             if (collectingAction == CollectingTypes.ReachBottom && !item.IsBottom()) return;
-            var objects = spriteRenderers.Where(x => extraObjects.Any(i => i == x.sprite)).ToArray();
+            // Matches and specials also check whole cells directly. Parcels collect exclusively
+            // in the final-completion callback, never through the generic sprite flight path.
+            var objects = spriteRenderers.Where(x =>
+                x.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>() == null &&
+                x.GetComponent<RoyalAves.Gameplay.InkFloorLayer>() == null &&
+                x.GetComponent<RoyalAves.Gameplay.MailCubbyCell>() == null &&
+                x.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>() == null &&
+                extraObjects.Any(i => i == x.sprite)).ToArray();
             if (objects.Count() > 0 && count > 0)
             {
                 var animCompLinkObject = objects.OrderByDescending(i=>i.sortingOrder).First().gameObject;

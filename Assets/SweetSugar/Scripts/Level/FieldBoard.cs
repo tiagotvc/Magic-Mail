@@ -391,10 +391,18 @@ namespace SweetSugar.Scripts.Level
              
              
              squareObject = Instantiate(squarePrefab, firstSquarePosition + new Vector2(col * squareWidth, -row * squareHeight), Quaternion.identity);
-             if (chessColor)
+             bool HasCell(int c, int r)
              {
-                 squareObject.GetComponent<SpriteRenderer>().sprite = squareSprite1;
+                 if (c < 0 || r < 0 || c >= fieldData.maxCols || r >= fieldData.maxRows) return false;
+                 var data = fieldData.levelSquares[r * fieldData.maxCols + c];
+                 return data.block != SquareTypes.NONE && !(data.blocks.Count > 0 && data.blocks.Last().squareType == SquareTypes.NONE);
              }
+             int corners = 0;
+             if (!HasCell(col - 1, row) && !HasCell(col, row - 1)) corners |= 1;
+             if (!HasCell(col + 1, row) && !HasCell(col, row - 1)) corners |= 2;
+             if (!HasCell(col - 1, row) && !HasCell(col, row + 1)) corners |= 4;
+             if (!HasCell(col + 1, row) && !HasCell(col, row + 1)) corners |= 8;
+             RoyalAves.Meta.BoardCellVisual.Apply(squareObject.GetComponent<SpriteRenderer>(), corners);
              squareObject.transform.SetParent(GameField);//set parent later
              squareObject.transform.localPosition = firstSquarePosition + new Vector2(col * squareWidth, -row * squareHeight);
              var square = squareObject.GetComponent<Square>();

@@ -868,6 +868,14 @@ namespace SweetSugar.Scripts.Core
                 }
             }
 
+#if UNITY_EDITOR
+            if ((win || lose) && (RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
+            {
+                Debug.Log(win ? "[Correio Mágico] Laboratório concluído: todas as camadas removidas." : "[Correio Mágico] Laboratório encerrado: jogadas esgotadas.");
+                UnityEditor.EditorApplication.isPlaying = false;
+                return;
+            }
+#endif
             if (lose)
             {
                 gameStatus = GameState.PreFailed;
@@ -1136,7 +1144,7 @@ namespace SweetSugar.Scripts.Core
                         lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
                         // Correio Mágico: ExplodeArea virou o canhão (destrói a coluna tocada).
-                        THIS.DestroyLine(lastTouchedItem, false);
+                        THIS.DestroyColumnWithCannon(lastTouchedItem);
                     }
                     else if (THIS.ActivatedBoost.type == BoostType.ExtraMoves &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
@@ -1147,14 +1155,8 @@ namespace SweetSugar.Scripts.Core
                     else if (THIS.ActivatedBoost.type == BoostType.Bomb &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
-                        SoundBase.Instance
-                            .PlayOneShot(SoundBase.Instance.boostColorReplace);
-                        THIS.DragBlocked = true;
-                        var obj = Instantiate(Resources.Load("Boosts/simple_explosion"), lastTouchedItem.transform.position,
-                            lastTouchedItem.transform.rotation) as GameObject;
-                        obj.GetComponent<BoostAnimation>().square = lastTouchedItem.square;
-                        obj.GetComponent<SpriteRenderer>().sortingOrder = 4;
-                        THIS.ActivatedBoost = null;
+                        // Correio Mágico: martelo (boost Bomb) - ver DestroySquareWithHammer pro efeito visual.
+                        THIS.DestroySquareWithHammer(lastTouchedItem);
                     }
                     else if (lastTouchedItem.square.GetSubSquare().CanGoOut()/* && lastTouchedItem.Combinable*/)
                     {
@@ -1728,6 +1730,49 @@ namespace SweetSugar.Scripts.Core
             });
             if (squares.Any(i => i.type == SquareTypes.JellyBlock))
                 levelData.GetTargetObject().CheckSquares(squares.ToArray());
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay(wait));
+        }
+
+        // Correio Mágico: canhão (boost ExplodeArea) - igual a DestroyLine(target, false), mas com visual próprio
+        // (CannonFireEffect: aparece parado na base da coluna e atira pra cima) em vez do foguete partido ao meio.
+        // Mesmos efeitos/sons de destruição de peça de sempre, só a parte "o que aparece e atira" muda.
+        public void DestroyColumnWithCannon(Item target)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
+            var squares = GetColumnSquare(target.square.col);
+            var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
+            var wait = CannonFireEffect.Play(squares, sq =>
+            {
+                if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
+                sq.DestroyBlock();
+            });
+            if (squares.Any(i => i.type == SquareTypes.JellyBlock))
+                levelData.GetTargetObject().CheckSquares(squares.ToArray());
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay(wait));
+        }
+
+        // Correio Mágico: martelo (boost Bomb) - destrói só a peça tocada. Antes só encolhia uma arte parada em
+        // cima dela (simple_explosion/BoostAnimation); agora o martelo aparece, gira pegando impulso e desce
+        // golpeando (HammerSmashEffect), com a peça estourando no instante exato do impacto.
+        public void DestroySquareWithHammer(Item target)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.boostColorReplace);
+            var square = target.square;
+            var spreadTarget = levelData.TargetCounters.Any(i => i.collectingAction == CollectingTypes.Spread);
+            // Correio Mágico: a marreta golpeia pra direita (ver spritesheet), então nasce uma casa à esquerda da
+            // peça em vez de em cima dela - sobre a própria peça, o golpe pra direita não lia bem. Numa peça da
+            // última coluna isso nasce fora do tabuleiro, o que não tem problema (a arte só precisa alcançar a peça).
+            var hammerPos = target.transform.position + Vector3.left * squareWidth;
+            var wait = HammerSmashEffect.Play(hammerPos, () =>
+            {
+                SoundBase.Instance.PlayOneShot(SoundBase.Instance.destroyPackage);
+                if (spreadTarget) square.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
+                if (square.Item != null) square.Item.DestroyItem(true);
+            });
             ActivatedBoost = null;
             StartCoroutine(FindMatchDelay(wait));
         }

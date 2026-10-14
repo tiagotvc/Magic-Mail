@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Level_4
   m_EditorClassIdentifier: 
   levelData:
-    Name: Level 4
+    SpawnerExits: 0
     levelNum: 4
     fields:
-    - subLevel: 1
-      maxRows: 9
+    - maxRows: 9
       maxCols: 9
       noRegenLevel: 1
+      scrollLevel: 0
       levelSquares:
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -35,7 +36,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -47,7 +48,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -61,7 +64,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -73,7 +76,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -87,7 +92,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -99,7 +104,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -113,7 +120,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -125,7 +132,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -139,7 +148,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -151,7 +160,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -165,7 +176,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -177,7 +188,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -191,7 +204,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -203,7 +216,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -217,7 +232,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -229,12 +244,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -248,7 +265,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 582
+          y: 595
           width: 50
           height: 50
         item:
@@ -256,17 +273,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -280,7 +298,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -292,12 +310,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -311,7 +331,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -323,7 +343,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -337,7 +359,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -349,6 +371,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -365,6 +388,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 3
@@ -378,7 +402,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -386,11 +410,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -402,6 +426,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -415,7 +440,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -423,11 +448,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -439,6 +464,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -452,7 +478,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -460,11 +486,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -476,6 +502,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -489,7 +516,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -497,12 +524,13 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -516,7 +544,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -528,12 +556,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -547,7 +577,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 634
+          y: 647
           width: 50
           height: 50
         item:
@@ -555,17 +585,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -579,7 +610,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -591,12 +622,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -610,7 +643,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -618,12 +651,13 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 80ad3bcfbfb8c4820888f9d27839f4c7, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -637,7 +671,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -649,6 +683,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -665,6 +700,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 3
@@ -678,7 +714,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -686,11 +722,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -702,6 +738,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -715,7 +752,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -723,11 +760,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -739,6 +776,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -752,7 +790,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -760,11 +798,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -776,6 +814,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -789,7 +828,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -797,12 +836,13 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -816,7 +856,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -828,7 +868,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -842,7 +884,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 686
+          y: 699
           width: 50
           height: 50
         item:
@@ -854,7 +896,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -868,7 +912,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -880,7 +924,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -894,7 +940,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -906,7 +952,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -920,7 +968,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -932,7 +980,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -946,7 +996,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -958,7 +1008,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -972,7 +1024,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -984,7 +1036,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -998,7 +1052,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -1010,7 +1064,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1024,7 +1080,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -1036,7 +1092,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1050,7 +1108,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -1062,7 +1120,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1076,7 +1136,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 738
+          y: 751
           width: 50
           height: 50
         item:
@@ -1088,12 +1148,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1107,7 +1169,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1119,12 +1181,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1138,7 +1202,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1150,12 +1214,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1169,7 +1235,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1181,7 +1247,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1195,7 +1263,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1207,7 +1275,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1221,7 +1291,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1233,7 +1303,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1247,7 +1319,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1259,7 +1331,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1273,7 +1347,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1285,7 +1359,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1299,7 +1375,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1311,7 +1387,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1325,7 +1403,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 790
+          y: 803
           width: 50
           height: 50
         item:
@@ -1337,12 +1415,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1356,7 +1436,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 842
+          y: 855
           width: 50
           height: 50
         item:
@@ -1368,6 +1448,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1379,6 +1460,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -1400,17 +1482,18 @@ MonoBehaviour:
           ItemType: 3
           Texture: {fileID: 0}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6,
-            type: 3}
+          Item: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1436,7 +1519,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1462,7 +1547,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1488,7 +1575,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1514,7 +1603,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1540,7 +1631,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1566,7 +1659,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1592,12 +1687,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1623,6 +1720,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1634,6 +1732,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -1655,17 +1754,18 @@ MonoBehaviour:
           ItemType: 5
           Texture: {fileID: 2800000, guid: e3932d0f07fcb49a89f5e7d89b16d1ee, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -1691,7 +1791,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1717,6 +1819,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1728,6 +1831,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -1753,6 +1857,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1764,6 +1869,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -1789,6 +1895,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1805,6 +1912,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 3
@@ -1826,11 +1934,11 @@ MonoBehaviour:
           ItemType: 5
           Texture: {fileID: 2800000, guid: d5d12238ac86e4a1aad2ad7b08a654ea, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1842,6 +1950,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -1863,11 +1972,11 @@ MonoBehaviour:
           ItemType: 1
           Texture: {fileID: 2800000, guid: 01954c4ea2b65488091af7570dad18f0, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f,
-            type: 3}
+          Item: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -1884,6 +1993,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 3
@@ -1905,12 +2015,13 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 13093650104e244a5a2f80f6eaf02cd6, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1936,7 +2047,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1962,7 +2075,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -1988,7 +2103,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2014,7 +2131,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2040,7 +2159,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2066,7 +2187,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2092,7 +2215,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2118,7 +2243,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2144,12 +2271,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2175,12 +2304,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2206,12 +2337,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2237,12 +2370,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2268,12 +2403,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2299,12 +2436,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2330,12 +2469,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 100
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2357,17 +2498,18 @@ MonoBehaviour:
           ItemType: 5
           Texture: {fileID: 2800000, guid: d5d12238ac86e4a1aad2ad7b08a654ea, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2393,12 +2535,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 100
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2420,19 +2564,21 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 13093650104e244a5a2f80f6eaf02cd6, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       bombTimer: 15
       layers: 3
-    - subLevel: 0
-      maxRows: 9
+      switchSublevelNoMatch: 0
+    - maxRows: 9
       maxCols: 7
       noRegenLevel: 1
+      scrollLevel: 0
       levelSquares:
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2458,12 +2604,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2489,12 +2637,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2516,17 +2666,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2548,17 +2699,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2580,17 +2732,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2616,7 +2769,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2642,7 +2797,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2668,6 +2825,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -2679,6 +2837,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -2700,11 +2859,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -2716,6 +2875,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -2737,17 +2897,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -2769,11 +2930,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -2785,6 +2946,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -2806,11 +2968,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -2822,6 +2984,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -2843,12 +3006,13 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2874,7 +3038,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2900,7 +3066,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2926,7 +3094,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2952,7 +3122,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -2978,7 +3150,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -3004,7 +3178,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -3030,7 +3206,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -3056,6 +3234,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3067,6 +3246,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3088,11 +3268,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3104,6 +3284,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3125,11 +3306,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 13093650104e244a5a2f80f6eaf02cd6, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3141,6 +3322,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3162,11 +3344,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3178,6 +3360,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3199,11 +3382,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 13093650104e244a5a2f80f6eaf02cd6, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3215,6 +3398,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3236,11 +3420,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3252,6 +3436,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3273,11 +3458,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 13093650104e244a5a2f80f6eaf02cd6, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -3289,6 +3474,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -3310,17 +3496,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 0edf19301af4941ef8ab05726d03f78d, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 9e94793869c22499fa7ac77d70d4380e, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3346,12 +3533,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3377,12 +3566,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3408,12 +3599,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3439,12 +3632,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3470,12 +3665,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3501,12 +3698,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3532,12 +3731,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3563,12 +3764,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3594,12 +3797,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3625,12 +3830,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3656,12 +3863,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3687,12 +3896,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3718,12 +3929,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3749,12 +3962,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3780,12 +3995,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3811,12 +4028,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3842,12 +4061,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3873,12 +4094,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3904,12 +4127,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3935,12 +4160,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3966,12 +4193,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -3997,12 +4226,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4028,12 +4259,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4059,12 +4292,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4090,12 +4325,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4121,12 +4358,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4152,12 +4391,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4183,6 +4424,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4194,6 +4436,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4215,11 +4458,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 80ad3bcfbfb8c4820888f9d27839f4c7, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4231,6 +4474,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4256,6 +4500,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4267,6 +4512,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4288,11 +4534,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 80ad3bcfbfb8c4820888f9d27839f4c7, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4304,6 +4550,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4329,6 +4576,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4340,6 +4588,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4361,11 +4610,11 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 80ad3bcfbfb8c4820888f9d27839f4c7, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4377,6 +4626,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4402,6 +4652,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4413,6 +4664,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4434,19 +4686,21 @@ MonoBehaviour:
           ItemType: 4
           Texture: {fileID: 2800000, guid: 80ad3bcfbfb8c4820888f9d27839f4c7, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 2b550a308dbcb4ca7b9db445d92d25cc, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       bombTimer: 15
       layers: 2
-    - subLevel: 0
-      maxRows: 8
+      switchSublevelNoMatch: 0
+    - maxRows: 8
       maxCols: 7
       noRegenLevel: 0
+      scrollLevel: 0
       levelSquares:
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4472,7 +4726,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4498,7 +4754,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4524,12 +4782,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4551,12 +4811,13 @@ MonoBehaviour:
           ItemType: 3
           Texture: {fileID: 0}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6,
-            type: 3}
+          Item: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4582,7 +4843,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4608,7 +4871,9 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks: []
+        spawners: []
         block: 0
         blockLayer: 1
         obstacle: 0
@@ -4634,6 +4899,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4645,6 +4911,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4670,6 +4937,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4681,6 +4949,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4706,6 +4975,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4717,6 +4987,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4738,11 +5009,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4754,6 +5025,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 6
         blockLayer: 1
         obstacle: 0
@@ -4775,11 +5047,11 @@ MonoBehaviour:
           ItemType: 5
           Texture: {fileID: 2800000, guid: d5d12238ac86e4a1aad2ad7b08a654ea, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: 208961a21ae324ef889b69763edb84f9, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4791,6 +5063,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4812,11 +5085,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4828,6 +5101,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4853,6 +5127,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4864,6 +5139,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4889,12 +5165,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -4920,6 +5198,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4931,6 +5210,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4952,11 +5232,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -4968,6 +5248,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -4993,6 +5274,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -5004,6 +5286,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -5025,11 +5308,11 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -5041,6 +5324,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -5066,6 +5350,7 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
@@ -5077,6 +5362,7 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 3
@@ -5098,17 +5384,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5134,12 +5421,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5165,12 +5454,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5196,12 +5487,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5223,17 +5516,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5255,17 +5549,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 8604122af3f62472e95c261ef7b15478, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: c5dece451ab2d4523b3056037022a66a, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5287,17 +5582,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5323,12 +5619,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5354,12 +5652,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5385,12 +5685,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5416,12 +5718,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5447,12 +5751,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5474,17 +5780,18 @@ MonoBehaviour:
           ItemType: 0
           Texture: {fileID: 2800000, guid: 3dda22942cfed4603a1e236fa67c317c, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c,
-            type: 2}
+          Item: {fileID: 1119664270634208, guid: d85f3689b139d4d8eb1e4d49f284825c, type: 2}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5510,12 +5817,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5541,12 +5850,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5572,12 +5883,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5603,12 +5916,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5634,12 +5949,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5665,12 +5982,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5696,12 +6015,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5727,12 +6048,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5758,12 +6081,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5789,12 +6114,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5820,12 +6147,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5851,12 +6180,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5882,12 +6213,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5913,12 +6246,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5944,12 +6279,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -5975,12 +6312,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6006,12 +6345,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6037,12 +6378,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6068,12 +6411,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6099,12 +6444,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6130,12 +6477,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6161,12 +6510,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6192,12 +6543,14 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       - blocks:
         - squareType: 1
           anotherSquare: 0
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        spawners: []
         block: 1
         blockLayer: 1
         obstacle: 0
@@ -6223,8 +6576,10 @@ MonoBehaviour:
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
           order: 0
+        separatorIndexes: 00000000y
       bombTimer: 15
       layers: 2
+      switchSublevelNoMatch: 0
     target:
       name: JellyBlock
       localization:
@@ -6245,11 +6600,9 @@ MonoBehaviour:
               uiSprite: 0
       prefabs:
       - {fileID: 1491958887448974, guid: a30bc3dfa7cc24355a551baa872b9b71, type: 3}
-    targetIndex: 3
     limitType: 0
-    ingrCountTarget: 0000000000000000
     limit: 40
-    colorLimit: 5
+    colorLimit: 4
     star1: 500
     star2: 1600
     star3: 3200
@@ -6257,27 +6610,8 @@ MonoBehaviour:
     selectedTutorial: 0
     currentSublevelIndex: 0
     subTargetsContainers:
-    - targetPrefab: {fileID: 1491958887448974, guid: a30bc3dfa7cc24355a551baa872b9b71,
-        type: 3}
+    - targetPrefab: {fileID: 1491958887448974, guid: a30bc3dfa7cc24355a551baa872b9b71, type: 3}
       count: 20
       preCount: 20
       extraObject: {fileID: 0}
-      extraObjects: []
-      color: 0
-      TargetGui: {fileID: 0}
-      targetLevel:
-        name: 
-        localization:
-          description:
-            text: 
-            index: 0
-          failed:
-            text: 
-            index: 0
-        collectAction: 0
-        setCount: 0
-        CanSwithSublevel: 0
-        defaultSprites:
-          array: []
-        prefabs: []
-      collectingAction: 0
+    generateIngredientOnlyFromSpawner: 0

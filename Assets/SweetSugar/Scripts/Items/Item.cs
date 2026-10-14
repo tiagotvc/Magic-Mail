@@ -191,11 +191,16 @@ namespace SweetSugar.Scripts.Items
 
         [HideInInspector] public Item explodedItem;
         private bool destroycoroutineStarted;
+        [HideInInspector] public bool powerUpFormationMatch;
+        bool fallingDebrisVisual;
         public static Item usedItem;
         public static Item usedItemSecond;
 
         protected virtual void OnEnable()
         {
+            if (powerUpFormationMatch || fallingDebrisVisual) HideSprites(false);
+            fallingDebrisVisual = false;
+            powerUpFormationMatch = false;
             switch (currentType)
             {
                 case ItemsTypes.INGREDIENT:
@@ -647,9 +652,15 @@ namespace SweetSugar.Scripts.Items
                         if (combine.nextType != ItemsTypes.NONE)
                         {
                             if (combine.color == LevelManager.THIS.lastDraggedItem.color)
+                            {
                                 LevelManager.THIS.lastDraggedItem.NextType = combine.nextType;
+                                RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastDraggedItem, combine.items);
+                            }
                             else if (combine.color == LevelManager.THIS.lastSwitchedItem.color)
+                            {
                                 LevelManager.THIS.lastSwitchedItem.NextType = combine.nextType;
+                                RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastSwitchedItem, combine.items);
+                            }
                         }
                     }
 
@@ -1041,11 +1052,15 @@ namespace SweetSugar.Scripts.Items
                         if (firstOrDefault != null && firstOrDefault.NextType == ItemsTypes.NONE)
                         {
                             firstOrDefault.NextType = combine.nextType;
+                            RoyalAves.Effects.PowerUpFormation.Register(firstOrDefault, combine.items);
                         }
                     }
 
                     var selectMany = combines2.SelectMany(i => i.items);
-                    selectMany.ToList().ForEach(x => x?.DestroyItem());
+                    var cascadeMatch = selectMany.Distinct().ToList();
+                    if (cascadeMatch.Any(x => x != null && x.NextType != ItemsTypes.NONE))
+                        yield return new WaitWhileDestroyPipeline(cascadeMatch, new Delays());
+                    else cascadeMatch.ForEach(x => x?.DestroyItem());
                     if(square != null && square.type == SquareTypes.JellyBlock)
                         LevelManager.THIS.levelData.GetTargetObject().CheckSquares(selectMany.Select(i => i.square).ToArray());
                 }
@@ -1205,6 +1220,7 @@ namespace SweetSugar.Scripts.Items
                 DebugLogKeeper.Log("set " + NextType + " " + name + " to " + newItem.name,DebugLogKeeper.LogType.BonusAppearance);
             newItem.square.Item = newItem;
             newItem.transform.position = newItem.square.transform.position;
+            if (powerUpFormationMatch) RoyalAves.Effects.PowerUpFormation.Born(newItem);
             NextType = ItemsTypes.NONE;
             if(destroyBlock)
                 square.DestroyBlock();
@@ -1292,7 +1308,15 @@ namespace SweetSugar.Scripts.Items
 
             if ((currentType == ItemsTypes.NONE && NextType == ItemsTypes.NONE || currentType == ItemsTypes.SPIRAL) && particles)
             {
-                PlayDestroyAnimation("destroy");
+                if (currentType == ItemsTypes.NONE)
+                {
+                    foreach (var renderer in GetSpriteRenderers())
+                        if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)
+                            RoyalAves.Effects.FallingBoardDebris.Shatter(renderer);
+                    fallingDebrisVisual = true;
+                    HideSprites(true);
+                }
+                else PlayDestroyAnimation("destroy");
 
                 if (currentType == ItemsTypes.SPIRAL)
                 {
@@ -1301,15 +1325,6 @@ namespace SweetSugar.Scripts.Items
                     {
                         partcl2.transform.position = transform.position;
                         partcl2.GetComponent<SplashParticles>().SetColor(0);
-                    }
-                }
-                else
-                {
-                    var partcl2 = ObjectPooler.Instance.GetPooledObject("FireworkSplash", this);
-                    if (partcl2 != null)
-                    {
-                        partcl2.transform.position = transform.position;
-                        partcl2.GetComponent<SplashParticles>().SetColor(color);
                     }
                 }
             }
