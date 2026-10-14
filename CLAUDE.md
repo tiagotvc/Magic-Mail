@@ -53,4 +53,4 @@ Não defina símbolos à mão em Player Settings: eles serão sobrescritos. Os S
 
 ## Memória persistente do projeto
 
-Consulte Docs/Memoria_Projeto.md para decisões visuais, mecânicas implementadas, validações e próximos passos. A sessão mais recente foi registrada como 10/10/2026 conforme solicitação do usuário.
+Consulte Docs/Memoria_Projeto.md para decisões visuais, mecânicas implementadas, validações e próximos passos. A sessão mais recente é de 14/10/2026; 10/10 foi a nota dada pelo usuário à performance da sessão.
