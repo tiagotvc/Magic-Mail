@@ -16,9 +16,10 @@ namespace RoyalAves.Meta
                 texture.filterMode = FilterMode.Bilinear;
                 texture.wrapMode = TextureWrapMode.Clamp;
                 var pixels = new Color[size * size];
-                var fill = new Color32(151, 185, 231, 255);
-                var edge = new Color32(178, 207, 245, 255);
-                Color background = new Color32(132, 169, 219, 255);
+                // Rounded squares in mid blue, lighter blue lines between them.
+                var fill = new Color32(181, 201, 229, 255);
+                var edge = new Color32(191, 210, 237, 255);
+                Color background = new Color32(178, 207, 245, 255);
                 for (int y = 0; y < size; y++)
                     for (int x = 0; x < size; x++)
                     {

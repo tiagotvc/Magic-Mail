@@ -18,8 +18,9 @@ namespace RoyalAves.Gameplay
             cell = transform.parent != null ? transform.parent.GetComponent<Square>() : null;
             if (cell == null) yield break;
             yield return null;
-            if (cell.col != 2 || cell.row != 2) yield break;
-            var bottomRight = cell.field.GetSquare(3, 3);
+            // A cabinet is painted as a 2x2 group of cells; the top-left one builds the shared visual.
+            if (!IsGroupAnchor()) yield break;
+            var bottomRight = cell.field.GetSquare(cell.col + 1, cell.row + 1);
             if (bottomRight == null) yield break;
             var root = Instantiate(visualPrefab, cell.field.transform);
             root.transform.position = (cell.transform.position + bottomRight.transform.position) * 0.5f;
@@ -39,8 +40,8 @@ namespace RoyalAves.Gameplay
             Owner = root.AddComponent<MailCubbyBoardController>();
             var cells = new Square[4];
             int index = 0;
-            for (int row = 2; row <= 3; row++)
-                for (int col = 2; col <= 3; col++)
+            for (int row = cell.row; row <= cell.row + 1; row++)
+                for (int col = cell.col; col <= cell.col + 1; col++)
                 {
                     var boardCell = cell.field.GetSquare(col, row);
                     cells[index++] = boardCell;
@@ -48,6 +49,25 @@ namespace RoyalAves.Gameplay
                     if (marker != null) marker.Owner = Owner;
                 }
             Owner.Initialize(animation, cells);
+        }
+
+        bool HasCubby(int col, int row)
+        {
+            var square = cell.field.GetSquare(col, row);
+            if (square == null || square.subSquares == null || square.subSquares.Count == 0) return false;
+            return square.GetSubSquare().GetComponent<MailCubbyCell>() != null;
+        }
+
+        // Anchor = top-left of its 2x2: right, below and diagonal are cabinet cells, and an even
+        // number of cabinet cells lies to the left and above (so side-by-side cabinets pair up).
+        bool IsGroupAnchor()
+        {
+            if (!HasCubby(cell.col + 1, cell.row) || !HasCubby(cell.col, cell.row + 1) || !HasCubby(cell.col + 1, cell.row + 1))
+                return false;
+            int left = 0, up = 0;
+            while (HasCubby(cell.col - 1 - left, cell.row)) left++;
+            while (HasCubby(cell.col, cell.row - 1 - up)) up++;
+            return left % 2 == 0 && up % 2 == 0;
         }
 
         void LateUpdate() { GetComponent<SpriteRenderer>().enabled = false; }

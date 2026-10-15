@@ -49,13 +49,23 @@ namespace SweetSugar.Scripts.Editor
             return layers;
         }
 
+        // Magic Mail elements keep the letter sprite on the prefab (it drives the objective count),
+        // so the editor icon comes from the element art instead.
+        static Texture2D PaletteTexture(SquareTypes sqType, GameObject prefab)
+        {
+            string path = sqType == SquareTypes.MailCubby ? "Assets/RoyalAves/Art/Obstacles/MailCubby/CM_armario_base_v1.png"
+                : sqType == SquareTypes.FrankingMachine ? "Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_corpo_v2.png" : null;
+            var art = path != null ? UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path) : null;
+            return art != null ? art : prefab.GetComponent<SpriteRenderer>()?.sprite?.GetTexture() as Texture2D;
+        }
+
         public static Texture2DSize GetSquareTexture(SquareTypes sqType)
         {
             var blockPrefab = GetBlockPrefab(sqType);
             if(blockPrefab.Any())
             {
                 var obj = blockPrefab?.First();
-                return new Texture2DSize(obj?.GetComponent<SpriteRenderer>()?.sprite?.GetTexture(), obj.GetComponent<Square>().sizeInSquares);
+                return new Texture2DSize(PaletteTexture(sqType, obj), obj.GetComponent<Square>().sizeInSquares);
             }
 
             return new Texture2DSize(null,Vector2Int.zero);
@@ -89,7 +99,7 @@ namespace SweetSugar.Scripts.Editor
 
                     if(typeCounter < blockPrefab.Length && !sqBlockBlock.anotherSquare)
                     {
-                        resultList.Add(new Texture2DSize(blockPrefab[typeCounter].GetComponent<SpriteRenderer>().sprite.GetTexture(), blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, index, sqBlockBlock.rotate));
+                        resultList.Add(new Texture2DSize(PaletteTexture(sqBlockBlock.squareType, blockPrefab[typeCounter]), blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, index, sqBlockBlock.rotate));
                     }
                 }
                 if (list1.Any()) listBlocks = list1.ToArray();

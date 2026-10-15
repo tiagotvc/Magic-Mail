@@ -52,6 +52,9 @@ namespace SweetSugar.Scripts.Blocks
         BigBlock,
         Marshmello,
         ChocoSpread,
+        // Magic Mail elements. Append only: levels serialize this enum as an integer.
+        MailCubby,
+        FrankingMachine,
     }
     
     //Added_feature
