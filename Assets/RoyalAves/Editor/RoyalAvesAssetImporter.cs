@@ -82,6 +82,10 @@ namespace RoyalAves.EditorTools
         {
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
             if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
+            // Map sheets/backgrounds own their import contract. Forcing Single here
+            // erased their sub-sprites on every reimport and displayed whole atlases.
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV2/") ||
+                assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV3/")) return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Sprite;
             importer.spriteImportMode = SpriteImportMode.Single;
