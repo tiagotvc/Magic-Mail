@@ -32,6 +32,9 @@ namespace SweetSugar.Scripts
             audioSource = GetComponent<AudioSource>();
             audioMixer = audioSource.outputAudioMixerGroup.audioMixer;
             audioSource.loop = true;
+            // Trilha original do mapa (Resources/RoyalAvesMapMusic) substitui a faixa 0 do template, se existir.
+            var mapMusic = Resources.Load<AudioClip>("RoyalAvesMapMusic");
+            if (mapMusic != null && music != null && music.Length > 0) music[0] = mapMusic;
             if (Instance == null)
                 Instance = this;
             else if (Instance != this)
