@@ -1,0 +1,293 @@
+fileFormatVersion: 2
+guid: 1afd9bba2851c054db9599abe81e4108
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5783758272025636825
+    second: christmas-garlands-cartoon_0
+  - first:
+      213: -4869837899050290759
+    second: christmas-garlands-cartoon_1
+  - first:
+      213: 3605693337549018597
+    second: christmas-garlands-cartoon_2
+  - first:
+      213: -8125317254289779985
+    second: christmas-garlands-cartoon_3
+  - first:
+      213: 2844772140834327723
+    second: christmas-garlands-cartoon_4
+  - first:
+      213: -178720158564300817
+    second: christmas-garlands-cartoon_5
+  - first:
+      213: -1653868868602089789
+    second: christmas-garlands-cartoon_6
+  - first:
+      213: 5656643034034766112
+    second: christmas-garlands-cartoon_7
+  - first:
+      213: 7370141188498527191
+    second: christmas-garlands-cartoon_8
+  - first:
+      213: -8184902423598903966
+    second: christmas-garlands-cartoon_9
+  - first:
+      213: -1793194507964699477
+    second: christmas-garlands-cartoon_10
+  - first:
+      213: 1849634081308280778
+    second: christmas_garlands_garland_straight
+  - first:
+      213: -4749680454302349994
+    second: christmas_garlands_garland_arch
+  - first:
+      213: 953281830229121019
+    second: christmas_garlands_wreath
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: christmas_garlands_garland_straight
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 173
+        width: 684
+        height: 310
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac706dca5683ba910800000000000000
+      internalID: 1849634081308280778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas_garlands_garland_arch
+      rect:
+        serializedVersion: 2
+        x: 757
+        y: 64
+        width: 699
+        height: 589
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65541bcaaceb51eb0800000000000000
+      internalID: -4749680454302349994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas_garlands_wreath
+      rect:
+        serializedVersion: 2
+        x: 1533
+        y: 69
+        width: 592
+        height: 560
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf714ad16ccba3d00800000000000000
+      internalID: 953281830229121019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      christmas-garlands-cartoon_0: -5783758272025636825
+      christmas-garlands-cartoon_1: -4869837899050290759
+      christmas-garlands-cartoon_10: -1793194507964699477
+      christmas-garlands-cartoon_2: 3605693337549018597
+      christmas-garlands-cartoon_3: -8125317254289779985
+      christmas-garlands-cartoon_4: 2844772140834327723
+      christmas-garlands-cartoon_5: -178720158564300817
+      christmas-garlands-cartoon_6: -1653868868602089789
+      christmas-garlands-cartoon_7: 5656643034034766112
+      christmas-garlands-cartoon_8: 7370141188498527191
+      christmas-garlands-cartoon_9: -8184902423598903966
+      christmas_garlands_garland_arch: -4749680454302349994
+      christmas_garlands_garland_straight: 1849634081308280778
+      christmas_garlands_wreath: 953281830229121019
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

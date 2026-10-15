@@ -1,0 +1,50 @@
+{
+  "tool": "built-in ImageGen",
+  "reference": "Assets/RoyalAves/Art/MapKitV3/Characters/postman-stylized-v7.png",
+  "jobs": [
+    {
+      "id": "postman-upper-rig-v8",
+      "folder": "Characters",
+      "file": "postman-upper-rig-v8.png",
+      "columns": 3,
+      "rows": 3,
+      "names": [
+        "head",
+        "torso",
+        "pelvis",
+        "arm-left-upper",
+        "arm-left-lower",
+        "hand-left",
+        "arm-right-upper",
+        "arm-right-lower",
+        "hand-right"
+      ],
+      "transparent": true,
+      "kind": "character-part",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-da731e6c-358f-4be3-b93d-00435f20b585.png",
+      "prompt": "Use case: precise-object-edit. Animation-ready CUTOUT PARTS for the EXACT original adult postman in the supplied reference. Preserve his approved identity, long angular non-chibi proportions, auburn pointed hair, crooked nose, red jacket, violet hat, teal scarf, navy trousers, cream gloves, gold satchel and brown boots. Match his clean glossy 2D illustration, colors, shading and thin ivory outer outline. This is a technical separation sheet, NOT a redesign or new full character pose. Genuine TRANSPARENT alpha. STRICT THREE columns THREE rows, NINE equal cells, ONE complete separate part in each cell, centered with large transparent gutters, no overlaps, no text, no labels, no full-body figure. Draw COMPLETE concealed joint caps and missing hidden surfaces with generous overlap so parts can rotate without holes. No white outline drawn across the hidden attachment cap; outlines only along exposed silhouette. All arm/leg segments point straight DOWN from a rounded attachment at the top. No shadows or backgrounds. Row-major parts: 1 HEAD with face, hair, cap and short complete neck, exactly the reference's mischievous adult face, NO scarf or shoulders; 2 TORSO only red jacket chest/waist, violet vest, gold buttons and diagonal brown satchel strap, complete collar and shoulder sockets, NO head, arms, scarf, bag, legs or long jacket tails; 3 PELVIS only upper navy trousers waist with full left and right hip sockets, no legs; 4 viewer LEFT upper arm red sleeve shoulder-to-elbow, straight downward, full shoulder and elbow overlaps; 5 viewer LEFT forearm red sleeve elbow-to-wrist with flared red cuff at bottom, straight downward; 6 viewer LEFT cream glove GRIPPING FIST with complete wrist stub at top, fingers below; 7 viewer RIGHT upper arm red sleeve shoulder-to-elbow, straight downward; 8 viewer RIGHT forearm red sleeve elbow-to-wrist, flared red cuff at bottom, straight downward; 9 viewer RIGHT OPEN cream glove with complete wrist stub at TOP and expressive open fingers pointing DOWN, palm visible, only one hand. Exactly nine separate parts. CRITICAL TECHNICAL CORRECTION: shrink EACH part to fit well INSIDE its own cell, with at least 45 px of fully empty transparent padding on ALL FOUR sides. Especially HEAD hair and cap MUST NOT touch the torso or cross any cell border. Every part must be disconnected by generous clear transparent gutters from ALL other parts. Small parts are correct. Keep rows and columns meticulously aligned. NO background glow or haze of any kind. No cylindrical tubing or visible open pipe ends; joints should be solid flat overlapping fabric/skin tabs."
+    },
+    {
+      "id": "postman-lower-rig-v8",
+      "folder": "Characters",
+      "file": "postman-lower-rig-v8.png",
+      "columns": 3,
+      "rows": 3,
+      "names": [
+        "leg-left-upper",
+        "leg-left-lower",
+        "boot-left",
+        "leg-right-upper",
+        "leg-right-lower",
+        "boot-right",
+        "satchel",
+        "coat-tails",
+        "scarf"
+      ],
+      "transparent": true,
+      "kind": "character-part",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-85c467a3-1ea1-4255-8b50-0063f96ceca5.png",
+      "prompt": "Use case: precise-object-edit. Animation-ready CUTOUT PARTS for the EXACT original adult postman in the supplied reference. Preserve his approved identity, long angular non-chibi proportions, auburn pointed hair, crooked nose, red jacket, violet hat, teal scarf, navy trousers, cream gloves, gold satchel and brown boots. Match his clean glossy 2D illustration, colors, shading and thin ivory outer outline. This is a technical separation sheet, NOT a redesign or new full character pose. Genuine TRANSPARENT alpha. STRICT THREE columns THREE rows, NINE equal cells, ONE complete separate part in each cell, centered with large transparent gutters, no overlaps, no text, no labels, no full-body figure. Draw COMPLETE concealed joint caps and missing hidden surfaces with generous overlap so parts can rotate without holes. No white outline drawn across the hidden attachment cap; outlines only along exposed silhouette. All arm/leg segments point straight DOWN from a rounded attachment at the top. No shadows or backgrounds. Row-major parts: 1 viewer LEFT thigh, navy trouser upper leg with rounded hip cap and complete knee, straight down, NO boot; 2 viewer LEFT navy shin lower trouser leg, complete knee and ankle, straight down, NO boot; 3 viewer LEFT large brown boot with wide cuff and warm gold button, reference boot points a little LEFT, full ankle opening; 4 viewer RIGHT navy thigh with complete rounded hip cap and knee, straight down, NO boot; 5 viewer RIGHT navy shin with complete knee and ankle, straight down, NO boot; 6 viewer RIGHT large brown boot with wide cuff, warm gold button and long irregular toe pointing RIGHT, full ankle opening; 7 gold mail SATCHEL with the two cream envelopes securely in its opening, no shoulder strap outside the bag, complete top for attachment; 8 the pair of asymmetric RED JACKET TAILS together as ONE back skirt panel with complete waist attachment band at top, no torso or limbs; 9 the complete TEAL SCARF as ONE cloth part with neck knot and two unequal pointed flowing tails, NO head or body. Exactly nine separate parts. CRITICAL TECHNICAL CORRECTION: make every part considerably SMALLER with generous 50 pixel transparent gutters on all four sides of EACH cell. In particular coat tails and scarf must NEVER extend outside their own cell or into the neighboring column. Nothing touches or overlaps any other part. NO background glow/haze at all. Solid flat concealed joint tabs, no cylindrical pipe openings. Boots should be smaller with the same padding, fully inside their cells."
+    }
+  ]
+}

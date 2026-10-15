@@ -1,0 +1,134 @@
+{
+  "jobs": [
+    {
+      "key": "polishHouse",
+      "id": "green-post-office-polished",
+      "folder": "GreenLand",
+      "file": "green-post-office-polished.png",
+      "transparent": true,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "house"
+      ],
+      "kind": "prop",
+      "prompt": "Use case: style-transfer. Asset type: one standalone transparent sprite for Magic Mail, a polished casual puzzle saga world map. Input image 1 is the old post office EDIT TARGET, input 2 the purple tree STYLE REFERENCE, input 3 the envelope bench/topiary/cart STYLE REFERENCE. Repaint only the house to match the bold rounded volumetric cartoon illustration of the references. Preserve its recognizable small cream post-office house silhouette, broad curved purple gabled roof, round turquoise window, gold envelope plaque, little gold chimney and rounded front door. Change the door to rich teal, matching our postal lamps; make the roof softly shiny and tiled with a few broad rounded purple tiles, not a flat slab. Give cream walls warm shaded volume, soft rounded corners, small chunky golden trims, crisp readable shapes and the SAME clean ivory-white outside outline as the reference tree and bench. Slight 3/4 front view with one narrow side wall, mostly frontal, modest amount of roof visible from above. Glossy upper-left highlights, simple drawn dimensional shading, no photorealism, no excessive ornament. One house ONLY, fully isolated, whole object with ample transparent margin, consistent scale, no text, no snow, no grass, no cast shadow baked into the asset, no background or sheet.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-7a6f8300-baee-406e-9415-2474d37bde2e.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/GreenLand/green-post-office-polished.png",
+      "tool": "built-in image_gen",
+      "alphaGround": false
+    },
+    {
+      "key": "polishBridgeClean",
+      "id": "green-bridge-deck",
+      "folder": "GreenLand",
+      "file": "green-bridge-deck.png",
+      "transparent": true,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "deck"
+      ],
+      "kind": "prop",
+      "prompt": "Use case: background-extraction. EDIT TARGET: the supplied green bridge deck. Preserve every pixel appearance INSIDE the deck: the five mint/teal planks, seams, corner teal bolts, painted highlights, dark thin rim and crisp ivory outer outline. Remove ALL glow, haze, cast shadow, cream aura and gray/black backdrop OUTSIDE the ivory outline. Outside the clean silhouette must be truly alpha-zero TRANSPARENT, including ample margin. Preserve the straight orthographic top-down shape and exact five-plank composition. No new objects, no text, no perspective change.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-4daf12c4-1db3-4aa8-b08f-1eff07220aa5.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/GreenLand/green-bridge-deck.png",
+      "tool": "built-in image_gen",
+      "alphaGround": false
+    },
+    {
+      "key": "greenFloorOnly",
+      "id": "ground-green-layer",
+      "folder": "GreenLand",
+      "file": "ground-green-layer.png",
+      "transparent": false,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "terrain"
+      ],
+      "kind": "terrain",
+      "prompt": "Use case: background-extraction. EDIT TARGET is the supplied GreenLand terrain plate. Keep the ENTIRE ground below its rounded planet horizon exactly as drawn, including pale green S lane, grass, bands, edging, original portrait canvas and ground proportions. Remove EVERYTHING above the ground's curved horizon: all sky colors, clouds and any haze, and replace that area with true alpha-zero transparency. Do not move or crop the ground or change the canvas dimensions/composition. This must be a ground-only reusable texture layer, not a whole background. No cloud, sky, sun, volcano, UI, props or text, and no new outline at the horizon.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-21120fec-3eab-4264-a245-f62a7be68577.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/GreenLand/ground-green-layer.png",
+      "tool": "built-in image_gen",
+      "alphaGround": true
+    },
+    {
+      "key": "lavaFloorOnly",
+      "id": "ground-lava-layer",
+      "folder": "LavaLand",
+      "file": "ground-lava-layer.png",
+      "transparent": false,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "terrain"
+      ],
+      "kind": "terrain",
+      "prompt": "Use case: background-extraction. EDIT TARGET is the supplied volcanic terrain plate. Keep EXACTLY its whole ground below the rounded planet horizon: plum/brown basalt outer grass-equivalent, apricot/coral S-shaped walking lane, colored transverse bands, sparse small ember stone flecks and soft clean edging. Preserve original portrait canvas size and all ground proportions. Remove all sky, clouds, far volcanoes, hazy silhouettes and backdrop above the CURVED ground horizon. That entire sky area must become genuinely alpha-zero TRANSPARENT. Ground texture only, no new outline along horizon, no background, clouds, volcanoes, UI, markers, props, letters or text.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d2a63347-bf63-4438-8702-0a6b0d5bd34c.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/LavaLand/ground-lava-layer.png",
+      "tool": "built-in image_gen",
+      "alphaGround": true
+    },
+    {
+      "key": "warmSkyOnly",
+      "id": "sky-golden-layer",
+      "folder": "Shared",
+      "file": "sky-golden-layer.png",
+      "transparent": false,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "sky"
+      ],
+      "kind": "background",
+      "prompt": "Use case: stylized-concept. Asset type: one clean opaque sky-only raster layer for a colorful puzzle saga map. Tall portrait smooth softly painted golden-yellow and warm apricot sky, with richer orange toward upper edge and buttery pale golden yellow toward bottom, cheerful luminous clean gradients like a polished candy puzzle map. ZERO objects or silhouettes. Absolutely no ground, horizon line, land, cloud, sun disc, rays, volcano, mountain, smoke, buildings, UI, vignette, text or borders. Entire canvas is sky color only; all objects will be separate animated sprites.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d61029fa-130d-43db-8d96-74bc485ff8de.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/Shared/sky-golden-layer.png",
+      "tool": "built-in image_gen",
+      "alphaGround": false
+    },
+    {
+      "key": "warmCloudLayers",
+      "id": "warm-cloud-layers",
+      "folder": "Shared",
+      "file": "warm-cloud-layers.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "small",
+        "wide",
+        "bank"
+      ],
+      "kind": "prop",
+      "prompt": "Use case: stylized-concept. Asset type: THREE independent transparent warm cloud silhouettes for a polished candy puzzle saga map, arranged in one horizontal row with large transparent spacing. Left small cute cream puff cloud, middle wide pale buttery-yellow cloud cluster, right tall soft cream cloud bank. Chunky rounded scalloped silhouettes, simple soft 2D painted gradients with tiny warm peach shading low down, sunlit pastel ivory yellow colors. Background clouds, no heavy dark outline or glossy 3D plastic, no embedded sky, no ground, no sun, no volcano, no glow outside, no letters or labels. Each cloud must be fully separate, fully visible on genuine transparent background.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-7d3d9c4e-735b-4162-a72c-00abc44bfe8f.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/Shared/warm-cloud-layers.png",
+      "tool": "built-in image_gen",
+      "alphaGround": false
+    },
+    {
+      "key": "lavaCloudLayers",
+      "id": "lava-cloud-layers",
+      "folder": "LavaLand",
+      "file": "lava-cloud-layers.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "small",
+        "wide",
+        "bank"
+      ],
+      "kind": "prop",
+      "prompt": "Use case: stylized-concept. Asset type: THREE independent transparent volcanic sky/smoke cloud sprites for a polished colorful puzzle saga map, in one horizontal row with generous transparent spacing. Left small rounded warm pale gray/lavender smoke puff cluster; middle broad peach-gray drifting cloud; right tall bulbous pale smoky plum cloud cluster. Friendly simple softly painted 2D chunky round silhouettes, warm ash gray/peach/plum palette, restrained highlights. Only the cloud shapes, no active flame, no volcano or mountains, no sky color, no ground, no baked external shadow or glow, no text, no borders. Genuine transparency outside each separate cloud.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9df51e95-ff24-49cc-b58a-9037151acf66.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/LavaLand/lava-cloud-layers.png",
+      "tool": "built-in image_gen",
+      "alphaGround": false
+    }
+  ]
+}

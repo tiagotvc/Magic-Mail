@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4cd074ea55ee0d46b7aa0cd315a4928, type: 3}
+  m_Name: natureza-3
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.WorldMap.WorldMapLibraryItem
+  title: Flores
+  category: 2
+  sprite: {fileID: -2922215092793359351, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  kind: 1
+  size: 0.27

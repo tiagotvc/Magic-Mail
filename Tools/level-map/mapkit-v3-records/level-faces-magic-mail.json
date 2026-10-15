@@ -1,0 +1,25 @@
+{
+  "jobs": [
+    {
+      "id": "level-faces-magic-mail",
+      "folder": "Shared",
+      "file": "level-faces-magic-mail.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "active",
+        "completed",
+        "upcoming"
+      ],
+      "kind": "prop",
+      "prompt": "Use case: precise-object-edit. EDIT TARGET is the supplied row of three glossy blank circular game button faces. Preserve the exact true top-down circle geometry, spacing, upper-left white highlights, dimensional beveled face, clean pale ivory/gold thin outside rim and genuine transparency. Change ONLY the face palettes to Magic Mail's own colors: LEFT vivid deep teal/green-aqua (active level), MIDDLE rich royal purple/violet (completed level), RIGHT light muted lavender/lilac (upcoming level). Clearly different colors with readable contrast for later white numbers. Keep the glossy highlights neutral white and rim pale warm ivory, no pink or orange fills. Three separate clean complete circles in one row, no numbers, crowns, stars, text, cast shadows, background, glow outside or new elements.",
+      "tool": "built-in image_gen",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9c6bac7e-c101-4cca-af02-2451690e8528.png",
+      "destination": "Assets/RoyalAves/Art/MapKitV3/Shared/level-faces-magic-mail.png",
+      "references": [
+        "Assets/RoyalAves/Art/MapKitV3/Shared/level-faces-reference.png"
+      ]
+    }
+  ]
+}

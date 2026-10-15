@@ -1,0 +1,38 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-10-13",
+  "styleReferences": [
+    "postal-lamp.png",
+    "mailbox-poses.png"
+  ],
+  "specs": [
+    {
+      "key": "dog",
+      "file": "dog-courier-poses-glow.png",
+      "target": "dog-courier-poses.png",
+      "grid": "2 columns x 2 rows, same caramel courier dog in the four existing poses: idle, wag, sniff, carry envelope",
+      "prompt": "Use case: style-transfer. Image 1 is the edit target; images 2 and 3 are the APPROVED rendering-style references (postal lamp and mailbox). Edit only image 1 into the same polished illustrated casual match-3 game style as references. Preserve subjects, palette, layout, grid and simple silhouettes: 2 columns x 2 rows, same caramel courier dog in the four existing poses: idle, wag, sniff, carry envelope. User says the target is too flat and plain compared with the references. Add the references' rounded illustrated volume, broad luminous soft highlights on upper-left faces, richer underside colors, gentle warm cream rim lighting and clean cream contour, tiny specular accents ONLY where appropriate, appealing glowing candy-like finish. This means hand-painted cartoon light and subtle smooth gradients within few large shapes, NOT realistic textures or extra intricate detail, NOT photorealistic 3D. Natural foliage remains softly lit matte, not chrome; buildings have simple broad glowing roof edges and lit rounded surfaces. All objects separate with clear gaps inside their existing grid cells; no object overlaps cells, no cropping, feet aligned near cell bottom. No labels, letters, HUD, floor, background, cast shadows, extra objects, sparkles or stray pixels. Keep genuinely transparent background with clean alpha; do not bake checkerboard. Do not include the reference lamp/mailbox in the output. Output only the edited target."
+    },
+    {
+      "key": "tree",
+      "file": "round-purple-tree-glow.png",
+      "target": "round-purple-tree.png",
+      "grid": "one purple tree, keep the exact simple three round foliage lobes and short trunk",
+      "prompt": "Use case: style-transfer. Image 1 is the edit target; images 2 and 3 are the APPROVED rendering-style references (postal lamp and mailbox). Edit only image 1 into the same polished illustrated casual match-3 game style as references. Preserve subjects, palette, layout, grid and simple silhouettes: one purple tree, keep the exact simple three round foliage lobes and short trunk. User says the target is too flat and plain compared with the references. Add the references' rounded illustrated volume, broad luminous soft highlights on upper-left faces, richer underside colors, gentle warm cream rim lighting and clean cream contour, tiny specular accents ONLY where appropriate, appealing glowing candy-like finish. This means hand-painted cartoon light and subtle smooth gradients within few large shapes, NOT realistic textures or extra intricate detail, NOT photorealistic 3D. Natural foliage remains softly lit matte, not chrome; buildings have simple broad glowing roof edges and lit rounded surfaces. All objects separate with clear gaps inside their existing grid cells; no object overlaps cells, no cropping, feet aligned near cell bottom. No labels, letters, HUD, floor, background, cast shadows, extra objects, sparkles or stray pixels. Keep genuinely transparent background with clean alpha; do not bake checkerboard. Do not include the reference lamp/mailbox in the output. Output only the edited target."
+    },
+    {
+      "key": "props",
+      "file": "small-postal-props-glow.png",
+      "target": "small-postal-props.png",
+      "grid": "2 columns x 2 rows: parcels top left, yellow flowers top right, postal envelope sign bottom left, green shrub bottom right",
+      "prompt": "Use case: style-transfer. Image 1 is the edit target; images 2 and 3 are the APPROVED rendering-style references (postal lamp and mailbox). Edit only image 1 into the same polished illustrated casual match-3 game style as references. Preserve subjects, palette, layout, grid and simple silhouettes: 2 columns x 2 rows: parcels top left, yellow flowers top right, postal envelope sign bottom left, green shrub bottom right. User says the target is too flat and plain compared with the references. Add the references' rounded illustrated volume, broad luminous soft highlights on upper-left faces, richer underside colors, gentle warm cream rim lighting and clean cream contour, tiny specular accents ONLY where appropriate, appealing glowing candy-like finish. This means hand-painted cartoon light and subtle smooth gradients within few large shapes, NOT realistic textures or extra intricate detail, NOT photorealistic 3D. Natural foliage remains softly lit matte, not chrome; buildings have simple broad glowing roof edges and lit rounded surfaces. All objects separate with clear gaps inside their existing grid cells; no object overlaps cells, no cropping, feet aligned near cell bottom. No labels, letters, HUD, floor, background, cast shadows, extra objects, sparkles or stray pixels. Keep genuinely transparent background with clean alpha; do not bake checkerboard. Do not include the reference lamp/mailbox in the output. Output only the edited target."
+    },
+    {
+      "key": "landmarks",
+      "file": "postal-region-landmarks-glow.png",
+      "target": "postal-region-landmarks.png",
+      "grid": "4 columns x 2 rows: postal boat, windmill, lighthouse, mountain cottage in the top row; garden clock, grand postal agency, tunnel arch, envelope kite in the bottom row",
+      "prompt": "Use case: style-transfer. Image 1 is the edit target; images 2 and 3 are the APPROVED rendering-style references (postal lamp and mailbox). Edit only image 1 into the same polished illustrated casual match-3 game style as references. Preserve subjects, palette, layout, grid and simple silhouettes: 4 columns x 2 rows: postal boat, windmill, lighthouse, mountain cottage in the top row; garden clock, grand postal agency, tunnel arch, envelope kite in the bottom row. User says the target is too flat and plain compared with the references. Add the references' rounded illustrated volume, broad luminous soft highlights on upper-left faces, richer underside colors, gentle warm cream rim lighting and clean cream contour, tiny specular accents ONLY where appropriate, appealing glowing candy-like finish. This means hand-painted cartoon light and subtle smooth gradients within few large shapes, NOT realistic textures or extra intricate detail, NOT photorealistic 3D. Natural foliage remains softly lit matte, not chrome; buildings have simple broad glowing roof edges and lit rounded surfaces. All objects separate with clear gaps inside their existing grid cells; no object overlaps cells, no cropping, feet aligned near cell bottom. No labels, letters, HUD, floor, background, cast shadows, extra objects, sparkles or stray pixels. Keep genuinely transparent background with clean alpha; do not bake checkerboard. Do not include the reference lamp/mailbox in the output. Output only the edited target."
+    }
+  ]
+}

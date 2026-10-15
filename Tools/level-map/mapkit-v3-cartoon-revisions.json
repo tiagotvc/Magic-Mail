@@ -1,0 +1,135 @@
+{
+  "reason": "user requires consistent white contour and simple painted cartoon; rejected glossy 3D miniature style",
+  "jobs": [
+    {
+      "id": "green-route-landmarks-cartoon",
+      "folder": "GreenLand",
+      "file": "green-route-landmarks-cartoon.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "postal-gate",
+        "mail-bag-arch",
+        "covered-postal-stop"
+      ],
+      "subjects": "small cream archway with purple roof and gold envelope emblem; whimsical arch shaped like a purple mailbag handle with cream sides; small cream teal-post postal shelter with broad purple roof and gold envelope sign",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: small cream archway with purple roof and gold envelope emblem; whimsical arch shaped like a purple mailbag handle with cream sides; small cream teal-post postal shelter with broad purple roof and gold envelope sign. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 3 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-route-landmarks",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-route-landmarks.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    },
+    {
+      "id": "green-flags-and-banners-cartoon",
+      "folder": "GreenLand",
+      "file": "green-flags-and-banners-cartoon.png",
+      "transparent": true,
+      "columns": 2,
+      "rows": 1,
+      "names": [
+        "envelope-flag",
+        "postal-bunting"
+      ],
+      "subjects": "purple curved fabric flag with one golden envelope emblem WITHOUT pole; short arched string of five alternating purple and teal triangular bunting flags with gold fasteners",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: purple curved fabric flag with one golden envelope emblem WITHOUT pole; short arched string of five alternating purple and teal triangular bunting flags with gold fasteners. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 2 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-flags-and-banners",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-flags-and-banners.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    },
+    {
+      "id": "green-garden-props-cartoon",
+      "folder": "GreenLand",
+      "file": "green-garden-props-cartoon.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "envelope-bench",
+        "seal-topiary",
+        "parcel-cart"
+      ],
+      "subjects": "short whimsical cream garden bench with purple seat and envelope shaped back; three-lobe teal topiary on short cream trunk with gold seal accent; small teal postal cart with two purple wheels and three large cream parcels",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: short whimsical cream garden bench with purple seat and envelope shaped back; three-lobe teal topiary on short cream trunk with gold seal accent; small teal postal cart with two purple wheels and three large cream parcels. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 3 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-garden-props",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-garden-props.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    },
+    {
+      "id": "green-letter-factory-cartoon",
+      "folder": "GreenLand",
+      "file": "green-letter-factory-cartoon.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "main-building",
+        "chimney",
+        "side-letter-chute"
+      ],
+      "subjects": "SIMPLE squat cream postal factory with broad purple roof, teal doorway, one large gold envelope emblem; separate short chunky purple-gold chimney; separate curved teal letter delivery tube ending in a wide funnel",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: SIMPLE squat cream postal factory with broad purple roof, teal doorway, one large gold envelope emblem; separate short chunky purple-gold chimney; separate curved teal letter delivery tube ending in a wide funnel. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 3 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-letter-factory",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-letter-factory.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    },
+    {
+      "id": "green-sorter-machine-cartoon",
+      "folder": "GreenLand",
+      "file": "green-sorter-machine-cartoon.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "machine-body",
+        "stamp-arm",
+        "conveyor-wheel"
+      ],
+      "subjects": "small teal-purple rounded machine BODY with a purple low conveyor and gold envelope plaque but NO stamping arm; separate gold-purple vertical stamping arm with round purple seal foot; separate purple conveyor wheel with gold hub",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: small teal-purple rounded machine BODY with a purple low conveyor and gold envelope plaque but NO stamping arm; separate gold-purple vertical stamping arm with round purple seal foot; separate purple conveyor wheel with gold hub. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 3 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-sorter-machine",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-sorter-machine.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    },
+    {
+      "id": "green-postal-fountain-cartoon",
+      "folder": "GreenLand",
+      "file": "green-postal-fountain-cartoon.png",
+      "transparent": true,
+      "columns": 2,
+      "rows": 1,
+      "names": [
+        "envelope-fountain",
+        "seal-fountain"
+      ],
+      "subjects": "small cream-gold circular fountain bowl with big teal envelope sculpture and ONE simple painted water arc; smaller purple-cream bowl with golden round postage-seal centerpiece and simple quiet water surface",
+      "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: small cream-gold circular fountain bowl with big teal envelope sculpture and ONE simple painted water arc; smaller purple-cream bowl with golden round postage-seal centerpiece and simple quiet water surface. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 2 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet.",
+      "status": "pending",
+      "baseFamily": "green-postal-fountain",
+      "references": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/GreenLand/green-postal-fountain.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+      ]
+    }
+  ]
+}

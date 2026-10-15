@@ -1,0 +1,64 @@
+{
+  "tool": "built-in image_gen",
+  "userChoices": {
+    "portrait": "Adult map courier, purple hat and red coat",
+    "counters": "Only golden letters, as reference"
+  },
+  "jobs": [
+    {
+      "id": "background",
+      "prompt": "Use case: background-extraction. Edit target is the HUD reference. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. Extract ONLY the long PURPLE HUD BACKPLATE, removing the heart, text, counters, portrait frame, envelope, gear, every foreground element and all surrounding scenery/screen. Replace removed elements with uninterrupted smooth deep violet/royal-purple surface matching the reference. Preserve its brighter violet top and deep blue-violet bottom, subtle softly illuminated inset rim, rounded LOWER corners, and fine continuous GOLDEN LOWER frieze with a distinct pale-yellow top face and amber lower face. Rectangular TOP edge, NO top gold border. Width-to-height 5.2:1, on a very wide transparent canvas. Clean empty backplate only. Do not draw any icons or lettering.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-6ff01415-ac02-4093-8b8e-d15a912a7612.png",
+      "file": "hud-background-v24.png"
+    },
+    {
+      "id": "counter",
+      "prompt": "Use case: background-extraction. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. Extract ONE EMPTY long horizontal resource counter capsule from the HUD reference, and remove all text and overlapping icons. Glossy deep PLUM-PURPLE recessed center, subtly irregular elongated rounded capsule silhouette, a thin rounded GOLD rim with clearly separate pale yellow lit top and amber shadow lower lobe. Width-to-height 2.9:1. No heart, envelope, portrait, number, text, or background. Only a single empty UI capsule, centered, true transparent exterior.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-3d0b88be-2968-42e3-9235-9034a8f88541.png",
+      "file": "hud-counter-v24.png"
+    },
+    {
+      "id": "portrait",
+      "prompt": "Use case: identity-preserve. Image 1 is the actual existing ADULT courier character, whose identity MUST be preserved exactly. Image 2 is only the HUD frame/finish reference. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. Create a square game HUD PORTRAIT of the SAME adult courier from image 1, head, purple postal hat, teal scarf and a little red jacket collar, inside a chunky simply molded GOLD square frame with softly crooked rounded corners like image 2. Preserve his long pointed nose, green eyes, angular narrow adult face, brown swept-up hair, distinctive purple crooked cap with gold envelope emblem, and adult proportions. Friendly confident smile, face and cap large and readable. NO CHILD, no chibi, no blue cap, no uniform recoloring, no new character. Head-and-upper-shoulders crop, no hands, legs, full body, wings or ornamental badge. Simple blue-teal backdrop INSIDE frame only; outside square frame is truly TRANSPARENT. Frame alone has yellow lit upper face and amber shadow face, not thick ornamentation.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Characters/postman-map-v12.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-ebb8973f-91eb-4f8e-b320-0f151a9a1235.png",
+      "file": "hud-portrait-v24.png"
+    },
+    {
+      "id": "heart",
+      "prompt": "Use case: stylized-concept. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. ONE isolated glossy RED HEART life icon, no number. Bold expressive uneven Crash-style heart silhouette: left lobe a little larger and leaning forward, right lobe slightly higher, slightly crooked tapered bottom point and thick softly beveled sidewall. Rich cherry-red front, coral-red lit shoulder and darker wine-red thickness at lower-right. A large clear pale cream specular reflection on upper left, smaller sharp highlight on upper right. Simple recognizable heart silhouette, not a realistic anatomical organ. No frame, no tile, no lettering. Three-dimensional sculpted candy/plastic volume, use the reference as finish guide.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-443a3872-60c4-4be0-a0b2-b628a9642acb.png",
+      "file": "hud-heart-v24.png"
+    },
+    {
+      "id": "mail",
+      "prompt": "Use case: stylized-concept. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. ONE isolated GOLDEN POSTAL ENVELOPE resource icon, closed envelope with large triangular folded flap. Crash-style crooked asymmetrical silhouette: uneven tapered trapezoid, slightly tilted counterclockwise, corners of unequal angles. Thick beveled three-dimensional gold edge, pale lemon-yellow large front reflection, deep warm amber lower/right thickness, clearly raised overlapping triangular flap. Simple big readable forms only. No wax seal, heart, number, text, surrounding disk, badge, ground or UI capsule. Match the GOLD envelope in the reference but make silhouette more playfully irregular and sculpted.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-93939258-4e21-452f-a02f-1e946e3ce2c7.png",
+      "file": "hud-mail-v24.png"
+    },
+    {
+      "id": "settings",
+      "prompt": "Use case: stylized-concept. Premium casual-game UI for Magic Mail. Match the attached purple/gold HUD reference's painted 3D finish, with Crash Bandicoot's slightly crooked, asymmetric, tapered silhouettes. Large clean pale specular reflection patches, smooth saturated shading, clearly visible shallow bevel, warm amber shadow face and pale yellow lit face on gold. Crisp polished raster asset, no text, numerals, symbols added, particles, sparkles, external glow or ornate decorations. TRUE TRANSPARENT alpha outside the isolated asset, full object visible, tiny even safety margin. ONE isolated GOLD SETTINGS GEAR icon. A chunky three-dimensional cogwheel with SIX broadly tapered slightly uneven teeth, a large clean circular hole, playful Crash-style irregular asymmetric outer contour, subtly tilted perspective like a thick molded gold object. Pale lemon-gold upper/left bevels, saturated golden front and rich amber lower/right thickness. Clear broad reflections and soft smooth inner bevel around the open transparent hole. Legible as settings at 48px. NO outer blue disk, no frame, no tiny parts, screws, text, numbers or surrounding glow.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/level-map/previews/navigation-reference/hud-reference-0.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-2da91fde-f953-4c5d-b41c-0b3917abf95e.png",
+      "file": "hud-settings-v24.png"
+    }
+  ]
+}

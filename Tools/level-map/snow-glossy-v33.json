@@ -1,0 +1,26 @@
+{
+  "tool": "built-in image_gen",
+  "direction": "Separate glossy snow overlays registered to the original artwork; original source pixels are unchanged.",
+  "jobs": [
+    {
+      "id": "shrub",
+      "file": "snow-shrub-glossy-v33.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-b7b847e3-4bd0-43c8-85d3-4e936d80cf89.png",
+      "base": "Assets/RoyalAves/Art/MapKitV3/Library/Props/shrub-coral-v15.png",
+      "prompts": [
+        "Use case: compositing. Asset: transparent SNOW-ONLY overlay layer for the exact red shrub in reference image 1. The reference is a registration guide only: preserve its canvas aspect, exact shrub scale, silhouette positions and framing, but DO NOT draw any red/orange foliage, shrub outline, ground or reference backdrop in the output. Output ONLY 4 or 5 small rounded snow caps resting on the upward-facing tops of the shrub's existing big lobes, positioned exactly where they would sit when this PNG is laid over the reference. Main cap follows the highest central lobe near top center, smaller caps on upper left, upper right and the broad front center lobe. Snow covers only the upper 15-25 percent of each lobe, with a few short thick soft scallops, leaving most of the shrub colored when layered. Restrained detail: broad clean creamy white highlights, very soft pale ice-blue and lavender underside shading, glossy painted cartoon finish matching the reference. Rounded weight and readable thickness, not melted icing drips, no icicles, no tiny particles, no realistic texture. Leave the original empty margins and plenty of TRANSPARENT lower canvas; do not rearrange the snow into a sprite sheet or center each cap separately. Single registered overlay composition, same wide landscape framing as reference. Truly transparent alpha zero EVERYWHERE except the snow caps. No glow, halo, shadows floating outside snow, ground patch, text, green/red foliage, trunks or other objects.",
+        "Use case: background-extraction / precise-object-edit. Clean this snow overlay for production. Keep ONLY the four existing solid snow caps, their exact shapes, positions, size, colors and canvas framing. Remove ALL glow, outer haze, dark backdrop and soft aura surrounding the snow. Snow must have a crisp smooth cutout silhouette with only a 1-pixel antialiased edge, fully opaque inside. Absolutely alpha ZERO in the gaps between caps and everywhere else. Do not move or enlarge the caps, do not add speckles or snowflakes. The snow remains creamy white with pale blue/lavender underside shading and broad painted highlights. Transparent PNG, no scenery, no text."
+      ]
+    },
+    {
+      "id": "pine",
+      "file": "snow-pine-glossy-v33.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-833fd15d-06fc-416f-9857-920181b1a810.png",
+      "base": "Assets/RoyalAves/Art/MapKitV3/Library/Arvores/pine-classic-glossy-v29.png",
+      "prompts": [
+        "Use case: compositing. Asset: transparent SNOW-ONLY overlay layer registered to the exact green pine tree in reference image 1. Reference is a geometry and position guide only: same canvas aspect ratio, same tree scale and framing. DO NOT draw the green tree, trunk, contour or background. Output ONLY snow resting in 3 separated tiers at their EXACT original positions: a small pointed rounded cap on the top tip, a curved broken band resting on the upper-facing shoulder of the middle foliage tier, and another on the upper-facing shoulder of the bottom foliage tier. Follow the original branches' curved sweeping shape without filling the entire foliage. Thin-to-medium soft padded snow, short rounded scallops showing weight, broad creamy white highlights and pale blue/lavender underside shading in the same clean glossy painted cartoon style as the reference. Keep most of each tier green when composited. No long dripping icing, no icicles, no tiny flecks, no realistic snow grains or intricate details. Preserve empty side margins; lower trunk region and all areas between the 3 snow tiers must be fully TRANSPARENT. Do NOT pack or stack caps into a sprite sheet or recenter individual tiers. One registered layer in the same near-square full-tree canvas, with snow exactly at original tree coordinates. Genuine alpha-zero transparent background everywhere except snow. No foliage, wood, terrain, shadows outside snow, halo, glow, text or decorations.",
+        "Use case: background-extraction / precise-object-edit. Production cleanup of this 3-tier snow overlay. Preserve ONLY the three existing solid painted snow tiers at their exact same positions, scale, shapes, highlights and canvas framing. Remove EVERY stray white/cyan fragment, every disconnected speckle, every jagged halo and ALL marks outside those three smooth snow shapes. Especially clean the transparent gaps above and between the middle and lower tiers. Do not draw foliage or extra snow particles. Crisp smooth cutout contours, fully opaque snow, alpha zero everywhere outside with only a thin 1-pixel antialiased edge. No backdrop, glow or drop shadows. Keep the exact three tier layout registered to the original square canvas. Transparent PNG, no text."
+      ]
+    }
+  ]
+}

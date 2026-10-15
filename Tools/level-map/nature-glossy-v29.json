@@ -1,0 +1,45 @@
+{
+  "tool": "built-in image_gen",
+  "jobs": [
+    {
+      "id": "pine",
+      "file": "pine-classic-glossy-v29.png",
+      "title": "Pinheiro clássico - pintura do arbusto",
+      "category": "Arvores",
+      "prompt": "Use case: style-transfer. Create ONE isolated pine sprite. Image 1 is a six-object atlas: the ONLY shape target is the PINE AT TOP CENTER. Preserve that exact pine's outline and proportions: upright curved pointed top, three broad triangular tiers with elongated swept-out tips and a central hanging rounded tongue per tier, short plain narrow brown trunk. Do NOT copy the round tree, bush, flowers, stones or fence elsewhere in the atlas. Image 2, the RED SHRUB, is the ONLY PAINTING reference. Change ONLY the pine's rendering/color finish to match this shrub, preserving the target pine's silhouette. Rich medium-dark forest-green / emerald foliage, a little lighter fresh green on lit upper faces, deep saturated green shadow shapes underneath, broad smooth gradients and large creamy pale green oval gloss reflections, one per tier. Same artist and exact broad clean painted-gloss language as the red shrub. No realistic 3D rendering, no fine leaf/needle details, no extra tiers, no scalloped fluffy bubble clusters, no texture, no bark grooves, no roots. Keep the thin ivory contour and dark local-green inner contour. Entire one tree centered with clear margins, true TRANSPARENT background. No glow or halo, no shadow, no ground, no scenery, no other atlas objects, no ornaments, no letters, no snow, no text, no watermark. This is a repaint of the existing classic pine silhouette, NOT a redesigned tree.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/SimpleBase/simple-nature-v6.png",
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Library/Props/shrub-coral-v15.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-6fb2dae2-9fb9-4145-9d05-32a74dee25ad.png",
+      "kind": 0,
+      "size": 1.5
+    },
+    {
+      "id": "shrub-green",
+      "file": "shrub-green-glossy-v29.png",
+      "title": "Arbusto verde glossy",
+      "category": "Props",
+      "prompt": "Use case: precise-object-edit. Edit this RED SHRUB into a GREEN color variant. Change ONLY its palette. Preserve exactly the same low asymmetric shrub silhouette, number and positions of all large rounded foliage masses, overlapping shapes, smooth gradient painting, large creamy oval specular highlight patches, shadow patterns, thin ivory outer outline, framing and detail density. Translate coral/orange/red to fresh leaf green midtones, yellow-green lit faces, rich emerald and deep forest-green underside shadows; highlights are pale cream-green. The shrub must still look painted by exactly the same artist with exactly the same glossy material, not flat/vector-like, not realistic. Keep simple broad clean masses, no additional detail or objects. Only ONE shrub, entire silhouette visible with clear margins, on TRUE TRANSPARENT background, alpha zero outside the narrow contour. Remove any exterior colored halo from the reference rather than reproducing it. No glow, no backdrop, no ground, no baked cast shadow, no tree trunk, no flowers, no letters, no text, no watermark.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Library/Props/shrub-coral-v15.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-e20916b7-50b1-4a51-8da5-e0270a840706.png",
+      "kind": 1,
+      "size": 0.58
+    },
+    {
+      "id": "shrub-orange",
+      "file": "shrub-orange-glossy-v29.png",
+      "title": "Arbusto laranja glossy",
+      "category": "Props",
+      "prompt": "Use case: precise-object-edit. Edit this RED SHRUB into an ORANGE color variant. Change ONLY its palette. Preserve exactly the same low asymmetric shrub silhouette, number and positions of all large rounded foliage masses, overlapping shapes, smooth gradient painting, large creamy oval specular highlight patches, shadow patterns, thin ivory outer outline, framing and detail density. Translate the coral/red palette to vivid tangerine ORANGE midtones, warm golden-peach lit faces, saturated burnt-orange and deep warm amber underside shadows. It must read unmistakably ORANGE rather than the original red or pink. Pale creamy warm ivory highlights. The shrub must still look painted by exactly the same artist with exactly the same glossy material, not flat/vector-like, not realistic. Keep simple broad clean masses, no additional detail or objects. Only ONE shrub, entire silhouette visible with clear margins, on TRUE TRANSPARENT background, alpha zero outside the narrow contour. Remove any exterior colored halo from the reference rather than reproducing it. No glow, no backdrop, no ground, no baked cast shadow, no tree trunk, no flowers, no letters, no text, no watermark.",
+      "refs": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Library/Props/shrub-coral-v15.png"
+      ],
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-01b465b6-9036-4ddf-9369-4f8c32c82eec.png",
+      "kind": 1,
+      "size": 0.58
+    }
+  ]
+}

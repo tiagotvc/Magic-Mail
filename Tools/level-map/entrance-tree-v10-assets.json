@@ -1,0 +1,21 @@
+{
+  "tool": "built-in ImageGen",
+  "reference": "Assets/RoyalAves/Art/MapKitV3/SimpleBase/postal-trees-v9.png",
+  "jobs": [
+    {
+      "id": "entrance-trees-v10",
+      "folder": "SimpleBase",
+      "file": "entrance-trees-v10.png",
+      "columns": 2,
+      "rows": 1,
+      "names": [
+        "round-violet",
+        "wide-teal"
+      ],
+      "transparent": true,
+      "kind": "prop",
+      "prompt": "Use case: precise-object-edit. STRICT RECOLOR ONLY, preserve exact silhouettes and shape design. The reference image contains THREE approved orange trees. Output a transparent atlas TWO equal columns ONE row with TWO trees only: LEFT is EXACTLY reference tree1 (leftmost ROUND tree) with exactly its same canopy outline, lobe positions, short crooked trunk shape and proportions. Change ONLY canopy hue from orange to saturated VIOLET/PURPLE with lighter lavender glossy gradients and deeper violet shading. EVERY canopy lobe stays within this ONE purple color family. RIGHT is EXACTLY reference tree3 (rightmost WIDE fork-trunk tree), same uneven crown clusters, same outline, same relative sizes and same leaning trunk. Change ONLY its canopy hue from orange to EMERALD/TEAL green with mint highlights and deeper teal shade. EVERY canopy lobe stays within this ONE teal-green color family. The honey-gold tan trunks and cream-white outline remain unchanged. NO rainbow foliage, NO multicolored crown, NO orange or pink patches mixed into purple, NO yellow or purple patches mixed into teal. Single base canopy hue per tree, smooth light-to-dark shading within that hue, SAME glossy illustrated style as original. Do NOT redesign silhouettes, move lobes, add branches, change shapes, or invent new trees. No separate painted leaves, leaf particles, envelopes, strings, ornaments, flowers or fruit. No ground, shadows, background, halo, text or grid. Complete roots and canopy with generous transparent padding, clearly separated non-overlapping sprites.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-f3648e24-1c6b-4215-9f80-eae5505adc78.png"
+    }
+  ]
+}

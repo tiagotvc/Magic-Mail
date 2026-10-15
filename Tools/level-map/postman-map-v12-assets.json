@@ -1,0 +1,19 @@
+{
+  "tool": "reuse of approved ImageGen artwork on one continuous animated mesh; no regeneration",
+  "jobs": [
+    {
+      "id": "postman-map-v12",
+      "folder": "Characters",
+      "file": "postman-map-v12.png",
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "courier"
+      ],
+      "transparent": true,
+      "kind": "character",
+      "source": "Assets/RoyalAves/Art/MapKitV3/Characters/postman-stylized-v7.png",
+      "note": "Byte-for-byte copy of approved original. Visible character uses this full illustration on one continuous mesh with restrained idle motion. Original multiple-sprite import and standalone cutout prototype preserved."
+    }
+  ]
+}
