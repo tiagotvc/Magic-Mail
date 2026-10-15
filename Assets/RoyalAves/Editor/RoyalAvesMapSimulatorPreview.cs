@@ -89,6 +89,7 @@ namespace RoyalAves.EditorTools
             if(failed||EditorApplication.timeSinceStartup<nextFrame)return;
             var now=EditorApplication.timeSinceStartup;
             nextFrame=now+(dirty||moving?1d/30:.5);
+            RoyalAvesMapPreviewInput.Handler=HandleInput; // estatico: some no domain reload
             var current=FindLobby();
             if(current==null){if(overlay!=null)Cleanup();return;}
             var dimensions=Resolution();
@@ -98,6 +99,7 @@ namespace RoyalAves.EditorTools
                 {
                     Cleanup();lobby=current;size=dimensions;
                     renderer=RoyalAvesLevelMapPreview.CreateScenePreview(size.x,size.y);
+                    RoyalAvesMapPreviewInput.Handler=HandleInput;
                     overlay=new GameObject("Preview temporário do mapa",typeof(RectTransform),typeof(Canvas),typeof(RoyalAvesMapPreviewInput));
                     overlay.hideFlags=HideFlags.HideAndDontSave;
                     SceneManager.MoveGameObjectToScene(overlay,lobby.gameObject.scene);
