@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -66,6 +66,7 @@ namespace SweetSugar.Scripts.Level
          /// </summary>
          public void CreateField(IColorGenerator generator)
          {
+             RoyalAves.Gameplay.FrankingMachineCell.RestoreGridPlacements(fieldData);
              colorGenerator = generator;
              var chessColor = false;
 
@@ -235,16 +236,17 @@ namespace SweetSugar.Scripts.Level
          {
              var prepareLevel = !falling;
              var squares = squaresArray;
-             if(fieldData.levelSquares.Any(i => i.item.ItemType == ItemsTypes.INGREDIENT || LevelData.THIS.target.name.Contains("Ingredients") || !LevelData.THIS.SpawnerExits)) IngredientsByEditor = true;
+             if(fieldData.levelSquares.Any(i => i.item?.ItemType == ItemsTypes.INGREDIENT || LevelData.THIS.target.name.Contains("Ingredients") || !LevelData.THIS.SpawnerExits)) IngredientsByEditor = true;
              foreach (var square in squares)
              {
                  if (square.IsNone() || !square.CanGoInto()) continue;
+                 var squareBlock = fieldData.levelSquares[square.row * fieldData.maxCols + square.col];
+                 if (prepareLevel && squareBlock.startWithoutItem) continue;
                  if (!square.IsHaveSolidAbove() || prepareLevel)
                  {
                      if (square.Item == null) //|| !falling && square.item?.currentType != ItemsTypes.SPIRAL)
                      {
-                         var squareBlock = fieldData.levelSquares[square.row * fieldData.maxCols + square.col];
-                         if (!falling && (squareBlock.item.Tex != null || squareBlock.item.ItemType != ItemsTypes.NONE))
+                         if (!falling && squareBlock.item != null && (squareBlock.item.Tex != null || squareBlock.item.ItemType != ItemsTypes.NONE))
                          {
                              var item = square.GenItem(false, squareBlock.item.ItemType, squareBlock.item.Color, squareBlock.item);
                              if (square.IsNone()) return;
@@ -287,7 +289,7 @@ namespace SweetSugar.Scripts.Level
              var nextSquare = startSquare.GetNextSquare();
              list = list ?? new List<Square>();
              if (!list.Any()) list.Add(startSquare);
-             if (nextSquare != null && (nextSquare.IsFree() || nextSquare.CanGoInto()))
+            if (nextSquare != null && !nextSquare.IsNone() && (nextSquare.IsFree() || nextSquare.CanGoInto()))
              {
                  list.Add(nextSquare);
                  GetWaypoints(nextSquare, destSquare, list);
@@ -515,9 +517,10 @@ namespace SweetSugar.Scripts.Level
          /// </summary>
          /// <param name="square"></param>
          /// <param name="item1"></param>
-         public void DestroyItemsAround(Square square, Item item1)
+         public void DestroyItemsAround(Square square, Item item1, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null)
          {
-             var itemsList = LevelManager.THIS.GetItemsAround9(square);
+             var cells = LevelManager.THIS.GetSquaresAroundSquare(square, barriers);
+             var itemsList = cells.Select(s => s.Item).Where(i => i != null).Distinct().ToArray();
 
              foreach (var item in itemsList)
              {
@@ -527,7 +530,7 @@ namespace SweetSugar.Scripts.Level
                          item.DestroyItem(true, true, item1);
                  }
              }
-             LevelManager.THIS.GetSquaresAroundSquare(square).ForEach(i => i.DestroyBlock());
+             cells.ForEach(i => i.DestroyBlock());
 
          }
 

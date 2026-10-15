@@ -186,15 +186,13 @@ namespace SweetSugar.Scripts.System.Pool
             // Reset object to initial state if it's an Item
             if (pooledObj != null && pooledObj.itemComponent != null)
             {
-                if(pooledObj.itemComponent.transform.childCount > 0)
-                    pooledObj.itemComponent.transform.GetChild(0).localScale = Vector3.one;
+                pooledObj.itemComponent.RestoreBoardScale();
             }
             // Fallback to GetComponent if not found in our pool
             else
             {
                 var itemComponent = obj.GetComponent<Item>();
-                if (itemComponent != null && itemComponent.transform.childCount > 0)
-                    itemComponent.transform.GetChild(0).localScale = Vector3.one;
+                if (itemComponent != null) itemComponent.RestoreBoardScale();
             }
         }
 

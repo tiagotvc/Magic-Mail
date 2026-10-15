@@ -354,6 +354,13 @@ namespace SweetSugar.Scripts.Level
     /// Field data contains field size and square array
     /// </summary>
     [Serializable]
+    public class FrankingMachinePlacement
+    {
+        public bool right;
+        public int row;
+    }
+
+    [Serializable]
     public class FieldData
     {
         public int maxRows;
@@ -365,10 +372,14 @@ namespace SweetSugar.Scripts.Level
         public int bombTimer = 15;
         public int layers;
         public bool switchSublevelNoMatch;
+        // Legacy saved positions, migrated into ordinary grid cells when loaded.
+        [HideInInspector] public List<FrankingMachinePlacement> frankingMachines = new List<FrankingMachinePlacement>();
 
         public FieldData DeepCopy()
         {
             var other = (FieldData)MemberwiseClone();
+            other.frankingMachines = frankingMachines?.Select(p => new FrankingMachinePlacement { right = p.right, row = p.row }).ToList()
+                ?? new List<FrankingMachinePlacement>();
             other.levelSquares = new SquareBlocks[levelSquares.Length];
             for (var i = 0; i < levelSquares.Length; i++)
             {
@@ -419,6 +430,8 @@ namespace SweetSugar.Scripts.Level
         public Vector2Int teleportCoordinatesLinkedBack = new Vector2Int(-1, -1);
         public Rect guiRect;
         public ItemForEditor item;
+        // Skip only the initial fill. Normal falling and refill remain enabled.
+        public bool startWithoutItem;
         public bool[] separatorIndexes = new bool[4];
 
         public SquareBlocks DeepCopy()

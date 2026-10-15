@@ -43,7 +43,7 @@ namespace RoyalAves.Effects
         // destroyed as the rocket passes over them. Returns how long the whole effect takes, or 0 when there's no
         // effect to show (caller then has to handle the cells itself).
         public static float Play(GameObject rocketObject, bool horizontal, Vector3 towardA, Vector3 towardB,
-            IList<Vector3> cells, Action<int> onCellPassed)
+            IList<Vector3> cells, Action<int> onCellPassed, bool stopAtA = false, bool stopAtB = false)
         {
             var data = Data;
             if (data == null || rocketObject == null) return 0f;
@@ -55,11 +55,13 @@ namespace RoyalAves.Effects
             var root = new GameObject("RocketSplitFX");
             root.transform.position = origin;
 
-            var durationA = FlightTime(origin, towardA);
-            var durationB = FlightTime(origin, towardB);
-            BuildHalf(root.transform, data.HalfLeft, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA);
-            BuildHalf(root.transform, data.HalfRight, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB);
-            ScheduleCells(origin, towardA, towardB, durationA, durationB, cells, onCellPassed);
+            var overshootA = stopAtA ? 0f : ExitOvershoot;
+            var overshootB = stopAtB ? 0f : ExitOvershoot;
+            var durationA = FlightTime(origin, towardA, overshootA);
+            var durationB = FlightTime(origin, towardB, overshootB);
+            BuildHalf(root.transform, data.HalfLeft, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA);
+            BuildHalf(root.transform, data.HalfRight, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB);
+            ScheduleCells(origin, towardA, towardB, durationA, durationB, cells, onCellPassed, overshootA, overshootB);
 
             var total = Mathf.Max(durationA, durationB);
             UnityEngine.Object.Destroy(root, total + TrailTail);
@@ -67,31 +69,32 @@ namespace RoyalAves.Effects
         }
 
         // Length of a half's path from origin to its exit point (past the board's edge).
-        static float PathLength(Vector3 origin, Vector3 to)
+        static float PathLength(Vector3 origin, Vector3 to, float overshoot)
         {
             var path = to - origin;
             if (path.magnitude < 0.01f) return 0f;
-            return (path + path.normalized * ExitOvershoot).magnitude;
+            return (path + path.normalized * overshoot).magnitude;
         }
 
-        static float FlightTime(Vector3 origin, Vector3 to)
+        static float FlightTime(Vector3 origin, Vector3 to, float overshoot)
         {
-            return Mathf.Max(MinFlightTime, PathLength(origin, to) / FlightSpeed);
+            return Mathf.Max(MinFlightTime, PathLength(origin, to, overshoot) / FlightSpeed);
         }
 
         // Mirrors BuildHalf's motion: easeInQuad over the half's duration along its path, so a point at distance d
         // along it is reached at duration * sqrt(d / pathLength).
         static void ScheduleCells(Vector3 origin, Vector3 towardA, Vector3 towardB, float durationA, float durationB,
-            IList<Vector3> cells, Action<int> onCellPassed)
+            IList<Vector3> cells, Action<int> onCellPassed, float overshootA, float overshootB)
         {
             var ends = new[] { towardA, towardB };
             var durations = new[] { durationA, durationB };
+            var overshoots = new[] { overshootA, overshootB };
             for (var i = 0; i < cells.Count; i++)
             {
                 var passAt = float.MaxValue;
                 for (var h = 0; h < ends.Length; h++)
                 {
-                    var length = PathLength(origin, ends[h]);
+                    var length = PathLength(origin, ends[h], overshoots[h]);
                     if (length <= 0f) continue;
                     var direction = (ends[h] - origin).normalized;
                     var along = Vector3.Dot(cells[i] - origin, direction);
@@ -109,7 +112,7 @@ namespace RoyalAves.Effects
         const float HalfPixelsPerUnit = 128f; // matches capsule-half-left/right.png's import setting
 
         static void BuildHalf(Transform parent, Texture2D texture, Material flameMat, Vector3 from, Vector3 to,
-            bool horizontal, int sortOrder, float duration)
+            bool horizontal, int sortOrder, float duration, float overshoot)
         {
             if (texture == null) return;
             var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -131,8 +134,8 @@ namespace RoyalAves.Effects
             var direction = (to - from).normalized;
             var halfExtent = sprite.bounds.extents.x * ActivatedScale;
             half.transform.position = from + direction * halfExtent;
-            AddBeam(half, flameMat, sortOrder + 2, 0.11f, new Color(1f, 0.67f, 0.12f));
-            AddBeam(half, flameMat, sortOrder + 3, 0.035f, new Color(1f, 1f, 0.85f));
+            AddBeam(half, flameMat, sortOrder + 2, 0.34f, new Color(1f, 0.67f, 0.12f));
+            AddBeam(half, flameMat, sortOrder + 3, 0.11f, new Color(1f, 1f, 0.85f));
 
             var flame = new GameObject("Flame");
             flame.transform.SetParent(half.transform, false);
@@ -143,7 +146,7 @@ namespace RoyalAves.Effects
             var ps = flame.AddComponent<ParticleSystem>();
             ConfigureFlame(ps, flameMat, sortOrder, duration);
 
-            var toOvershot = to + direction * ExitOvershoot;
+            var toOvershot = to + direction * overshoot;
             LeanTween.move(half, toOvershot, duration).setEase(LeanTweenType.easeInQuad)
                 .setOnComplete(() => Arrive(half, sr, ps));
         }
@@ -181,7 +184,7 @@ namespace RoyalAves.Effects
             shape.shapeType = ParticleSystemShapeType.Sphere;
             // Correio Mágico: raio da área de emissão - é o que dá a largura do rastro (espalhamento lateral das
             // partículas), separado do tamanho de cada partícula (TrailSize).
-            shape.radius = 0.055f;
+            shape.radius = 0.22f;
 
             var sizeOverLifetime = ps.sizeOverLifetime;
             sizeOverLifetime.enabled = true;

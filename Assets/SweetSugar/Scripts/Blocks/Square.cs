@@ -556,9 +556,8 @@ namespace SweetSugar.Scripts.Blocks
                 if (item == null)
                     Debug.LogError("there is no " + itemType + " in pool ");
             }
-            item.transform.localScale = Vector2.one * 0.42f;
-            item.GetComponent<Item>().GetSpriteRenderer().transform.localScale = Vector3.one;
             Item itemComponent = item.GetComponent<Item>();
+            itemComponent.RestoreBoardScale();
             if(LevelManager.THIS.levelData.GetTargetCounters().Any(i=> (i.collectingAction == CollectingTypes.Destroy || i.collectingAction==CollectingTypes.ReachBottom) && i.extraObject==itemComponent.GetSpriteRenderer().sprite))
             {
                 var targetComponent = item.AddCachedComponent<TargetComponent>();
@@ -877,6 +876,25 @@ namespace SweetSugar.Scripts.Blocks
             }
             return false;
         }
+
+        // A diagonal cannot squeeze across the corner of a wall, obstacle or missing cell.
+        public bool CanFallDiagonallyTo(Square destination)
+        {
+            if (destination == null || field == null || destination.field != field ||
+                IsNone() || destination.IsNone() || !CanGoOut() || !destination.CanGoInto()) return false;
+            int dx = destination.col - col, dy = destination.row - row;
+            if (Mathf.Abs(dx) != 1 || Mathf.Abs(dy) != 1) return false;
+            var side = field.GetSquare(col + dx, row);
+            var forward = field.GetSquare(col, row + dy);
+            if (side == null || forward == null || !side.IsFree() || !forward.IsFree()) return false;
+            var horizontal = new Vector2(dx, 0);
+            var vertical = new Vector2(0, -dy);
+            return PassageOpen(this, side, horizontal) && PassageOpen(side, destination, vertical) &&
+                PassageOpen(this, forward, vertical) && PassageOpen(forward, destination, horizontal);
+        }
+
+        static bool PassageOpen(Square from, Square to, Vector2 direction)
+            => !from.IsDirectionRestricted(direction) && !to.IsDirectionRestricted(-direction);
         /// <summary>
         /// Get neighbor methods
         /// </summary>

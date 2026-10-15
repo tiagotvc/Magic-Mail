@@ -78,7 +78,7 @@ namespace SweetSugar.Scripts.System
             item.NextType = ItemsTypes.NONE;
             if(transform.childCount>0)
             {
-                transform.GetChild(0).transform.localScale = Vector3.one;
+                item.RestoreBoardScale();
                 transform.GetChild(0).transform.localPosition = Vector3.zero;
             }
         }

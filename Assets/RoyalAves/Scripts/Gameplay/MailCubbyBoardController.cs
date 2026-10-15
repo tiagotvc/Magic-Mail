@@ -37,7 +37,7 @@ namespace RoyalAves.Gameplay
         {
             var sprite = Animation.letters[0].sprite;
             var gui = FindObjectsByType<SweetSugar.Scripts.TargetScripts.TargetSystem.TargetGUI>(FindObjectsSortMode.None)
-                .FirstOrDefault(item => item.image != null && (item.image.sprite == sprite ||
+                .FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name != "MachineLetters" && item.image != null && (item.image.sprite == sprite ||
                     (item.subTargetContainer?.extraObjects != null && item.subTargetContainer.extraObjects.Contains(sprite))));
             if (gui == null)
             {
@@ -91,7 +91,7 @@ namespace RoyalAves.Gameplay
             var collectedCell = Cells[Collected - 1].GetSubSquare().GetComponent<MailCubbyCell>();
             if (collectedCell != null) collectedCell.CountsAsObjective = false;
             foreach (var target in data.TargetCounters)
-                if (target.extraObjects != null && target.extraObjects.Contains(Animation.letters[0].sprite))
+                if (target.targetLevel.name != "MachineLetters" && target.extraObjects != null && target.extraObjects.Contains(Animation.letters[0].sprite))
                     target.changeCount(-1);
         }
 

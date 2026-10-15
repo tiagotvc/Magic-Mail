@@ -32,8 +32,10 @@ namespace Sweet_sugar.Assets.SweetSugar.Scripts.TargetScripts.TargetEditor
             {
                 var targetsEditor = TargetEditorUtils.TargetEditorScriptable;
                 var targetObject = PropertyUtils.GetParent(property) as TargetObject;
-                SpriteList sprites = targetsEditor.GetTargetbyName(GetTargetsNames()[targetType.intValue]).defaultSprites.FirstOrDefault()?.sprites.Copy();
+                SpriteList sprites = targetsEditor.targets[targetType.intValue].defaultSprites.FirstOrDefault()?.sprites.Copy();
                 targetObject.sprites = sprites;
+                if (targetsEditor.targets[targetType.intValue].name == "MachineLetters" && targetObject.CountDrawer.count <= 0)
+                    targetObject.CountDrawer.count = 8;
                 var targetLevel = property.serializedObject.targetObject as TargetLevel;
                 targetObject.targetType.type = targetType.intValue;
                 targetLevel.saveData();
@@ -44,7 +46,7 @@ namespace Sweet_sugar.Assets.SweetSugar.Scripts.TargetScripts.TargetEditor
 
         public string[] GetTargetsNames()
         {
-            return TargetEditorUtils.TargetEditorScriptable.targets.Select(i => i.name).ToArray();
+            return TargetEditorUtils.TargetEditorScriptable.targets.Select(i => TargetEditorUtils.DisplayName(i.name)).ToArray();
         }
     }
 }

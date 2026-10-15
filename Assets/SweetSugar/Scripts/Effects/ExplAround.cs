@@ -25,6 +25,7 @@ namespace SweetSugar.Scripts.Effects
     public class ExplAround : MonoBehaviour
     {
         public Item item;
+        public RoyalAves.Gameplay.ImpactBarrierSnapshot barriers;
         public FieldBoard field;
         public Item[] itemsSecondCirle;
         public Item[] itemsThirdCircle;
@@ -77,8 +78,9 @@ namespace SweetSugar.Scripts.Effects
         private void FillArrays()
         {
             if (item == null) return;
-            itemsSecondCirle = GetItemsAroundSecond(item.square).ToArray();
-            itemsThirdCircle = GetItemsAroundThird(item.square).ToArray();
+            barriers = barriers ?? RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(item.square.field);
+            itemsSecondCirle = barriers.FilterItems(item.square, GetItemsAroundSecond(item.square));
+            itemsThirdCircle = barriers.FilterItems(item.square, GetItemsAroundThird(item.square));
         }
 
         private List<Item> GetItemsAroundSecond(Square square)

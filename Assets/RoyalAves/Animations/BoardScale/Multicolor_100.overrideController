@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BoardScale_Multicolor_100
+  m_Controller: {fileID: 9100000, guid: fa899764163cc4c4dba4d39b913015da, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: bc45b5c0b29291b4a9d43c40bde6c214, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4ad8de5a23b5501792cfce2ca3e097cc, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e8da9a525100cef4cab10d20385762dd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: ebc5aca37d8c5c26b60829fd791010ba, type: 2}

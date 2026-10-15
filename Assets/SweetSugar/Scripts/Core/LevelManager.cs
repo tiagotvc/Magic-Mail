@@ -1600,7 +1600,7 @@ namespace SweetSugar.Scripts.Core
         /// </summary>
         /// <param name="square"></param>
         /// <returns></returns>
-        public List<Square> GetSquaresAroundSquare(Square square)
+        public List<Square> GetSquaresAroundSquare(Square square, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null)
         {
             var col = square.col;
             var row = square.row;
@@ -1613,7 +1613,7 @@ namespace SweetSugar.Scripts.Core
                 }
             }
 
-            return itemsList;
+            return (barriers ?? RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(square.field)).Filter(square, itemsList);
         }
 
         /// <summary>
@@ -1631,23 +1631,8 @@ namespace SweetSugar.Scripts.Core
         /// get 8 items around the square
         public List<Item> GetItemsAround8(Square square)
         {
-            var col = square.col;
-            var row = square.row;
-            var itemsList = new List<Item>();
-            for (var r = row - 1; r <= row + 1; r++)
-            {
-                for (var c = col - 1; c <= col + 1; c++)
-                {
-                    var pos = GetSquare(c, r, true).transform.position;
-                    RaycastHit2D[] result = new RaycastHit2D[3];
-                    Physics2D.LinecastNonAlloc(square.transform.position, pos, result,1<< LayerMask.NameToLayer("Item"));
-                    var hit = result.Where(i => i.transform).OrderBy(i => (i.transform.position - pos).magnitude).FirstOrDefault();
-                    if(hit && hit.transform)
-                        itemsList.Add(hit.transform.GetComponent<Item>());
-                }
-            }
-
-            return itemsList;
+            return GetSquaresAroundSquare(square).Where(s => s != square && s.Item != null)
+                .Select(s => s.Item).Distinct().ToList();
         }
 
         //striped effect
@@ -1658,8 +1643,9 @@ namespace SweetSugar.Scripts.Core
             // (alguns dos chamadores de StripedShow passam o quadrado, não o item) - nesse caso sobra o feixe
             // original do Sweet Sugar como alternativa, pra sempre ter algum aviso visual.
             var rocketItem = obj.GetComponent<Item>();
-            var lineSquares = rocketItem != null && rocketItem.square != null
-                ? (horrizontal ? GetRowSquare(rocketItem.square.row) : GetColumnSquare(rocketItem.square.col))
+            var origin = rocketItem != null ? rocketItem.square : obj.GetComponent<Square>();
+            var lineSquares = origin != null
+                ? (horrizontal ? GetRowSquare(origin.row) : GetColumnSquare(origin.col))
                 : new List<Square>();
             StripedShowPass(obj, horrizontal, lineSquares, null);
         }
@@ -1679,12 +1665,18 @@ namespace SweetSugar.Scripts.Core
         // levou até o último quadrado ser passado (0 quando não houve efeito de foguete).
         public float StripedShowPass(GameObject obj, bool horrizontal, List<Square> line, Action<Square> onPassed)
         {
+            var sourceItem = obj.GetComponent<Item>();
+            var origin = sourceItem != null ? sourceItem.square : obj.GetComponent<Square>();
+            var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(origin != null ? origin.field : field);
+            if (origin != null) line = barriers.Filter(origin, line);
             if (line.Count > 1)
             {
                 var ordered = line.OrderBy(s => horrizontal ? s.transform.position.x : s.transform.position.y).ToList();
                 var cells = line.Select(s => s.transform.position).ToList();
                 var flight = RocketSplitEffect.Play(obj, horrizontal, ordered.First().transform.position,
-                    ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]));
+                    ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]),
+                    barriers.IsBlocking(ordered.First().col, ordered.First().row),
+                    barriers.IsBlocking(ordered.Last().col, ordered.Last().row));
                 if (flight > 0f)
                 {
                     if (horrizontal)
@@ -1718,7 +1710,8 @@ namespace SweetSugar.Scripts.Core
             DragBlocked = true;
             SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
             var square = target.square;
-            var squares = horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col);
+            var squares = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(square.field).Filter(square,
+                horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col));
             // Correio Mágico: cada peça só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
             // Captura a peça de cada quadrado já aqui (antes do foguete voar) - ver o comentário equivalente em
             // ItemStriped.DestroyCor sobre a gravidade puxar peças pendentes pro buraco antes da vez delas.
@@ -1741,7 +1734,9 @@ namespace SweetSugar.Scripts.Core
         {
             DragBlocked = true;
             SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
-            var squares = GetColumnSquare(target.square.col);
+            var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(target.square.field);
+            var squares = GetColumnSquare(target.square.col).Where(s =>
+                barriers.CanReach(target.square.col, field.fieldData.maxRows, s.col, s.row)).ToList();
             var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
             var wait = CannonFireEffect.Play(squares, sq =>
             {

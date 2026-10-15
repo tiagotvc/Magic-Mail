@@ -103,59 +103,64 @@ namespace RoyalAves.Effects
         {
             float width = sprite.rect.width / sprite.pixelsPerUnit;
             float height = sprite.rect.height / sprite.pixelsPerUnit;
-            float col = cell != null ? cell.col : 0f;
-            float row = cell != null ? cell.row : 0f;
-            // The thinner frame cannot hide foliage outside the playable board.
-            // Keep organic overlap over playable cells, but contain it at the board perimeter.
-            var minimum = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
-            var maximum = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+            float left = -sprite.pivot.x / sprite.pixelsPerUnit;
+            float bottom = -sprite.pivot.y / sprite.pixelsPerUnit;
+            float right = left + width;
+            float top = bottom + height;
+            bool exposedLeft = (edgeMask & 1) != 0;
+            bool exposedRight = (edgeMask & 2) != 0;
+            bool exposedTop = (edgeMask & 4) != 0;
+            bool exposedBottom = (edgeMask & 8) != 0;
+            float cellWidth = width / 1.08f, cellHeight = height / 1.08f;
             if (cell != null && cell.field != null)
             {
-                var halfCell = new Vector3(cell.field.squareWidth, cell.field.squareHeight) * 0.5f;
-                var lower = transform.InverseTransformPoint(cell.transform.position - halfCell);
-                var upper = transform.InverseTransformPoint(cell.transform.position + halfCell);
-                if (!Playable(cell.col - 1, cell.row)) minimum.x = lower.x;
-                if (!Playable(cell.col + 1, cell.row)) maximum.x = upper.x;
-                if (!Playable(cell.col, cell.row + 1)) minimum.y = lower.y;
-                if (!Playable(cell.col, cell.row - 1)) maximum.y = upper.y;
+                var half = new Vector3(cell.field.squareWidth, cell.field.squareHeight) * 0.5f;
+                var lower = transform.InverseTransformPoint(cell.field.transform.TransformPoint(cell.transform.localPosition - half));
+                var upper = transform.InverseTransformPoint(cell.field.transform.TransformPoint(cell.transform.localPosition + half));
+                cellWidth = upper.x - lower.x;
+                cellHeight = upper.y - lower.y;
+                // Retain overlap only between grass cells. Exposed sides follow the grid footprint.
+                if (exposedLeft) left = lower.x;
+                if (exposedRight) right = upper.x;
+                if (exposedBottom) bottom = lower.y;
+                if (exposedTop) top = upper.y;
             }
+            float radius = Mathf.Min(cellWidth, cellHeight) * 0.13f;
             for (int y = 0; y <= Segments; y++)
             for (int x = 0; x <= Segments; x++)
             {
                 float u = (float)x / Segments, v = (float)y / Segments;
-                var point = new Vector3((u * sprite.rect.width - sprite.pivot.x) / sprite.pixelsPerUnit,
-                    (v * sprite.rect.height - sprite.pivot.y) / sprite.pixelsPerUnit);
-                // Coordinates continue across adjacent cells, avoiding a repeated scallop per tile.
-                float horizontal = col + (u - 0.5f) * 1.08f;
-                float vertical = row - (v - 0.5f) * 1.08f;
-                if ((edgeMask & 1) != 0) point.x -= width * EdgeWeight(1f - u) * Bulge(vertical, col + 0.7f);
-                if ((edgeMask & 2) != 0) point.x += width * EdgeWeight(u) * Bulge(vertical, col + 1.7f);
-                if ((edgeMask & 4) != 0) point.y += height * EdgeWeight(v) * Bulge(horizontal, row + 2.3f);
-                if ((edgeMask & 8) != 0) point.y -= height * EdgeWeight(1f - v) * Bulge(horizontal, row + 3.3f);
-                if (source.flipX) point.x = -point.x;
-                if (source.flipY) point.y = -point.y;
-                point.x = Mathf.Clamp(point.x, minimum.x, maximum.x);
-                point.y = Mathf.Clamp(point.y, minimum.y, maximum.y);
-                vertices[y * (Segments + 1) + x] = point;
+                // Small inward variation softens the silhouette without protruding lobes.
+                float horizontal = (cell != null ? cell.col : 0) + u;
+                float vertical = (cell != null ? cell.row : 0) - v;
+                var point = new Vector2(Mathf.Lerp(left, right, u), Mathf.Lerp(bottom, top, v));
+                if (exposedLeft) point.x += cellWidth * EdgeWeight(1f - u) * EdgeInset(vertical, 0.7f);
+                if (exposedRight) point.x -= cellWidth * EdgeWeight(u) * EdgeInset(vertical, 1.7f);
+                if (exposedTop) point.y -= cellHeight * EdgeWeight(v) * EdgeInset(horizontal, 2.3f);
+                if (exposedBottom) point.y += cellHeight * EdgeWeight(1f - v) * EdgeInset(horizontal, 3.3f);
+                if (exposedLeft && exposedTop) RoundCorner(ref point, new Vector2(left + radius, top - radius), -1f, 1f, radius);
+                if (exposedRight && exposedTop) RoundCorner(ref point, new Vector2(right - radius, top - radius), 1f, 1f, radius);
+                if (exposedLeft && exposedBottom) RoundCorner(ref point, new Vector2(left + radius, bottom + radius), -1f, -1f, radius);
+                if (exposedRight && exposedBottom) RoundCorner(ref point, new Vector2(right - radius, bottom + radius), 1f, -1f, radius);
+                vertices[y * (Segments + 1) + x] = new Vector3(point.x, point.y);
             }
             mesh.vertices = vertices;
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
         }
 
-        bool Playable(int col, int row)
+        static void RoundCorner(ref Vector2 point, Vector2 center, float signX, float signY, float radius)
         {
-            var neighbor = cell.field.GetSquare(col, row);
-            return neighbor != null && !neighbor.IsNone();
+            var delta = point - center;
+            if (delta.x * signX > 0f && delta.y * signY > 0f && delta.sqrMagnitude > radius * radius)
+                point = center + delta.normalized * radius;
         }
 
-        static float EdgeWeight(float value) => Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.72f, 0.95f, value));
+        static float EdgeWeight(float value) => Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.76f, 1f, value));
 
-        static float Bulge(float along, float phase)
+        static float EdgeInset(float along, float phase)
         {
-            float broad = 0.5f + 0.5f * Mathf.Sin(along * 7.1f + phase * 1.9f);
-            float small = 0.5f + 0.5f * Mathf.Sin(along * 17.3f - phase * 2.7f);
-            return 0.006f + broad * 0.062f + small * 0.020f;
+            return 0.002f + (0.5f + 0.5f * Mathf.Sin(along * 5.2f + phase)) * 0.004f;
         }
 
         // The removal effect owns these copies, so destroying a layer cannot cut its fade short.

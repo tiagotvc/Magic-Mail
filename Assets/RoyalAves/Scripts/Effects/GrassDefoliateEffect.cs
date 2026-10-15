@@ -31,6 +31,8 @@ namespace RoyalAves.Effects
         Action onComplete;
         Color sourceColor;
         float duration;
+        const float LeafDuration = 0.8f;
+        float trajectoryDuration;
 
         sealed class Leaf
         {
@@ -55,8 +57,9 @@ namespace RoyalAves.Effects
             manager = owner;
             onComplete = callback;
             duration = finalLayer ? FinalDuration : LayerDuration;
+            trajectoryDuration = duration + 0.55f;
             sourceColor = source.color;
-            // Board resolution and victory wait for the last leaves, as with parcel completion.
+            // Keep the original completion timing; decorative leaves continue falling afterward.
             barrier = gameObject.AddComponent<AnimateItems>();
             barrier.target = true;
             barrier.linkObjectHash = source.transform.parent.gameObject.GetHashCode();
@@ -119,8 +122,8 @@ namespace RoyalAves.Effects
                     var position = MapPosition(sprite, point);
                     if (source.flipX) position.x = -position.x;
                     if (source.flipY) position.y = -position.y;
-                    leaf.shape[v] = position - center;
-                    vertices[start + v] = position;
+                    leaf.shape[v] = (position - center) * 1.45f;
+                    vertices[start + v] = center + leaf.shape[v];
                     uv[start + v] = new Vector2((textureRect.x + point.x * textureRect.width) / sprite.texture.width,
                         (textureRect.y + point.y * textureRect.height) / sprite.texture.height);
                     colors[start + v] = new Color(sourceColor.r, sourceColor.g, sourceColor.b, 0f);
@@ -151,9 +154,16 @@ namespace RoyalAves.Effects
         IEnumerator Animate()
         {
             float elapsed = 0f;
-            while (elapsed < duration)
+            bool completed = false;
+            while (elapsed < LeafDuration)
             {
                 elapsed += Time.deltaTime * GrassFeedbackSettings.Speed;
+                if (!completed && elapsed >= duration)
+                {
+                    completed = true;
+                    try { onComplete?.Invoke(); }
+                    finally { onComplete = null; ReleaseBarrier(); }
+                }
                 float fade = Mathf.Clamp01(elapsed / 0.20f);
                 grass.color = new Color(sourceColor.r, sourceColor.g, sourceColor.b,
                     sourceColor.a * (1f - Mathf.SmoothStep(0f, 1f, fade)));
@@ -162,18 +172,20 @@ namespace RoyalAves.Effects
                 for (int i = 0; i < leaves.Length; i++)
                 {
                     var leaf = leaves[i];
-                    float age = elapsed - leaf.delay;
-                    float t = Mathf.Clamp01(age / (duration - leaf.delay));
-                    float travel = 1f - Mathf.Pow(1f - t, 2f);
+                    // Compress the original trajectory into 0.8 s without shortening its travel.
+                    float age = elapsed * trajectoryDuration / LeafDuration - leaf.delay;
+                    float t = Mathf.Clamp01(age / (trajectoryDuration - leaf.delay));
+                    float fallTime = Mathf.Max(0f, age);
+                    float travel = 1f - Mathf.Exp(-3f * fallTime);
                     float flutter = Mathf.Sin(t * Mathf.PI * 3f + leaf.phase) * 0.045f * Mathf.Sin(t * Mathf.PI);
-                    var offset = (leaf.direction * travel + Vector3.up * (Mathf.Sin(t * Mathf.PI) * leaf.lift - t * t * 0.15f)
+                    var offset = (leaf.direction * travel + Vector3.up * (leaf.lift * 2f * fallTime - 5.5f * fallTime * fallTime)
                         + Vector3.right * flutter) * GrassFeedbackSettings.Dispersion;
                     float rotation = leaf.spin * t * Mathf.Deg2Rad;
                     float sin = Mathf.Sin(rotation), cos = Mathf.Cos(rotation);
-                    float scale = 1f - t * 0.30f;
+                    float scale = 1f - t * 0.15f;
                     float turn = 0.20f + 0.80f * Mathf.Abs(Mathf.Cos(t * Mathf.PI * 2f));
                     float alpha = age < 0f ? 0f : Mathf.Clamp01(age / 0.035f) *
-                        (1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.50f) / 0.50f)));
+                        (1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.72f) / 0.28f)));
                     int start = i * VerticesPerLeaf;
                     for (int v = 0; v < VerticesPerLeaf; v++)
                     {
@@ -188,13 +200,7 @@ namespace RoyalAves.Effects
                 mesh.RecalculateBounds();
                 yield return null;
             }
-            try { onComplete?.Invoke(); }
-            finally
-            {
-                onComplete = null;
-                ReleaseBarrier();
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
 
         static float Range(System.Random random, float min, float max) => min + (max - min) * (float)random.NextDouble();

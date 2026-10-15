@@ -181,3 +181,22 @@ MonoBehaviour:
             uiSprite: 0
     prefabs:
     - {fileID: 153778, guid: b484238ce109246ff8df637295059e9b, type: 3}
+  - name: MachineLetters
+    localization:
+      description:
+        text: Colete cartas da franqueadora
+        index: -1
+      failed:
+        text: Faltaram cartas da franqueadora
+        index: -1
+    collectAction: 0
+    setCount: 0
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 52339e7c581a77c4aa4016549f7954d6, type: 3}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 1526496238683798229, guid: 85e1c2e566344cf599a9e117add778c7, type: 3}

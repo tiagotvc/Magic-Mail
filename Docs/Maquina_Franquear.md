@@ -1,5 +1,27 @@
 # Máquina de Franquear — protótipo
 
+## Correção de posicionamento — 15/10/2026
+
+Usuário corrigiu a orientação: a franqueadora permanece **dentro do grid**, ocupando uma célula 1x1. Pincel FrankingMachine restaurado, painel lateral removido e câmera voltou ao enquadramento normal. Acionamento original por match adjacente ou impacto de especial na máquina.
+
+Mantidos meta própria “Cartas da franqueadora”, quantidade manual, separação das metas do armário, limite de entregas simultâneas e envelope 80% maior. Laboratório restaurado para uma máquina dentro do grid com oito cartas.
+
+O nível 4 já continha posições laterais salvas. `RestoreGridPlacements` lê esse formato legado e converte cada posição para a célula livre mais próxima da mesma linha/lado, sem substituir outros obstáculos. Conversão executada ao abrir o nível no editor (salva pelo fluxo normal do editor) e ao montar o tabuleiro em Play. Formato legado mantido oculto somente para compatibilidade; posições sem espaço livre permanecem pendentes. Nenhuma geração externa continua ativa.
+
+Runtime e editor recompilados sem erros. Conferência interativa ainda pendente. A seção seguinte documenta a revisão lateral substituída.
+
+## Histórico: revisão lateral substituída — 15/10/2026
+
+O comportamento anterior de ocupar uma célula foi substituído. No criador de níveis, o painel **Franqueadoras fora do grid** adiciona máquinas por lado (esquerda/direita) e linha (contada a partir de 1). A lista fica em `FieldData.frankingMachines`, é salva com o nível/subfase e copiada separadamente ao entrar em Play. A câmera reserva margens para os geradores; as células continuam disponíveis para peças e queda.
+
+Cada máquina se associa à célula jogável mais externa da linha escolhida. Impactos de matches/especiais nessa célula acionam uma entrega. Máquinas pintadas anteriormente como FrankingMachine são convertidas para posições laterais, removendo apenas a camada da máquina e preservando o restante da célula. O pincel antigo deixa de aparecer. Linhas sem células jogáveis não criam máquina.
+
+Nova meta **Cartas da franqueadora** (`MachineLetters`), adicionada ao fim da configuração global para preservar todos os índices existentes. Quantidade manual, inicialmente 8 ao selecioná-la; editável tanto no criador quanto no Target editor. Somente a entrega de uma carta da máquina reduz essa meta. Cartas do armário e seu destino no HUD excluem o objetivo da máquina. Reservas de entregas em andamento impedem emissões excedentes por máquinas simultâneas; a entrega e o acionamento ainda pertencem à fila de animações do tabuleiro.
+
+Envelope aumentado em 80% durante a ejeção e o voo, apenas nas máquinas. A animação compartilhada do armário mantém escala padrão. O laboratório foi adaptado para máquina na lateral com meta própria de oito cartas.
+
+Validação: compilação runtime e editor via Roslyn do Unity sem erros. Conferência interativa de posicionamento, impactos e contador ainda pendente no Unity. As notas abaixo documentam as versões anteriores.
+
 Próximo elemento do plano, com estreia proposta na fase 21. Laboratório iniciado em 14/10/2026.
 
 ## Regras provisórias do laboratório

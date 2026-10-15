@@ -83,16 +83,13 @@ namespace RoyalAves.EditorTools
                 cell.spawners.Clear();
                 cell.item = new ItemForEditor();
             }
-            for (int row = 2; row <= 2; row++)
-                for (int col = 2; col <= 2; col++)
-                {
-                    var cell = field.levelSquares[row * field.maxCols + col];
-                    cell.block = SquareTypes.SolidBlock;
-                    cell.blocks.Add(new SquareTypeLayer { squareType = SquareTypes.SolidBlock });
-                }
+            field.frankingMachines = new System.Collections.Generic.List<FrankingMachinePlacement>();
+            var machineCell = field.levelSquares[2 * field.maxCols + 2];
+            machineCell.block = SquareTypes.FrankingMachine;
+            machineCell.blocks.Add(new SquareTypeLayer { squareType = SquareTypes.FrankingMachine });
             field.layers = 2;
             lab.levelData.LoadTargetObject();
-            int targetIndex = lab.levelData.GetTargetIndex("SolidBlock");
+            int targetIndex = lab.levelData.GetTargetIndex("MachineLetters");
             lab.levelData.SetTarget(targetIndex);
             var targets = AssetDatabase.LoadAssetAtPath<TargetLevel>(FrankingMachineLaboratory.TargetPath);
             if (targets == null) { targets = ScriptableObject.CreateInstance<TargetLevel>(); AssetDatabase.CreateAsset(targets, FrankingMachineLaboratory.TargetPath); }
@@ -107,7 +104,7 @@ namespace RoyalAves.EditorTools
             EditorUtility.SetDirty(lab);
             EditorUtility.SetDirty(targets);
             AssetDatabase.SaveAssets();
-            Debug.Log("Máquina de Franquear: laboratório com um objeto 2x2, quatro cartas e 40 jogadas.");
+            Debug.Log("Máquina de Franquear: laboratório com máquina 1x1 dentro do grid, oito cartas e 40 jogadas.");
         }
 
         [InitializeOnLoadMethod]

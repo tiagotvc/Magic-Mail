@@ -1,0 +1,9 @@
+# Caixa cartoon dourada — 15/10/2026
+
+Revisão de cor conforme referência enviada: madeira em dourado mel/âmbar alaranjado, sombras caramelo e contorno marrom. Mantidos desenho fofinho arredondado, ausência de carimbo e tábuas largas nos quatro estados.
+
+Prévia em `Docs/Art/caixa-cartoon-dourada-estados.png`. Quatro sprites substituídos em `Assets/RoyalAves/Art/Obstacles/ParcelStack/`, preservando os GUIDs e as referências existentes. Escala e deslocamento do prefab SolidBlock recalculados para a nova folha; transparência verificada. Versão castanha anterior em `Backups/WoodenCrate-v5-brown-no-stamp/`.
+
+Ferramenta integrada imagegen; prompt final:
+
+Edit the existing FOUR-state cute rounded crate sprite sheet WITHOUT any envelope stamp (the most recent generated 2x2 sheet of plain dark brown crates). The newly attached repeated golden crates image is COLOR REFERENCE ONLY. Recolor all four existing crates from dark chocolate brown to the warm golden honey/amber/orange wood palette of that attached reference: main wood golden orange, lighter honey yellow upper edges, warm caramel shading, rich medium brown outlines. Match reference's bright golden timber coloration, avoid pale cream and avoid dark chocolate. Preserve EXACT existing cute chubby rounded simple 2D drawing, smooth wood without grain, same four sprites, exact pixel layout, dimensions, scale, silhouette, plank thickness, positions and arrangement: top left plain crate, top right descending diagonal, bottom left X, bottom right X plus central horizontal. Keep existing blue gray rounded nail heads. No stamp, no envelope, no text. This is strictly a PALETTE EDIT; do not adopt realistic details or shapes from reference. Preserve genuinely transparent background and clean gutters. User's newly attached image is reference only; the edit target is the last generated dark brown unstamped 2x2 sheet.

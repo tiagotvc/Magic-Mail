@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
@@ -22,6 +23,34 @@ namespace RoyalAves.Gameplay
         LevelData data;
         AnimateItems barrier;
         float nextImpact;
+        FieldBoard field;
+        // Compatibility only: restore positions saved during the external-placement revision.
+        public static bool RestoreGridPlacements(FieldData data)
+        {
+            if (data?.frankingMachines == null || data.frankingMachines.Count == 0 || data.maxCols <= 0) return false;
+            bool changed = false;
+            foreach (var mount in data.frankingMachines.ToArray())
+            {
+                int targetRow = Mathf.Clamp(mount.row, 0, data.maxRows - 1);
+                int targetCol = mount.right ? data.maxCols - 1 : 0;
+                int index = Enumerable.Range(0, data.levelSquares.Length)
+                    .Where(i => data.levelSquares[i] != null && data.levelSquares[i].block == SquareTypes.EmptySquare &&
+                        data.levelSquares[i].obstacle == SquareTypes.NONE &&
+                        data.levelSquares[i].blocks.All(b => b.squareType == SquareTypes.EmptySquare))
+                    .OrderBy(i => Mathf.Abs(i / data.maxCols - targetRow) * data.maxCols + Mathf.Abs(i % data.maxCols - targetCol))
+                    .DefaultIfEmpty(-1).First();
+                if (index < 0) continue;
+                var square = data.levelSquares[index];
+                square.blocks = new List<SquareTypeLayer>(square.blocks)
+                { new SquareTypeLayer { squareType = SquareTypes.FrankingMachine } };
+                square.block = SquareTypes.FrankingMachine;
+                square.blockLayer = 1;
+                data.layers = Mathf.Max(data.layers, square.blocks.Count);
+                data.frankingMachines.Remove(mount);
+                changed = true;
+            }
+            return changed;
+        }
 
         void Start()
         {
@@ -29,9 +58,11 @@ namespace RoyalAves.Gameplay
             if (cell == null) return;
             manager = LevelManager.THIS;
             data = manager.levelData;
+            field = cell.field;
             var root = Instantiate(visualPrefab, cell.transform, false);
             root.transform.localPosition = new Vector3(0, 0, -0.6f);
             Animation = root.GetComponent<MailCubbyAnimation>();
+            Animation.flyingLetterScale = 1.8f;
             Animation.letters[0].enabled = false;
             Animation.LetterCollected += Collect;
             var destination = new GameObject("MachineLetterDestination");
@@ -42,12 +73,17 @@ namespace RoyalAves.Gameplay
         public void HandleHit() => AcceptImpact();
         public bool AcceptImpact(bool manual = false)
         {
-            if (Animation == null || Animation.IsAnimating || barrier != null || manager.levelData != data || data.TargetCounters.All(t => t.count <= 0)) return false;
+            if (Animation == null || Animation.IsAnimating || barrier != null || manager.levelData != data ||
+                manager.field != field || !data.TargetCounters.Any(t => t.targetLevel.name == "MachineLetters" && t.count > 0)) return false;
+            int remaining = data.TargetCounters.Where(t => t.targetLevel.name == "MachineLetters").Sum(t => t.count);
+            int pending = manager.fieldBoards.SelectMany(b => b.GetComponentsInChildren<FrankingMachineCell>()).Count(m => m.barrier != null);
+            if (pending >= remaining) return false;
             if (!manual && Time.time < nextImpact) return false;
             nextImpact = Time.time + 0.2f;
             Animation.ResetStock();
             Animation.letters[0].enabled = false;
-            var gui = FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(t => t.image != null && t.image.sprite == Animation.letters[0].sprite);
+            var gui = FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(t =>
+                t.subTargetContainer?.targetLevel?.name == "MachineLetters" && t.image != null);
             Vector3 position = gui != null ? gui.image.rectTransform.TransformPoint(gui.image.rectTransform.rect.center) : cell.transform.position + Vector3.up * 2.5f;
             var canvas = gui != null ? gui.GetComponentInParent<Canvas>() : null;
             if (canvas != null && canvas.renderMode != RenderMode.WorldSpace && Camera.main != null)
@@ -127,7 +163,7 @@ namespace RoyalAves.Gameplay
             if (manager == null || manager.levelData != data) return;
             Collected++;
             foreach (var target in data.TargetCounters)
-                if (target.extraObjects.Contains(Animation.letters[0].sprite) && target.count > 0) target.changeCount(-1);
+                if (target.targetLevel.name == "MachineLetters" && target.count > 0) { target.changeCount(-1); break; }
 #if UNITY_EDITOR
             System.IO.File.WriteAllText("Logs/franking-machine-collection.result", $"OK: emitidas={Collected}; meta={data.TargetCounters.Sum(t => t.count)}; máquina fixa={cell.IsObstacle()}.");
 #endif

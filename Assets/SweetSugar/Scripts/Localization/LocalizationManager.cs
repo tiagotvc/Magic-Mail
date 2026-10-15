@@ -61,9 +61,9 @@ namespace SweetSugar.Scripts.Localization
             if (_dic == null || _dic.Count == 0)
             {
 //                Debug.LogError(GetSystemLanguage(_debugSettings) + " language file not exist");
-                return "";
+                return defaultText;
             }
-            return _dic[instanceId] != ""? _dic[instanceId] : defaultText;
+            return _dic.TryGetValue(instanceId, out var text) && !string.IsNullOrEmpty(text) ? text : defaultText;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Level;
 using SweetSugar.Scripts.TargetScripts.TargetEditor;
@@ -30,11 +30,13 @@ namespace RoyalAves.Gameplay
             }
             data = source.levelData.DeepCopyForPlay(number);
             data.CheckLayers();
+            foreach (var field in data.fields) FrankingMachineCell.RestoreGridPlacements(field);
             data.LoadTargetObject();
             data.InitTargetObjects(true, targets);
             foreach (var counter in data.TargetCounters)
             {
-                counter.targetLevel = JsonUtility.FromJson<SweetSugar.Scripts.TargetScripts.TargetSystem.TargetContainer>(JsonUtility.ToJson(counter.targetLevel));
+                counter.targetLevel = JsonUtility.FromJson<SweetSugar.Scripts.TargetScripts.TargetSystem.TargetContainer>(
+                    JsonUtility.ToJson(data.GetTargetByNameEditor("MachineLetters")));
                 counter.targetLevel.setCount = SweetSugar.Scripts.TargetScripts.TargetSystem.SetCount.Manually;
                 counter.count = 8;
             }

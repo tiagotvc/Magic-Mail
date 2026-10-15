@@ -19,6 +19,7 @@ namespace RoyalAves.Gameplay
         public Vector3 launchDisplacement;
         public float launchStartYScale = 1f;
         public bool drawOverHud;
+        [Min(1f)] public float flyingLetterScale = 1f;
         RoyalAves.Effects.MailDeliveryOverlay activeOverlay;
         public int Remaining { get; private set; }
         public bool IsAnimating { get; private set; }
@@ -120,14 +121,14 @@ namespace RoyalAves.Gameplay
                 letter.sortingOrder = cabinet.sortingOrder + 3;
                 letter.sortingLayerName = RoyalAves.Effects.PowerUpEffectOrder.SortingLayer;
                 letter.sortingOrder = RoyalAves.Effects.PowerUpEffectOrder.Value + 8;
-                if (launchDuration > 0f) yield return LaunchLetter(letter, scales[Remaining]);
+                if (launchDuration > 0f) yield return LaunchLetter(letter, scales[Remaining] * flyingLetterScale);
                 Vector3 start = letter.transform.position;
                 Vector3 end = collectionDestination != null
                     ? collectionDestination.position
                     : transform.TransformPoint(new Vector3(0.9f, 1.35f, 0f));
                 Vector3 lift = start + Vector3.up * 0.65f;
                 Vector3 bend = Vector3.Lerp(start, end, 0.55f) + Vector3.up * 0.7f;
-                Vector3 letterScale = scales[Remaining];
+                Vector3 letterScale = scales[Remaining] * flyingLetterScale;
                 if (drawOverHud) activeOverlay = RoyalAves.Effects.MailDeliveryOverlay.Create(letter);
                 if (activeOverlay == null) activeTrail = RoyalAves.Effects.MailDeliveryTrail.Create(letter);
                 float elapsed = 0f;

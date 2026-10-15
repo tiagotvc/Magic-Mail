@@ -112,12 +112,47 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor
             var targetDelete = targets.Where(i => i.targetType.GetTarget().name != "Stars").ToList();
             foreach (var targetObject in targetDelete) targets.Remove(targetObject);
             var newTarget = targetEditorScriptable.targets[newselectedTarget];
+            levelData.SetTarget(newselectedTarget);
             var list = targetEditorScriptable.targets.Where(i => i.name == newTarget.name).SelectMany(i => i.defaultSprites).OrderByDescending(i=>i.sprites[0].icon.name);
             foreach (var sprArray in list)
             {
-                ResetSprites(levelData, newTarget, sprArray.sprites, 0, 0);
+                ResetSprites(levelData, newTarget, sprArray.sprites.Copy(), 0, newTarget.name == "MachineLetters" ? 8 : 0);
             }
             saveData();
+        }
+
+        public void AddTargetType(int type, TargetEditorScriptable config)
+        {
+            if (targets == null) targets = new TargetList();
+            if (targets.Any(t => t.targetType.type == type)) return;
+            var definition = config.targets[type];
+            foreach (var variant in definition.defaultSprites)
+                targets.Add(new TargetObject
+                {
+                    targetType = new TargetType { type = type },
+                    sprites = variant.sprites.Copy(),
+                    CountDrawer = new Count { count = definition.setCount == SetCount.Manually
+                        ? (definition.name == "MachineLetters" ? 8 : 1) : 0 },
+                    ShowTheScoreForStar = new BoolScoreShow()
+                });
+        }
+
+        public void RemoveTargetType(int type)
+        {
+            foreach (var entry in targets.Where(t => t.targetType.type == type).ToArray()) targets.Remove(entry);
+        }
+
+        public void ReplaceTargetType(int previousType, int type, TargetEditorScriptable config)
+        {
+            if (previousType == type || targets.Any(t => t.targetType.type == type)) return;
+            int index = targets.ToList().FindIndex(t => t.targetType.type == previousType);
+            if (index < 0) return;
+            RemoveTargetType(previousType);
+            int start = targets.Count;
+            AddTargetType(type, config);
+            var added = targets.Skip(start).ToArray();
+            foreach (var entry in added) targets.Remove(entry);
+            for (int i = 0; i < added.Length; i++) targets.Insert(index + i, added[i]);
         }
 #endif
     }

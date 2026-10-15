@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -71,9 +71,9 @@ namespace SweetSugar.Scripts.Editor
 
         private SquareTypes squareType;
         private ItemForEditor itemBrush;
+        private bool startWithoutItemBrush;
         private string FileName = "1_1.txt";
         private Vector2 scrollViewVector;
-        private bool update;
         private static int selected;
         private string[] toolbarStrings = {"Editor", "Settings", "Shop", "In-apps", "Ads", "GUI", "Rate", "About"};
         
@@ -275,6 +275,9 @@ namespace SweetSugar.Scripts.Editor
 
         private void Initialize()
         {
+            if (levelData != null)
+                foreach (var field in levelData.fields)
+                    if (RoyalAves.Gameplay.FrankingMachineCell.RestoreGridPlacements(field)) dirtyLevel = true;
             unityAdsSettings = Resources.Load<UnityAdsID>("Scriptable/UnityAdsID");
             levelPlaySettings = Resources.Load<LevelPlayID>("Scriptable/LevelPlayID");
             if (levelPlaySettings == null)
@@ -2025,90 +2028,103 @@ namespace SweetSugar.Scripts.Editor
             GUILayout.EndHorizontal();
         }
 
-        void UpdateTarget(int newselectedTarget, TargetLevel targetLevel, TargetContainer target)
+        void SaveTargetChanges(TargetLevel targetLevel)
         {
-            // levelData.SetTarget(newselectedTarget);
-            targetLevel.ChangeTarget(target, newselectedTarget, levelData, targetEditorScriptable);
+            var primary = targetLevel.targets.FirstOrDefault(t =>
+                targetEditorScriptable.targets[t.targetType.type].name != "Stars") ?? targetLevel.targets.FirstOrDefault();
+            if (primary != null) levelData.SetTarget(primary.targetType.type);
             dirtyLevel = true;
+            SaveLevel(levelNumber);
+            targetLevel.saveData();
+            Repaint();
+        }
+
+        void ShowAddTargetMenu(TargetLevel targetLevel)
+        {
+            var menu = new GenericMenu();
+            for (int type = 0; type < targetEditorScriptable.targets.Count; type++)
+            {
+                int selected = type;
+                var definition = targetEditorScriptable.targets[type];
+                if (definition.name == "Stars" || targetLevel.targets.Any(t => t.targetType.type == type)) continue;
+                var label = SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(definition.name);
+                menu.AddItem(new GUIContent(label), false, () =>
+                {
+                    Undo.RecordObject(targetLevel, "Adicionar meta");
+                    targetLevel.AddTargetType(selected, targetEditorScriptable);
+                    SaveTargetChanges(targetLevel);
+                });
+            }
+            if (menu.GetItemCount() == 0) menu.AddDisabledItem(new GUIContent("Todas as metas já foram adicionadas"));
+            menu.ShowAsContext();
         }
 
         private void GUITarget()
         {
             GUILayout.Space(5);
-            GUILayout.BeginHorizontal();
+            var targetLevel = PrepareTargetLevel();
+            if (targetLevel.targets == null) targetLevel.targets = new TargetList();
+            var groups = targetLevel.targets.GroupBy(t => t.targetType.type).ToArray();
+            bool hasGoals = groups.Any(g => targetEditorScriptable.targets[g.Key].name != "Stars");
+            if (hasGoals) groups = groups.Where(g => targetEditorScriptable.targets[g.Key].name != "Stars").ToArray();
+            Action edit = null;
+            EditorGUILayout.LabelField("Metas da fase", EditorStyles.boldLabel);
+            foreach (var group in groups)
             {
-                GUILayout.Label("Target", GUILayout.ExpandWidth(false));
-                // target_settings = EditorGUILayout.Foldout(target_settings, "");
-                GUILayout.Space(110);
-                // if (target_settings)
+                int type = group.Key;
+                var definition = targetEditorScriptable.targets[type];
+                var choices = Enumerable.Range(0, targetEditorScriptable.targets.Count)
+                    .Where(i => i == type || (targetEditorScriptable.targets[i].name != "Stars" &&
+                        !targetLevel.targets.Any(t => t.targetType.type == i))).ToArray();
+                var labels = choices.Select(i => SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils
+                    .DisplayName(targetEditorScriptable.targets[i].name)).ToArray();
+                EditorGUILayout.BeginHorizontal();
+                int selected = EditorGUILayout.IntPopup(type, labels, choices, GUILayout.Width(220));
+                if (selected != type)
+                    edit = () => { Undo.RecordObject(targetLevel, "Alterar meta");
+                        targetLevel.ReplaceTargetType(type, selected, targetEditorScriptable); SaveTargetChanges(targetLevel); };
+                if (GUILayout.Button(new GUIContent("+", "Adicionar outra meta à fase"), GUILayout.Width(28)))
+                    ShowAddTargetMenu(targetLevel);
+                using (new EditorGUI.DisabledScope(groups.Length <= 1))
+                    if (GUILayout.Button(new GUIContent("−", "Remover esta meta"), GUILayout.Width(28)))
+                        edit = () => { Undo.RecordObject(targetLevel, "Remover meta");
+                            targetLevel.RemoveTargetType(type); SaveTargetChanges(targetLevel); };
+                EditorGUILayout.EndHorizontal();
+                if (definition.setCount == SetCount.Manually)
                 {
-                    GUILayout.BeginVertical();
+                    foreach (var entry in group)
                     {
-                        var targetLevel = GetTargetLevel();
-                        int starsInd = targetEditorScriptable.targets.FindIndex(i => i.name == "Stars");
-                        var subTargets = targetLevel.targets;
-                        var targetObjects = subTargets.GroupBy(i => i.targetType.type).FirstOrDefault();
-                        int selectedTarget = targetObjects?.FirstOrDefault().targetType.type ?? 0;
-                        int newselectedTarget = selectedTarget;
-                        GUILayout.BeginHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        var icon = entry.sprites.FirstOrDefault(s => s.uiSprite)?.icon ?? entry.sprites.FirstOrDefault()?.icon;
+                        if (icon != null) GUILayout.Label(icon.texture, GUILayout.Width(24), GUILayout.Height(24));
+                        EditorGUILayout.LabelField(definition.name == "MachineLetters" ? "Cartas" : "Quantidade", GUILayout.Width(90));
+                        EditorGUI.BeginChangeCheck();
+                        int count = Mathf.Max(0, EditorGUILayout.IntField(entry.CountDrawer.count, GUILayout.Width(60)));
+                        if (EditorGUI.EndChangeCheck())
                         {
-                            newselectedTarget = EditorGUILayout.Popup(selectedTarget, levelData.GetTargetsNames(),
-                                GUILayout.Width(100), GUILayout.ExpandWidth(false));
-                            if (GUILayout.Button("Target editor", GUILayout.Width(160)))
-                            {
-                                OpenTarget();
-                            }
+                            Undo.RecordObject(targetLevel, "Quantidade da meta");
+                            entry.CountDrawer.count = count;
+                            edit = () => SaveTargetChanges(targetLevel);
                         }
-                        GUILayout.EndHorizontal();
-
-                        TargetContainer target = null;
-                        if (targetObjects != null)
-                        {
-                            target = targetObjects.FirstOrDefault().targetType.GetTarget();
-                            if (target.setCount == SetCount.Manually)
-                            {
-                                foreach (var targetObject in targetObjects)
-                                {
-                                    GUILayout.BeginHorizontal();
-                                    {
-                                        EditorGUILayout.LabelField(targetObject.sprites.FirstOrDefault().icon.name,
-                                            GUILayout.Width(50));
-                                        EditorGUI.BeginChangeCheck();
-                                        targetObject.CountDrawer.count =
-                                            EditorGUILayout.IntField(targetObject.CountDrawer.count,
-                                                GUILayout.Width(50));
-                                        if (EditorGUI.EndChangeCheck())
-                                            targetLevel.saveData();
-                                    }
-                                    GUILayout.EndHorizontal();
-                                }
-                            }
-                        }
-
-                        if (newselectedTarget != selectedTarget || update)
-                        {
-                            update = false;
-                            UpdateTarget(newselectedTarget, targetLevel, target);
-                        }
+                        EditorGUILayout.EndHorizontal();
                     }
-                    GUILayout.EndVertical();
                 }
+                else EditorGUILayout.LabelField("Quantidade automática pelo tabuleiro", EditorStyles.miniLabel);
+                GUILayout.Space(5);
             }
-            GUILayout.EndHorizontal();
+            if (groups.Length == 0 && GUILayout.Button("+ Adicionar meta", GUILayout.Width(220))) ShowAddTargetMenu(targetLevel);
+            if (GUILayout.Button("Target editor", GUILayout.Width(160))) OpenTarget();
+            if (groups.Any(g => targetEditorScriptable.targets[g.Key].name == "MachineLetters"))
+                EditorGUILayout.HelpBox("Cartas da franqueadora: defina a quantidade e pinte as máquinas dentro do grid.", MessageType.Info);
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
-            {
-                GUILayout.Label("Tutorial", GUILayout.ExpandWidth(false));
-                GUILayout.Space(103);
-                int newselectedTutorial = EditorGUILayout.Popup(levelData.selectedTutorial, GetTutorialNames(),
-                    GUILayout.Width(160), GUILayout.ExpandWidth(false));
-                if (levelData.selectedTutorial != newselectedTutorial)
-                {
-                    levelData.selectedTutorial = newselectedTutorial;
-                    dirtyLevel = true;
-                }
-            }
+            GUILayout.Label("Tutorial", GUILayout.ExpandWidth(false));
+            GUILayout.Space(103);
+            int tutorial = EditorGUILayout.Popup(levelData.selectedTutorial, GetTutorialNames(),
+                GUILayout.Width(160), GUILayout.ExpandWidth(false));
+            if (tutorial != levelData.selectedTutorial) { levelData.selectedTutorial = tutorial; dirtyLevel = true; }
             GUILayout.EndHorizontal();
+            edit?.Invoke();
         }
 
         string[] GetTutorialNames() => new[]
@@ -2583,6 +2599,24 @@ namespace SweetSugar.Scripts.Editor
 
         private void GUIItems()
         {
+            startWithoutItemBrush = GUILayout.Toggle(startWithoutItemBrush,
+                new GUIContent("Iniciar sem peça", "Clique nas células para marcar/desmarcar. Preserva grama e obstáculos; peças podem cair normalmente depois."),
+                "Button", GUILayout.Width(180));
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Gramas sem peça", GUILayout.Width(160)))
+            {
+                foreach (var square in GetField().levelSquares)
+                    if (square.block == SquareTypes.SugarSquare || square.blocks.Any(b => b.squareType == SquareTypes.SugarSquare))
+                        square.startWithoutItem = true;
+                dirtyLevel = true;
+            }
+            if (GUILayout.Button("Limpar marcações", GUILayout.Width(160)))
+            {
+                foreach (var square in GetField().levelSquares) square.startWithoutItem = false;
+                dirtyLevel = true;
+            }
+            GUILayout.EndHorizontal();
+            EditorGUILayout.HelpBox("Vazia = sem peça no início. Para preencher só após quebrar as caixas, mantenha as entradas de peças acima da barreira, na aba Directions.", MessageType.Info);
             GUILayout.BeginHorizontal();
             {
                 //GUILayout.Space(30);
@@ -2611,17 +2645,7 @@ namespace SweetSugar.Scripts.Editor
                                         if (item.ItemType != ItemsTypes.NONE)
                                             item.SetColor(color, levelNumber);
                                         var texture = item.Tex;
-                                        if (item.ItemType == ItemsTypes.PACKAGE)
-                                        {
-                                            try
-                                            {
-                                                texture = packageTexture.AlphaBlend(item.Tex);
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                Debug.Log(e);
-                                            }
-                                        }
+                                        // The custom dynamite sprite is complete; no CPU texture blend is needed.
 
                                         if (itemBrush != null && (itemBrush.ItemType == item.ItemType &&
                                                                   item.ItemType == ItemsTypes.NONE &&
@@ -2645,6 +2669,7 @@ namespace SweetSugar.Scripts.Editor
                                             else
                                             {
                                                 itemBrush = item.DeepCopy();
+                                                startWithoutItemBrush = false;
                                                 if (item.ItemType == ItemsTypes.NONE) color = itemBrush.Color;
                                             }
                                         }
@@ -2658,6 +2683,7 @@ namespace SweetSugar.Scripts.Editor
                                         GUILayout.Height(50)))
                                     {
                                         itemBrush = null;
+                                        startWithoutItemBrush = false;
                                     }
                                 }
 
@@ -2678,6 +2704,7 @@ namespace SweetSugar.Scripts.Editor
             for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
             {
                 levelData.GetField(subLevelNumber - 1).levelSquares[i].item = null;
+                levelData.GetField(subLevelNumber - 1).levelSquares[i].startWithoutItem = false;
             }
 
             dirtyLevel = true;
@@ -2702,7 +2729,8 @@ namespace SweetSugar.Scripts.Editor
                             if (squareType == squareTypeItem)
                                 UnityEngine.GUI.backgroundColor = Color.gray;
                             if (squareTexture.Texture2D != null && GUILayout.Button(
-                                    new GUIContent(squareTexture.Texture2D, squareTypeItem.ToString()),
+                                    new GUIContent(squareTexture.Texture2D,
+                                        SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(squareTypeItem.ToString())),
                                     GUILayout.Width(50), GUILayout.Height(50)))
                             {
                                 squareType = squareTypeItem;
@@ -2873,7 +2901,7 @@ namespace SweetSugar.Scripts.Editor
                         if (squareBlock.block != SquareTypes.NONE)
                         {
                             //                        imageButton = squareBlock.item?.Texture;
-                            if (squareBlock.item != null && squareBlock.item.Item != null &&
+                            if (!squareBlock.startWithoutItem && squareBlock.item != null && squareBlock.item.Item != null &&
                                 squareBlock.item?.ItemType != ItemsTypes.INGREDIENT)
                             {
                                 blockTexturesArray.Add(new Texture2DSize(squareBlock.item?.Item
@@ -2886,7 +2914,7 @@ namespace SweetSugar.Scripts.Editor
                                 if (!blockTexturesArray.Any(i => i.Texture2D.name == t.Texture2D.name))
                                     blockTexturesArray.Insert(0,
                                         new Texture2DSize(t.Texture2D, Vector2Int.one, t.order, rotateBig));
-                                if (squareBlock.item?.Tex != null)
+                                if (!squareBlock.startWithoutItem && squareBlock.item?.Tex != null)
                                     blockTexturesArray.Add(new Texture2DSize(squareBlock.item?.Tex, Vector2Int.one,
                                         squareBlock.item.order, rotateBig));
                             }
@@ -2897,16 +2925,8 @@ namespace SweetSugar.Scripts.Editor
                             }
                         }
 
-                        if (squareBlock.item?.ItemType == ItemsTypes.PACKAGE)
-                        {
-                            // if (squareBlock.item?.Texture == null)
-                            var texture1 = itemsForEditorFull.First(i => i.ItemType == ItemsTypes.PACKAGE).Tex;
-                            var texture2 = squareBlock.item?.Item.GetComponent<IColorableComponent>()
-                                .GetSprite(levelNumber, squareBlock.item.Color).texture;
-                            if (texture1.width == texture2.width && texture1.height == texture2.height)
-                                blockTexturesArray.Add(new Texture2DSize(texture1?.AlphaBlend(texture2), Vector2Int.one,
-                                    1000, rotateBig));
-                        }
+                        // Item previews above already draw the complete dynamite sprite.
+                        // Blending it again reads non-readable imported textures and aborts the grid GUI.
                     }
 
                     if (section == 2)
@@ -3048,6 +3068,17 @@ namespace SweetSugar.Scripts.Editor
             }
 
             SetupArrows();
+            if (section == 1)
+            {
+                foreach (var square in GetField().levelSquares.Where(s => s.startWithoutItem && s.block != SquareTypes.NONE))
+                {
+                    var rect = new Rect(square.guiRect.x + 3, square.guiRect.y + 3, 44, 18);
+                    EditorGUI.DrawRect(rect, new Color(0.12f, 0.22f, 0.34f, 0.88f));
+                    var style = new GUIStyle(EditorStyles.miniBoldLabel) { alignment = TextAnchor.MiddleCenter };
+                    style.normal.textColor = Color.white;
+                    UnityEngine.GUI.Label(rect, new GUIContent("Vazia", "Esta célula inicia sem peça, mas aceita queda e reposição normalmente."), style);
+                }
+            }
             DrawLines();
         }
 
@@ -3157,12 +3188,21 @@ namespace SweetSugar.Scripts.Editor
         private void SetItem(int col, int row)
         {
             SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            if (startWithoutItemBrush)
+            {
+                if (squareBlock.block == SquareTypes.NONE) return;
+                squareBlock.startWithoutItem = !squareBlock.startWithoutItem;
+                dirtyLevel = true;
+                return;
+            }
             if (squareBlock.blocks.Any(i =>
                 i.squareType == SquareTypes.SolidBlock || i.squareType == SquareTypes.UndestrBlock ||
                 i.squareType == SquareTypes.NONE)) return;
+            squareBlock.startWithoutItem = false;
+            dirtyLevel = true;
             ItemForEditor itemTemp = squareBlock.item;
             if (itemTemp == null)
-                itemTemp = itemBrush.DeepCopy();
+                itemTemp = itemBrush?.DeepCopy();
             else if (itemBrush?.ItemType != ItemsTypes.NONE ||
                      (itemTemp.ItemType == ItemsTypes.NONE && itemBrush?.ItemType == ItemsTypes.NONE))
                 itemTemp = itemBrush?.DeepCopy();
@@ -3493,17 +3533,7 @@ namespace SweetSugar.Scripts.Editor
                                                 item.SetColor(color, levelNumber);
                                             
                                             var texture = item.Tex;
-                                            if (item.ItemType == ItemsTypes.PACKAGE)
-                                            {
-                                                try
-                                                {
-                                                    texture = packageTexture.AlphaBlend(item.Tex);
-                                                }
-                                                catch (Exception e)
-                                                {
-                                                    Debug.Log(e);
-                                                }
-                                            }
+                                            // Use the complete sprite directly, including for dynamite.
                                             
                                             if (selectedRandomItem != null && selectedRandomItem.ItemType == item.ItemType && selectedRandomItem.Tex == item.Tex)
                                                 UnityEngine.GUI.backgroundColor = Color.green;

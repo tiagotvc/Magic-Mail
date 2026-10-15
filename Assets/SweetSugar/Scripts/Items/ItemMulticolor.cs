@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -133,6 +133,8 @@ namespace SweetSugar.Scripts.Items
         {
             var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
                 .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            items = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(GetParentItem().square.field)
+                .FilterItems(GetParentItem().square, items);
             item2.DestroyItem();
 
             var made = new List<Item>();
@@ -182,6 +184,8 @@ namespace SweetSugar.Scripts.Items
         {
             var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
                 .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            items = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(GetParentItem().square.field)
+                .FilterItems(GetParentItem().square, items);
             item2.DestroyItem();
 
             var made = new List<Item>();
@@ -237,6 +241,8 @@ namespace SweetSugar.Scripts.Items
         private IEnumerator SetTypeByColor(Item item2)
         {
             var items = LevelManager.THIS.field.GetItemsByColor(item2.color).Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            items = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(GetParentItem().square.field)
+                .FilterItems(GetParentItem().square, items);
             var nextType = item2.currentType;
             bool loopFinished = false;
             GameObject itemMarmaladeTarget = null;
@@ -278,6 +284,8 @@ namespace SweetSugar.Scripts.Items
 
         private IEnumerator SelectThenExplode(Item[] items)
         {
+            items = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(GetParentItem().square.field)
+                .FilterItems(GetParentItem().square, items);
             var selected = new List<Item>();
             var highlights = new List<SelectionHighlight>();
             // Flagged as destroying from the start: the normal matcher skips them, so same-colour pieces lined up by the
@@ -476,10 +484,12 @@ namespace SweetSugar.Scripts.Items
 
         private IEnumerator DestroyDoubleBombCor(int col, Action callback)
         {
+            var origin = GetParentItem().square;
+            var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(origin.field);
             for (var i = 0; i < LevelManager.THIS.field.fieldData.maxCols; i++)
             {
             
-                var list = LevelManager.THIS.GetColumn(i).Where(a => !a.destroying).ToList();
+                var list = barriers.FilterItems(origin, LevelManager.THIS.GetColumn(i).Where(a => !a.destroying)).ToList();
                 foreach (var a in list)
                 {
                     a.globalExplEffect = true;
@@ -492,7 +502,7 @@ namespace SweetSugar.Scripts.Items
 
                 if (LevelManager.THIS.AdditionalSettings.DoubleMulticolorDestroySquaresAndSpreadJelly)
                 {
-                    var sq = LevelManager.THIS.GetColumnSquare(i).ToList();
+                    var sq = barriers.Filter(origin, LevelManager.THIS.GetColumnSquare(i));
                     foreach (var a in sq)
                     {
                         CreateLightning(transform.position, a.transform.position);

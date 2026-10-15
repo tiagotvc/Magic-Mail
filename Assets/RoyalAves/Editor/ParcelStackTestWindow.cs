@@ -60,7 +60,7 @@ namespace RoyalAves.EditorTools
             }
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Meta: um objetivo por pacote concluído.");
-            EditorGUILayout.HelpBox("Observe no Game View: travessa superior → central → inferior → quebra final. A caixa permanece frontal e do mesmo tamanho. Use o menu de teste das quatro caixas para reiniciar.", MessageType.None);
+            EditorGUILayout.HelpBox("Cada tábua removida e a quebra final soltam lascas irregulares de madeira, que caem até sair da tela. A meta conta somente na quebra final. Use o menu de teste das quatro caixas para reiniciar.", MessageType.None);
         }
     }
 }

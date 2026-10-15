@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -76,9 +76,9 @@ namespace SweetSugar.Scripts.Items
 
         private List<Square> GetSquaresInRow(Square square, ItemsTypes type)
         {
-            if (type == ItemsTypes.HORIZONTAL_STRIPED)
-                return LevelManager.THIS.GetRowSquare(square.row);
-            return LevelManager.THIS.GetColumnSquare(square.col);
+            var cells = type == ItemsTypes.HORIZONTAL_STRIPED
+                ? LevelManager.THIS.GetRowSquare(square.row) : LevelManager.THIS.GetColumnSquare(square.col);
+            return RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(square.field).Filter(square, cells);
         }
 
         public Item GetParentItem()
@@ -114,13 +114,14 @@ namespace SweetSugar.Scripts.Items
 
             if (striped != null && package != null)
             {
-                var itemsList = LevelManager.THIS.GetSquaresAroundSquare(package.square);
+                var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(package.square.field);
+                var itemsList = LevelManager.THIS.GetSquaresAroundSquare(package.square, barriers);
                 var direction = 1;
                 itemsList.Add(item1.square);
                 List<Square> squares = new List<Square>();
                 foreach (var _square in itemsList)
                 {
-                    if (_square != null)
+                    if (_square != null && !barriers.IsBlocking(_square.col, _square.row))
                     {
                         var list1 = GetSquaresInRow(_square, ItemsTypes.HORIZONTAL_STRIPED);
                         var list2 = GetSquaresInRow(_square, ItemsTypes.VERTICAL_STRIPED);
@@ -133,6 +134,7 @@ namespace SweetSugar.Scripts.Items
                     }
                 }
                 
+                squares = barriers.Filter(package.square, squares);
                 if(squares.Any(i=>i.type == SquareTypes.JellyBlock) )
                     LevelManager.THIS.levelData.GetTargetObject().CheckSquares(squares.ToArray());
                 var squaresToDestroy = squares.Distinct();

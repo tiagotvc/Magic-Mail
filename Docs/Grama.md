@@ -1,5 +1,11 @@
 # Grama — piso com duas camadas
 
+Ajuste de ritmo do desfolhar: partículas agora duram 0,8 s nos dois estados, comprimindo a trajetória anterior no tempo para preservar a distância de queda e dispersão. Mantidos aumento de tamanho de 45% e tempos de conclusão da camada/meta.
+
+Revisão do desfolhar (15/10/2026): folhas do efeito aumentadas em 45% nas duas dimensões (ajustado de 65% a pedido do usuário), preservando o recorte arredondado e as cores da camada atingida. Partículas passam a durar cerca de 1,01 s no primeiro dano e 1,17 s na remoção final, com queda acelerada pela gravidade e desaparecimento somente nos últimos 28% do percurso. Encolhimento reduzido de 30% para 15%. A meta/liberação da camada continua nos tempos anteriores (0,46/0,62 s), sem aguardar a queda decorativa mais longa. Runtime compilado sem erros; conferência visual pendente no jogo.
+
+Revisão do contorno (15/10/2026): o usuário considerou a borda orgânica anterior exagerada. `GrassOrganicBorder` agora mantém a sobreposição somente entre células com grama; bordas expostas seguem o limite da célula, com variação discreta para dentro de 0,2% a 0,6% e raio de canto de 13% da menor dimensão da célula. Removidas as saliências de até 8,8% somadas à sobreposição. O recorte usa coordenadas do campo para respeitar sua escala. Texturas, cores e regras das camadas preservadas; a silhueta inicial continua fixa durante a remoção das células vizinhas. Compilação runtime validada sem erros; conferência visual no jogo pendente.
+
 Por decisão do usuário, o piso que estava sendo preparado como Tinta Mágica passa a usar grama, inclusive no nome exibido no laboratório. As regras já foram validadas.
 
 - Piso fixo com uma ou duas camadas, permitindo peças e queda normalmente.

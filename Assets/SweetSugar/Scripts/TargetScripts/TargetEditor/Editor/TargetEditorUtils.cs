@@ -20,6 +20,15 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor.Editor
     {
         private static TargetEditorScriptable target;
 
+        // Display labels only: internal names and saved target indices remain stable.
+        public static string DisplayName(string name)
+        {
+            if (name == "SugarSquare") return "Grama";
+            if (name == "MachineLetters") return "Cartas da franqueadora";
+            if (name == "SolidBlock") return "Caixa (SolidBlock)";
+            return name;
+        }
+
         public static TargetEditorScriptable TargetEditorScriptable
         {
             get

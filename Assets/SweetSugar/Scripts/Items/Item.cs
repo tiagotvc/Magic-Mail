@@ -167,10 +167,7 @@ namespace SweetSugar.Scripts.Items
         public Animator anim;
         //gonna be destroy
         [HideInInspector] public bool destroying;
-        //animation value
-        private float xScale;
-        //animation value
-        private float yScale;
+        public const float BoardItemScale = 0.42f;
         //item was set by editor
         [HideInInspector] public bool tutorialItem;
         //true - item should be switched in interactive tutorial
@@ -317,7 +314,6 @@ namespace SweetSugar.Scripts.Items
             anim.enabled = false;
             if(transform.childCount>0)
             {
-                transform.GetChild(0).transform.localScale = Vector3.one;
                 transform.GetChild(0).transform.localPosition = Vector3.zero;
             }
             globalExplEffect = false;
@@ -335,6 +331,7 @@ namespace SweetSugar.Scripts.Items
             ResetAnimTransform();
             anim.enabled = true;
             anim.runtimeAnimatorController = animController;
+            RestoreBoardScale();
             marmaladeTarget = null;
             combinationID = -1;
             if(animoffset)
@@ -379,6 +376,7 @@ namespace SweetSugar.Scripts.Items
             defaultTransformRotation = itemAnimTransform.localRotation;
             gameObject.AddComponent<ItemDebugInspector>();
             _spriteObjectRef = transform.Find("Sprite");
+            if (_spriteObjectRef != null) defaultSpriteScale = _spriteObjectRef.localScale;
         }
 
 
@@ -389,8 +387,6 @@ namespace SweetSugar.Scripts.Items
                 transform.position = square.transform.position;
                 falling = false;
             }
-            xScale = transform.localScale.x;
-            yScale = transform.localScale.y;
             base.Start();
         }
 
@@ -422,42 +418,6 @@ namespace SweetSugar.Scripts.Items
         {
             SmoothDestroy();
         }
-        //start idle animation
-        private IEnumerator AnimIdleStart()
-        {
-            var xScaleDest1 = xScale - 0.05f;
-            var xScaleDest2 = xScale;
-            var speed = Random.Range(0.02f, 0.07f);
-
-            var trigger = false;
-            while (true)
-            {
-                if (!trigger)
-                {
-                    if (xScale > xScaleDest1)
-                    {
-                        xScale -= Time.deltaTime * speed;
-                        yScale += Time.deltaTime * speed;
-                    }
-                    else
-                        trigger = true;
-                }
-                else
-                {
-                    if (xScale < xScaleDest2)
-                    {
-                        xScale += Time.deltaTime * speed;
-                        yScale -= Time.deltaTime * speed;
-                    }
-                    else
-                        trigger = false;
-                }
-
-                transform.localScale = new Vector3(xScale, yScale, 1);
-                yield return new WaitForFixedUpdate();
-            }
-        }
-
         //reset drag variables
         private void ResetDrag()
         {
@@ -898,6 +858,7 @@ namespace SweetSugar.Scripts.Items
         int fallingID;
         private Vector3 defaultTransformPosition;
         private Vector3 defaultTransformScale;
+        private Vector3 defaultSpriteScale = Vector3.one;
         private Quaternion defaultTransformRotation;
         [HideInInspector]
         public IColorableComponent colorableComponent;
@@ -1102,6 +1063,16 @@ namespace SweetSugar.Scripts.Items
             itemAnimTransform.transform.localPosition = defaultTransformPosition;
             itemAnimTransform.transform.localScale = defaultTransformScale;
             itemAnimTransform.transform.localRotation = defaultTransformRotation;
+            RestoreBoardScale();
+        }
+
+        public void RestoreBoardScale()
+        {
+            transform.localScale = new Vector3(BoardItemScale, BoardItemScale, 1f);
+            if (itemAnimTransform != null && itemAnimTransform != transform)
+                itemAnimTransform.localScale = defaultTransformScale;
+            if (_spriteObjectRef != null && _spriteObjectRef != itemAnimTransform)
+                _spriteObjectRef.localScale = defaultSpriteScale;
         }
 
         /// <summary>
@@ -1140,6 +1111,7 @@ namespace SweetSugar.Scripts.Items
 
         private bool CheckNearSquare(bool nearEmptySquareDetected, Square checkingSquare)
         {
+            if (!square.CanFallDiagonallyTo(checkingSquare)) return nearEmptySquareDetected;
             if (!checkingSquare.IsNone() && checkingSquare.CanGoInto() && checkingSquare.Item == null && !falling)
             {
                 if ((checkingSquare.Item == null || (bool)checkingSquare.Item?.destroying ||
@@ -1281,7 +1253,7 @@ namespace SweetSugar.Scripts.Items
 
             if (destroying) return;
             if (this == null) return;
-            StopCoroutine(AnimIdleStart());
+            RestoreBoardScale();
             destroying = true;
             LevelManager.THIS.FindMatches();
 

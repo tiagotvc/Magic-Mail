@@ -26,6 +26,7 @@ namespace SweetSugar.Scripts.Items
     {
         private Item item;
         private bool started;
+        private RoyalAves.Gameplay.ImpactBarrierSnapshot barriers;
 
         private void Start()
         {
@@ -36,6 +37,7 @@ namespace SweetSugar.Scripts.Items
         {
             if (started) return;
             started = true;
+            barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(item1.square.field);
             var thisItem = GetComponent<Item>();
 
             var animator = GetComponent<Animator>();
@@ -50,6 +52,7 @@ namespace SweetSugar.Scripts.Items
                 PowerUpEffectOrder.Raise(go);
                 var explosionAround = go.GetComponent<ExplAround>();
                 explosionAround.item = thisItem;
+                explosionAround.barriers = barriers;
                 go.SetActive(true);
             }
 
@@ -73,8 +76,8 @@ namespace SweetSugar.Scripts.Items
 
         private void DestroyItems(Item item1, Square square)
         {
-            LevelManager.THIS.field.DestroyItemsAround(square, item);
-            var sqList = LevelManager.THIS.GetSquaresAroundSquare(square);
+            LevelManager.THIS.field.DestroyItemsAround(square, item, barriers);
+            var sqList = LevelManager.THIS.GetSquaresAroundSquare(square, barriers);
             square.DestroyBlock();
             if(square.type == SquareTypes.JellyBlock)
                 LevelManager.THIS.levelData.GetTargetObject().CheckSquares(sqList.ToArray());
