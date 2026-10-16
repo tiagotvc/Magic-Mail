@@ -2109,7 +2109,9 @@ namespace SweetSugar.Scripts.Editor
                         EditorGUILayout.EndHorizontal();
                     }
                 }
-                else EditorGUILayout.LabelField("Quantidade automática pelo tabuleiro", EditorStyles.miniLabel);
+                else EditorGUILayout.LabelField(definition.name == "IceBlock"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.IceLayer.CountCells(levelData)}"
+                    : "Quantidade automática pelo tabuleiro", EditorStyles.miniLabel);
                 GUILayout.Space(5);
             }
             if (groups.Length == 0 && GUILayout.Button("+ Adicionar meta", GUILayout.Width(220))) ShowAddTargetMenu(targetLevel);

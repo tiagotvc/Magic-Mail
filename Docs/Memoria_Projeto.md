@@ -94,3 +94,12 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - Validação: runtime/editor compilados; comparação renderizada na Unity aberta com seis peças reais, material do jogo e `BoardCellVisual`. Captura do prefab corrigido em `Docs/Gelo_Legibilidade_Unity.png`: sem gelo, fino e grosso. Bancada visual, não captura de fase em Play; validação completa das regras em Play permanece pendente.
 - Documentação e ferramenta reproduzível: `Docs/Gelo.md` e `IceVisualValidation.cs`.
 - Usuário pediu salvar e comitar todas as alterações feitas até agora. Incluir também alterações locais de fases, metas, fontes e metadados do HUD presentes nesta sessão. Branch `sincronizar-remoto`; nenhum push solicitado nesta etapa.
+
+## Fechamento 16/10/2026 — gelo, metas e power-ups
+
+- Quebra do gelo com fragmentos orgânicos cartoon: cinco no grosso e sete no fino. Captura nativa em `Docs/Gelo_Quebra_Unity.png`.
+- Meta de gelo automática pelo número de células com gelo na fase; grosso conta uma célula. Ícone da meta de caixa usa a caixa base sem tábuas. Detalhes em `Docs/Metas_Gelo_Caixa.md`.
+- Trocar um power-up ativa seu efeito com ou sem match, inclusive arrastando a peça comum para ele. Ativação explícita supera proteções passivas, preservando bloqueios de gelo e combinações entre especiais.
+- Dinamite com raio de três células: até 7×7, mantendo barreiras de caixas e recorte nas bordas. Outras vizinhanças mantêm o alcance anterior.
+- Validação na Unity aprovada: geometria de 49/16/28 células no centro/canto/lateral e quatro trocas reais da hélice, com/sem match e nos dois sentidos, exatamente uma ativação por caso. Detalhes em `Docs/PowerUps_Troca_Dinamite.md`.
+- Usuário solicitou comitar o trabalho pendente ao encerrar o dia, incluindo assets, fontes e fases locais. Nenhum push solicitado.

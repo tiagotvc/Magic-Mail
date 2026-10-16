@@ -2,6 +2,7 @@ using System.Linq;
 using RoyalAves.Effects;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Level;
 using SweetSugar.Scripts.TargetScripts.TargetSystem;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ namespace RoyalAves.Gameplay
         [Range(1, 2)] public int remainingLayers = 1;
         public bool CountsAsObjective => remainingLayers == 1;
         public static float OpacityForLevel(int level) => level == 1 ? .35f : .60f;
+        public static int CountCells(LevelData data) => data.fields.Sum(field => field.levelSquares.Count(cell =>
+            cell.blocks != null && cell.blocks.Count > 0
+                ? cell.blocks.Any(layer => layer.squareType == SquareTypes.IceBlock)
+                : cell.block == SquareTypes.IceBlock || cell.obstacle == SquareTypes.IceBlock));
         bool removed;
         SpriteRenderer visual;
         Square cell;
@@ -45,7 +50,7 @@ namespace RoyalAves.Gameplay
             var counters = manager.levelData.TargetCounters.Where(counter => CountsAsObjective &&
                 counter.collectingAction == CollectingTypes.Destroy && counter.extraObjects != null &&
                 counter.extraObjects.Contains(source.sprite)).ToArray();
-            FallingBoardDebris.Shatter(source);
+            IceBreakEffect.Play(source, remainingLayers > 1);
             source.enabled = false;
             // Use the shared removal path to restore cell permissions without touching its item.
             if (!boardCell.CompleteLayerRemoval(layer)) return;

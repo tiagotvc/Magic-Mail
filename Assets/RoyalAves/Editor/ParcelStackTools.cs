@@ -253,7 +253,7 @@ namespace RoyalAves.EditorTools
         {
             var list = new SpriteList();
             for (int i = 0; i < art.Length; i++)
-                list.Add(new SpriteObject { icon = art[i], uiSprite = i == art.Length - 1 });
+                list.Add(new SpriteObject { icon = art[i], uiSprite = i == 0 });
             return list;
         }
 

@@ -24,6 +24,7 @@ namespace SweetSugar.Scripts.Items
     /// </summary>
     public class ItemDestroyAnimation : MonoBehaviour
     {
+        public const int BlastRadius = 3;
         private Item item;
         private bool started;
         private RoyalAves.Gameplay.ImpactBarrierSnapshot barriers;
@@ -76,8 +77,8 @@ namespace SweetSugar.Scripts.Items
 
         private void DestroyItems(Item item1, Square square)
         {
-            LevelManager.THIS.field.DestroyItemsAround(square, item, barriers);
-            var sqList = LevelManager.THIS.GetSquaresAroundSquare(square, barriers);
+            square.field.DestroyItemsAround(square, item, barriers, BlastRadius);
+            var sqList = LevelManager.THIS.GetSquaresAroundSquare(square, barriers, BlastRadius);
             square.DestroyBlock();
             if(square.type == SquareTypes.JellyBlock)
                 LevelManager.THIS.levelData.GetTargetObject().CheckSquares(sqList.ToArray());

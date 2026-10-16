@@ -639,15 +639,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 0, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 0, y: 2}
         direction: {x: 0, y: -1}
@@ -678,15 +673,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 1, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 1, y: 2}
         direction: {x: 0, y: -1}
@@ -717,15 +707,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 2, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 2, y: 2}
         direction: {x: 0, y: -1}
@@ -756,15 +741,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 3, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 3, y: 2}
         direction: {x: 0, y: -1}
@@ -795,15 +775,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 4, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 2}
         direction: {x: 0, y: -1}
@@ -834,15 +809,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 5, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 5, y: 2}
         direction: {x: 0, y: -1}
@@ -873,15 +843,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 6, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 6, y: 2}
         direction: {x: 0, y: -1}
@@ -912,15 +877,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 7, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 7, y: 2}
         direction: {x: 0, y: -1}
@@ -951,15 +911,10 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 4
-          anotherSquare: 0
-          originalPos: {x: 8, y: 2}
-          rotate: 0
-          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 4
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 8, y: 2}
         direction: {x: 0, y: -1}
@@ -3015,14 +2970,14 @@ MonoBehaviour:
       switchSublevelNoMatch: 0
       frankingMachines: []
     target:
-      name: SolidBlock
+      name: IceBlock
       localization:
         description:
-          text: Destroy solid blocks
-          index: 63
+          text: "Quebre o gelo para liberar as pe\xC3\u0192\xC2\xA7as"
+          index: -1
         failed:
-          text: You didn't destroy all blocks
-          index: 64
+          text: "Ainda h\xC3\u0192\xC2\xA1 pe\xC3\u0192\xC2\xA7as congeladas"
+          index: -1
       collectAction: 0
       setCount: 1
       CanSwithSublevel: 0
@@ -3030,19 +2985,15 @@ MonoBehaviour:
         array:
         - sprites:
             array:
-            - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
+            - icon: {fileID: 21300000, guid: 05e3182245bc4552b2207f0857cfebda, type: 3}
               uiSprite: 0
-            - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
-              uiSprite: 0
-            - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
-              uiSprite: 0
-            - icon: {fileID: 21300000, guid: 578ba430c2ea4dcbb274dfb0a6cae0ef, type: 3}
+            - icon: {fileID: 21300000, guid: dceee3f7cee048448e47c08945d078c2, type: 3}
               uiSprite: 1
       prefabs:
-      - {fileID: 1793582136509744, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
-    limitType: 1
-    limit: 59
-    colorLimit: 5
+      - {fileID: 1055345148094608, guid: 07e827af6e2b43f7b84690d579e0b7a0, type: 3}
+    limitType: 0
+    limit: 30
+    colorLimit: 4
     star1: 500
     star2: 1000
     star3: 2200
@@ -3050,19 +3001,11 @@ MonoBehaviour:
     selectedTutorial: 0
     currentSublevelIndex: 0
     subTargetsContainers:
-    - targetPrefab: {fileID: 1667342636537358, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
-      count: 9
-      preCount: 9
+    - targetPrefab: {fileID: 1533976084100574, guid: 07e827af6e2b43f7b84690d579e0b7a0, type: 3}
+      count: 18
+      preCount: 18
       extraObject: {fileID: 0}
-    - targetPrefab: {fileID: 1880170683520274, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
-      count: 0
-      preCount: 0
-      extraObject: {fileID: 0}
-    - targetPrefab: {fileID: 1500800877303290, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
-      count: 0
-      preCount: 0
-      extraObject: {fileID: 0}
-    - targetPrefab: {fileID: 8100000000000000000, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
+    - targetPrefab: {fileID: 1711075845521044, guid: 07e827af6e2b43f7b84690d579e0b7a0, type: 3}
       count: 0
       preCount: 0
       extraObject: {fileID: 0}

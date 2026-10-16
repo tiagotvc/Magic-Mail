@@ -3050,14 +3050,14 @@ MonoBehaviour:
       switchSublevelNoMatch: 0
       frankingMachines: []
     target:
-      name: SugarSquare
+      name: SolidBlock
       localization:
         description:
-          text: Destroy sugar squares
-          index: 59
+          text: Destroy solid blocks
+          index: 63
         failed:
-          text: You didn't destroy the sugar squares
-          index: 60
+          text: You didn't destroy all blocks
+          index: 64
       collectAction: 0
       setCount: 1
       CanSwithSublevel: 0
@@ -3065,15 +3065,19 @@ MonoBehaviour:
         array:
         - sprites:
             array:
-            - icon: {fileID: 21300000, guid: b60f104913f7f4f4ba14f86e8eff79e4, type: 3}
-              uiSprite: 0
-            - icon: {fileID: 21300000, guid: 182f3100e66e3b94cad95d88a70d0718, type: 3}
+            - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
               uiSprite: 1
+            - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
+              uiSprite: 0
+            - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
+              uiSprite: 0
+            - icon: {fileID: 21300000, guid: 578ba430c2ea4dcbb274dfb0a6cae0ef, type: 3}
+              uiSprite: 0
       prefabs:
-      - {fileID: 1055345148094608, guid: 4ebed1d82b94548d0ab47103e3f205e5, type: 3}
+      - {fileID: 1793582136509744, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
     limitType: 0
     limit: 30
-    colorLimit: 5
+    colorLimit: 4
     star1: 100
     star2: 600
     star3: 1200
@@ -3081,12 +3085,20 @@ MonoBehaviour:
     selectedTutorial: 3
     currentSublevelIndex: 0
     subTargetsContainers:
-    - targetPrefab: {fileID: 1533976084100574, guid: 4ebed1d82b94548d0ab47103e3f205e5, type: 3}
+    - targetPrefab: {fileID: 1667342636537358, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
+      count: 54
+      preCount: 54
+      extraObject: {fileID: 0}
+    - targetPrefab: {fileID: 1880170683520274, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
       count: 0
       preCount: 0
       extraObject: {fileID: 0}
-    - targetPrefab: {fileID: 1533976084100574, guid: 4ebed1d82b94548d0ab47103e3f205e5, type: 3}
-      count: 32
-      preCount: 32
+    - targetPrefab: {fileID: 1500800877303290, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
+      count: 0
+      preCount: 0
+      extraObject: {fileID: 0}
+    - targetPrefab: {fileID: 8100000000000000000, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
+      count: 0
+      preCount: 0
       extraObject: {fileID: 0}
     generateIngredientOnlyFromSpawner: 0

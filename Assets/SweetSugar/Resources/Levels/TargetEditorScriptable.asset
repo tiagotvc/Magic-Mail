@@ -135,13 +135,13 @@ MonoBehaviour:
       - sprites:
           array:
           - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
-            uiSprite: 0
+            uiSprite: 1
           - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
             uiSprite: 0
           - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
             uiSprite: 0
           - icon: {fileID: 21300000, guid: 578ba430c2ea4dcbb274dfb0a6cae0ef, type: 3}
-            uiSprite: 1
+            uiSprite: 0
     prefabs:
     - {fileID: 1793582136509744, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
   - name: Stars
@@ -203,10 +203,10 @@ MonoBehaviour:
   - name: IceBlock
     localization:
       description:
-        text: Quebre o gelo para liberar as peÃƒÂ§as
+        text: "Quebre o gelo para liberar as pe\xC3\u0192\xC2\xA7as"
         index: -1
       failed:
-        text: Ainda hÃƒÂ¡ peÃƒÂ§as congeladas
+        text: "Ainda h\xC3\u0192\xC2\xA1 pe\xC3\u0192\xC2\xA7as congeladas"
         index: -1
     collectAction: 0
     setCount: 1

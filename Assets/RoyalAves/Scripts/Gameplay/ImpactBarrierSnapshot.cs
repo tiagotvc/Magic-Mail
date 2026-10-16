@@ -23,6 +23,15 @@ namespace RoyalAves.Gameplay
 
         public bool IsBlocking(int col, int row) => crates.Contains(new Vector2Int(col, row));
 
+        public static List<Square> AreaAround(Square origin, int radius, ImpactBarrierSnapshot barriers = null)
+        {
+            var cells = new List<Square>();
+            for (int row = origin.row - radius; row <= origin.row + radius; row++)
+            for (int col = origin.col - radius; col <= origin.col + radius; col++)
+                cells.Add(origin.field.GetSquare(col, row));
+            return (barriers ?? Capture(origin.field)).Filter(origin, cells);
+        }
+
         public List<Square> Filter(Square origin, IEnumerable<Square> targets)
             => targets.Where(t => t != null && t.field == origin.field &&
                 CanReach(origin.col, origin.row, t.col, t.row)).Distinct().ToList();

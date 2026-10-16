@@ -15,16 +15,12 @@ MonoBehaviour:
   targets:
     array:
     - targetType:
-        type: 4
+        type: 8
       sprites:
         array:
-        - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
+        - icon: {fileID: 21300000, guid: 05e3182245bc4552b2207f0857cfebda, type: 3}
           uiSprite: 0
-        - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
-          uiSprite: 0
-        - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
-          uiSprite: 0
-        - icon: {fileID: 21300000, guid: 578ba430c2ea4dcbb274dfb0a6cae0ef, type: 3}
+        - icon: {fileID: 21300000, guid: dceee3f7cee048448e47c08945d078c2, type: 3}
           uiSprite: 1
       CountDrawer:
         count: 0

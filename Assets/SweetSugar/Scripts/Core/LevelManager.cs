@@ -1600,21 +1600,8 @@ namespace SweetSugar.Scripts.Core
         /// </summary>
         /// <param name="square"></param>
         /// <returns></returns>
-        public List<Square> GetSquaresAroundSquare(Square square, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null)
-        {
-            var col = square.col;
-            var row = square.row;
-            var itemsList = new List<Square>();
-            for (var r = row - 1; r <= row + 1; r++)
-            {
-                for (var c = col - 1; c <= col + 1; c++)
-                {
-                    itemsList.Add(GetSquare(c, r, true));
-                }
-            }
-
-            return (barriers ?? RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(square.field)).Filter(square, itemsList);
-        }
+        public List<Square> GetSquaresAroundSquare(Square square, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null, int radius = 1)
+            => RoyalAves.Gameplay.ImpactBarrierSnapshot.AreaAround(square, radius, barriers);
 
         /// <summary>
         /// get 9 items around the square

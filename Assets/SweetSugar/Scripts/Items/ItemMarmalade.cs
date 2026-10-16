@@ -33,6 +33,9 @@ namespace SweetSugar.Scripts.Items
         public ItemMarmalade secondItem;
         public MarmaladeFly[] marmalades;
         private bool destroyStarted;
+#if UNITY_EDITOR
+        public static int LaunchCount;
+#endif
 
         public void Destroy(Item item1, Item item2)
         {
@@ -69,6 +72,9 @@ namespace SweetSugar.Scripts.Items
 
         private void CreateMarmalade(ItemsTypes itemsType)
         {
+#if UNITY_EDITOR
+            LaunchCount++;
+#endif
             // Only duplicates (both propellers take off) when combined with another paper plane; a simple activation
             // sends just the one piece already shown at rest.
             var launching = itemsType == ItemsTypes.MARMALADE ? marmalades : new[] { marmalades[0] };

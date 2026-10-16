@@ -851,9 +851,14 @@ MonoBehaviour:
           originalPos: {x: 5, y: 2}
           rotate: 0
           size: {x: 1, y: 1}
+        - squareType: 2
+          anotherSquare: 0
+          originalPos: {x: 5, y: 2}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 2
-        blockLayer: 2
+        blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 5, y: 2}
@@ -1139,9 +1144,14 @@ MonoBehaviour:
           originalPos: {x: 4, y: 3}
           rotate: 0
           size: {x: 1, y: 1}
+        - squareType: 2
+          anotherSquare: 0
+          originalPos: {x: 4, y: 3}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 2
-        blockLayer: 2
+        blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 3}
@@ -2558,7 +2568,7 @@ MonoBehaviour:
         startWithoutItem: 0
         separatorIndexes: 00000000y
       bombTimer: 15
-      layers: 3
+      layers: 4
       switchSublevelNoMatch: 0
       frankingMachines: []
     target:

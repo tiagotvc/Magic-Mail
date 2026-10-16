@@ -36,6 +36,8 @@ Prompt utilizado: duas placas quadradas arredondadas de gelo para match-3, com o
 
 ## Mecânica aprovada e implementada
 
+A meta agora é inicializada diretamente pela quantidade de células pintadas, inclusive antes de criar o tabuleiro. O editor mostra a quantidade automática. Corrigida também a classe exigida pelo carregador quando gelo é a meta principal. Detalhes e validação em [Metas_Gelo_Caixa.md](Metas_Gelo_Caixa.md).
+
 O usuário definiu que o gelo prende a peça por baixo. A sequência é grosso → fino → removido; também é possível iniciar com apenas o nível fino.
 
 - As duas camadas ficam acima da peça. A transparência do fino é definida na arte, com bordas fortes, e o grosso usa mais branco fosco. Apenas o estado exposto é desenhado.
@@ -52,6 +54,14 @@ O prefab está em `Assets/SweetSugar/Resources/Blocks/IceBlock.prefab`. No edito
 Menu para reconstruir os assets: `Royal Aves > Elementos > Gelo > Preparar gelo de dois níveis`, fora do Play Mode. O importador usa dois arquivos de sprite individuais; os arquivos antigos de gelo continuam intactos.
 
 ## Validação
+
+### Animação própria de quebra
+
+`IceBreakEffect` substitui a quebra genérica usada pelos matches. O grosso se divide em **5 cacos maiores**, com brilho de impacto e queda de **0,64 s**, revelando o fino. O fino se divide em **7 cacos menores**, com dispersão mais rápida e duração de **0,48 s**, liberando a peça. As placas são divididas em polígonos irregulares por Voronoi, usando a textura cartoon do próprio gelo. Os fragmentos giram, caem e desaparecem progressivamente.
+
+O efeito é independente da camada destruída e não bloqueia a resolução do tabuleiro. A remoção da camada e a meta mantêm a lógica existente; não se aguarda a queda dos cacos. Malha e material temporários são liberados ao terminar. O brilho dura 0,065 s, e os cacos têm mais opacidade que a placa intacta para ficarem legíveis durante o impacto.
+
+Validação nativa reproduzível: `Royal Aves > Elementos > Gelo > Validar e capturar quebra dos dois níveis`. Foram conferidas 10 amostras dos efeitos, incluindo número de cacos, geometria finita e transparência zero ao concluir. Sequência renderizada pela Unity em [Gelo_Quebra_Unity.png](Gelo_Quebra_Unity.png): grosso na linha de cima, fino na de baixo; antes do impacto e em 0,04 / 0,12 / 0,24 / 0,42 / 0,68 s. É uma bancada visual com os sprites e o material do projeto, não uma gravação de uma fase jogada.
 
 ### Correção da prévia do editor
 

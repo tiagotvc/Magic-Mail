@@ -38,7 +38,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
         private int countALlsquares;
 
         public TargetCounter(GameObject _target, int _count, Object[] _extraObject, int color, TargetContainer argTargetLevel, bool _NotFinishUntilMoveOut,
-            TargetObject targetObject)
+            TargetObject targetObject, LevelData owner = null)
         {
             targetPrefab = _target;
             count = _count;
@@ -57,7 +57,10 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
                 extraObject = extraObjects[0];
                 if (uiSprite != null) extraObject = uiSprite.icon;
             }
-            count = GetCountForSquares(false);
+            if (targetLevel.name == "SolidBlock")
+                extraObject = targetLevel.defaultSprites.SelectMany(group => group.sprites).FirstOrDefault(s => s.uiSprite)?.icon ?? extraObject;
+            count = targetLevel.name == "IceBlock" && owner != null
+                ? RoyalAves.Gameplay.IceLayer.CountCells(owner) : GetCountForSquares(false);
             NotFinishUntilMoveOut = _NotFinishUntilMoveOut;
             Savecount = count;
             this.color = color;
@@ -66,6 +69,9 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         private int GetCountForSquares(bool subLevel)
         {
+            // Ice starts from authored cells, not scene components that do not exist in the start popup.
+            // Its final-layer hit decrements this count exactly once.
+            if (targetLevel.name == "IceBlock") return subLevel ? GetSquareTargetCount(true) : count;
             if (targetLevel != null && targetLevel.setCount == TargetSystem.SetCount.FromLevel)
             {
                 if (targetLevel.collectAction == CollectingTypes.Destroy || targetLevel.collectAction == CollectingTypes.Clear)

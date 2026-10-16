@@ -222,7 +222,7 @@ namespace SweetSugar.Scripts.Level
             if(forPlay){
                 var targetLevel = targetOverride != null ? targetOverride : Resources.Load<TargetLevel>("Levels/Targets/TargetLevel" + levelNum);
                 var _TargetCounters = targetLevel.targets.Select(i => new TargetCounter(i.targetType.GetTarget().prefabs.FirstOrDefault(), i.CountDrawer.count, i.sprites
-                .Select(o => o.icon).ToArray(), -1, i.targetType.GetTarget(),i.NotFinishUntilMoveOut, i)).ToList();
+                .Select(o => o.icon).ToArray(), -1, i.targetType.GetTarget(),i.NotFinishUntilMoveOut, i, this)).ToList();
                 TargetCounters = _TargetCounters.ToList();//subTargetsContainers.ToArray();
                 TargetCounters.RemoveAll(i => i.targetLevel.setCount == SetCount.Manually && i.count == 0);
                 // Correio Mágico: a level is won by its goals only. The hidden "Stars" goal that Sweet Sugar adds to every
@@ -265,7 +265,7 @@ namespace SweetSugar.Scripts.Level
                     i.targetLevel.prefabs.Any(prefab => prefab != null && prefab.name == squareTypeName));
                 if (subTargetContainer != null)
                 {
-                    if (subTargetContainer.targetLevel.setCount == SetCount.FromLevel)
+                    if (subTargetContainer.targetLevel.setCount == SetCount.FromLevel && _sqType != SquareTypes.IceBlock)
                         subTargetContainer.changeCount(1);
                     var targetComponent = gameObject.AddCachedComponent<TargetComponent>();
                     targetComponent.field = gameObject.GetComponent<Square>().field;

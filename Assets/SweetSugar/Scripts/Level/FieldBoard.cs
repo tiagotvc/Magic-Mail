@@ -517,9 +517,9 @@ namespace SweetSugar.Scripts.Level
          /// </summary>
          /// <param name="square"></param>
          /// <param name="item1"></param>
-         public void DestroyItemsAround(Square square, Item item1, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null)
+         public void DestroyItemsAround(Square square, Item item1, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers = null, int radius = 1)
          {
-             var cells = LevelManager.THIS.GetSquaresAroundSquare(square, barriers);
+             var cells = LevelManager.THIS.GetSquaresAroundSquare(square, barriers, radius);
              var itemsList = cells.Select(s => s.Item).Where(i => i != null).Distinct().ToArray();
 
              foreach (var item in itemsList)

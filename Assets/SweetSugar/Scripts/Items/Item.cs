@@ -565,9 +565,8 @@ namespace SweetSugar.Scripts.Items
                     !list.Any(i => i.currentType == ItemsTypes.NONE);
 
                 // Determine if we should revert the swap
-                shouldRevertSwap = (noValidMatches && invalidItemCombination) ||
-                                   invalidTimeBombSwap ||
-                                   nonCombinableSpecialItems;
+                shouldRevertSwap = !list.Any(i => IsPlayerPowerUpType(i.currentType)) &&
+                    ((noValidMatches && invalidItemCombination) || invalidTimeBombSwap || nonCombinableSpecialItems);
 
                 if (shouldRevertSwap)
                 {
@@ -595,29 +594,25 @@ namespace SweetSugar.Scripts.Items
                     yield return new WaitWhile(() => LevelManager.THIS.StopFall);
                     Check(this, switchItem);
 
-                    // Magic Mail: a lone special piece (the other side being an ordinary candy) has nothing in
-                    // combines2 to destroy it and no partner special for BonusesAnimation/Check's own combo, so
-                    // without this it would just sit in its new spot, never firing. Set it off the same way a tap
-                    // already does (ActivateTappedBonus), unless a real match formed too — that pipeline handles it.
-                    if (!combines2.Any())
-                    {
-                        bool IsLoneBonus(Item i) => i.currentType != ItemsTypes.NONE && i.currentType != ItemsTypes.INGREDIENT &&
-                                                     i.currentType != ItemsTypes.SPIRAL && i.currentType != ItemsTypes.TimeBomb &&
-                                                     i.Combinable && i.CombinableWithBonus && !i.destroying;
-                        if (IsLoneBonus(this) && !IsLoneBonus(switchItem)) DestroyItem(true);
-                        else if (IsLoneBonus(switchItem) && !IsLoneBonus(this)) switchItem.DestroyItem(true);
-                    }
+                    // A match made by the other piece must not suppress the moved power-up.
+                    // Two power-ups retain their existing combination path above.
+                    if (IsPlayerPowerUpType(currentType) && !IsPlayerPowerUpType(switchItem.currentType))
+                        ActivateFromSwap();
+                    else if (IsPlayerPowerUpType(switchItem.currentType) && !IsPlayerPowerUpType(currentType))
+                        switchItem.ActivateFromSwap();
 
                     foreach (var combine in combines2)
                     {
                         if (combine.nextType != ItemsTypes.NONE)
                         {
-                            if (combine.color == LevelManager.THIS.lastDraggedItem.color)
+                            if (combine.color == LevelManager.THIS.lastDraggedItem.color &&
+                                LevelManager.THIS.lastDraggedItem.currentType == ItemsTypes.NONE)
                             {
                                 LevelManager.THIS.lastDraggedItem.NextType = combine.nextType;
                                 RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastDraggedItem, combine.items);
                             }
-                            else if (combine.color == LevelManager.THIS.lastSwitchedItem.color)
+                            else if (combine.color == LevelManager.THIS.lastSwitchedItem.color &&
+                                LevelManager.THIS.lastSwitchedItem.currentType == ItemsTypes.NONE)
                             {
                                 LevelManager.THIS.lastSwitchedItem.NextType = combine.nextType;
                                 RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastSwitchedItem, combine.items);
@@ -751,6 +746,7 @@ namespace SweetSugar.Scripts.Items
         ///is switching item is bonus
         private bool IsSwitchBonus()
         {
+            if (IsPlayerPowerUpType(currentType) || IsPlayerPowerUpType(switchItem.currentType)) return true;
             if (((currentType == ItemsTypes.MULTICOLOR || switchItem.currentType == ItemsTypes.MULTICOLOR) &&
                  (Combinable || switchItem.Combinable)) || (currentType == ItemsTypes.MULTICOLOR && switchItem.currentType == ItemsTypes.MULTICOLOR))
                 return true;
@@ -1233,9 +1229,23 @@ namespace SweetSugar.Scripts.Items
         /// <param name="explodedItem"></param>
         /// <param name="explEffect"></param>
 
-        public void DestroyItem(bool showScore = false, bool particles = true, Item explodedItem = null, bool explEffect = false)
+        public static bool IsPlayerPowerUpType(ItemsTypes type) => type == ItemsTypes.MARMALADE ||
+            type == ItemsTypes.PACKAGE || type == ItemsTypes.HORIZONTAL_STRIPED ||
+            type == ItemsTypes.VERTICAL_STRIPED || type == ItemsTypes.MULTICOLOR;
+
+        public void ActivateFromSwap()
+        {
+            if (!IsPlayerPowerUpType(currentType) || destroying || !gameObject.activeSelf || square.IsItemLocked) return;
+            needFall = false;
+            dontDestroyOnThisMove = false;
+            dontDestroyForThisCombine = false;
+            DestroyItem(true, playerActivated: true);
+        }
+
+        public void DestroyItem(bool showScore = false, bool particles = true, Item explodedItem = null, bool explEffect = false, bool playerActivated = false)
         {
             if (!gameObject.activeSelf) return;
+            if (destroying) return;
             if (square.IsItemLocked)
             {
                 square.DestroyBlock();
@@ -1245,7 +1255,8 @@ namespace SweetSugar.Scripts.Items
             }
 
             this.explodedItem = explodedItem;
-            if (!explodedItem && (!marmaladeTarget || (!marmaladeTarget?.activeSelf ?? false)) && (combinationID == explodedItem?.GetHashCode() || dontDestroyOnThisMove || needFall) || !Explodable)
+            if (!playerActivated && ((!explodedItem && (!marmaladeTarget || (!marmaladeTarget?.activeSelf ?? false)) &&
+                (combinationID == explodedItem?.GetHashCode() || dontDestroyOnThisMove || needFall)) || !Explodable))
             {
                 StopDestroy();
                 return;
