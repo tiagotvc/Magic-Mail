@@ -55,6 +55,7 @@ namespace SweetSugar.Scripts.Blocks
         // Magic Mail elements. Append only: levels serialize this enum as an integer.
         MailCubby,
         FrankingMachine,
+        IceBlock,
     }
     
     //Added_feature
@@ -1209,6 +1210,17 @@ namespace SweetSugar.Scripts.Blocks
         {
             return (GetSubSquare()?.canMoveOut ?? false) && (!IsUndestroyable()) ;
         }
+
+        bool iceAbsorbedImpact;
+
+        public void AbsorbIceImpact()
+        {
+            iceAbsorbedImpact = true;
+            LevelManager.THIS.delayedCall(0.2f, () => { iceAbsorbedImpact = false; });
+        }
+
+        public bool IsItemLocked => iceAbsorbedImpact || type == SquareTypes.WireBlock ||
+            subSquares.Any(layer => layer != null && layer.GetComponent<RoyalAves.Gameplay.IceLayer>() != null);
         /// <summary>
         /// can item fall to the square
         /// </summary>
@@ -1230,6 +1242,7 @@ namespace SweetSugar.Scripts.Blocks
         /// </summary>
         public void DestroyBlock(bool destroyTarget=false)
         {
+            if (iceAbsorbedImpact) return;
             if (destroyIteration == 0)
             {
                 destroyIteration = LevelManager.THIS.destLoopIterations;
@@ -1277,6 +1290,9 @@ namespace SweetSugar.Scripts.Blocks
                     ink.HandleHit(this);
                     return;
                 }
+
+                var ice = subSquare.GetComponent<RoyalAves.Gameplay.IceLayer>();
+                if (ice != null) { ice.HandleHit(this); return; }
 
                 var parcel = subSquare.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
                 if (parcel != null && parcel.TryHandleFinalHit(this)) return;

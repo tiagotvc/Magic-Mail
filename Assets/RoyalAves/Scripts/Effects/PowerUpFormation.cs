@@ -32,7 +32,9 @@ namespace RoyalAves.Effects
             {
                 if (!groups.TryGetValue(target, out var members)) continue;
                 groups.Remove(target);
-                members = members.Where(i => i != null && batch.Contains(i) && i.gameObject.activeSelf).ToList();
+                members = members.Where(i => i != null && batch.Contains(i) && i.gameObject.activeSelf &&
+                    i.square != null && !i.square.IsItemLocked).ToList();
+                if (target.square != null && target.square.IsItemLocked) continue;
                 if (members.Count < 4 || target.square == null) continue;
 #if UNITY_EDITOR
                 LastAttractedCount = members.Count;

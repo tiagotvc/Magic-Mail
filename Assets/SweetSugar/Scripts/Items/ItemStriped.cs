@@ -38,8 +38,9 @@ namespace SweetSugar.Scripts.Items
 
         private IEnumerator DestroyCor(Item item1, Item item2)
         {
+            bool wasLocked = GetItem.square.IsItemLocked;
             GetItem.square.DestroyBlock();
-            if (GetItem.square.type == SquareTypes.WireBlock)
+            if (wasLocked)
             {
                 GetItem.StopDestroy();
                 yield break;

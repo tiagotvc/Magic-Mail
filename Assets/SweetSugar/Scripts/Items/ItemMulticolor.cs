@@ -102,13 +102,15 @@ namespace SweetSugar.Scripts.Items
         public void Destroy(Item item1, Item item2)
         {
             if(activated) return;
+            if (GetParentItem().square.IsItemLocked)
+            {
+                GetParentItem().square.DestroyBlock();
+                GetParentItem().StopDestroy();
+                return;
+            }
             if (item2 == null)
             {
                 BeginSpin();
-                if (GetParentItem().square.type == SquareTypes.WireBlock)
-                {
-                    GetParentItem().square.DestroyBlock();
-                }
 
                 if (LevelManager.GetGameStatus() == GameState.PreWinAnimations)
                 {

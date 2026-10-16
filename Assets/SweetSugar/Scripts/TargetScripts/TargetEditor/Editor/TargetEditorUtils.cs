@@ -24,6 +24,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor.Editor
         public static string DisplayName(string name)
         {
             if (name == "SugarSquare") return "Grama";
+            if (name == "IceBlock") return "Gelo";
             if (name == "MachineLetters") return "Cartas da franqueadora";
             if (name == "SolidBlock") return "Caixa (SolidBlock)";
             return name;

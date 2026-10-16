@@ -202,6 +202,24 @@ namespace RoyalAves.EditorTools
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
             if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
             var importer = (TextureImporter)assetImporter;
+            if (assetPath == IceTools.ThinArtPath || assetPath == IceTools.ThickArtPath)
+            {
+                ConfigureCellSprite(importer, CanvasPixelsPerUnit(assetPath,
+                    1f / .45f));
+                return;
+            }
+            if (assetPath == "Assets/RoyalAves/Art/Obstacles/ice-two-levels-v2.png")
+            {
+                importer.textureType = TextureImporterType.Sprite;
+                importer.spriteImportMode = SpriteImportMode.Multiple;
+                importer.spritePixelsPerUnit = 380f;
+                importer.alphaIsTransparency = true;
+                importer.mipmapEnabled = false;
+                importer.npotScale = TextureImporterNPOTScale.None;
+                importer.maxTextureSize = 2048;
+                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                return;
+            }
             if (assetPath.StartsWith("Assets/RoyalAves/Art/Obstacles/MailCubby/"))
             {
                 ConfigureCellSprite(importer, PixelsPerUnit(assetPath));

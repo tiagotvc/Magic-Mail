@@ -82,3 +82,15 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - Compila??o e testes gerenciados n?o substituem confer?ncia visual em Play Mode. Valida??o visual final das ?ltimas regras permanece pendente; o editor encontrado estava na tela de termos da Unity.
 - Usu?rio pediu salvar tudo na mem?ria e comitar as altera??es locais, incluindo assets, fases, prefabs, fontes, documenta??o e backups. Logs e caches permanecem ignorados.
 - Documentos detalhados desta sess?o: `Caixa_Cartoon_Dourada.md`, `Caixa_Cartoon_Sem_Carimbo.md`, `Caixa_Lascas_Madeira.md`, `Editor_Niveis_Grid_Grama.md`, `Editor_Multiplas_Metas.md`, `Editor_Iniciar_Sem_Peca.md`, `Maquina_Franquear.md`, `Grama.md`, `Foguete_Largura_Rastro.md`, `Pecas_Escala_Padrao.md`, `Queda_Paredes_Buracos.md` e `Caixas_Barreira_Impactos.md`.
+
+## Sessão 16/10/2026 — gelo em dois níveis
+
+- Novo elemento `IceBlock` (14, acrescentado no final do enum), prefab `Resources/Blocks/IceBlock.prefab`, componente `IceLayer`, objetivo **Gelo** e ferramentas em `Royal Aves > Elementos > Gelo`.
+- Regra definida pelo usuário: prender a peça por baixo. Um clique no editor coloca gelo fino; o segundo coloca grosso. Grosso → fino → removido, uma camada por impacto. Match deve incluir a peça congelada; match apenas adjacente não quebra. Especiais também atingem o gelo. A peça sobrevive ao impacto que libera a célula.
+- Bloqueio de troca, queda, conversão e ativação de power-ups enquanto congelados. Proteção de 0,2 s acompanha a deduplicação de impactos. A meta conta uma célula liberada, sem contar a camada protetora grossa separadamente.
+- Corrigida a prévia do editor que mostrava a prancha inteira com os dois sprites juntos. Mostra somente o estado exposto, recortado e com a opacidade do renderer.
+- Direção visual atual: cartoon, seguindo o estilo das caixas arredondadas. Assets ativos `ice-thin-v4.png` e `ice-thick-v4.png`. Fino tem superfície branca embaçada completa, sem centro vazio. Variantes anteriores foram preservadas.
+- Correção importante: o grosso estava 100% opaco e escondia a peça, tornando o match ilegível. Valores atuais conferidos visualmente: **fino 0,35; grosso 0,60**. Aplicados no prefab, gerador e inicialização runtime.
+- Validação: runtime/editor compilados; comparação renderizada na Unity aberta com seis peças reais, material do jogo e `BoardCellVisual`. Captura do prefab corrigido em `Docs/Gelo_Legibilidade_Unity.png`: sem gelo, fino e grosso. Bancada visual, não captura de fase em Play; validação completa das regras em Play permanece pendente.
+- Documentação e ferramenta reproduzível: `Docs/Gelo.md` e `IceVisualValidation.cs`.
+- Usuário pediu salvar e comitar todas as alterações feitas até agora. Incluir também alterações locais de fases, metas, fontes e metadados do HUD presentes nesta sessão. Branch `sincronizar-remoto`; nenhum push solicitado nesta etapa.

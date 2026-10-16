@@ -21,6 +21,42 @@ namespace SweetSugar.Scripts.Editor
 {
     public static class SquareUtils
     {
+        static readonly Dictionary<Sprite, Texture2D> icePreviews = new Dictionary<Sprite, Texture2D>();
+
+        static Texture2D IcePreview(SpriteRenderer renderer)
+        {
+            var sprite = renderer.sprite;
+            if (sprite == null) return null;
+            if (icePreviews.TryGetValue(sprite, out var cached) && cached != null) return cached;
+            // GetSpriteTexture returns the whole source sheet. Render only this state's rectangle,
+            // without requiring Read/Write on the imported game texture.
+            var rect = sprite.rect;
+            var source = sprite.texture;
+            var target = RenderTexture.GetTemporary((int)rect.width, (int)rect.height, 0);
+            var previous = RenderTexture.active;
+            try
+            {
+                Graphics.Blit(source, target, new Vector2(rect.width / source.width, rect.height / source.height),
+                    new Vector2(rect.x / source.width, rect.y / source.height));
+                RenderTexture.active = target;
+                var preview = new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGBA32, false);
+                preview.name = sprite.name + " editor preview";
+                preview.hideFlags = HideFlags.HideAndDontSave;
+                preview.ReadPixels(new Rect(0, 0, rect.width, rect.height), 0, 0);
+                var pixels = preview.GetPixels();
+                for (int i = 0; i < pixels.Length; i++) pixels[i] *= renderer.color;
+                preview.SetPixels(pixels);
+                preview.Apply(false, true);
+                icePreviews[sprite] = preview;
+                return preview;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(target);
+            }
+        }
+
         /// <summary>
         /// Methods for the editor
         /// </summary>
@@ -53,6 +89,7 @@ namespace SweetSugar.Scripts.Editor
         // so the editor icon comes from the element art instead.
         static Texture2D PaletteTexture(SquareTypes sqType, GameObject prefab)
         {
+            if (sqType == SquareTypes.IceBlock) return IcePreview(prefab.GetComponent<SpriteRenderer>());
             string path = sqType == SquareTypes.MailCubby ? "Assets/RoyalAves/Art/Obstacles/MailCubby/CM_armario_base_v1.png"
                 : sqType == SquareTypes.FrankingMachine ? "Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_corpo_v2.png" : null;
             var art = path != null ? UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path) : null;
@@ -78,12 +115,16 @@ namespace SweetSugar.Scripts.Editor
             Tuple<GameObject, int>[] listBlocks = new Tuple<GameObject, int>[0];
             if (!sqBlock.blocks.Any())
             {
-                resultList.AddRange(GetBlockPrefab(sqBlock.block)
-                    .Select(i => new Texture2DSize(i.GetComponent<SpriteRenderer>().sprite.GetTexture(), i.GetComponent<Square>().sizeInSquares, 0)).ToArray());
+                var basePrefabs = GetBlockPrefab(sqBlock.block).Take(Mathf.Max(1, sqBlock.blockLayer));
+                if (sqBlock.block == SquareTypes.IceBlock) basePrefabs = basePrefabs.TakeLast(1);
+                resultList.AddRange(basePrefabs
+                    .Select(i => new Texture2DSize(PaletteTexture(sqBlock.block, i), i.GetComponent<Square>().sizeInSquares, 0)).ToArray());
                 if (sqBlock.obstacle != SquareTypes.NONE)
                 {
-                    resultList.AddRange(GetBlockPrefab(sqBlock.obstacle)
-                        .Select(i => new Texture2DSize(i.GetComponent<SpriteRenderer>().sprite.GetTexture(), i.GetComponent<Square>().sizeInSquares, 0)).ToArray());
+                    var obstaclePrefabs = GetBlockPrefab(sqBlock.obstacle).Take(Mathf.Max(1, sqBlock.obstacleLayer));
+                    if (sqBlock.obstacle == SquareTypes.IceBlock) obstaclePrefabs = obstaclePrefabs.TakeLast(1);
+                    resultList.AddRange(obstaclePrefabs
+                        .Select(i => new Texture2DSize(PaletteTexture(sqBlock.obstacle, i), i.GetComponent<Square>().sizeInSquares, 0)).ToArray());
                 }
             }
             else
@@ -99,6 +140,11 @@ namespace SweetSugar.Scripts.Editor
 
                     if(typeCounter < blockPrefab.Length && !sqBlockBlock.anotherSquare)
                     {
+                        if (sqBlockBlock.squareType == SquareTypes.IceBlock)
+                        {
+                            // A second ice layer replaces the thin preview with the thick state.
+                            resultList.RemoveAll(t => t.Texture2D != null && icePreviews.Values.Contains(t.Texture2D));
+                        }
                         resultList.Add(new Texture2DSize(PaletteTexture(sqBlockBlock.squareType, blockPrefab[typeCounter]), blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, index, sqBlockBlock.rotate));
                     }
                 }

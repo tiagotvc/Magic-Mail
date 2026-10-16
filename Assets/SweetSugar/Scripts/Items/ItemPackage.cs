@@ -34,7 +34,7 @@ namespace SweetSugar.Scripts.Items
 
         public void Destroy(Item item1, Item item2)
         {
-            if (GetItem.square.type == SquareTypes.WireBlock)
+            if (GetItem.square.IsItemLocked)
             {
                 GetItem.square.DestroyBlock();
                 GetItem.StopDestroy();

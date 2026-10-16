@@ -455,6 +455,7 @@ namespace SweetSugar.Scripts.Items
         //Switching start method
         public (Item currentItem, Item neighborItem) SwitchDirection(Vector3 delta)
         {
+            if (square != null && square.IsItemLocked) return (null, null);
             deltaPos = delta;
             if (Vector3.Magnitude(deltaPos) > 0.1f)
             {
@@ -1176,6 +1177,7 @@ namespace SweetSugar.Scripts.Items
 
         IEnumerator ChangeTypeCor(Action<Item> callback=null,bool dontDestroyForThisCombine = true, bool destroyBlock = true)
         {
+            if (square.IsItemLocked) { NextType = ItemsTypes.NONE; yield break; }
             if (NextType == ItemsTypes.NONE) yield break;
             if(LevelManager.GetGameStatus() != GameState.PrepareGame)
                 SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.appearStipedColorBomb);
@@ -1234,9 +1236,10 @@ namespace SweetSugar.Scripts.Items
         public void DestroyItem(bool showScore = false, bool particles = true, Item explodedItem = null, bool explEffect = false)
         {
             if (!gameObject.activeSelf) return;
-            if (square.type == SquareTypes.WireBlock)
+            if (square.IsItemLocked)
             {
                 square.DestroyBlock();
+                NextType = ItemsTypes.NONE;
                 StopDestroy();
                 return;
             }

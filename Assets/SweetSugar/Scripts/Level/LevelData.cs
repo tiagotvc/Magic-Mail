@@ -255,6 +255,8 @@ namespace SweetSugar.Scripts.Level
             if (parcel != null && !parcel.CountsAsObjective) return;
             var ink = gameObject.GetComponent<RoyalAves.Gameplay.InkFloorLayer>();
             if (ink != null && !ink.CountsAsObjective) return;
+              var ice = gameObject.GetComponent<RoyalAves.Gameplay.IceLayer>();
+              if (ice != null && !ice.CountsAsObjective) return;
             {
                 var squareTypeName = _sqType.ToString();
                 var subTargetContainer = TargetCounters.FirstOrDefault(i =>

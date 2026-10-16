@@ -108,6 +108,8 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
                 if (parcel != null && !parcel.CountsAsObjective) continue;
                 var ink = targetComponent.GetComponent<RoyalAves.Gameplay.InkFloorLayer>();
                 if (ink != null && !ink.CountsAsObjective) continue;
+                var ice = targetComponent.GetComponent<RoyalAves.Gameplay.IceLayer>();
+                if (ice != null && !ice.CountsAsObjective) continue;
                 var mailCubby = targetComponent.GetComponent<RoyalAves.Gameplay.MailCubbyCell>();
                 if (mailCubby != null && !mailCubby.CountsAsObjective) continue;
                 
@@ -147,6 +149,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             var objects = spriteRenderers.Where(x =>
                 x.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.InkFloorLayer>() == null &&
+                x.GetComponent<RoyalAves.Gameplay.IceLayer>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.MailCubbyCell>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>() == null &&
                 extraObjects.Any(i => i == x.sprite)).ToArray();

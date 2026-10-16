@@ -35,11 +35,13 @@ namespace SweetSugar.Scripts.Items
 
         public void Destroy(Item item1, Item item2)
         {
-                GetItem.square.DestroyBlock();
-            if (GetItem.square.type == SquareTypes.WireBlock)
+            if (GetItem.square.IsItemLocked)
             {
+                GetItem.square.DestroyBlock();
                 GetItem.StopDestroy();
+                return;
             }
+            GetItem.square.DestroyBlock();
             SoundBase.Instance
                 .PlayOneShot(SoundBase.Instance.explosion);
             Instantiate(explosion, transform.position, Quaternion.identity);
