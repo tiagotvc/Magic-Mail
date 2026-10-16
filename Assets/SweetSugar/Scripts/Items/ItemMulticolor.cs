@@ -12,7 +12,9 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Effects;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.Effects;
@@ -37,9 +39,19 @@ namespace SweetSugar.Scripts.Items
 
         private bool activated;
 
+        // The fast spin while the bomb is active (RoyalAvesColorBombSpinBuilder fills this with the 12 frames of the
+        // rotation sheet). The icon renderer is cached because Item's own renderer field is private.
+        public Sprite[] SpinFrames;
+        const float SpinFrameTime = 0.018f;
+        SpriteRenderer iconRenderer;
+        Coroutine spinRoutine;
+
         public override void InitItem()
         {
             base.InitItem();
+            EndSpin();
+            // The visible sprite is on the child "Sprite", not on this root GameObject.
+            if (iconRenderer == null) iconRenderer = GetComponentInChildren<SpriteRenderer>();
             activated = false;
         }
 
@@ -50,6 +62,7 @@ namespace SweetSugar.Scripts.Items
             if (item2 != null && ((!item2.Combinable && item2.currentType != ItemsTypes.MULTICOLOR)))
                 return;
             GetParentItem().destroying = true;
+            BeginSpin();
             if (item2.currentType == ItemsTypes.NONE)
             {
                 DestroyColor(item2.color);
@@ -63,13 +76,13 @@ namespace SweetSugar.Scripts.Items
             }
             else if (item2.currentType == ItemsTypes.PACKAGE)
             {
-                LevelManager.THIS.StartCoroutine(SetTypeByColor(item2));
+                LevelManager.THIS.StartCoroutine(MakePackagesByColor(item2));
                 activated = true;
             }
             else if (item2.currentType == ItemsTypes.MARMALADE)
             {
                 GetParentItem().destroying = false;
-                LevelManager.THIS.StartCoroutine(SetTypeByColor(item2));
+                LevelManager.THIS.StartCoroutine(MakeMarmaladesByColor(item2));
                 activated = true;
             }
             else if (item2.currentType == ItemsTypes.MULTICOLOR)
@@ -79,6 +92,7 @@ namespace SweetSugar.Scripts.Items
                 {
                     var list = new[] { item1, item2 };
                     list.First(i => i != GetParentItem()).SmoothDestroy();
+                    EndSpin();
                     list.First(i => i == GetParentItem()).SmoothDestroy();
                 });
                 activated = true;
@@ -90,6 +104,7 @@ namespace SweetSugar.Scripts.Items
             if(activated) return;
             if (item2 == null)
             {
+                BeginSpin();
                 if (GetParentItem().square.type == SquareTypes.WireBlock)
                 {
                     GetParentItem().square.DestroyBlock();
@@ -111,6 +126,113 @@ namespace SweetSugar.Scripts.Items
 
 
         #region ChangeItemTypes
+
+        // With a package: the beam makes every piece of the colour into a package, one by one, each with the neon outline.
+        // Only when all of them are ready do they explode, one at a time, in the order they were made.
+        private IEnumerator MakePackagesByColor(Item item2)
+        {
+            var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
+                .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            item2.DestroyItem();
+
+            var made = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.NextType = ItemsTypes.PACKAGE;
+                Item created = null;
+                // The new package is flagged as destroying from the moment it exists, so the matcher can't explode it early.
+                item.ChangeType(newItem => { created = newItem; newItem.destroying = true; }, false);
+                CreateLightning(transform.position, item.transform.position);
+                if (created == null) continue;
+                made.Add(created);
+                highlights.Add(MakeHighlight(created));
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All made and outlined: a short pause, then they explode one by one, in creation order.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var package in made)
+            {
+                if (package == null || !package.gameObject.activeSelf) continue;
+                package.destroying = false;
+                var explosive = package.GetComponent<ItemPackage>();
+                if (explosive != null) explosive.Destroy(package, null);
+                else package.DestroyItem(true, true, this, true);
+                yield return new WaitForSeconds(ExplodeStepDelay);
+            }
+
+            yield return new WaitForSeconds(0.4f);
+            LevelManager.THIS.FindMatches();
+            EndSpin();
+            SmoothDestroy();
+        }
+
+        const float ExplodeStepDelay = 0.3f;
+
+        // With a paper plane/propeller: the beam makes every piece of the colour into one, one by one, each with the
+        // neon outline. Only when all of them are ready do they take off, one at a time, in the order they were made.
+        private IEnumerator MakeMarmaladesByColor(Item item2)
+        {
+            var items = LevelManager.THIS.field.GetItemsByColor(item2.color)
+                .Where(i => !i.Equals(GetParentItem()) && i.currentType == ItemsTypes.NONE).ToArray();
+            item2.DestroyItem();
+
+            var made = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.NextType = ItemsTypes.MARMALADE;
+                Item created = null;
+                // Flagged as destroying (so the matcher can't grab it) and noMarmaladeLaunch (so Destroy() itself
+                // refuses to launch it, no matter what calls it) from the moment it exists, until its turn below.
+                item.ChangeType(newItem =>
+                {
+                    created = newItem;
+                    newItem.destroying = true;
+                    var createdPlane = newItem.GetComponent<ItemMarmalade>();
+                    if (createdPlane != null) createdPlane.noMarmaladeLaunch = true;
+                }, false);
+                CreateLightning(transform.position, item.transform.position);
+                if (created == null) continue;
+                made.Add(created);
+                highlights.Add(MakeHighlight(created));
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All made and outlined: a short pause, then they take off one by one, in creation order.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var plane in made)
+            {
+                if (plane == null || !plane.gameObject.activeSelf) continue;
+                plane.destroying = false;
+                var marmalade = plane.GetComponent<ItemMarmalade>();
+                if (marmalade != null)
+                {
+                    marmalade.noMarmaladeLaunch = false;
+                    marmalade.Destroy(plane, null);
+                }
+                else plane.DestroyItem(true, true, this, true);
+                yield return new WaitForSeconds(ExplodeStepDelay);
+            }
+
+            yield return new WaitForSeconds(0.4f);
+            LevelManager.THIS.FindMatches();
+            EndSpin();
+            SmoothDestroy();
+        }
 
         private IEnumerator SetTypeByColor(Item item2)
         {
@@ -144,21 +266,149 @@ namespace SweetSugar.Scripts.Items
 
         #endregion
 
+        // The beam touches the pieces of the colour one by one; each one gets a glow. Only when all of them are selected do
+        // they explode together.
         private void DestroyColor(int p)
         {
             SoundBase.Instance.PlayOneShot(SoundBase.Instance.colorBombExpl);
 
             var items = LevelManager.THIS.field.GetItemsByColor(p).Where(i => !i.Equals(GetParentItem())).ToArray();
-            StartCoroutine(IterateItems(items, item =>
-            {
-                CreateLightning(transform.position, item.transform.position);
-                item.DestroyItem(true, true, this, true);
-            }, () =>
-            {
-                LevelManager.THIS.FindMatches();
-                SmoothDestroy();
+            StartCoroutine(SelectThenExplode(items));
+        }
 
-            }));
+        private IEnumerator SelectThenExplode(Item[] items)
+        {
+            var selected = new List<Item>();
+            var highlights = new List<SelectionHighlight>();
+            // Flagged as destroying from the start: the normal matcher skips them, so same-colour pieces lined up by the
+            // beam can't explode on their own before it reaches them. The flag is cleared right before they explode.
+            foreach (var item in items)
+                if (item != null) item.destroying = true;
+
+            Coroutine pulse = null;
+            foreach (var item in items)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                CreateLightning(transform.position, item.transform.position);
+                highlights.Add(MakeHighlight(item));
+                selected.Add(item);
+                if (pulse == null) pulse = StartCoroutine(PulseOutlines(highlights));
+                yield return new WaitForSeconds(BeamStepDelay);
+            }
+
+            // All selected: a short pause so the outline pulses, then everything explodes at once.
+            yield return new WaitForSeconds(0.3f);
+            if (pulse != null) StopCoroutine(pulse);
+            foreach (var highlight in highlights)
+                Restore(highlight);
+            foreach (var item in selected)
+            {
+                if (item == null || !item.gameObject.activeSelf) continue;
+                item.destroying = false;
+                item.DestroyItem(true, true, this, true);
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            LevelManager.THIS.FindMatches();
+            EndSpin();
+            SmoothDestroy();
+        }
+
+        const float BeamStepDelay = 0.08f;
+        const float PulsePeriod = 0.3f;
+        // Neon: a bright inner outline and a wider, softer halo behind it.
+        const float OutlineSpread = 1.12f;
+        const float HaloSpread = 1.32f;
+        const float HaloStrength = 0.5f;
+        static readonly Color NeonColor = new Color(0.35f, 0.9f, 1f, 1f);
+
+        // The yellow copies drawn under a selected piece (one per sprite of the piece), and the piece's own orders, so
+        // they can be put back when it explodes.
+        private class SelectionHighlight
+        {
+            public readonly List<OutlineCopy> Outlines = new List<OutlineCopy>();
+            public readonly List<(SpriteRenderer renderer, int order)> Raised = new List<(SpriteRenderer, int)>();
+        }
+
+        private class OutlineCopy
+        {
+            public SpriteRenderer Renderer;
+            public float Spread;
+            public float Strength;
+        }
+
+        // Each sprite of the piece gets a bigger neon copy under it. Raising the piece one order makes the copy show as an
+        // outline that follows the piece's own silhouette.
+        private static SelectionHighlight MakeHighlight(Item item)
+        {
+            var highlight = new SelectionHighlight();
+            foreach (var renderer in item.GetComponentsInChildren<SpriteRenderer>())
+            {
+                if (!renderer.enabled || renderer.sprite == null) continue;
+                var order = renderer.sortingOrder;
+                highlight.Outlines.Add(MakeCopy(renderer, HaloSpread, HaloStrength, order));
+                highlight.Outlines.Add(MakeCopy(renderer, OutlineSpread, 1f, order));
+                renderer.sortingOrder = order + 1;
+                highlight.Raised.Add((renderer, order));
+            }
+            return highlight;
+        }
+
+        // One shared material: a flat neon silhouette (RoyalAves/NeonSilhouette), so the colour of the piece's art doesn't show.
+        static Material neonMaterial;
+
+        private static Material NeonMaterial()
+        {
+            if (neonMaterial == null)
+            {
+                var shader = Shader.Find("RoyalAves/NeonSilhouette");
+                if (shader == null) Debug.LogWarning("Shader RoyalAves/NeonSilhouette não encontrado; o destaque sai sem neon.");
+                neonMaterial = new Material(shader);
+                neonMaterial.SetColor("_NeonColor", NeonColor);
+            }
+            return neonMaterial;
+        }
+
+        private static OutlineCopy MakeCopy(SpriteRenderer renderer, float spread, float strength, int order)
+        {
+            var copy = new GameObject("SelectOutline");
+            copy.transform.SetParent(renderer.transform, false);
+            var outline = copy.AddComponent<SpriteRenderer>();
+            outline.sprite = renderer.sprite;
+            outline.flipX = renderer.flipX;
+            outline.flipY = renderer.flipY;
+            outline.sharedMaterial = NeonMaterial();
+            outline.color = Color.white;
+            outline.sortingOrder = order;
+            return new OutlineCopy { Renderer = outline, Spread = spread, Strength = strength };
+        }
+
+        // Bright at the start of each pulse, fading but never gone, then bright again.
+        private IEnumerator PulseOutlines(List<SelectionHighlight> highlights)
+        {
+            while (true)
+            {
+                var phase = (Time.time % PulsePeriod) / PulsePeriod;
+                var intensity = Mathf.Lerp(1f, 0.7f, phase);
+                foreach (var highlight in highlights)
+                    foreach (var outline in highlight.Outlines)
+                    {
+                        if (outline.Renderer == null) continue;
+                        var color = Color.white;
+                        color.a = intensity * outline.Strength;
+                        outline.Renderer.color = color;
+                        outline.Renderer.transform.localScale = Vector3.one * (outline.Spread + 0.06f * intensity);
+                    }
+                yield return null;
+            }
+        }
+
+        private static void Restore(SelectionHighlight highlight)
+        {
+            foreach (var outline in highlight.Outlines)
+                if (outline.Renderer != null) Destroy(outline.Renderer.gameObject);
+            foreach (var (renderer, order) in highlight.Raised)
+                if (renderer != null) renderer.sortingOrder = order;
         }
 
         private IEnumerator IterateItems(Item[] items, Action<Item> iterateItem, Action onFinished = null)
@@ -185,8 +435,36 @@ namespace SweetSugar.Scripts.Items
         private void CreateLightning(Vector3 pos1, Vector3 pos2)
         {
             var go = Instantiate(LightningPrefab, Vector3.zero, Quaternion.identity);
+            // Correio Mágico: regra geral dos power-ups (ver RoyalAves.Effects.PowerUpEffectOrder) - o raio do
+            // globo multicolorido tem que ficar acima do efeito de match comum, não empatado com ele.
+            PowerUpEffectOrder.Raise(go);
             var lightning = go.GetComponent<Lightning>();
             lightning.SetLight(pos1, pos2);
+        }
+
+        // The bomb spins fast for as long as it's active (from the moment it's touched until it explodes). Started once
+        // per activation; EndSpin runs right before the bomb destroys itself, on every path that does so.
+        private void BeginSpin()
+        {
+            if (spinRoutine != null || SpinFrames == null || SpinFrames.Length == 0) return;
+            spinRoutine = StartCoroutine(SpinCor());
+        }
+
+        private void EndSpin()
+        {
+            if (spinRoutine != null) StopCoroutine(spinRoutine);
+            spinRoutine = null;
+        }
+
+        private IEnumerator SpinCor()
+        {
+            var i = 0;
+            while (true)
+            {
+                if (iconRenderer != null) iconRenderer.sprite = SpinFrames[i % SpinFrames.Length];
+                i++;
+                yield return new WaitForSeconds(SpinFrameTime);
+            }
         }
 
         #region DoubleMulitcolor

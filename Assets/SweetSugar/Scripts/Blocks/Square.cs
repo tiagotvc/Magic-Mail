@@ -1241,7 +1241,27 @@ namespace SweetSugar.Scripts.Blocks
                 if (subSquare.cannotBeDestroy && !destroyTarget) return;
                 if (type == SquareTypes.JellyBlock) return;
 
-                if (subSquare.GetCachedComponent<TargetComponent>() == null)
+                var mailCubby = subSquare.GetComponent<RoyalAves.Gameplay.MailCubbyCell>();
+                var frankingMachine = subSquare.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>();
+                if (frankingMachine != null) { frankingMachine.HandleHit(); return; }
+                if (mailCubby != null)
+                {
+                    mailCubby.HandleHit();
+                    return;
+                }
+
+                var ink = subSquare.GetComponent<RoyalAves.Gameplay.InkFloorLayer>();
+                if (ink != null)
+                {
+                    ink.HandleHit(this);
+                    return;
+                }
+
+                var parcel = subSquare.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
+                if (parcel != null && parcel.TryHandleFinalHit(this)) return;
+                if (parcel != null) parcel.PlayAccessoryRemoval();
+
+                if (parcel == null && subSquare.GetCachedComponent<TargetComponent>() == null)
                 {
                     SoundBase.Instance?.PlayOneShot(SoundBase.Instance.block_destroy);
                     if (LevelManager.THIS.animateItems.Any(i => i.linkObjectHash == gameObject.GetHashCode())) return;
@@ -1251,12 +1271,15 @@ namespace SweetSugar.Scripts.Blocks
                     animComp.linkObjectHash = gameObject.GetHashCode();
                     animComp.InitAnimation(subSquare.gameObject, new Vector2(transform.position.x, -5), subSquare.transform.localScale, null);
                 }
-                LevelManager.THIS.levelData.GetTargetObject().CheckSquare(new[] { subSquare });
+                if (parcel == null)
+                    LevelManager.THIS.levelData.GetTargetObject().CheckSquare(new[] { subSquare });
                 LevelManager.THIS.ShowPopupScore(subSquare.score, transform.position, 0);
                 LevelManager.Score += score;
                 subSquares.Remove(subSquare);
                 Destroy(subSquare.gameObject);
                 subSquare = GetSubSquare();
+                if (parcel != null)
+                    subSquare.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>()?.PlayHitReaction();
                 if (subSquares.Count > 0)
                     type = subSquare.type;
 
@@ -1270,6 +1293,21 @@ namespace SweetSugar.Scripts.Blocks
             CheckBigBlockCleared();
 
             if (IsFree() && Item == null) Item = null;
+        }
+
+        // Removes an explicitly handled layer; parcel completion calls this after its animation.
+        public bool CompleteLayerRemoval(Square layer)
+        {
+            if (layer == null || !subSquares.Remove(layer)) return false;
+            LevelManager.THIS.ShowPopupScore(layer.score, transform.position, 0);
+            LevelManager.Score += score;
+            layer.gameObject.SetActive(false);
+            Destroy(layer.gameObject);
+            type = subSquares.Count > 0 ? GetSubSquare().type : SquareTypes.EmptySquare;
+            if (GetSubSquare().CanGoInto() && Item == null) Item = null;
+            CheckBigBlockCleared();
+            if (IsFree() && Item == null) Item = null;
+            return true;
         }
 
         public void CheckBigBlockCleared()
@@ -1474,6 +1512,11 @@ namespace SweetSugar.Scripts.Blocks
         {
             var list = new List<GameObject>();
             var item1 = Resources.Load("Blocks/" + sqType) as GameObject;
+#if UNITY_EDITOR
+            item1 = RoyalAves.Gameplay.MailCubbyLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.FrankingMachineLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.InkLaboratory.GetPrefab(sqType) ?? item1;
+#endif
             var layeredBlock = item1?.GetComponent<LayeredBlock>();
             if (layeredBlock != null)
             {

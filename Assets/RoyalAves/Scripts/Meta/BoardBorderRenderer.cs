@@ -1,40 +1,42 @@
-// Draws a decorative border around whatever shape a level's board actually has, instead of assuming
-// a rectangle. It hooks itself into the board-building pipeline directly — no GameObject to add, no
-// sprite to drag in the Inspector — via [RuntimeInitializeOnLoadMethod], so it runs for every level
-// automatically as soon as the game starts. It reads SweetSugar's grid at runtime (a cell is "in" the
-// board unless its SquareTypes is NONE), traces the outline as a sequence of straight runs and turns,
-// and places a tiled edge sprite along each run plus a rotated corner sprite at each outer (convex)
-// turn. Inner (concave) turns are left as a plain butt-join between two edge runs, since the source
-// art only has one outer-corner style; that is the one shape this can't decorate with a matching cap.
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.Level;
 using SweetSugar.Scripts.Blocks;
 
 namespace RoyalAves.Meta
 {
-    public static class BoardBorderRenderer
-    {
-        // Files live under a Resources/ folder specifically so they can be loaded here without any
-        // scene reference: Assets/RoyalAves/Resources/UI/Board/board-border-*.png.
-        const string CornerSpritePath = "UI/Board/board-border-corner";
-        const string EdgeSpritePath = "UI/Board/board-border-edge";
+    public enum BoardBorderTheme { Gold, Christmas, Custom }
 
-        // Tune these three directly if the border comes out too thick/thin or overlaps the pieces.
+    public sealed class BoardBorderRenderer : ScriptableObject
+    {
+        public const string ResourcePath = "UI/Board/BoardBorderAppearance";
+        public BoardBorderTheme theme = BoardBorderTheme.Christmas;
+        public Sprite garland;
+        public Sprite cornerOrnament;
+        public float garlandVisibleWidth = 1f;
+        public float ornamentVisibleWidth = 1f;
+        public Sprite snowCap;
+        public float snowVisibleWidth = 1f;
+        [Min(0.1f)] public float snowHeightScale = 1f;
+        [Min(0.1f)] public float snowWidthInCells = 0.60f;
+        public Sprite christmasHudFrame;
+        [Tooltip("Perfil usado quando o tema selecionado for Custom.")]
+        public BoardSeasonTheme customSeason;
+        static BoardSeasonTheme activeSeason;
         const string SortingLayerName = "Default";
         const int SortingOrder = 10;
-        const float ExtraOutwardOffset = 0f;
+        const float ThicknessScale = 0.28f;
+        const int CornerSegments = 48;
+        static Material borderMaterial;
+        static BoardBorderRenderer appearance;
 
-        static Sprite cornerSprite;
-        static Sprite edgeSprite;
         static readonly List<GameObject> containers = new List<GameObject>();
         static bool subscribed;
 
-        // Disabled for now (was drawing doubled up with the board's own frame). Put the
-        // [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)] attribute back
-        // above this method once that's sorted out.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoInit()
         {
             if (subscribed) return; // guards against a second domain-reload style re-entry
@@ -42,24 +44,59 @@ namespace RoyalAves.Meta
             LevelManager.OnLevelLoaded += Rebuild;
         }
 
-        static float Thickness => edgeSprite.rect.height / edgeSprite.pixelsPerUnit;
+        public static void Refresh() => Rebuild();
 
         static void Rebuild()
         {
-            if (cornerSprite == null) cornerSprite = Resources.Load<Sprite>(CornerSpritePath);
-            if (edgeSprite == null) edgeSprite = Resources.Load<Sprite>(EdgeSpritePath);
             Clear();
-            if (cornerSprite == null || edgeSprite == null)
+            appearance = Resources.Load<BoardBorderRenderer>(ResourcePath);
+            activeSeason = appearance != null && appearance.theme == BoardBorderTheme.Custom
+                ? appearance.customSeason : null;
+            ApplyHudTheme();
+            if (borderMaterial == null)
             {
-                Debug.LogWarning($"BoardBorderRenderer: couldn't load sprites from Resources/{CornerSpritePath} or Resources/{EdgeSpritePath}.");
-                return;
+                var shader = Shader.Find("Sprites/Default");
+                if (shader == null) return;
+                borderMaterial = new Material(shader) { name = "Board frame warm leather" };
             }
             foreach (var board in Object.FindObjectsByType<FieldBoard>(FindObjectsSortMode.None)) BuildForBoard(board);
         }
 
+        static void ApplyHudTheme()
+        {
+            var hudImages = Object.FindObjectsByType<Image>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (var image in hudImages)
+                if (image.name == "MolduraFase")
+                {
+                    // The authored sprite is the default, including after a Play-mode script reload.
+                    image.overrideSprite = null;
+                    SeasonalHudLights.SetChristmas(image, false);
+                }
+            Sprite frame = activeSeason != null ? activeSeason.hudFrame :
+                appearance != null && appearance.theme == BoardBorderTheme.Christmas ? appearance.christmasHudFrame : null;
+            if (frame == null) return;
+            foreach (var image in hudImages)
+            {
+                if (image.name != "MolduraFase") continue;
+                image.overrideSprite = frame;
+                SeasonalHudLights.SetChristmas(image, appearance.theme == BoardBorderTheme.Christmas);
+            }
+        }
+
         static void Clear()
         {
-            for (int i = containers.Count - 1; i >= 0; i--) if (containers[i] != null) Object.Destroy(containers[i]);
+            // Generated objects can survive a script reload during Play while static lists reset.
+            foreach (var board in Object.FindObjectsByType<FieldBoard>(FindObjectsSortMode.None))
+                foreach (Transform child in board.transform)
+                    if (child.name.StartsWith("BoardBorder (auto)") && !containers.Contains(child.gameObject))
+                        containers.Add(child.gameObject);
+            for (int i = containers.Count - 1; i >= 0; i--)
+            {
+                if (containers[i] == null) continue;
+                foreach (var filter in containers[i].GetComponentsInChildren<MeshFilter>())
+                    if (filter.sharedMesh != null) Object.Destroy(filter.sharedMesh);
+                Object.Destroy(containers[i]);
+            }
             containers.Clear();
         }
 
@@ -105,7 +142,7 @@ namespace RoyalAves.Meta
             }
 
             // Directed unit boundary edges, one per grid-vertex step, walked clockwise around every
-            // active cell — an edge only exists where an active cell borders a hole or the board edge.
+            // active cell â€” an edge only exists where an active cell borders a hole or the board edge.
             var outgoing = new Dictionary<Vector2Int, List<Vector2Int>>();
             void AddEdge(Vector2Int from, Vector2Int to)
             {
@@ -125,7 +162,7 @@ namespace RoyalAves.Meta
             }
             if (outgoing.Count == 0) return;
 
-            var container = new GameObject($"BoardBorder (auto) — {board.name}");
+            var container = new GameObject($"BoardBorder (auto) â€” {board.name}");
             container.transform.SetParent(board.transform, false);
             containers.Add(container);
 
@@ -157,107 +194,181 @@ namespace RoyalAves.Meta
                 EmitLoop(verts, board, container, vertexWorld);
         }
 
-        // Run-length-encodes the closed vertex loop into straight segments, emits an edge tile per
-        // run, then — once the loop's overall winding is known — a corner tile at every outer turn.
-        // Winding matters because a board with a hole in the middle produces a second, inner loop
-        // that winds the opposite way round; without checking it, inner and outer corners would swap.
-        static void EmitLoop(List<Vector2Int> verts, FieldBoard board, GameObject container, System.Func<Vector2Int, Vector3> vertexWorld)
+        // Round the actual boundary, including notches and holes, then build seamless bevel bands.
+        static void EmitLoop(List<Vector2Int> verts, FieldBoard board, GameObject container,
+            System.Func<Vector2Int, Vector3> vertexWorld)
         {
-            int n = verts.Count - 1; // verts[n] == verts[0]
+            int n = verts.Count - 1;
             if (n < 4) return;
-
-            var dirs = new Vector2Int[n];
-            for (int i = 0; i < n; i++) dirs[i] = verts[i + 1] - verts[i];
-
-            int start = 0;
+            float cell = Mathf.Min(board.squareWidth, board.squareHeight);
+            float radius = cell * 0.20f;
+            var path = new List<Vector3>();
             for (int i = 0; i < n; i++)
-                if (dirs[i] != dirs[(i - 1 + n) % n]) { start = i; break; }
-
-            // Doubled buffer so a run can never need to wrap its own index range.
-            var v2 = new List<Vector2Int>(n * 2 + 1);
-            for (int i = 0; i <= n; i++) v2.Add(verts[(start + i) % n]);
-            for (int i = 1; i <= n; i++) v2.Add(verts[(start + i) % n]);
-
-            var runs = new List<(Vector2Int startVert, Vector2Int dir)>();
-            int pos = 0, consumed = 0;
-            while (consumed < n)
             {
-                Vector2Int runDir = v2[pos + 1] - v2[pos];
-                int runStartPos = pos;
-                while (consumed < n && v2[pos + 1] - v2[pos] == runDir) { pos++; consumed++; }
-                EmitRun(v2[runStartPos], v2[pos], board, container, vertexWorld);
-                runs.Add((v2[runStartPos], runDir));
+                var previous = vertexWorld(verts[(i - 1 + n) % n]);
+                var current = vertexWorld(verts[i]);
+                var next = vertexWorld(verts[(i + 1) % n]);
+                var incoming = (current - previous).normalized;
+                var outgoing = (next - current).normalized;
+                if (Vector3.Dot(incoming, outgoing) > 0.999f) continue;
+                var entry = current - incoming * radius;
+                var exit = current + outgoing * radius;
+                for (int step = 0; step <= CornerSegments; step++)
+                {
+                    float t = (float)step / CornerSegments;
+                    path.Add((1f - t) * (1f - t) * entry + 2f * (1f - t) * t * current + t * t * exit);
+                }
             }
-            if (runs.Count == 0) return;
+            if (path.Count < 3) return;
 
-            // Sum of the turn cross-products: a plain outer boundary sums negative (clockwise in
-            // world space); a loop around a hole winds the other way and sums positive.
-            float turnSum = 0f;
-            for (int i = 0; i < runs.Count; i++)
+            float bandUnit = cell * ThicknessScale;
+            float feather = EdgeFeather(path[0], cell);
+            // Offsets are measured outward from the grid; the pieces keep their existing space.
+            EmitBand("Brown inner rim", path, -0.015f * bandUnit, 0.045f * bandUnit,
+                new Color32(147, 81, 26, 255), container, 0, innerFeather: feather);
+            EmitBand("Cream inner highlight", path, 0.045f * bandUnit, 0.065f * bandUnit,
+                new Color32(255, 225, 165, 255), container, 1);
+            EmitBand("Warm leather bevel", path, 0.065f * bandUnit, 0.145f * bandUnit,
+                new Color32(246, 178, 54, 255), container, 2);
+            EmitBand("Brown outer bevel", path, 0.145f * bandUnit, 0.185f * bandUnit,
+                new Color32(192, 114, 30, 255), container, 3);
+            EmitBand("Outer fine highlight", path, 0.185f * bandUnit, 0.198f * bandUnit,
+                new Color32(237, 177, 89, 255), container, 4, outerFeather: feather);
+            // The board keeps a clean thin frame; seasonal decorations remain in the surrounding HUD.
+        }
+
+        static void DecorateChristmas(List<Vector2Int> vertices, GameObject container,
+            System.Func<Vector2Int, Vector3> vertexWorld, float cell)
+        {
+            // Christmas ornaments belong to the HUD. Only snow rests on the board frame.
+            float area = 0f;
+            for (int i = 0; i < vertices.Count - 1; i++)
             {
-                var inW = WorldDir(runs[i].dir);
-                var outW = WorldDir(runs[(i + 1) % runs.Count].dir);
-                turnSum += inW.x * outW.y - inW.y * outW.x;
+                var a = vertexWorld(vertices[i]);
+                var b = vertexWorld(vertices[i + 1]);
+                area += a.x * b.y - b.x * a.y;
             }
-            bool invert = turnSum > 0f;
-
-            for (int i = 0; i < runs.Count; i++)
+            if (area >= 0f) return; // Interior holes have the opposite winding.
+            bool snow = activeSeason == null || activeSeason.snow;
+            var corners = new List<Vector3>();
+            int count = vertices.Count - 1;
+            for (int i = 0; i < count; i++)
             {
-                var vertex = runs[(i + 1) % runs.Count].startVert; // shared corner between run i and i+1
-                EmitCornerIfConvex(vertex, runs[i].dir, runs[(i + 1) % runs.Count].dir, container, vertexWorld, invert);
+                var point = vertexWorld(vertices[i]);
+                var before = (point - vertexWorld(vertices[(i - 1 + count) % count])).normalized;
+                var after = (vertexWorld(vertices[(i + 1) % count]) - point).normalized;
+                if (Vector3.Dot(before, after) < 0.999f) corners.Add(point);
+            }
+            // Decorate the highest exterior ledge only, including irregular boards.
+            float highest = corners.Max(point => point.y);
+            for (int i = 0; i < corners.Count; i++)
+            {
+                var current = corners[i];
+                var next = corners[(i + 1) % corners.Count];
+                var direction = (next - current).normalized;
+                if (direction.x < 0.5f || current.y < highest - cell * 0.01f) continue;
+                float length = Vector3.Distance(current, next);
+                var snowSprite = activeSeason != null ? activeSeason.snowCap : appearance.snowCap;
+                float snowWidth = activeSeason != null ? activeSeason.snowVisibleWidth : appearance.snowVisibleWidth;
+                float snowHeight = activeSeason != null ? activeSeason.snowHeightScale : appearance.snowHeightScale;
+                float snowCellWidth = activeSeason != null ? activeSeason.snowWidthInCells : appearance.snowWidthInCells;
+                if (snow && snowSprite != null)
+                {
+                    float width = Mathf.Min(cell * snowCellWidth, length * 0.35f);
+                    // The pivot is the intersection of the cutout's horizontal and vertical
+                    // support tangents. Cover the entire bevel around the corner, including
+                    // its inner highlight, rather than only resting on the outside edge.
+                    float seat = cell * (ThicknessScale * 0.198f - 0.090f);
+                    float topSeat = seat - cell * 0.025f;
+                    Decoration("Left snow cap", snowSprite, snowWidth, width,
+                        current + new Vector3(-seat, topSeat), 0f, container, SortingOrder + 7, snowHeight);
+                    var right = Decoration("Right snow cap", snowSprite, snowWidth, width,
+                        next + new Vector3(seat, topSeat), 0f, container, SortingOrder + 7, snowHeight);
+                    right.GetComponent<SpriteRenderer>().flipX = true;
+                }
             }
         }
 
-        static Vector2 WorldDir(Vector2Int gridDir) => new Vector2(gridDir.x, -gridDir.y);
-
-        static void EmitRun(Vector2Int fromV, Vector2Int toV, FieldBoard board, GameObject container, System.Func<Vector2Int, Vector3> vertexWorld)
+        static GameObject Decoration(string name, Sprite sprite, float visibleWidth, float width,
+            Vector3 position, float angle, GameObject container, int order, float heightScale = 1f)
         {
-            var steps = toV - fromV;
-            var worldDelta = WorldDir(steps);
-            float gridLen = Mathf.Max(Mathf.Abs(steps.x), Mathf.Abs(steps.y));
-            if (gridLen < 1) return;
-            var dirNorm = worldDelta / worldDelta.magnitude;
-            bool horizontal = Mathf.Abs(dirNorm.x) > Mathf.Abs(dirNorm.y);
-            float cellSize = horizontal ? board.squareWidth : board.squareHeight;
-            float runWorldLen = gridLen * cellSize;
-
-            var fromWorld = vertexWorld(fromV);
-            var toWorld = vertexWorld(toV);
-            var mid = (fromWorld + toWorld) / 2f;
-            var outwardNormal = new Vector2(-dirNorm.y, dirNorm.x); // +90° from travel direction
-            float th = Thickness;
-            var pos = (Vector2)mid + outwardNormal * (th / 2f + ExtraOutwardOffset);
-
-            var go = new GameObject("edge");
-            go.transform.SetParent(container.transform, false);
-            go.transform.position = new Vector3(pos.x, pos.y, mid.z);
-            go.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(dirNorm.y, dirNorm.x) * Mathf.Rad2Deg);
-
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = edgeSprite;
-            sr.drawMode = SpriteDrawMode.Tiled;
-            sr.size = new Vector2(runWorldLen, th);
-            sr.sortingLayerName = SortingLayerName;
-            sr.sortingOrder = SortingOrder;
+            var root = new GameObject(name);
+            root.transform.SetParent(container.transform, false);
+            root.transform.position = position;
+            root.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            float scale = width / Mathf.Max(visibleWidth, 0.001f);
+            var parentScale = container.transform.lossyScale;
+            root.transform.localScale = new Vector3(scale / Mathf.Abs(parentScale.x), scale * heightScale / Mathf.Abs(parentScale.y), 1f);
+            var renderer = root.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingLayerName = SortingLayerName;
+            renderer.sortingOrder = order;
+            return root;
         }
 
-        static void EmitCornerIfConvex(Vector2Int vertex, Vector2Int inGridDir, Vector2Int outGridDir, GameObject container, System.Func<Vector2Int, Vector3> vertexWorld, bool invert)
+        static float EdgeFeather(Vector3 point, float cell)
         {
-            var inW = WorldDir(inGridDir);
-            var outW = WorldDir(outGridDir);
-            float cross = inW.x * outW.y - inW.y * outW.x;
-            bool isConvex = invert ? cross > 0.001f : cross < -0.001f;
-            if (!isConvex) return; // straight or concave: no matching art for those
+            var camera = Camera.main;
+            if (camera == null) return cell / 256f;
+            float pixelsPerCell = Vector2.Distance(camera.WorldToScreenPoint(point),
+                camera.WorldToScreenPoint(point + Vector3.right * cell));
+            // Subpixel coverage softens the silhouette without blurring the gold bands.
+            return Mathf.Min(cell * 0.015f, cell * 0.75f / Mathf.Max(1f, pixelsPerCell));
+        }
 
-            var go = new GameObject("corner");
+        static void EmitBand(string name, List<Vector3> path, float inner, float outer,
+            Color baseColor, GameObject container, int order, float innerFeather = 0f, float outerFeather = 0f)
+        {
+            int count = path.Count;
+            var offsets = new List<float>();
+            var opacity = new List<float>();
+            if (innerFeather > 0f) { offsets.Add(inner - innerFeather); opacity.Add(0f); }
+            offsets.Add(inner); opacity.Add(1f);
+            offsets.Add(outer); opacity.Add(1f);
+            if (outerFeather > 0f) { offsets.Add(outer + outerFeather); opacity.Add(0f); }
+            int rows = offsets.Count;
+            var vertices = new Vector3[count * rows];
+            var colors = new Color[count * rows];
+            var triangles = new int[count * (rows - 1) * 6];
+            for (int i = 0; i < count; i++)
+            {
+                var before = (path[i] - path[(i - 1 + count) % count]).normalized;
+                var after = (path[(i + 1) % count] - path[i]).normalized;
+                var tangent = (before + after).normalized;
+                var normal = new Vector3(-tangent.y, tangent.x, 0f);
+                float miter = 1f / Mathf.Max(0.7f, Vector3.Dot(tangent, after));
+                // A fixed upper-left light gives the frame a soft, polished relief.
+                float light = Mathf.Clamp01(0.5f + 0.35f * normal.y - 0.15f * normal.x);
+                Color shade = Color.Lerp(baseColor * 0.78f, Color.Lerp(baseColor, Color.white, 0.22f), light);
+                for (int row = 0; row < rows; row++)
+                {
+                    int vertex = rows * i + row;
+                    vertices[vertex] = container.transform.InverseTransformPoint(path[i] + normal * offsets[row] * miter);
+                    shade.a = opacity[row];
+                    colors[vertex] = shade;
+                }
+                int next = (i + 1) % count;
+                for (int row = 0; row < rows - 1; row++)
+                {
+                    int at = (i * (rows - 1) + row) * 6;
+                    int a = rows * i + row, b = rows * next + row;
+                    triangles[at] = a;
+                    triangles[at + 1] = b;
+                    triangles[at + 2] = a + 1;
+                    triangles[at + 3] = a + 1;
+                    triangles[at + 4] = b;
+                    triangles[at + 5] = b + 1;
+                }
+            }
+            var mesh = new Mesh { name = name, vertices = vertices, colors = colors, triangles = triangles };
+            mesh.RecalculateBounds();
+            var go = new GameObject(name);
             go.transform.SetParent(container.transform, false);
-            go.transform.position = vertexWorld(vertex);
-            go.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(outW.y, outW.x) * Mathf.Rad2Deg);
-
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = cornerSprite;
-            sr.sortingLayerName = SortingLayerName;
-            sr.sortingOrder = SortingOrder;
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var renderer = go.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = borderMaterial;
+            renderer.sortingLayerName = SortingLayerName;
+            renderer.sortingOrder = SortingOrder + order;
         }
     }
 }

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1321565834311164}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.24736965, y: 0.2357173, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -134,6 +134,11 @@ MonoBehaviour:
   animationTime: 0.2
   originSortingOrder: 2
   startDirection: {x: -1, y: -1, z: 0}
+  SpinFrames:
+  - {fileID: 227822299, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -376716579, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -957473285, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -513013597, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
 --- !u!1 &1525697283171518
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +469,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.88, y: 0.88, z: 1.0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4508028060463286}
@@ -489,7 +494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4062739975804216
 Transform:
   m_ObjectHideFlags: 0
@@ -498,14 +503,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846619304398012}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.5067862, w: 0.86207175}
-  m_LocalPosition: {x: 0.15999997, y: -0.26999998, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8392620064293836373}
   m_Father: {fileID: 4259094178559216}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -60.9}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &212084820547472524
 SpriteRenderer:
   serializedVersion: 3
@@ -605,6 +610,11 @@ MonoBehaviour:
   animationTime: 0.2
   originSortingOrder: 3
   startDirection: {x: 1, y: -1, z: 0}
+  SpinFrames:
+  - {fileID: 227822299, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -376716579, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -957473285, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  - {fileID: -513013597, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
 --- !u!1001 &3686904591113864208
 PrefabInstance:
   m_ObjectHideFlags: 0

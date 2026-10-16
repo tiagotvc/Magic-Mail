@@ -79,24 +79,32 @@ namespace SweetSugar.Scripts.System.Orientation
         {
             foreach (var item in list)
             {
-                if (item.GetType() == typeof(GameObject))
+                try
                 {
-                    var gameObj = (GameObject)item;
-                    gameObj.SetActive(activate);
-                    if (activate)
+                    if (item.GetType() == typeof(GameObject))
                     {
-                        OrientationPanels orientationPanels = gameObj.GetComponent<OrientationPanels>();
-                        currentPanels = orientationPanels?.panels;
-                        if (orientationPanels)
-                            LevelManager.THIS.movesTransform = orientationPanels.movesTransform;
+                        var gameObj = (GameObject)item;
+                        gameObj.SetActive(activate);
+                        if (activate)
+                        {
+                            OrientationPanels orientationPanels = gameObj.GetComponent<OrientationPanels>();
+                            currentPanels = orientationPanels?.panels;
+                            if (orientationPanels)
+                                LevelManager.THIS.movesTransform = orientationPanels.movesTransform;
+                        }
+                    }
+                    else
+                    {
+                        var gameObj = (MonoBehaviour)item;
+                        gameObj.enabled = activate;
                     }
                 }
-                else
+                catch (Exception e)
                 {
-                    var gameObj = (MonoBehaviour)item;
-                    gameObj.enabled = activate;
+                    // Correio Mágico: um item quebrado aqui não pode abortar o foreach - isso deixava o resto da
+                    // lista (inclusive o que monta o campo de jogo) sem ser ativado, travando o jogo inteiro.
+                    Debug.LogException(e, item);
                 }
-
             }
         }
     }

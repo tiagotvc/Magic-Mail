@@ -40,6 +40,9 @@ namespace SweetSugar.Scripts
         public AudioClip explosion2;
         public AudioClip getStarIngr;
         public AudioClip strippedExplosion;
+        // Correio Mágico: a hélice (MARMALADE) não tinha som próprio - só o "destroy" genérico de qualquer peça
+        // comum, tocado quando ela estoura o alvo. Ver ItemMarmalade.CreateMarmaladeWithType.
+        public AudioClip helixLaunch;
         public AudioClip[] complete;
         public AudioClip block_destroy;
         public AudioClip wrongMatch;

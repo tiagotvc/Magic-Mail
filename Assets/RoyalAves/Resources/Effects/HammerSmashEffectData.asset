@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0c9b9c0899340cba510c45c71fdfa33, type: 3}
+  m_Name: HammerSmashEffectData
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.HammerSmashEffectData
+  IdleFrames:
+  - {fileID: 2800000, guid: d93a4ceff3ff4b84a6efa4751c080e26, type: 3}
+  - {fileID: 2800000, guid: 75c5fedac5184af0838f576c70ca57fd, type: 3}
+  - {fileID: 2800000, guid: 3f66e22d3e3e49939a3782bfcbe72608, type: 3}
+  SwingFrames:
+  - {fileID: 2800000, guid: 3ec332e866794183a5de96ec4498ea41, type: 3}
+  - {fileID: 2800000, guid: cc678f892b5a4a30bebd3fe8f350d9cf, type: 3}
+  - {fileID: 2800000, guid: 8ce4b2acc73f455b9e5529d2b33cec12, type: 3}
+  - {fileID: 2800000, guid: 7fc1a916d3bf4b348b0ea5a2257bfcb7, type: 3}
+  - {fileID: 2800000, guid: a85368c275bf4bcaba03065522c8a75b, type: 3}

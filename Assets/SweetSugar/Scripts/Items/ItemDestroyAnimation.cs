@@ -11,6 +11,7 @@
 // // THE SOFTWARE.
 
 using System.Collections;
+using RoyalAves.Effects;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.Effects;
@@ -37,10 +38,16 @@ namespace SweetSugar.Scripts.Items
             started = true;
             var thisItem = GetComponent<Item>();
 
+            var animator = GetComponent<Animator>();
+            if (animator != null && animator.runtimeAnimatorController != null) animator.SetTrigger("Explode");
+
             GameObject go = Instantiate(Resources.Load("Prefabs/Effects/_ExplosionAround") as GameObject);//LevelManager.THIS.GetExplAroundPool();
             if (go != null)
             {
                 go.transform.position = transform.position;
+                // Correio Mágico: regra geral dos power-ups (ver RoyalAves.Effects.PowerUpEffectOrder) - a explosão
+                // da bomba tem que ficar acima do efeito de match comum, não empatada com ele.
+                PowerUpEffectOrder.Raise(go);
                 var explosionAround = go.GetComponent<ExplAround>();
                 explosionAround.item = thisItem;
                 go.SetActive(true);

@@ -125,3 +125,7 @@ copy('Assets/RoyalAves/Resources/MapHudV56');
 copy('Assets/RoyalAves/Resources/MapHudV57');
 copy('Assets/RoyalAves/Fonts/Calistoga SDF.asset');
 copy('Assets/RoyalAves/Fonts/Calistoga-Regular.ttf');
+
+// Gameplay postprocessors depend on builders outside this isolated map project.
+// Keep the production texture import metadata copied above instead of reimporting gameplay art.
+for(const suffix of ["", ".meta"])fs.rmSync(path.join(preview,"Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs"+suffix),{force:true});

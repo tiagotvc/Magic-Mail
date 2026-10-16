@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoyalAves.Effects;
 using RoyalAves.Meta;
 using SweetSugar.Scriptable.Rewards;
 using SweetSugar.Scripts.AdsEvents;
@@ -184,13 +185,23 @@ namespace SweetSugar.Scripts.Core
                 }
 
                 if (activatedBoost == null) return;
-                if (activatedBoost.type != BoostType.ExtraMoves && activatedBoost.type != BoostType.ExtraTime) return;
-                if (THIS.levelData.limitType == LIMIT.MOVES)
-                    THIS.levelData.limit += 5;
-                else
-                    THIS.levelData.limit += 30;
-
-                ActivatedBoost = null;
+                // Correio Mágico: ExtraMoves virou a flecha (destrói uma linha escolhida no tabuleiro), então
+                // não aplica mais na hora - ela agora espera o toque, igual martelo/canhão (ver MouseDown).
+                if (activatedBoost.type == BoostType.ExtraTime)
+                {
+                    if (THIS.levelData.limitType == LIMIT.MOVES)
+                        THIS.levelData.limit += 5;
+                    else
+                        THIS.levelData.limit += 30;
+                    ActivatedBoost = null;
+                }
+                // Correio Mágico: FreeMove virou o chapéu (embaralha as peças existentes), aplica na hora, sem
+                // precisar de toque no tabuleiro - igual ExtraTime acima.
+                else if (activatedBoost.type == BoostType.FreeMove)
+                {
+                    THIS.ShuffleBoard();
+                    ActivatedBoost = null;
+                }
             }
         }
         //score gain on this game
@@ -857,6 +868,14 @@ namespace SweetSugar.Scripts.Core
                 }
             }
 
+#if UNITY_EDITOR
+            if ((win || lose) && (RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
+            {
+                Debug.Log(win ? "[Correio Mágico] Laboratório concluído: todas as camadas removidas." : "[Correio Mágico] Laboratório encerrado: jogadas esgotadas.");
+                UnityEditor.EditorApplication.isPlaying = false;
+                return;
+            }
+#endif
             if (lose)
             {
                 gameStatus = GameState.PreFailed;
@@ -1082,7 +1101,12 @@ namespace SweetSugar.Scripts.Core
             if (gameStatus != GameState.Playing && gameStatus != GameState.Tutorial)
                 return;
             if (EventSystem.current.IsPointerOverGameObject(-1) && gameStatus == GameState.Playing)
+            {
+#if UNITY_EDITOR
+                LogBlockingUIObject();
+#endif
                 return;
+            }
 
             var hit = Physics2D.OverlapPoint(pos,
                 1 << LayerMask.NameToLayer("Item"));
@@ -1119,25 +1143,20 @@ namespace SweetSugar.Scripts.Core
                     if (THIS.ActivatedBoost.type == BoostType.ExplodeArea &&
                         lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
-                        SoundBase.Instance.PlayOneShot(SoundBase.Instance.boostBomb);
-                        THIS.DragBlocked = true;
-                        var obj = Instantiate(Resources.Load("Boosts/area_explosion"), lastTouchedItem.transform.position,
-                            lastTouchedItem.transform.rotation) as GameObject;
-                        obj.GetComponent<SpriteRenderer>().sortingOrder = 4;
-                        obj.GetComponent<BoostAnimation>().square = lastTouchedItem.square;
-                        THIS.ActivatedBoost = null;
+                        // Correio Mágico: ExplodeArea virou o canhão (destrói a coluna tocada).
+                        THIS.DestroyColumnWithCannon(lastTouchedItem);
+                    }
+                    else if (THIS.ActivatedBoost.type == BoostType.ExtraMoves &&
+                             lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
+                    {
+                        // Correio Mágico: ExtraMoves virou a flecha (destrói a linha tocada).
+                        THIS.DestroyLine(lastTouchedItem, true);
                     }
                     else if (THIS.ActivatedBoost.type == BoostType.Bomb &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
-                        SoundBase.Instance
-                            .PlayOneShot(SoundBase.Instance.boostColorReplace);
-                        THIS.DragBlocked = true;
-                        var obj = Instantiate(Resources.Load("Boosts/simple_explosion"), lastTouchedItem.transform.position,
-                            lastTouchedItem.transform.rotation) as GameObject;
-                        obj.GetComponent<BoostAnimation>().square = lastTouchedItem.square;
-                        obj.GetComponent<SpriteRenderer>().sortingOrder = 4;
-                        THIS.ActivatedBoost = null;
+                        // Correio Mágico: martelo (boost Bomb) - ver DestroySquareWithHammer pro efeito visual.
+                        THIS.DestroySquareWithHammer(lastTouchedItem);
                     }
                     else if (lastTouchedItem.square.GetSubSquare().CanGoOut()/* && lastTouchedItem.Combinable*/)
                     {
@@ -1198,6 +1217,19 @@ namespace SweetSugar.Scripts.Core
             }
             item.DestroyItem(true);
         }
+
+#if UNITY_EDITOR
+        // Diagnostic only: identifies which UI object EventSystem.IsPointerOverGameObject saw under the tap,
+        // for tracking down taps on the board that silently do nothing because the game thinks a UI element ate them.
+        static void LogBlockingUIObject()
+        {
+            var hits = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, hits);
+            Debug.Log(hits.Count == 0
+                ? "[MagicMail] toque no tabuleiro ignorado: IsPointerOverGameObject=true mas RaycastAll não achou nada (estado preso do EventSystem)"
+                : "[MagicMail] toque no tabuleiro ignorado, bloqueado por: " + string.Join(" | ", hits.Select(h => h.gameObject.name)));
+        }
+#endif
 
         void MouseDownRight(Vector2 pos)
         {
@@ -1365,9 +1397,9 @@ namespace SweetSugar.Scripts.Core
 
 
         //Find matches with delay
-        public IEnumerator FindMatchDelay()
+        public IEnumerator FindMatchDelay(float extraDelay = 0f)
         {
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.2f + extraDelay);
             THIS.FindMatches();
         }
 
@@ -1621,6 +1653,53 @@ namespace SweetSugar.Scripts.Core
         //striped effect
         public void StripedShow(GameObject obj, bool horrizontal)
         {
+            // Correio Mágico: o foguete se parte ao meio e cada metade voa pra uma ponta da linha/coluna com um
+            // rastro de chama, em vez de só sumir. Só dispara quando dá pra achar a peça e sua posição no tabuleiro
+            // (alguns dos chamadores de StripedShow passam o quadrado, não o item) - nesse caso sobra o feixe
+            // original do Sweet Sugar como alternativa, pra sempre ter algum aviso visual.
+            var rocketItem = obj.GetComponent<Item>();
+            var lineSquares = rocketItem != null && rocketItem.square != null
+                ? (horrizontal ? GetRowSquare(rocketItem.square.row) : GetColumnSquare(rocketItem.square.col))
+                : new List<Square>();
+            StripedShowPass(obj, horrizontal, lineSquares, null);
+        }
+
+        // Correio Mágico: no foguete horizontal, cada coluna da linha perde só 1 peça - assim que ela estoura, a
+        // gravidade (FallingDown -> WaitWhileDestroying) já deixa a peça de cima cair, porque nesse intervalo pode
+        // não haver mais nenhuma peça com "destroying" true pra essa espera perceber (o buraco daquela coluna já
+        // terminou de estourar antes do próximo da fila começar). No vertical isso não chama atenção porque a coluna
+        // inteira vai embora em sequência e a queda já leva mais tempo (distância maior). Esse tempo extra trava a
+        // queda do tabuleiro inteiro (mesmo mecanismo do GameBlocker) até a linha toda terminar de estourar + uma
+        // pausa, pra dar tempo de ver a linha vazia antes de cair.
+        const float HorizontalRowFallHold = 0.25f;
+
+        // Correio Mágico: como StripedShow, mas chama onPassed uma vez por quadrado da linha/coluna no instante em que
+        // a metade do foguete que voa por ele chega ali - assim as peças estouram conforme o foguete passa, e não tudo
+        // de uma vez. Sem efeito de foguete, onPassed roda na hora pra todos os quadrados. Devolve quanto tempo
+        // levou até o último quadrado ser passado (0 quando não houve efeito de foguete).
+        public float StripedShowPass(GameObject obj, bool horrizontal, List<Square> line, Action<Square> onPassed)
+        {
+            if (line.Count > 1)
+            {
+                var ordered = line.OrderBy(s => horrizontal ? s.transform.position.x : s.transform.position.y).ToList();
+                var cells = line.Select(s => s.transform.position).ToList();
+                var flight = RocketSplitEffect.Play(obj, horrizontal, ordered.First().transform.position,
+                    ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]));
+                if (flight > 0f)
+                {
+                    if (horrizontal)
+                    {
+                        var fallHold = new GameObject("RocketRowFallHold");
+                        fallHold.AddComponent<GameBlocker>();
+                        Destroy(fallHold, flight + HorizontalRowFallHold);
+                    }
+                    return flight;
+                }
+            }
+
+            if (onPassed != null)
+                line.ForEach(onPassed);
+
             if (stripesEffect != null)
             {
                 var effect = Instantiate(stripesEffect, obj.transform.position, Quaternion.identity);
@@ -1628,6 +1707,121 @@ namespace SweetSugar.Scripts.Core
                     effect.transform.Rotate(Vector3.back, 90);
                 Destroy(effect, 1);
             }
+            return 0f;
+        }
+
+        // Correio Mágico: flecha (linha) e canhão (coluna) - reaproveita o efeito visual e as listas de
+        // linha/coluna que os itens listrados (ItemStriped) já usam, só que disparado pelo toque no tabuleiro
+        // em vez de um match.
+        public void DestroyLine(Item target, bool horizontal)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
+            var square = target.square;
+            var squares = horizontal ? GetRowSquare(square.row) : GetColumnSquare(square.col);
+            // Correio Mágico: cada peça só estoura quando a metade do foguete passa por ela (ver StripedShowPass).
+            // Captura a peça de cada quadrado já aqui (antes do foguete voar) - ver o comentário equivalente em
+            // ItemStriped.DestroyCor sobre a gravidade puxar peças pendentes pro buraco antes da vez delas.
+            var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
+            var wait = StripedShowPass(target.gameObject, horizontal, squares, sq =>
+            {
+                if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
+                sq.DestroyBlock();
+            });
+            if (squares.Any(i => i.type == SquareTypes.JellyBlock))
+                levelData.GetTargetObject().CheckSquares(squares.ToArray());
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay(wait));
+        }
+
+        // Correio Mágico: canhão (boost ExplodeArea) - igual a DestroyLine(target, false), mas com visual próprio
+        // (CannonFireEffect: aparece parado na base da coluna e atira pra cima) em vez do foguete partido ao meio.
+        // Mesmos efeitos/sons de destruição de peça de sempre, só a parte "o que aparece e atira" muda.
+        public void DestroyColumnWithCannon(Item target)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
+            var squares = GetColumnSquare(target.square.col);
+            var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
+            var wait = CannonFireEffect.Play(squares, sq =>
+            {
+                if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
+                sq.DestroyBlock();
+            });
+            if (squares.Any(i => i.type == SquareTypes.JellyBlock))
+                levelData.GetTargetObject().CheckSquares(squares.ToArray());
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay(wait));
+        }
+
+        // Correio Mágico: martelo (boost Bomb) - destrói só a peça tocada. Antes só encolhia uma arte parada em
+        // cima dela (simple_explosion/BoostAnimation); agora o martelo aparece, gira pegando impulso e desce
+        // golpeando (HammerSmashEffect), com a peça estourando no instante exato do impacto.
+        public void DestroySquareWithHammer(Item target)
+        {
+            DragBlocked = true;
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.boostColorReplace);
+            var square = target.square;
+            var spreadTarget = levelData.TargetCounters.Any(i => i.collectingAction == CollectingTypes.Spread);
+            // Correio Mágico: a marreta golpeia pra direita (ver spritesheet), então nasce uma casa à esquerda da
+            // peça em vez de em cima dela - sobre a própria peça, o golpe pra direita não lia bem. Numa peça da
+            // última coluna isso nasce fora do tabuleiro, o que não tem problema (a arte só precisa alcançar a peça).
+            var hammerPos = target.transform.position + Vector3.left * squareWidth;
+            var wait = HammerSmashEffect.Play(hammerPos, () =>
+            {
+                SoundBase.Instance.PlayOneShot(SoundBase.Instance.destroyPackage);
+                if (spreadTarget) square.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
+                if (square.Item != null) square.Item.DestroyItem(true);
+            });
+            ActivatedBoost = null;
+            StartCoroutine(FindMatchDelay(wait));
+        }
+
+        // Correio Mágico: chapéu - embaralha as peças já existentes no tabuleiro, trocando-as de lugar (de
+        // verdade, com movimento) em vez de só trocar as cores em pé quieto. Não sorteia peça nova nenhuma, só
+        // redistribui as que já estão lá.
+        public void ShuffleBoard()
+        {
+            var items = field.GetItems(true).Where(i => i != null && !i.falling && !i.destroying).ToList();
+            if (items.Count < 2) return;
+            DragBlocked = true;
+            StartCoroutine(ShuffleBoardCor(items));
+        }
+
+        private IEnumerator ShuffleBoardCor(List<Item> items)
+        {
+            var squares = items.Select(i => i.square).ToList();
+            var shuffled = new List<Square>(squares);
+            for (var i = shuffled.Count - 1; i > 0; i--)
+            {
+                var j = Random.Range(0, i + 1);
+                (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
+            }
+
+            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.noMatch);
+
+            var startPositions = items.Select(i => i.transform.position).ToList();
+            var targetPositions = shuffled.Select(s => s.transform.position + Vector3.back * 0.2f).ToList();
+            const float duration = 0.45f;
+            var t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                var f = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / duration));
+                for (var i = 0; i < items.Count; i++)
+                    items[i].transform.position = Vector3.Lerp(startPositions[i], targetPositions[i], f);
+                yield return null;
+            }
+
+            for (var i = 0; i < items.Count; i++)
+            {
+                items[i].transform.position = targetPositions[i];
+                items[i].square = shuffled[i];
+                shuffled[i].Item = items[i];
+            }
+
+            DragBlocked = false;
+            StartCoroutine(FindMatchDelay());
         }
 
         //popup score, to use - enable "Popup score" in editor

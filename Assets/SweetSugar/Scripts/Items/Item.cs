@@ -191,11 +191,16 @@ namespace SweetSugar.Scripts.Items
 
         [HideInInspector] public Item explodedItem;
         private bool destroycoroutineStarted;
+        [HideInInspector] public bool powerUpFormationMatch;
+        bool fallingDebrisVisual;
         public static Item usedItem;
         public static Item usedItemSecond;
 
         protected virtual void OnEnable()
         {
+            if (powerUpFormationMatch || fallingDebrisVisual) HideSprites(false);
+            fallingDebrisVisual = false;
+            powerUpFormationMatch = false;
             switch (currentType)
             {
                 case ItemsTypes.INGREDIENT:
@@ -575,8 +580,7 @@ namespace SweetSugar.Scripts.Items
                 bool shouldRevertSwap = false;
 
                 // No matches found and not using special boosts/combinations
-                bool noValidMatches = !combines2.Any() && !IsSwitchBonus() &&
-                                      LevelManager.THIS.ActivatedBoost.type != BoostType.FreeMove;
+                bool noValidMatches = !combines2.Any() && !IsSwitchBonus();
 
                 // Special item combinations that are allowed/disallowed
                 bool invalidItemCombination = NotContainsBoth(ItemsTypes.MULTICOLOR, ItemsTypes.MULTICOLOR) ||
@@ -586,13 +590,18 @@ namespace SweetSugar.Scripts.Items
                 // Two time bombs with no matches
                 bool invalidTimeBombSwap = ContainsBoth(ItemsTypes.TimeBomb, ItemsTypes.TimeBomb) && !combines2.Any();
 
-                // Special items that cannot be combined
+                // Special items that cannot be combined. Magic Mail: a plain candy (NONE) is excluded here even when
+                // it isn't itself CombinableWithBonus — that flag is about two specials combining with each other,
+                // not about a special landing on an ordinary candy. Reverting that swap was the other half of the
+                // "moving a special always sets it off" fix above (IsSwitchBonus); this one used a different flag,
+                // so it kept reverting the swap before IsLoneBonus below ever got a chance to fire the piece.
                 bool nonCombinableSpecialItems = !combines2.Any() &&
                     list.Any(i => i.currentType != ItemsTypes.NONE &&
                                  i.currentType != ItemsTypes.TimeBomb &&
                                  i.currentType != ItemsTypes.SPIRAL &&
                                  i.currentType != ItemsTypes.INGREDIENT) &&
-                    list.Any(i => !i.CombinableWithBonus);
+                    list.Any(i => !i.CombinableWithBonus) &&
+                    !list.Any(i => i.currentType == ItemsTypes.NONE);
 
                 // Determine if we should revert the swap
                 shouldRevertSwap = (noValidMatches && invalidItemCombination) ||
@@ -611,15 +620,9 @@ namespace SweetSugar.Scripts.Items
                 }
                 else
                 {
-                    if (LevelManager.THIS.ActivatedBoost.type != BoostType.FreeMove)
-                    {
-                        if (LevelManager.THIS.levelData.limitType == LIMIT.MOVES)
-                            LevelManager.THIS.levelData.limit--;
-                        LevelManager.THIS.moveID++;
-                    }
-
-                    if (LevelManager.THIS.ActivatedBoost.type == BoostType.FreeMove)
-                        LevelManager.THIS.ActivatedBoost = null;
+                    if (LevelManager.THIS.levelData.limitType == LIMIT.MOVES)
+                        LevelManager.THIS.levelData.limit--;
+                    LevelManager.THIS.moveID++;
 
                     LevelManager.THIS.lastDraggedItem = this;
                     LevelManager.THIS.lastSwitchedItem = switchItem;
@@ -649,9 +652,15 @@ namespace SweetSugar.Scripts.Items
                         if (combine.nextType != ItemsTypes.NONE)
                         {
                             if (combine.color == LevelManager.THIS.lastDraggedItem.color)
+                            {
                                 LevelManager.THIS.lastDraggedItem.NextType = combine.nextType;
+                                RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastDraggedItem, combine.items);
+                            }
                             else if (combine.color == LevelManager.THIS.lastSwitchedItem.color)
+                            {
                                 LevelManager.THIS.lastSwitchedItem.NextType = combine.nextType;
+                                RoyalAves.Effects.PowerUpFormation.Register(LevelManager.THIS.lastSwitchedItem, combine.items);
+                            }
                         }
                     }
 
@@ -1043,11 +1052,15 @@ namespace SweetSugar.Scripts.Items
                         if (firstOrDefault != null && firstOrDefault.NextType == ItemsTypes.NONE)
                         {
                             firstOrDefault.NextType = combine.nextType;
+                            RoyalAves.Effects.PowerUpFormation.Register(firstOrDefault, combine.items);
                         }
                     }
 
                     var selectMany = combines2.SelectMany(i => i.items);
-                    selectMany.ToList().ForEach(x => x?.DestroyItem());
+                    var cascadeMatch = selectMany.Distinct().ToList();
+                    if (cascadeMatch.Any(x => x != null && x.NextType != ItemsTypes.NONE))
+                        yield return new WaitWhileDestroyPipeline(cascadeMatch, new Delays());
+                    else cascadeMatch.ForEach(x => x?.DestroyItem());
                     if(square != null && square.type == SquareTypes.JellyBlock)
                         LevelManager.THIS.levelData.GetTargetObject().CheckSquares(selectMany.Select(i => i.square).ToArray());
                 }
@@ -1207,6 +1220,7 @@ namespace SweetSugar.Scripts.Items
                 DebugLogKeeper.Log("set " + NextType + " " + name + " to " + newItem.name,DebugLogKeeper.LogType.BonusAppearance);
             newItem.square.Item = newItem;
             newItem.transform.position = newItem.square.transform.position;
+            if (powerUpFormationMatch) RoyalAves.Effects.PowerUpFormation.Born(newItem);
             NextType = ItemsTypes.NONE;
             if(destroyBlock)
                 square.DestroyBlock();
@@ -1294,7 +1308,15 @@ namespace SweetSugar.Scripts.Items
 
             if ((currentType == ItemsTypes.NONE && NextType == ItemsTypes.NONE || currentType == ItemsTypes.SPIRAL) && particles)
             {
-                PlayDestroyAnimation("destroy");
+                if (currentType == ItemsTypes.NONE)
+                {
+                    foreach (var renderer in GetSpriteRenderers())
+                        if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)
+                            RoyalAves.Effects.FallingBoardDebris.Shatter(renderer);
+                    fallingDebrisVisual = true;
+                    HideSprites(true);
+                }
+                else PlayDestroyAnimation("destroy");
 
                 if (currentType == ItemsTypes.SPIRAL)
                 {
@@ -1303,15 +1325,6 @@ namespace SweetSugar.Scripts.Items
                     {
                         partcl2.transform.position = transform.position;
                         partcl2.GetComponent<SplashParticles>().SetColor(0);
-                    }
-                }
-                else
-                {
-                    var partcl2 = ObjectPooler.Instance.GetPooledObject("FireworkSplash", this);
-                    if (partcl2 != null)
-                    {
-                        partcl2.transform.position = transform.position;
-                        partcl2.GetComponent<SplashParticles>().SetColor(color);
                     }
                 }
             }

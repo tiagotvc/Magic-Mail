@@ -22,6 +22,19 @@ namespace SweetSugar.Scripts.Level
     {
         public static LevelData LoadForPlay(int currentLevel)
         {
+#if UNITY_EDITOR
+            RoyalAves.Gameplay.FrankingMachineLaboratory.ResetActive();
+            if (RoyalAves.Gameplay.FrankingMachineLaboratory.TryLoad(currentLevel, out var machineLaboratory)) return machineLaboratory;
+            RoyalAves.Gameplay.MailCubbyLaboratory.ResetActive();
+            RoyalAves.Gameplay.InkLaboratory.ResetActive();
+            RoyalAves.Gameplay.ParcelStackLaboratory.ResetActive();
+            if (RoyalAves.Gameplay.MailCubbyLaboratory.TryLoad(currentLevel, out var mailCubbyLaboratory))
+                return mailCubbyLaboratory;
+            if (RoyalAves.Gameplay.InkLaboratory.TryLoad(currentLevel, out var inkLaboratory))
+                return inkLaboratory;
+            if (RoyalAves.Gameplay.ParcelStackLaboratory.TryLoad(currentLevel, out var laboratory))
+                return laboratory;
+#endif
             var levelData = new LevelData(Application.isPlaying, currentLevel);
             levelData = LoadlLevel(currentLevel, "Levels/Level_").DeepCopyForPlay(currentLevel);
             levelData.LoadTargetObject();
