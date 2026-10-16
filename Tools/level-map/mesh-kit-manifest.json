@@ -1,0 +1,125 @@
+{
+  "status": "prototype meshes; not wired into the game",
+  "coordinateSystem": "Y up, forward +Z, units in Unity meters",
+  "notes": [
+    "Assign provided materials by OBJ group name.",
+    "No final UV unwrap: materials are flat colors; Claude can add terrain UVs in the pilot.",
+    "Token number belongs to a top-surface child, not to a billboard.",
+    "Apply the same curved transform to meshes, tokens, props and interaction geometry."
+  ],
+  "meshes": [
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/postal-level-token.obj",
+      "triangles": 192,
+      "vertices": 576
+    },
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/raised-banks-segment.obj",
+      "triangles": 240,
+      "vertices": 720
+    },
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/postal-plank-bridge.obj",
+      "triangles": 192,
+      "vertices": 576
+    },
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/water-channel.obj",
+      "triangles": 192,
+      "vertices": 576
+    },
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/postal-island-platform.obj",
+      "triangles": 24,
+      "vertices": 72
+    },
+    {
+      "file": "Assets/RoyalAves/Art/MapKitV2/Meshes/hard-level-tile-patch.obj",
+      "triangles": 240,
+      "vertices": 720
+    }
+  ],
+  "materials": [
+    {
+      "name": "FacePurple",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/FacePurple.mat",
+      "color": [
+        0.67,
+        0.35,
+        0.82
+      ]
+    },
+    {
+      "name": "RimGold",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/RimGold.mat",
+      "color": [
+        1,
+        0.77,
+        0.2
+      ]
+    },
+    {
+      "name": "SideCream",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/SideCream.mat",
+      "color": [
+        1,
+        0.94,
+        0.78
+      ]
+    },
+    {
+      "name": "RoadLightGrass",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/RoadLightGrass.mat",
+      "color": [
+        0.7,
+        0.88,
+        0.59
+      ]
+    },
+    {
+      "name": "GroundDarkGrass",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/GroundDarkGrass.mat",
+      "color": [
+        0.31,
+        0.67,
+        0.51
+      ]
+    },
+    {
+      "name": "BankEdge",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/BankEdge.mat",
+      "color": [
+        0.23,
+        0.49,
+        0.37
+      ]
+    },
+    {
+      "name": "BridgeTeal",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/BridgeTeal.mat",
+      "color": [
+        0.36,
+        0.77,
+        0.73
+      ]
+    },
+    {
+      "name": "WaterTeal",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/WaterTeal.mat",
+      "color": [
+        0.22,
+        0.62,
+        0.87
+      ]
+    },
+    {
+      "name": "HardTilePurple",
+      "file": "Assets/RoyalAves/Art/MapKitV2/Materials/HardTilePurple.mat",
+      "color": [
+        0.43,
+        0.29,
+        0.68
+      ]
+    }
+  ]
+}

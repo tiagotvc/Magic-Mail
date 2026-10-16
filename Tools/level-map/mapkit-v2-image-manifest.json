@@ -1,0 +1,851 @@
+{
+  "status": "prototype-assets-not-wired",
+  "generator": "image_gen",
+  "spriteCount": 20,
+  "totalSpritesIncludingSuperseded": 45,
+  "images": [
+    {
+      "key": "dog",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/dog-courier-poses.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "dog_idle",
+          "internalID": 21300001,
+          "spriteID": "ce6f63bb60d3625cdc8908ed77b5aadc",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_wag",
+          "internalID": 21300002,
+          "spriteID": "bf052a308e43d8e53cb616a4477e5675",
+          "rect": {
+            "x": 627,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_sniff",
+          "internalID": 21300003,
+          "spriteID": "822d7d8ee2a7dd81865a58d5eac47ec7",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_carry",
+          "internalID": 21300004,
+          "spriteID": "66dd3e848bf4ce9d3a64553ec716e096",
+          "rect": {
+            "x": 627,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9eaa37bd-a1af-4657-875f-55db2b29c0b0.png"
+    },
+    {
+      "key": "mailbox",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png",
+      "recommended": true,
+      "width": 1774,
+      "height": 887,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 1,
+      "sprites": [
+        {
+          "name": "mailbox_closed",
+          "internalID": 21300001,
+          "spriteID": "6ba730aa00f5d0bbab8570db35c38c5f",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 887,
+            "height": 887
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "mailbox_open",
+          "internalID": 21300002,
+          "spriteID": "a36e01e942e422fd252c1666655a6b9e",
+          "rect": {
+            "x": 887,
+            "y": 0,
+            "width": 887,
+            "height": 887
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d88614f9-0231-4806-8732-f410fb24391b.png"
+    },
+    {
+      "key": "lamp",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+      "recommended": true,
+      "width": 1145,
+      "height": 1374,
+      "pngColorType": 6,
+      "columns": 1,
+      "rows": 1,
+      "sprites": [
+        {
+          "name": "postal_lamp",
+          "internalID": 21300001,
+          "spriteID": "6af00d450a641605806b4afb0a7da722",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1145,
+            "height": 1374
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ef09746a-eb85-48a3-b458-eb4a9c793f47.png"
+    },
+    {
+      "key": "tree",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/round-purple-tree.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 1,
+      "rows": 1,
+      "sprites": [
+        {
+          "name": "round_purple_tree",
+          "internalID": 21300001,
+          "spriteID": "be2d0069a9717ed9ba1121d788e8fdf9",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1254,
+            "height": 1254
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9cd56104-77e9-404e-b119-b490900f173e.png"
+    },
+    {
+      "key": "props",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/small-postal-props.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "prop_parcels",
+          "internalID": 21300001,
+          "spriteID": "22c876cd8a6832630875e1966dba2c58",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_flowers",
+          "internalID": 21300002,
+          "spriteID": "ac348c7470a586a82bfe284a52f06ae6",
+          "rect": {
+            "x": 627,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_sign",
+          "internalID": 21300003,
+          "spriteID": "4fb29f932b1bb2048ca578dd1d0fc26b",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_shrub",
+          "internalID": 21300004,
+          "spriteID": "84faed0a7e225e66dc105492bb0404e3",
+          "rect": {
+            "x": 627,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9b519664-ab0e-4167-a314-65552b46c352.png"
+    },
+    {
+      "key": "landmarks",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks.png",
+      "recommended": false,
+      "width": 1774,
+      "height": 887,
+      "pngColorType": 6,
+      "columns": 4,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "landmark_boat",
+          "internalID": 21300001,
+          "spriteID": "6beb6f1b1da973bb6d2ebaad29da5c71",
+          "rect": {
+            "x": 0,
+            "y": 444,
+            "width": 443,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_windmill",
+          "internalID": 21300002,
+          "spriteID": "439d020ea325761ef8d05244bf2310d4",
+          "rect": {
+            "x": 443,
+            "y": 444,
+            "width": 444,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_lighthouse",
+          "internalID": 21300003,
+          "spriteID": "c32035d226b903d0eb2dd5e5b441d2f1",
+          "rect": {
+            "x": 887,
+            "y": 444,
+            "width": 443,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_mountain_hut",
+          "internalID": 21300004,
+          "spriteID": "94b4b2ae6075bbe312cfeb627206bde8",
+          "rect": {
+            "x": 1330,
+            "y": 444,
+            "width": 444,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_clock",
+          "internalID": 21300005,
+          "spriteID": "a3b4d77bbfe25cf81290475b36e4e81c",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 443,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_grand_agency",
+          "internalID": 21300006,
+          "spriteID": "c16278652ddee5f1df2d8403e9089a0a",
+          "rect": {
+            "x": 443,
+            "y": 0,
+            "width": 444,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_tunnel",
+          "internalID": 21300007,
+          "spriteID": "5d280c6061ff61465f7774a4b8524323",
+          "rect": {
+            "x": 887,
+            "y": 0,
+            "width": 443,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_kite",
+          "internalID": 21300008,
+          "spriteID": "8c471d07f291e577753f03873f3cec69",
+          "rect": {
+            "x": 1330,
+            "y": 0,
+            "width": 444,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-391cff31-2721-46cd-aa37-86c4d246660e.png"
+    },
+    {
+      "key": "terrain",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Textures/cartoon-terrain-patterns.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 2,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a54f55dc-4bbf-4ee7-a037-d82b6bd8734c.png"
+    },
+    {
+      "key": "dog",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/dog-courier-poses-glow.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "dog_idle",
+          "internalID": 21300001,
+          "spriteID": "ce6f63bb60d3625cdc8908ed77b5aadc",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_wag",
+          "internalID": 21300002,
+          "spriteID": "bf052a308e43d8e53cb616a4477e5675",
+          "rect": {
+            "x": 627,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_sniff",
+          "internalID": 21300003,
+          "spriteID": "822d7d8ee2a7dd81865a58d5eac47ec7",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_carry",
+          "internalID": 21300004,
+          "spriteID": "66dd3e848bf4ce9d3a64553ec716e096",
+          "rect": {
+            "x": 627,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-2a3db329-0255-4e6c-9606-240d5e1cffdc.png"
+    },
+    {
+      "key": "tree",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/round-purple-tree-glow.png",
+      "recommended": true,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 1,
+      "rows": 1,
+      "sprites": [
+        {
+          "name": "round_purple_tree",
+          "internalID": 21300001,
+          "spriteID": "be2d0069a9717ed9ba1121d788e8fdf9",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 1254,
+            "height": 1254
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a42cf5d2-6010-47b9-8cd7-1905f68cba5b.png"
+    },
+    {
+      "key": "props",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/small-postal-props-glow.png",
+      "recommended": false,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "prop_parcels",
+          "internalID": 21300001,
+          "spriteID": "22c876cd8a6832630875e1966dba2c58",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_flowers",
+          "internalID": 21300002,
+          "spriteID": "ac348c7470a586a82bfe284a52f06ae6",
+          "rect": {
+            "x": 627,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_sign",
+          "internalID": 21300003,
+          "spriteID": "4fb29f932b1bb2048ca578dd1d0fc26b",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_shrub",
+          "internalID": 21300004,
+          "spriteID": "84faed0a7e225e66dc105492bb0404e3",
+          "rect": {
+            "x": 627,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-de364da9-19da-4ba3-8d4c-73583d97f49b.png"
+    },
+    {
+      "key": "landmarks",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks-glow.png",
+      "recommended": true,
+      "width": 1774,
+      "height": 887,
+      "pngColorType": 6,
+      "columns": 4,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "landmark_boat",
+          "internalID": 21300001,
+          "spriteID": "6beb6f1b1da973bb6d2ebaad29da5c71",
+          "rect": {
+            "x": 0,
+            "y": 444,
+            "width": 443,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_windmill",
+          "internalID": 21300002,
+          "spriteID": "439d020ea325761ef8d05244bf2310d4",
+          "rect": {
+            "x": 443,
+            "y": 444,
+            "width": 444,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_lighthouse",
+          "internalID": 21300003,
+          "spriteID": "c32035d226b903d0eb2dd5e5b441d2f1",
+          "rect": {
+            "x": 887,
+            "y": 444,
+            "width": 443,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_mountain_hut",
+          "internalID": 21300004,
+          "spriteID": "94b4b2ae6075bbe312cfeb627206bde8",
+          "rect": {
+            "x": 1330,
+            "y": 444,
+            "width": 444,
+            "height": 443
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_clock",
+          "internalID": 21300005,
+          "spriteID": "a3b4d77bbfe25cf81290475b36e4e81c",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 443,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_grand_agency",
+          "internalID": 21300006,
+          "spriteID": "c16278652ddee5f1df2d8403e9089a0a",
+          "rect": {
+            "x": 443,
+            "y": 0,
+            "width": 444,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_tunnel",
+          "internalID": 21300007,
+          "spriteID": "5d280c6061ff61465f7774a4b8524323",
+          "rect": {
+            "x": 887,
+            "y": 0,
+            "width": 443,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "landmark_kite",
+          "internalID": 21300008,
+          "spriteID": "8c471d07f291e577753f03873f3cec69",
+          "rect": {
+            "x": 1330,
+            "y": 0,
+            "width": 444,
+            "height": 444
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-2c0898ec-d9b8-4266-9094-5187cc2f4a07.png"
+    },
+    {
+      "key": "dog",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/dog-courier-poses-glow-spaced.png",
+      "recommended": true,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "dog_idle",
+          "internalID": 21300001,
+          "spriteID": "ce6f63bb60d3625cdc8908ed77b5aadc",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 650,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_wag",
+          "internalID": 21300002,
+          "spriteID": "bf052a308e43d8e53cb616a4477e5675",
+          "rect": {
+            "x": 650,
+            "y": 627,
+            "width": 604,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_sniff",
+          "internalID": 21300003,
+          "spriteID": "822d7d8ee2a7dd81865a58d5eac47ec7",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 650,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "dog_carry",
+          "internalID": 21300004,
+          "spriteID": "66dd3e848bf4ce9d3a64553ec716e096",
+          "rect": {
+            "x": 650,
+            "y": 0,
+            "width": 604,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ae0edbc0-8fc9-43fe-85e8-de6b823bd2f0.png"
+    },
+    {
+      "key": "props",
+      "path": "Assets/RoyalAves/Art/MapKitV2/Sprites/small-postal-props-glow-spaced.png",
+      "recommended": true,
+      "width": 1254,
+      "height": 1254,
+      "pngColorType": 6,
+      "columns": 2,
+      "rows": 2,
+      "sprites": [
+        {
+          "name": "prop_parcels",
+          "internalID": 21300001,
+          "spriteID": "22c876cd8a6832630875e1966dba2c58",
+          "rect": {
+            "x": 0,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_flowers",
+          "internalID": 21300002,
+          "spriteID": "ac348c7470a586a82bfe284a52f06ae6",
+          "rect": {
+            "x": 627,
+            "y": 627,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_sign",
+          "internalID": 21300003,
+          "spriteID": "4fb29f932b1bb2048ca578dd1d0fc26b",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        },
+        {
+          "name": "prop_shrub",
+          "internalID": 21300004,
+          "spriteID": "84faed0a7e225e66dc105492bb0404e3",
+          "rect": {
+            "x": 627,
+            "y": 0,
+            "width": 627,
+            "height": 627
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.05
+          }
+        }
+      ],
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9b7ac000-7f9d-450c-8643-f1c98654c90e.png"
+    }
+  ]
+}

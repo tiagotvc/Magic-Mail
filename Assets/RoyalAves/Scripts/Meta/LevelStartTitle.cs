@@ -22,16 +22,21 @@ namespace RoyalAves.Meta
         void OnEnable() => Refresh();
         void OnValidate() => Refresh();
 
-        void Refresh()
+        public void Refresh()
         {
             var level = PlayerPrefs.GetInt("OpenLevel", 1);
-            var word = LocalizedWords.Instance != null ? LocalizedWords.Instance.Get(wordKey) : wordKey;
-            var plain = $"{word.ToUpperInvariant()} {level}";
+            var words = LocalizedWords.Instance;
+            var language = SweetSugar.Scripts.Level.CrosssceneData.selectedLanguage;
+            var word = words == null ? wordKey : string.IsNullOrEmpty(language)
+                ? words.words.Find(w => w.key == wordKey)?.pt ?? wordKey : words.Get(wordKey);
+            if (word == wordKey && wordKey.TrimStart('_') == "nivel") word = "Nível";
+            var displayWord = System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(word.ToLowerInvariant());
+            var plain = $"{displayWord} {level}";
             var label = GetComponent<TextMeshProUGUI>();
             // Only emit <sprite> tags when a sprite font is actually assigned — otherwise the tags have
             // nothing to resolve against and TMP falls back to its project-wide default Sprite Asset
             // (whatever that happens to be, e.g. a stock emoji set), showing garbage instead of the word.
-            label.text = label.spriteAsset != null ? SpriteFontText.ToSpriteTags(plain, gap) : plain;
+            label.text = label.spriteAsset != null ? SpriteFontText.ToSpriteTags(plain.ToUpperInvariant(), gap) : plain;
         }
     }
 }

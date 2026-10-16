@@ -1,0 +1,13 @@
+# Pacote — alternativa de visual mais desenhado
+
+Pedido do usuário: experimentar uma caixa menos realista antes de trabalhar na animação entre os rasgos.
+
+Esta entrega é uma alternativa de conceito do pacote intacto. O arquivo fica em `Assets/RoyalAves/Art/Obstacles/ParcelStack/Concepts/CM_pilha_cartoon_conceito04_00.png`, separado dos quatro estados usados atualmente no jogo.
+
+Direção: contorno caramelo marcado, formas arredondadas simples, cores amplas, poucas etapas de sombra e destaques gráficos. Papel e corda sem textura fotográfica, fibras ou brilho de produto renderizado. Preservar pacote único, etiqueta sem texto e corda cruzada; a direção adotada deve permitir quatro estados do mesmo tamanho.
+
+Gerado com a ferramenta image_gen integrada, usando o pacote intacto atual como referência de objeto e enquadramento. PNG com transparência real; copiado para o projeto sem editar os pixels. Importação específica de ParcelStack mantém a escala compatível com a célula. Resolução e alpha conferidos; aplicação aos quatro estados e animação intermediária ficam para a próxima etapa após a avaliação deste conceito.
+
+## Prompt
+
++Use case: style-transfer. Edit the referenced intact SINGLE square postal parcel into a visibly more DRAWN, CARTOON 2D game icon for Correio Mágico. This is an alternative concept for user review before producing all damage states. Preserve ONE large square package, outer width and height, rounded corners, centered frontal camera, crossed beige twine, and small blank cream address label lower right. Keep the single-box footprint and empty transparent margin. Major style change: hand-drawn clean cartoon mobile puzzle illustration, bold smooth dark caramel outlines, simple inflated friendly shapes, broad flat color regions, two or three cel-shaded tonal steps only, very restrained soft gradients, simple graphic highlights. Golden orange/tan paper, pale cream rope and label. The rope uses a few large curved cartoon segments rather than realistic twisting fibers. Paper folds are a few clean simple drawn lines. NO realistic paper grain, fibers, noise, embossing, tiny creases, metallic reflections, specular 3D shine, photorealism or photographic textures. It must look painted/drawn, not a realistic rendered product. No face or character eyes. Readable at a 70px cell size. True transparent RGBA background, no ground shadow, background, scene, text, numbers, watermark, extra packages or detached debris. Single isolated intact box, square canvas matching reference. Only change visual style, keep game geometry so this can later share all four unwrapping states.

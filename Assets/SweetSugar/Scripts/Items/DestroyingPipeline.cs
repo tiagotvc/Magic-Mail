@@ -61,6 +61,7 @@ namespace SweetSugar.Scripts.Items
                 for (var i = 0; i < pipeline.Count; i++)
                 {
                     var bunch = pipeline[i];
+                    yield return RoyalAves.Effects.PowerUpFormation.Attract(bunch.items);
                     if (bunch.items.Any())
                         LevelManager.THIS.levelData.GetTargetObject().CheckSquares(bunch.items.Where(i=>i!=null && i.square!=null).Select(x => x.square.GetSubSquare()).ToArray());
 
@@ -74,7 +75,7 @@ namespace SweetSugar.Scripts.Items
                         if (item != null)
                         {
                             item.combinationID = bunch.GetHashCode();
-                            item.DestroyItem(true);
+                            item.DestroyItem(true, !item.powerUpFormationMatch);
                         }
                         if (bunch.delays.afterevery != null)
                         {

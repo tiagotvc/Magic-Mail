@@ -522,13 +522,8 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 0
-          originalPos: {x: 3, y: 2}
-          rotate: 0
-          size: {x: 2, y: 3}
         spawners: []
-        block: 9
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -560,11 +555,6 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 1
-          originalPos: {x: 3, y: 2}
-          rotate: 0
-          size: {x: 2, y: 3}
         spawners: []
         block: 1
         blockLayer: 1
@@ -730,11 +720,6 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 1
-          originalPos: {x: 3, y: 2}
-          rotate: 0
-          size: {x: 2, y: 3}
         spawners: []
         block: 1
         blockLayer: 1
@@ -768,11 +753,6 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 1
-          originalPos: {x: 3, y: 2}
-          rotate: 0
-          size: {x: 2, y: 3}
         spawners: []
         block: 1
         blockLayer: 1
@@ -839,11 +819,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 0, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 0, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 0, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -872,11 +862,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 1, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 1, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 1, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -905,11 +905,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 2, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 2, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 2, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -938,16 +948,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 1
-          originalPos: {x: 3, y: 2}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 3, y: 4}
           rotate: 0
-          size: {x: 2, y: 3}
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 3, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 3, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -976,16 +991,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
-        - squareType: 9
-          anotherSquare: 1
-          originalPos: {x: 3, y: 2}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 4, y: 4}
           rotate: 0
-          size: {x: 2, y: 3}
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 4, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 4, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1014,11 +1034,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 5, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 5, y: 4}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 5, y: 4}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1047,11 +1077,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 0, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1080,11 +1120,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 1, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 1, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 1, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1113,11 +1163,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 2, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 2, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 2, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1146,11 +1206,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 3, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 3, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 3, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1179,11 +1249,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 4, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 4, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 4, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1212,11 +1292,21 @@ MonoBehaviour:
           originalPos: {x: 0, y: 0}
           rotate: 0
           size: {x: 0, y: 0}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 5, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 4
+          anotherSquare: 0
+          originalPos: {x: 5, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
         spawners: []
         block: 1
         blockLayer: 1
-        obstacle: 0
-        obstacleLayer: 1
+        obstacle: 4
+        obstacleLayer: 2
         position: {x: 5, y: 5}
         direction: {x: 0, y: -1}
         enterSquare: 0
@@ -1240,7 +1330,7 @@ MonoBehaviour:
           order: 0
         separatorIndexes: 00000000y
       bombTimer: 1
-      layers: 2
+      layers: 3
       switchSublevelNoMatch: 0
     target:
       name: SugarSquare

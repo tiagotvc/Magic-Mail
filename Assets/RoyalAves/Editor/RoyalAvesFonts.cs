@@ -28,6 +28,7 @@ namespace RoyalAves.EditorTools
         static readonly Color MailShadow = new Color(0.16f, 0.03f, 0.02f, 0.8f);
 
         public static TMP_FontAsset Display => LoadOrCreate("LilitaOne-Regular.ttf", "LilitaOne SDF");
+        public static TMP_FontAsset LevelModal => LoadOrCreate("Calistoga-Regular.ttf", "Calistoga SDF");
 
         /// The traced Magic Mail alphabet.
         public static TMP_FontAsset Mail => LoadOrCreate("MagicMail.ttf", "MagicMail SDF");

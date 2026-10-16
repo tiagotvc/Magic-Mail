@@ -1,0 +1,85 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-10-13",
+  "specs": [
+    {
+      "key": "dog",
+      "file": "dog-courier-poses.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Production game sprite sheet, 2 columns and 2 rows, four isolated poses of THE SAME very simple cartoon postal dog. Small caramel-colored floppy-eared dog, cream muzzle, purple neck scarf with a tiny gold envelope tag, big friendly eyes. Classic flat casual-puzzle-map illustration: chunky rounded shapes, thick pale cream outline, just a few flat colors and one broad side shadow, no realistic fur, no fine texture, no elaborate 3D render. Poses in strict reading order: top left standing happy with tail lowered; top right EXACT same standing body and feet, tail raised wagging; bottom left nose lowered sniffing; bottom right standing holding a cream envelope in mouth. Same proportions, same scale, same baseline within each equal cell; every entire silhouette inside its cell with 12 percent transparent margins. Genuine transparent canvas, no ground, no baked shadows, no text, no labels, no frames or gridlines. Wide-eyed lovable original mascot for Magic Mail. Square canvas, clean 2x2 sprite layout."
+    },
+    {
+      "key": "mailbox",
+      "file": "mailbox-poses.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Production game sprite sheet, 2 equal columns side by side, two isolated states of THE SAME whimsical postal mailbox. A squat royal-purple domed mailbox on a short cream wooden post, chunky golden envelope badge, mint flag on the side, pale cream outer outline. Left cell: door closed, flag down. Right cell: same body and same foot position, door open and a cream letter poking out, flag raised. Front three-quarter view with extremely simple broad shapes, 5 flat colors and one broad shadow, classic flat casual puzzle map paper-cutout style, no metal gloss, no ornate detail, no realism, no texture. Each complete silhouette contained in its equal half with generous transparent margins, same scale and baseline. Genuine transparent background, no ground, no baked shadow, no labels, no text, no border. Landscape sprite sheet."
+    },
+    {
+      "key": "lamp",
+      "file": "postal-lamp.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. ONE independently placed map sprite: very simple whimsical street lamp for a magical postal town. Short slightly curved teal-blue post, rounded cream bulb inside a simple golden bracket, tiny purple cap and small envelope-shaped hanging ornament. Thick cream outline, 5 broad flat color shapes, gentle single side shadow, original flat 2D cartoon casual puzzle style, no fine ornament or textures, no realistic lighting, no 3D render. Front three-quarter view, full upright silhouette centered occupying 80 percent of canvas. Genuine transparent background, no ground island, no baked shadow, no extra objects, no text, no border."
+    },
+    {
+      "key": "tree",
+      "file": "round-purple-tree.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. ONE simple original flat cartoon purple garden tree map sprite. Short curved brown trunk supporting three oversized round lilac and violet foliage masses; a few mint leaves represented by two large shapes, thick pale cream outline, only 5 colors with one broad dark shadow, no individual leaves, no flowers, no texture, no realistic lighting, no detailed 3D render. Toy-like silhouette but flat paper-cutout illustration matching a teal pine tree and purple postal house in a classic casual puzzle map. Front view with hint of volume. Whole silhouette centered filling 80 percent of square canvas, genuine transparency, no ground, no cast shadow, no labels or text."
+    },
+    {
+      "key": "props",
+      "file": "small-postal-props.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Production game sprite sheet 2 columns by 2 rows, four DIFFERENT simple flat cartoon isolated map props in strict reading order: top left three chunky cream parcels tied with purple ribbon; top right a small cluster of three large yellow flowers with mint leaves; bottom left a cream-and-gold wooden sign bearing a simple purple envelope pictogram, on one short post; bottom right a rounded mint-green shrub with two large foliage shapes. Match a flat casual postal puzzle game: thick cream outline, minimal geometric detail, 4-6 flat colors per object, only one broad darker side for volume, no textures, no realism or glossy render. Each object complete and centered in its equal square cell with 12 percent transparent margin. Genuine transparent background, no ground, no baked shadows, no text, no gridlines, no borders. Square canvas."
+    },
+    {
+      "key": "landmarks",
+      "file": "postal-region-landmarks.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Production transparent game sprite atlas, strict grid 4 equal columns x 2 equal rows, 8 DIFFERENT isolated VERY SIMPLE original postal-world landmarks. Wide landscape canvas. Reading order top row: 1 a small teal postal delivery boat with purple sail and a gold envelope symbol; 2 a simple cream rural windmill with purple roof and four broad mint blades; 3 a chunky purple-and-cream coastal lighthouse with gold cap; 4 a little cream mountain postal hut with teal roof and gold envelope sign. Bottom row: 5 a simple golden round garden clock on a short purple pedestal, no numerals; 6 a larger royal postal agency with two cream towers, purple roofs and gold envelope emblem; 7 a simple cream stone tunnel arch with a teal opening and tiny purple postal pennant; 8 a large purple diamond kite with a gold envelope pictogram and three mint ribbon bows. Flat 2D casual-puzzle-map paper cutout cartoon: thick pale cream outline, minimal geometric shapes, 5-6 flat colors, one broad side shadow, no texture, no ornamental detail, no photorealism, no glossy 3D. Every complete silhouette contained in its own equal cell with generous 12 percent transparent margin, consistent object scale, aligned feet/base. No labels, no letters, no numerals, no borders or grid lines, no ground islands, no baked shadows. A cohesive Magic Mail world."
+    },
+    {
+      "key": "terrain",
+      "file": "cartoon-terrain-patterns.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Production texture atlas for simple 3D cartoon game terrain, square canvas divided into EXACT four seamless tile regions, 2 columns x 2 rows, no dividing lines. Top left: pale mint green grass made of only 3 broad irregular flat patches, extremely subtle contrast, no individual grass blades. Top right: cream sand with 2-3 broad pale gold irregular patches, no speckles. Bottom left: simple warm cream cobblestone paving, 10-12 large rounded rectangular stones, flat colors and broad joints, no realistic texture. Bottom right: simple teal-painted wooden planks, 6 wide parallel boards with pale mint separators, no realistic wood grain. Each quadrant independently tiles horizontally and vertically without dark edge borders. Flat casual puzzle cartoon, generous clean readable shapes, no lighting or shadows baked in, no text, no objects, no 3D render. Four orthographic material texture tiles only, no perspective scene."
+    }
+  ],
+  "sources": [
+    {
+      "key": "dog",
+      "file": "dog-courier-poses.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9eaa37bd-a1af-4657-875f-55db2b29c0b0.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "mailbox",
+      "file": "mailbox-poses.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d88614f9-0231-4806-8732-f410fb24391b.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "lamp",
+      "file": "postal-lamp.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ef09746a-eb85-48a3-b458-eb4a9c793f47.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "tree",
+      "file": "round-purple-tree.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9cd56104-77e9-404e-b119-b490900f173e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "props",
+      "file": "small-postal-props.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9b519664-ab0e-4167-a314-65552b46c352.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "landmarks",
+      "file": "postal-region-landmarks.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-391cff31-2721-46cd-aa37-86c4d246660e.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "key": "terrain",
+      "file": "cartoon-terrain-patterns.png",
+      "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a54f55dc-4bbf-4ee7-a037-d82b6bd8734c.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    }
+  ]
+}

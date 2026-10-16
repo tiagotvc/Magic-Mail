@@ -1,0 +1,33 @@
+{
+  "tool": "built-in image_gen; source pixels and alpha preserved",
+  "jobs": [
+    {
+      "id": "postal-dock-v16",
+      "folder": "Library/Construcoes",
+      "kind": "building",
+      "prompt": "Use case: stylized-concept. ONE independent Magic Mail postal dock kiosk sprite, genuine transparent alpha. Art direction: cheerful magical world, simple irregular architecture informed by Crash Bandicoot's playful shape language, combined with clean glossy hand-drawn casual map illustration. Mostly FRONTAL view, tiny side strip at most, no isometric or aerial view. Three big readable masses ONLY: a small cream wooden postal kiosk with gently leaning asymmetrical walls and ONE crooked teal door; an oversized violet gable roof with unequal curving ends and ONE plain golden envelope emblem attached to the facade; a short honey-brown dock platform of THREE broad irregular planks with TWO leaning thick posts. Include ONE small simple warm gold lantern hanging securely from one post. Broad smooth vivid gradients, one gentle highlight per major surface, thin ivory outer outline. Warm and friendly, mild asymmetry, not extreme distortion. No ornate columns, gems, repeated little windows, railings, piles of parcels, carved wood grain, nails or tiny decorations. One whole compact building readable at 120px tall. No people, water, ground, mist, glow haze, cast shadow, words or background. Large transparent margins.",
+      "file": "postal-dock-v16.png",
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "postal-dock-v16"
+      ],
+      "transparent": true,
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-a97aa5bd-3781-43d0-8bc7-445b948f2afb.png"
+    },
+    {
+      "id": "water-stones-v16",
+      "folder": "Library/Props",
+      "kind": "ground-detail",
+      "prompt": "Use case: stylized-concept. ONE independent cluster of THREE LOW FLAT warm peach sandstone stepping stones for a colorful 2D saga world map. Same simple graphic style as Candy Crush ground details: irregular asymmetrical broad pentagon/trapezoid silhouettes, one largest stone with TWO smaller stones next to it. TOP-DOWN ORTHOGRAPHIC plan view because game projects sprite onto water. Simple clean hand-drawn shapes, smooth warm peach upper face with a narrow golden-beige lower edge giving very low thickness, one restrained broad lighter upper-left face area. Vivid but gentle color, no shiny jewel-like or jelly look, no round pebbles, no grooves, no cracks, no rocky pile, no tall sides. Thin pale ivory outer contour. Three stones form one compact isolated cluster with small clear gaps. TRUE alpha transparent background, generous margins. No water rectangle, ground, grass, sparkles, glow, shadows, text, other props or scenery.",
+      "file": "water-stones-v16.png",
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "water-stones-v16"
+      ],
+      "transparent": true,
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-b8a7c4ee-f84a-4909-b995-4ca858dbd624.png"
+    }
+  ]
+}

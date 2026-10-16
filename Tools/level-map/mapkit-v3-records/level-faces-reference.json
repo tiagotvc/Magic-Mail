@@ -1,0 +1,19 @@
+{
+  "id": "level-faces-reference",
+  "folder": "Shared",
+  "file": "level-faces-reference.png",
+  "transparent": true,
+  "columns": 3,
+  "rows": 1,
+  "names": [
+    "active",
+    "completed",
+    "upcoming"
+  ],
+  "kind": "prop",
+  "tool": "built-in image_gen",
+  "prompt": "Use the attached screenshot as an EXACT STYLE REFERENCE for its round level buttons only. Create a transparent asset sheet with THREE separate blank TOP-DOWN PERFECTLY CIRCULAR button faces, one row of three equal cells, spacious transparent separation, all circles same diameter. Left: juicy rich raspberry/magenta active level face. Middle: luminous golden-orange completed level face. Right: soft rose-pink upcoming level face. Match the screenshot's beautiful simple 2D painted cartoon finish: rounded soft color transitions, one broad tasteful white highlight at the upper-left edge, subtle luminous inner rim, thin warm cream outline. Each is a simple glossy illustrated circular disc surface, NOT a cone, not a realistic rendered 3D object, no perspective tilt. The camera angle will be applied by the game, so every face must be a true top-down circle. NO numbers, lettering, icons, crowns, stars, backgrounds, shadows outside the circles or glow fog; those are separate game elements. Keep the original reference palette and clean casual-game illustrated finish. Three independent transparent cutouts, not touching, nothing cropped.",
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-df12d999-8e6f-4ff5-a66f-8e5a510c541d.png",
+  "reference": "C:/Users/Tiago Carvalho/Downloads/f51f26f0-0c1c-4168-a83b-7580c2dea790.jpg",
+  "destination": "Assets/RoyalAves/Art/MapKitV3/Shared/level-faces-reference.png"
+}

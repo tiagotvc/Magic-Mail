@@ -1,0 +1,25 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "path": "Assets/RoyalAves/Art/Maps/postal-sky.png",
+      "prompt": "Use case: stylized-concept. Asset type: fixed distant sky background for a layered flat cartoon mobile level map. Very simple pastel turquoise sky with a soft pale mint gradient at the bottom and five small rounded cream cloud shapes around the sides. Bottom 15 percent: pale blue monochrome geometric silhouettes of whimsical distant postal houses and towers, hazy, very low contrast, no detail. Top and center mostly empty. Extremely simple classic flat casual game 2D cartoon style, paper cutout / vector-like, solid shapes, no texture, no realistic clouds, no painterly detail, no 3D render. Landscape 3:2 full bleed. No ground, no terrain, no trees, no foreground buildings, no characters, no UI, no text, no border.",
+      "transparent": false
+    },
+    {
+      "path": "Assets/RoyalAves/Art/Maps/cartoon-pine.png",
+      "prompt": "Use case: stylized-concept. Asset type: single isolated flat cartoon game tree sprite with transparent background. A VERY SIMPLE stylized triangular pine tree, three broad scalloped tiers, short trapezoid brown trunk. Teal-blue main foliage, one darker blue band under each tier, tiny pale mint highlight on one outer edge, thick cream outline around the entire silhouette. Exactly the visual simplicity of classic flat casual puzzle level-map props: paper cutout/vector-like 2D cartoon, only 4-5 solid colors, no texture, no individual leaves, no flowers, no fine details, no realistic lighting, no 3D rendering. Friendly rounded geometric shapes, slight asymmetry. Complete upright tree centered with generous transparent margin, fills 85 percent square canvas, NO ground plane or landscape, NO baked cast shadow (engine draws it separately), NO UI, NO words. Authentic transparent background.",
+      "transparent": true
+    },
+    {
+      "path": "Assets/RoyalAves/Art/Maps/cartoon-post-office.png",
+      "prompt": "Use case: stylized-concept. Asset type: one isolated VERY SIMPLE flat cartoon postal house sprite, transparent background. A whimsical little postal station for Magic Mail: simple cream trapezoid walls, oversized curved triangular purple roof, one tiny turquoise round window, a single gold envelope pictogram above a rounded blue doorway, short golden chimney. Thick pale cream outline all around. Paper cutout / vector-like 2D cartoon casual puzzle map style, 6 solid color shapes and only one broad darker purple side shadow. Extreme geometric simplification, no bricks, no roof tiles, no architectural ornament, no vegetation, no bevels, no photorealism, no texture, no detailed 3D, no elaborate clock. Front view with only a hint of side wall for 2.5D. Single object centered filling 85 percent of square canvas, full silhouette, NO ground plane, no cast shadow (engine adds separately), no text, no UI, genuine transparent background.",
+      "transparent": true
+    },
+    {
+      "path": "Assets/RoyalAves/Art/Maps/cartoon-sorting-factory.png",
+      "prompt": "Use case: stylized-concept. Asset type: one isolated flat cartoon mail-sorting factory game-map sprite on transparent background. A VERY SIMPLE playful turquoise postal sorting machine shaped like a small toy factory: squat rounded turquoise body, big rectangular open slot with a purple conveyor lip and two cream envelopes visible inside, two round purple knobs at the bottom, curved mint pipe arch looping above, tiny gold envelope pictogram on the upper body. Slight 3/4 view. Classic casual puzzle map visual simplicity: thick pale cream outline around complete silhouette, 5 or 6 solid colors, chunky geometric shapes, only one broad darker side for depth. No texture, no metal reflections, no elaborate decoration, no realistic 3D, no fine details. Cute paper-cutout / vector-like 2D cartoon. Complete object centered filling 80 percent canvas, no landscape, no ground plane, no baked shadow, no characters, no text, genuine transparent background.",
+      "transparent": true
+    }
+  ]
+}

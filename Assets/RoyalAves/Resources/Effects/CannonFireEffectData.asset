@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34cb7c2bb8a74e91af848180ca7c4190, type: 3}
+  m_Name: CannonFireEffectData
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.CannonFireEffectData
+  IdleFrames:
+  - {fileID: 2800000, guid: bc53029a146a4216987bfd0841aef379, type: 3}
+  - {fileID: 2800000, guid: 81b572fb204745a8bbbec82c2d9596d9, type: 3}
+  - {fileID: 2800000, guid: 3b4bf263d8964e36aa9d029eae50759f, type: 3}
+  - {fileID: 2800000, guid: 3037516239ec48f6948a3bc5685105dd, type: 3}
+  FireFrames:
+  - {fileID: 2800000, guid: 0803594733944192ba9b034025822aef, type: 3}
+  - {fileID: 2800000, guid: 850cb625a63543a3b282f1ae420d2829, type: 3}
+  - {fileID: 2800000, guid: f8e4cbf423494fefb2efb50e3b89c309, type: 3}
+  - {fileID: 2800000, guid: 1e93d3f81b364a4799dadb5acc9c2073, type: 3}

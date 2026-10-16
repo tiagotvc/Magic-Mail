@@ -1,0 +1,892 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "status": "planning-only",
+  "scope": "Mundos de mapa e arte; não cria tabuleiros nem runtime",
+  "globalNumbering": "proposed; preserve existing IDs and saves; validate before migration",
+  "knownExistingBoards": 100,
+  "worlds": [
+    {
+      "id": "green-land",
+      "name": "Green Land — Terras do Correio",
+      "count": 200,
+      "start": 1,
+      "end": 200,
+      "source": "brainstorm-200-fases.json",
+      "chapterCount": 10,
+      "chapterLength": 20,
+      "groundIdentity": "terras verdes variadas, rios de cartas, cidades/fábricas postais, bosque e litoral",
+      "chapterSource": "brainstorm-200-fases.json",
+      "areaEnvironmentBindings": [
+        "green-land-bairro-environment",
+        "green-land-vila-environment",
+        "green-land-bosque-environment",
+        "green-land-canal-environment",
+        "green-land-oficina-environment",
+        "green-land-campo-environment",
+        "green-land-porto-environment",
+        "green-land-serra-environment",
+        "green-land-jardins-environment",
+        "green-land-capital-environment"
+      ]
+    },
+    {
+      "id": "lava-land",
+      "name": "Lava Land — Terras das Cartas Incandescentes",
+      "count": 250,
+      "start": 201,
+      "end": 450,
+      "chapterCount": 10,
+      "chapterLength": 25,
+      "chapters": [
+        {
+          "id": "portal-basalto",
+          "title": "Portal de Basalto",
+          "terrain": "basalto claro, rocha escura e primeiras fendas",
+          "sky": "laranja-pessego",
+          "landmark": "portão de entrega e vulcão distante",
+          "beats": [
+            {
+              "title": "Portão das cartas quentes",
+              "start": 201,
+              "end": 205,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Primeira fenda de lava",
+              "start": 206,
+              "end": 210,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Travessia das placas de basalto",
+              "start": 211,
+              "end": 215,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Estação da fumacinha",
+              "start": 216,
+              "end": 220,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Mirante do primeiro vulcão",
+              "start": 221,
+              "end": 225,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "ponte de basalto sobre o Rio das Brasas",
+          "start": 201,
+          "end": 225,
+          "worldLocalStart": 1,
+          "worldLocalEnd": 25,
+          "environmentProfileId": "lava-land-portal-basalto-environment"
+        },
+        {
+          "id": "rio-brasas",
+          "title": "Rio das Brasas",
+          "terrain": "ilhas rochosas, canais largos e pontes",
+          "sky": "laranja-pessego",
+          "landmark": "barco postal de metal e píer",
+          "beats": [
+            {
+              "title": "Margem dos envelopes encantados",
+              "start": 226,
+              "end": 230,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ponte das encomendas",
+              "start": 231,
+              "end": 235,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Porto do barco de metal",
+              "start": 236,
+              "end": 240,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Arquipélago dos selos",
+              "start": 241,
+              "end": 245,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Confluência dos rios de lava",
+              "start": 246,
+              "end": 250,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "canal estreito desemboca no campo de gêiseres",
+          "start": 226,
+          "end": 250,
+          "worldLocalStart": 26,
+          "worldLocalEnd": 50,
+          "environmentProfileId": "lava-land-rio-brasas-environment"
+        },
+        {
+          "id": "campos-geiseres",
+          "title": "Campos dos Gêiseres",
+          "terrain": "solo ocre, bacias minerais e bocas circulares",
+          "sky": "laranja-dourado",
+          "landmark": "estação postal termal",
+          "beats": [
+            {
+              "title": "Círculos de vapor",
+              "start": 251,
+              "end": 255,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Passarela dos pequenos jatos",
+              "start": 256,
+              "end": 260,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Praça das bacias minerais",
+              "start": 261,
+              "end": 265,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Correio da fonte termal",
+              "start": 266,
+              "end": 270,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Campo das grandes fumarolas",
+              "start": 271,
+              "end": 275,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "trilho das encomendas entra na forja",
+          "start": 251,
+          "end": 275,
+          "worldLocalStart": 51,
+          "worldLocalEnd": 75,
+          "environmentProfileId": "lava-land-campos-geiseres-environment"
+        },
+        {
+          "id": "forja-selos",
+          "title": "Forja dos Selos",
+          "terrain": "ladrilhos escuros, passarelas e canais de calor",
+          "sky": "laranja-dourado",
+          "landmark": "fábrica de selos com chaminés",
+          "beats": [
+            {
+              "title": "Recepção das encomendas quentes",
+              "start": 276,
+              "end": 280,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Esteira dos envelopes",
+              "start": 281,
+              "end": 285,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Carimbo da fornalha",
+              "start": 286,
+              "end": 290,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Passarela dos pacotes",
+              "start": 291,
+              "end": 295,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Pátio das chaminés",
+              "start": 296,
+              "end": 300,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "portão fabril abre para uma fenda com cristais",
+          "start": 276,
+          "end": 300,
+          "worldLocalStart": 76,
+          "worldLocalEnd": 100,
+          "environmentProfileId": "lava-land-forja-selos-environment"
+        },
+        {
+          "id": "cristais-incandescentes",
+          "title": "Vale dos Cristais Incandescentes",
+          "terrain": "rocha violeta, cristais teal e fendas alaranjadas",
+          "sky": "ambar-lilas",
+          "landmark": "torre do selo cristalino",
+          "beats": [
+            {
+              "title": "Fenda das pedras luminosas",
+              "start": 301,
+              "end": 305,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Jardim dos cristais pequenos",
+              "start": 306,
+              "end": 310,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ponte do cristal azul",
+              "start": 311,
+              "end": 315,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Torre do selo brilhante",
+              "start": 316,
+              "end": 320,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Mirante do vale violeta",
+              "start": 321,
+              "end": 325,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "ponte sobre lava vira caminho de cinza fria",
+          "start": 301,
+          "end": 325,
+          "worldLocalStart": 101,
+          "worldLocalEnd": 125,
+          "environmentProfileId": "lava-land-cristais-incandescentes-environment"
+        },
+        {
+          "id": "jardins-cinza",
+          "title": "Jardins de Cinza",
+          "terrain": "cinza lilás, rocha fria e vegetação térmica estilizada",
+          "sky": "ambar-lilas",
+          "landmark": "estufa postal resistente ao calor",
+          "beats": [
+            {
+              "title": "Bosque das árvores de brasa",
+              "start": 326,
+              "end": 330,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Canal de lava estreito",
+              "start": 331,
+              "end": 335,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Correio entre flores térmicas",
+              "start": 336,
+              "end": 340,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Estufa das encomendas",
+              "start": 341,
+              "end": 345,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Jardim dos selos de cinza",
+              "start": 346,
+              "end": 350,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "pedras escalonadas conduzem às crateras",
+          "start": 326,
+          "end": 350,
+          "worldLocalStart": 126,
+          "worldLocalEnd": 150,
+          "environmentProfileId": "lava-land-jardins-cinza-environment"
+        },
+        {
+          "id": "crateras-encomendas",
+          "title": "Crateras das Encomendas",
+          "terrain": "plataformas circulares, depressões e lagos de lava",
+          "sky": "crepusculo-coral",
+          "landmark": "balão de correspondências ancorado",
+          "beats": [
+            {
+              "title": "Borda da primeira cratera",
+              "start": 351,
+              "end": 355,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ponte entre os pratos de rocha",
+              "start": 356,
+              "end": 360,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Depósito das cartas suspensas",
+              "start": 361,
+              "end": 365,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ilhas da grande cratera",
+              "start": 366,
+              "end": 370,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Varanda do balão postal",
+              "start": 371,
+              "end": 375,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "túnel de basalto leva ao correio subterrâneo",
+          "start": 351,
+          "end": 375,
+          "worldLocalStart": 151,
+          "worldLocalEnd": 175,
+          "environmentProfileId": "lava-land-crateras-encomendas-environment"
+        },
+        {
+          "id": "correio-subterraneo",
+          "title": "Correio Subterrâneo",
+          "terrain": "caverna aberta em corte, plataformas e rios de lava",
+          "sky": "caverna-ambar",
+          "landmark": "agência de caverna iluminada por selos",
+          "beats": [
+            {
+              "title": "Entrada das lanternas",
+              "start": 376,
+              "end": 380,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Passagem das estalactites largas",
+              "start": 381,
+              "end": 385,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Estação dos selos luminosos",
+              "start": 386,
+              "end": 390,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ponte da caverna aberta",
+              "start": 391,
+              "end": 395,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Saída da agência subterrânea",
+              "start": 396,
+              "end": 400,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "rampa rochosa revela a cordilheira ao ar livre",
+          "start": 376,
+          "end": 400,
+          "worldLocalStart": 176,
+          "worldLocalEnd": 200,
+          "environmentProfileId": "lava-land-correio-subterraneo-environment"
+        },
+        {
+          "id": "cordilheira-vulcoes",
+          "title": "Cordilheira dos Vulcões",
+          "terrain": "terraços altos, pontes de corda e encostas frias",
+          "sky": "crepusculo-coral",
+          "landmark": "observatório postal e três vulcões no horizonte",
+          "beats": [
+            {
+              "title": "Subida dos terraços",
+              "start": 401,
+              "end": 405,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Ponte do correio de altitude",
+              "start": 406,
+              "end": 410,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Observatório da fumacinha",
+              "start": 411,
+              "end": 415,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Encosta das cartas voadoras",
+              "start": 416,
+              "end": 420,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Mirante dos três vulcões",
+              "start": 421,
+              "end": 425,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "portal de rocha desce à Grande Caldeira",
+          "start": 401,
+          "end": 425,
+          "worldLocalStart": 201,
+          "worldLocalEnd": 225,
+          "environmentProfileId": "lava-land-cordilheira-vulcoes-environment"
+        },
+        {
+          "id": "grande-caldeira",
+          "title": "Grande Caldeira Postal",
+          "terrain": "anel de basalto, canais radiais e praça central",
+          "sky": "noite-brasa",
+          "landmark": "grande central vulcânica de correspondências",
+          "beats": [
+            {
+              "title": "Anel das pontes douradas",
+              "start": 426,
+              "end": 430,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Rios de cartas encantadas",
+              "start": 431,
+              "end": 435,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Pátio dos carimbos incandescentes",
+              "start": 436,
+              "end": 440,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Central da grande entrega",
+              "start": 441,
+              "end": 445,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            },
+            {
+              "title": "Festival postal da caldeira",
+              "start": 446,
+              "end": 450,
+              "composition": [
+                "entrada com marco distante",
+                "aproximação com prop animado lateral",
+                "travessia ou praça de respiro",
+                "encontro postal e detalhe de chão",
+                "saída com pista do próximo trecho"
+              ]
+            }
+          ],
+          "transition": "conclusão do mundo e reserva para portal pré-histórico; sem desbloqueio fictício",
+          "start": 426,
+          "end": 450,
+          "worldLocalStart": 226,
+          "worldLocalEnd": 250,
+          "environmentProfileId": "lava-land-grande-caldeira-environment"
+        }
+      ],
+      "groundIdentity": "250 fases integralmente vulcânicas, com sub-biomas térmicos distintos"
+    },
+    {
+      "id": "prehistoric",
+      "name": "Terras Pré-históricas",
+      "count": null,
+      "start": 451,
+      "end": null,
+      "zones": [
+        "Vale dos Ovos",
+        "Floresta dos Gigantes",
+        "Pântano das Pegadas",
+        "Cânion dos Fósseis",
+        "Lago dos Plesiossauros",
+        "Ninhos nas Alturas",
+        "Planalto dos Herbívoros",
+        "Central Postal Jurássica"
+      ],
+      "levelCountStatus": "not defined by user; do not assume 200 or 250",
+      "startStatus": "proposed if contiguous numbering chosen",
+      "environmentStatus": "directions only; no phase count defined"
+    }
+  ],
+  "seasons": [
+    {
+      "id": "natal",
+      "name": "Natal — primeira season",
+      "status": "planned-not-configured",
+      "kind": "additive-world-overlay",
+      "worldCompatibility": [
+        "green-land",
+        "lava-land"
+      ],
+      "futureCompatibility": "prehistoric sockets reserved",
+      "affectsGameplay": false,
+      "baseThemeFallback": true,
+      "existingSeasonConfig": "Assets/RoyalAves/Resources/RoyalAvesSeasons.asset",
+      "observedActiveSeason": "padrao",
+      "attachmentProfiles": [
+        "roofSnow",
+        "roundCrownSnow",
+        "pineSnow",
+        "mailboxSnow",
+        "lampSnow",
+        "propTopSnow",
+        "bridgeEdgeSnow",
+        "headHat",
+        "neckScarf",
+        "garland",
+        "doorWreath",
+        "lights",
+        "coldBasaltSnow"
+      ],
+      "lavaRestrictions": [
+        "no snow directly on molten lava",
+        "keep active vent opening clear",
+        "decorate cool outer ledges and buildings"
+      ]
+    }
+  ],
+  "animationPlan": [
+    {
+      "id": "cloud-drift",
+      "technique": "transform loop and slow parallax"
+    },
+    {
+      "id": "letter-river",
+      "technique": "world path flow plus gentle bob; underlying river geometry remains separate"
+    },
+    {
+      "id": "smoke",
+      "technique": "pooled particles from shared masks"
+    },
+    {
+      "id": "geyser",
+      "technique": "static rim plus staggered seeded particle cycle"
+    },
+    {
+      "id": "stamp-machine",
+      "technique": "separate arm and wheel transforms"
+    },
+    {
+      "id": "courier-dog",
+      "technique": "same body plus tail attachment, occasional poses"
+    },
+    {
+      "id": "fountain",
+      "technique": "STATIC by user instruction"
+    },
+    {
+      "id": "snowfall",
+      "technique": "seasonal sparse particles outside readable node band"
+    }
+  ],
+  "assetBacklog": "asset-production-backlog.json",
+  "implementationHandoff": "CLAUDE-HANDOFF.md",
+  "environmentPlan": "environment-weather-roadmap.json",
+  "environmentDesign": "PLANO-CLIMA-E-BACKGROUNDS.md",
+  "environmentProfileCount": 20
+}

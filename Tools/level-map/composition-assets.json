@@ -1,0 +1,84 @@
+{
+    "jobs":  [
+                 {
+                     "id":  "ground-painted-neutral",
+                     "folder":  "GreenLand",
+                     "file":  "ground-painted-neutral.png",
+                     "transparent":  false,
+                     "columns":  1,
+                     "rows":  1,
+                     "names":  [
+                                   "paint"
+                               ],
+                     "kind":  "terrain",
+                     "prompt":  "Use case: stylized-concept. A single seamless square 2D hand-painted neutral terrain detail texture for a colorful cartoon puzzle saga map. Top-down flat texture, NOT a scene, not an atlas. Very pale warm ivory base with a handful of large softly curved pale-gray/cream color patches, sparse tiny simplified brush flecks and a few abstract small rounded grass strokes. Extremely low contrast (white to pale warm gray only), meant to be tinted green in a game shader. Broad simple painted shapes, cheerful clean casual-game illustration. The texture is uniformly lit; no perspective, no directional shadow, no road, no buildings, no objects, no borders, no text, no black areas, no high-frequency noise. Seamless edges matching in all directions. Opaque background. It should give flat-colored ground a soft painted character without looking busy."
+                 },
+                 {
+                     "id":  "postal-level-crown",
+                     "folder":  "Shared",
+                     "file":  "postal-level-crown.png",
+                     "transparent":  true,
+                     "columns":  1,
+                     "rows":  1,
+                     "names":  [
+                                   "crown"
+                               ],
+                     "kind":  "prop",
+                     "prompt":  "Use case: stylized-concept. ONE standalone golden cartoon crown reward ornament for the level buttons of Magic Mail, a polished casual puzzle saga game. Front view, symmetric simple three rounded prongs with three golden round bead tips, curved low gold band. Big readable shapes, illustrated 2D painted cartoon, luminous rounded golden yellow and warm orange shading, one broad cream highlight, small simple embossed envelope mark centered on band. Clean continuous warm-white cream outline around the complete silhouette, same style as simple hand-painted mailboxes and illustrated glowing postal lamps. Cheerful plump toy-like illustration, NOT detailed realistic metal or a studio 3D render. No jewels, fur, sparkles, cast shadows or surrounding glow fog. Exactly one crown centered, generous transparent margins, no cropping. Clean actual transparent background, alpha zero exterior; no checkerboard, text, floor, additional items or atlas."
+                 },
+                 {
+                     "id":  "ground-illustrated-green-v2",
+                     "folder":  "GreenLand",
+                     "file":  "ground-illustrated-green-v2.png",
+                     "transparent":  false,
+                     "columns":  1,
+                     "rows":  1,
+                     "names":  [
+                                   "terrain"
+                               ],
+                     "kind":  "terrain",
+                     "tool":  "built-in image_gen",
+                     "prompt":  "Use case: game-asset. Create ONE production-quality 2D illustrated ground plate for an original cheerful magical postal puzzle-game map. This is a flat TOP-DOWN UV texture, NOT a perspective scene or a screenshot. Square image, fully opaque, green terrain fills every pixel. A broad smooth LIGHT APPLE-GREEN grass corridor runs STRAIGHT vertically through the exact center from bottom edge to top edge, uniform width about 38% of image. Both shoulders are rich medium emerald-green grass, broad and equally visible. The central corridor is gently inset: a VERY narrow soft darker green painted bevel and a clean soft lighter edge, almost flat, absolutely not a canyon. Sophisticated simple casual-game cartoon art: big clean curved color shapes, soft luminous gradients with matte painted finish, a few broad alternating light-green swept color bands crossing the corridor, quiet organic emerald patches on the shoulders, only a FEW tiny understated grass flecks at outer margins. The central path stays empty and clean for level buttons. Good illustrative color separation and smooth hand-drawn curves, no muddy washed-out tint, no random repeated stamps, no noisy brushwork, no leaf motifs scattered everywhere. TOP AND BOTTOM EDGES MATCH perfectly for vertical looping; corridor and shoulder colors connect at the ends. Left/right outer edges are quiet uniform emerald grass. No sky, horizon, camera perspective, road markings, ribbon, levels, UI, text, logo, objects, flowers, trees, rocks, characters, bridges or water. All 3 ground regions are drawn TOGETHER in this single finished illustrated terrain plate. Original game art, not copying any specific game layout.",
+                     "editPrompt":  "Edit this ground UV plate. Preserve the square opaque format, exact centered vertical light-green corridor, medium-green shoulders, approximately 38% corridor width, and continuous top/bottom looping composition. CHANGE THE ART STYLE decisively: polished simple flat cartoon game illustration, clean large shapes, smooth curved outlines and soft broad airbrushed lighting. REMOVE ALL grass tufts, leaves, flecks, dense patches, grain, paint strokes, mottled grass, and jagged edges. Both shoulders should have only TWO OR THREE huge quiet soft darker-green shapes total, with flat emerald/mint color between them. The center should have only FOUR large broad slightly diagonal alternating apple-green/light-green bands with smooth crisp boundaries and a gentle center illumination. Replace the harsh yellow stripe at each corridor edge with a very narrow mint-green highlight and a soft shallow darker-green bevel. Simple, minimal, luminous, professional 2D illustrated terrain sprite, like clean mobile cartoon board-game backgrounds. No texture noise anywhere. No objects, sprites, sky, text, UI, road markings, water or borders. This should look drawn from large clean shapes, not like a grass texture.",
+                     "refinePrompt":  "Refine this exact illustrated ground UV plate. Keep the opaque square image, exact vertical centered corridor approximately 38% width, shoulder layout and broad band composition. Change colors and edge treatment only: central grass PALE SOFT APPLE GREEN, approximately #B9DF87 and #ACD477, with very gentle broad alternating bands. Shoulder grass pastel medium green approximately #78B967 and #6BAA5D. Increase the blue component of the yellow/lime greens so all grass looks soft apple/leaf green, not neon lime. Eliminate the luminous yellow outlines completely. The corridor edges should be a tiny subtle darker green painted recess and softly lit mint-green rim only 3-5 pixels wide. Almost flat relief, matte 2D cartoon illustration, NO glowing border, no metallic/plastic gloss, no shiny bevel, no dark deep side shadow. Make both corridor edges straight vertical for UV mapping: remove the many small wiggles. The engine will bend this art, so do NOT draw perspective or an S road. Keep the shoulders as big smooth two-tone green shapes, no extra details. No grass marks, grain, mottling, icons, objects, sky, UI, text or watermark. Top and bottom connect seamlessly. Finished flat drawn terrain sprite, cheerful pastel green, restrained highlights.",
+                     "source":  "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-48a74d5b-14d0-4528-bd41-c3062d8c8945.png",
+                     "destination":  "Assets/RoyalAves/Art/MapKitV3/GreenLand/ground-illustrated-green-v2.png"
+                 },
+                 {
+                     "id":  "ground-reference-plate",
+                     "folder":  "GreenLand",
+                     "file":  "ground-reference-plate.png",
+                     "transparent":  false,
+                     "columns":  1,
+                     "rows":  1,
+                     "names":  [
+                                   "terrain"
+                               ],
+                     "kind":  "terrain",
+                     "tool":  "built-in image_gen",
+                     "prompt":  "Edit this exact provided screenshot into a CLEAN BACKGROUND PLATE by removing overlays and props, not by redesigning the ground. PRESERVE EXACTLY the existing illustrated grass ground, its broad soft alternating pale green color bands, the darker green shoulders, soft shallow inset boundary, and the existing low gently rounded horizon at the same vertical position. Keep this SAME frontal/perspective camera composition, same smooth natural proportions, same ground silhouette and same simple subtle painted grass detail. Remove ALL top pink HUD, avatar, icons, text and bottom navigation, replacing their areas with the continuing sky above and continuing green ground below. Remove ALL buildings, factories, trees, lamps, flowers, characters, avatars and their shadows. Remove the pink/white ribbon and ALL circular level buttons, filling their areas with the original adjacent grass color/bands. Result: only the quiet warm yellow sky, its very simple distant pale cloud silhouettes, and the accurately preserved green ground with empty light-green lane and darker green shoulders. No UI, text, objects, path markings, shadows of removed objects, bright outlines, new bevels, extra decoration, repeated leaf stamps or new texture. The goal is to retain the reference ground drawing and horizon as faithfully as possible, after cleanly removing everything else. Single opaque portrait image, SAME aspect and framing as input.",
+                     "reference":  "C:/Users/Tiago Carvalho/Downloads/WhatsApp Image 2026-10-13 at 11.09.13 (1).jpeg",
+                     "source":  "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-17ae4bc7-2070-4085-b249-975fff0edaa5.png",
+                     "destination":  "Assets/RoyalAves/Art/MapKitV3/GreenLand/ground-reference-plate.png"
+                 },
+                 {
+                     "id":  "level-faces-reference",
+                     "folder":  "Shared",
+                     "file":  "level-faces-reference.png",
+                     "transparent":  true,
+                     "columns":  3,
+                     "rows":  1,
+                     "names":  [
+                                   "active",
+                                   "completed",
+                                   "upcoming"
+                               ],
+                     "kind":  "prop",
+                     "tool":  "built-in image_gen",
+                     "prompt":  "Use the attached screenshot as an EXACT STYLE REFERENCE for its round level buttons only. Create a transparent asset sheet with THREE separate blank TOP-DOWN PERFECTLY CIRCULAR button faces, one row of three equal cells, spacious transparent separation, all circles same diameter. Left: juicy rich raspberry/magenta active level face. Middle: luminous golden-orange completed level face. Right: soft rose-pink upcoming level face. Match the screenshot\u0027s beautiful simple 2D painted cartoon finish: rounded soft color transitions, one broad tasteful white highlight at the upper-left edge, subtle luminous inner rim, thin warm cream outline. Each is a simple glossy illustrated circular disc surface, NOT a cone, not a realistic rendered 3D object, no perspective tilt. The camera angle will be applied by the game, so every face must be a true top-down circle. NO numbers, lettering, icons, crowns, stars, backgrounds, shadows outside the circles or glow fog; those are separate game elements. Keep the original reference palette and clean casual-game illustrated finish. Three independent transparent cutouts, not touching, nothing cropped.",
+                     "source":  "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-df12d999-8e6f-4ff5-a66f-8e5a510c541d.png",
+                     "reference":  "C:/Users/Tiago Carvalho/Downloads/f51f26f0-0c1c-4168-a83b-7580c2dea790.jpg",
+                     "destination":  "Assets/RoyalAves/Art/MapKitV3/Shared/level-faces-reference.png"
+                 }
+             ]
+}

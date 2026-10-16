@@ -1,0 +1,39 @@
+{
+  "tool": "built-in ImageGen",
+  "reference": "Assets/RoyalAves/Art/MapKitV3/SimpleBase/simple-nature-v6.png",
+  "jobs": [
+    {
+      "id": "postal-trees-v9",
+      "folder": "SimpleBase",
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "round",
+        "tall",
+        "wide"
+      ],
+      "transparent": true,
+      "kind": "prop",
+      "prompt": "Use case: precise-object-edit. Reference image is the existing Magic Mail nature atlas; match ONLY its upper-left orange-red tree EXACTLY in drawing language and palette. Produce a genuine transparent-alpha production sprite atlas, THREE equal columns ONE row, THREE COMPLETE TREE VARIANTS, one fully separated in each cell with large transparent gutters. Variant1 matches the reference round tree: short crooked honey-gold trunk, broad asymmetrical irregular scalloped crown; REMOVE the single gold decorative leaf on its crown entirely, smooth uninterrupted canopy instead. Variant2 is a somewhat taller crooked tree with a narrow asymmetric three-lobed orange crown and visible short forked honey trunk. Variant3 is a wider low spreading tree with two uneven rounded crown clusters and a short leaning forked honey trunk. All three use the SAME vivid sunny yellow upper-left to orange center to coral-red lower-right canopy gradients and honey/tan trunk palette as the approved tree. Clean simple 2D hand-drawn casual-game illustration; broad smooth luminous color gradients, restrained curved glossy highlights, colorful shadows, thin continuous ivory-white cutout outline, charming irregular silhouettes. Very simple BIG readable shapes, no wood grain or tiny textural detail. Full rooted trunks and complete tree silhouettes including all roots, no cutoffs. No loose leaves painted on the crowns, no fruit, flowers, envelopes or ornaments on these base sprites, no background, ground, cast shadows, glow aura, haze, text, labels, grids or extra objects. Each tree must stay fully inside its own cell without touching any neighbor, at least 45 pixels transparent padding on all four sides.",
+      "file": "postal-trees-v9.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-083eb9e6-c9ac-4d04-90ff-c26241407468.png"
+    },
+    {
+      "id": "postal-tree-details-v9",
+      "folder": "SimpleBase",
+      "columns": 2,
+      "rows": 2,
+      "names": [
+        "leaf-gold",
+        "leaf-coral",
+        "letter-cream",
+        "letter-teal"
+      ],
+      "transparent": true,
+      "kind": "prop",
+      "prompt": "Use case: stylized-concept. Reference image is the Magic Mail nature atlas; match its bright simple 2D hand-drawn casual game illustration with broad smooth glossy gradients, warm colorful shading and a thin ivory-white cutout outline. Genuine transparent-alpha production sprite atlas, STRICT TWO columns TWO rows, FOUR completely separate objects with large fully transparent gutters. TOP LEFT: one broad small curled GOLDEN YELLOW tree leaf with a short curved stem, clear simple pointed asymmetrical silhouette, tiny curved highlight, only ONE central vein. TOP RIGHT: one small ORANGE-CORAL pointed leaf in a slightly different curled pose, short curved stem, only one vein. BOTTOM LEFT: one small CREAM MAIL ENVELOPE with a golden triangular flap and tiny violet wax seal, physically HANGING from ONE short curved thin golden cord attached to the envelope's upper center. Cord extends upward to a small top knot for hanging on a tree branch. BOTTOM RIGHT: one small TEAL MAIL ENVELOPE with cream triangular flap and tiny gold wax seal, also attached to ONE short thin golden cord ending in a knot at the top. The entire cord and envelope are a single complete sprite in each cell, no detached pieces. Keep the letters crisp and simple at 24px. These will sway from the cord knot in the game; do not include tree branches or tree silhouettes. No surroundings, backgrounds, detached shadows, glow aura, text, handwriting, labels or other objects. Each object must stay completely within its own cell, with 50 pixels clear transparent margin on every side.",
+      "file": "postal-tree-details-v9.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-7ec49b51-6d52-4ac8-b5f2-fa5f9af73676.png"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+const sharp=require('C:/Users/Tiago Carvalho/Documents/projetos/ai-traffic-app/node_modules/sharp');
+(async()=>{for(const file of process.argv.slice(2)){const {data,info}=await sharp(file).ensureAlpha().raw().toBuffer({resolveWithObject:true});let zero=0,solid=0,soft=0,edge=0;for(let y=0;y<info.height;y++)for(let x=0;x<info.width;x++){const a=data[(y*info.width+x)*4+3];if(!a)zero++;else if(a>=200)solid++;else soft++;if((x<5||y<5||x>=info.width-5||y>=info.height-5)&&a>5)edge++;}console.log(JSON.stringify({file,width:info.width,height:info.height,zero,solid,soft,edge}));}})();

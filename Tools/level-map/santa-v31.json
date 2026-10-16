@@ -1,0 +1,22 @@
+{
+  "tool": "built-in image_gen",
+  "direction": "First approved frontal red and purple busts, only extended downward per user preference. No muscular redesign.",
+  "jobs": [
+    {
+      "id": "santa-friendly",
+      "file": "santa-friendly-front-v31.png",
+      "binding": "santaFriendly",
+      "prompt": "Use case: precise-object-edit / outpainting. The attached image is the APPROVED character. Preserve the existing head, face, hat, beard, shoulders, shoulder width and shape, pose, exact front-facing gaze, colors, outlines, painting and upper-body proportions UNCHANGED. The ONLY requested change is to extend the image DOWNWARD: continue the red coat and the existing sleeves below the current curved lower cut by about 30% of the current image height, making a longer bust down to the upper belly. Do not widen or redesign shoulders, do not add muscles, do not lengthen the beard, no hands, belt or legs. Existing top of image must stay visually identical. Create room below rather than squeezing or rescaling the head. One full bust silhouette with margin on all sides, true transparent background alpha zero. No backdrop, glow, shadows, extra objects, ground, text or stray pixels.",
+      "reference": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-2ec335cc-fd74-4186-b5af-f257327636f3.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-22930e0b-e38a-4098-910a-f1529a4a8406.png"
+    },
+    {
+      "id": "santa-villain",
+      "file": "santa-villain-front-purple-v31.png",
+      "binding": "santaVillain",
+      "prompt": "Use case: precise-object-edit / outpainting. The attached PURPLE EVIL Santa bust is the APPROVED character. Preserve its existing head, face, hat, beard, shoulders, shoulder width and shape, pose, exact front-facing gaze, purple colors, outlines, painting and upper-body proportions UNCHANGED. The ONLY requested change is extending DOWNWARD: continue the purple coat and the existing sleeves below the current curved lower cut by about 30% of the current image height, making a longer bust down to the upper belly. Do not widen or redesign shoulders, do not add muscles, do not lengthen beard, no hands, belt or legs. Existing upper image must stay visually identical. Create room below instead of squeezing or rescaling the head. One full bust silhouette with margin on all sides, genuine transparent background alpha zero. No backdrop, glow, shadows, extra objects, ground, text or stray pixels.",
+      "reference": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-b23b242e-3fac-4c52-aeba-2d368f65fe05.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-3b7f0dca-59f6-4312-9c6b-95d8afe7ffd9.png"
+    }
+  ]
+}

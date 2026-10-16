@@ -67,7 +67,10 @@ namespace SweetSugar.Scripts.System.Combiner
                         }
                     }
                     if (setNextItemType)
+                    {
                         item.NextType = cmb.nextType;
+                        RoyalAves.Effects.PowerUpFormation.Register(item, cmb.items);
+                    }
                 }
                 if(cmb.items != null && cmb.items.Count > 0)    
                     combinedItems.Add(cmb.items);

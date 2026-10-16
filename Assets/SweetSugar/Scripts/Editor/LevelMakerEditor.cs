@@ -75,7 +75,7 @@ namespace SweetSugar.Scripts.Editor
         private Vector2 scrollViewVector;
         private bool update;
         private static int selected;
-        private string[] toolbarStrings = {"Editor", "Settings", "Shop", "In-apps", "Ads", "GUI", "Rate", "About"};
+        private string[] toolbarStrings = {"Editor", "Settings", "Shop", "In-apps", "Ads", "GUI", "Rate", "About", "Areas", "Effects", "Temporadas"};
         
         //Added_feature
         private string[] sectionsString = {"Blocks", "Items", "Directions", "Teleports", "Spawners", "Random"};
@@ -597,6 +597,24 @@ namespace SweetSugar.Scripts.Editor
             else if (selected == 7)
             {
                 GUIHelp();
+            }
+            else if (selected == 8)
+            {
+                // Correio Mágico: areas of the lobby (Assets/RoyalAves/Editor/RoyalAvesAreaEditor.cs).
+                RoyalAves.EditorTools.RoyalAvesAreaPanel.DrawTab(window.position.width - 24, window.position.height, Repaint);
+                UnityEngine.GUI.changed = false; // area edits are not scene edits; do not dirty the open scene
+            }
+            else if (selected == 9)
+            {
+                // Correio Mágico: effects (Assets/RoyalAves/Editor/RoyalAvesEffectPanel.cs).
+                RoyalAves.EditorTools.RoyalAvesEffectPanel.DrawTab(window.position.width - 24, Repaint);
+                UnityEngine.GUI.changed = false;
+            }
+            else if (selected == 10)
+            {
+                // Correio Mágico: seasons and their loading screen (Assets/RoyalAves/Editor/RoyalAvesSeasonEditor.cs).
+                RoyalAves.EditorTools.RoyalAvesSeasonPanel.DrawTab(window.position.width - 24, window.position.height, Repaint);
+                UnityEngine.GUI.changed = false;
             }
 
 

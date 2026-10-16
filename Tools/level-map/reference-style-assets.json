@@ -1,0 +1,100 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "postal-bridge-variants",
+      "folder": "Shared",
+      "file": "postal-bridge-variants.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "mint",
+        "timber",
+        "logs"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent sprite atlas for Magic Mail mobile puzzle world map. Create ONE horizontal strip of exactly THREE isolated bridge deck sprites, equal separate cells, generous transparent gutters. Left: mint green painted wood bridge deck, exactly THREE broad simple planks, four small round teal bolts in corners, warm ivory edge. Middle: warm orange-brown postal timber bridge deck, THREE broad simple planks, golden bindings at four short corner posts. Right: six warm rounded timber logs lashed together, ivory cut ends and subtle gold rope. Strict orthographic TOP DOWN, bridge long axis perfectly vertical in all cells. No rails. No scenery, water, ground, text, UI, numbers, shadows beyond tiny material bevel. Premium casual mobile game painted 2.5D illustration: smooth large color shapes, clean silhouette, restrained soft gradients, bright edges, simple readable geometry, not woodgrain or photorealism. These decks will be projected into 3D by Unity, so do NOT bake tilted perspective. Actual transparent background, no white sticker outline.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-bc4afd37-00a9-43b5-9487-b410872b9069.png"
+    },
+    {
+      "id": "postal-scenery-variety",
+      "folder": "GreenLand",
+      "file": "postal-scenery-variety.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 2,
+      "names": [
+        "windmill",
+        "lantern",
+        "autumn-tree",
+        "pine",
+        "kiosk",
+        "flowers"
+      ],
+      "prompt": "Use case: style-transfer. Edit target: the attached six-object atlas. Redraw the SAME six object subjects and the same 3-column by 2-row arrangement, but simplify them drastically into clean bold 2.5D illustrated mobile puzzle map scenery. Remove ALL of the background completely: genuine transparent alpha between and around each object. No brown, green, gray or glowing background. No halos or cast shadows. Six separate intact cutout sprites. Use large smooth color shapes, only 2 to 3 shading bands, chunky rounded toy silhouettes, brighter teal/purple/gold palette, very minimal texture, no realistic leaf details, no engraved materials, no dramatic studio lighting. Keep magical envelope windmill, teal curved lamp, orange tree, purple pine, turquoise sorting kiosk, low bell-flower shrub. Remove white outline at feet. Each fits within its own equal cell with substantial transparent gutters. No extra objects or text. Aim for readable simple flat painted game illustration at 100 pixels tall, not realistic fantasy concept art.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-c62a8346-6895-4447-af1f-842bb0d28514.png",
+      "editTarget": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-caa5fb18-86d2-42a3-b26f-65bc69cbf607.png",
+      "initialPrompt": "Use case: stylized-concept. Asset type: transparent world map scenery sprite sheet for Magic Mail, magical postal theme. Make ONE horizontal 3 by 2 grid of SIX independent objects with equal separated cells and generous transparent gutters. Top left: whimsical tall mint-and-purple postal windmill with envelope-shaped four vanes and little golden hub. Top middle: a tall elegant curved teal lantern on brass foot with an envelope ornament, softly glowing ivory glass. Top right: an orange-gold autumn tree with rounded three layered foliage lobes, short twisting trunk and two purple leaves. Bottom left: a layered tall lavender magical pine tree with golden postal seal on trunk. Bottom middle: whimsical small turquoise mail sorting kiosk building with purple roof, large golden envelope insignia, doorway and three parcel slots, asymmetrical playful architecture. Bottom right: a cluster of low mint shrubs with three golden bell-shaped flowers and two smooth purple stones. No dogs, candy, numbers, words, UI or terrain. Grounded bases with no white border or white sticker outline. Consistent premium casual mobile map 2.5D illustration, large crisp simple shapes, soft painterly gradients, warm highlights, dimensional thickness, front view slightly looking down, light from upper left. Each object complete, no overlap, one per cell, real transparent alpha."
+    },
+    {
+      "id": "premium-level-faces-v2",
+      "folder": "Shared",
+      "file": "premium-level-faces-v2.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "active",
+        "completed",
+        "upcoming"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent face texture atlas for dimensional level tokens in Magic Mail. ONE horizontal strip exactly THREE equal separate cells, each containing one perfectly circular blank domed jewel seen strictly orthographic TOP DOWN. Left vivid saturated turquoise/teal glass, middle regal violet glass, right soft periwinkle blue glass. Premium polished casual mobile game icon illustration with deep saturated lower crescent, rounded luminous center, smooth glossy gradient, broad curved white glint at upper-left rim and two tiny sparkle dots. Narrow luminous pale gold trim around each face, not a thick frame. No numbers, letters, envelope icons, stars, crowns, text, scenery or cast shadow. No sidewalls or perspective ellipses; physical token thickness is provided by Unity geometry. Circles all exactly same diameter and occupying 86 percent of each square cell, aligned perfectly at center. Actual transparent background, generous transparent gutters between cells, no white sticker outlines.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-7482a6eb-1f6b-4969-9dbb-a838b9265bdb.png"
+    },
+    {
+      "id": "painted-ground-materials",
+      "folder": "Shared",
+      "file": "painted-ground-materials.png",
+      "transparent": false,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "atlas"
+      ],
+      "kind": "terrain",
+      "prompt": "Use case: stylized-concept. Asset type: game terrain MATERIAL atlas for Magic Mail world map, not a scene. ONE square opaque image divided into EXACTLY four perfectly edge-to-edge equal square tiles in a 2x2 grid with NO gutters, borders, frames or dividers. Top left: soft meadow grass muted jade green #66AE83. Top right: smooth mint-lime walking path #B8DE9B. Bottom left: muted volcanic plum basalt #784C63. Bottom right: pale warm apricot ground #F2BF94. Each tile is a FLAT overhead painted material, evenly lit, with very low contrast soft broad brush mottling, tiny sparse stylized speckle dots and restrained painterly grain. The grass may have a few subtle tiny broken dash marks, basalt a few tiny warm flecks. No scenery, stones, objects, roads, curves, horizon, sky, outlines, cracks, directional shadows, perspective or UI. Textures must look like clean premium hand-painted casual mobile map terrain and stay almost flat colored at small size, not detailed realistic grass. All four tiles distinct as specified and exactly occupy their quadrant. Absolutely no text.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-419e84cc-4ce4-4299-90c4-9d7fb9d8899b.png"
+    },
+    {
+      "id": "postal-navigation-icons",
+      "folder": "Shared",
+      "file": "postal-navigation-icons.png",
+      "transparent": true,
+      "columns": 5,
+      "rows": 1,
+      "names": [
+        "events",
+        "ranking",
+        "agency",
+        "teams",
+        "collection"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent navigation icon atlas for Magic Mail mobile puzzle map. ONE very wide horizontal strip of exactly FIVE independent icons, same size, equally spaced cells, generous transparent gutters. Left to right: (1) ivory envelope sealed with purple wax, with small teal event ribbon; (2) gold trophy cup with violet enamel inset; (3) whimsical small mint postal agency building with purple roof, golden envelope sign and teal door; (4) two friendly rounded stylized pawn silhouettes teal and violet for a team; (5) a violet postage stamp album with gold corner and central glowing envelope seal. Premium playful casual mobile game icon illustration: chunky plump 2.5D shapes, smooth glossy gradients, readable simple silhouettes, warm upper-left highlights. No square button frames, no enclosing tile backgrounds, no words, letters, digits, UI labels or scenery. No cast shadows and no outer halos. Genuine transparent alpha, each icon complete and isolated. All fit within 85% of each cell with nothing touching neighboring cells.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-93e35299-c3ba-45d4-9b4e-9ea676425cdc.png"
+    },
+    {
+      "id": "postal-difficulty-badges",
+      "folder": "Shared",
+      "file": "postal-difficulty-badges.png",
+      "transparent": true,
+      "columns": 2,
+      "rows": 1,
+      "names": [
+        "hard",
+        "express"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent difficulty badge sprite atlas for Magic Mail level buttons. Exactly TWO isolated small emblems, side by side in equal square cells with generous transparent margins. Left: a chunky royal violet wax seal with a gold embossed envelope center and two tiny upward wings, for a challenging mail route. Right: a bright turquoise winged envelope with a golden lightning bolt seal and three small gold crown-like tips, for an express challenge. Premium casual mobile game 2.5D icon illustration, front view, very simple bold silhouette, smooth glossy gradients, broad warm highlights, crisp beveled edges, readable at 24px. No skulls, monsters, candy, words, digits, letters, circles behind the objects, large ribbons, scenery, cast shadows or outer glow. Genuine transparent alpha, no enclosing button background; each emblem is complete and does not touch its cell edge.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-81d4ce8e-8003-48cc-9ace-acd4c528c0ab.png"
+    }
+  ]
+}

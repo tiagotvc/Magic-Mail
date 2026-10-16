@@ -1,0 +1,131 @@
+// Isolated copy: render real production map code without closing the main editor.
+const fs=require('node:fs'),path=require('node:path'),{execFileSync}=require('node:child_process');
+const root=path.resolve(__dirname,'../..');
+execFileSync(process.execPath,[path.join(__dirname,'prepare-preview.cjs')],{cwd:root,stdio:'pipe'});
+const preview=path.join(root,'Library/MapValidation/PreviewProject');
+// Baking resources is an explicit separate step. This preparation always copies the main
+// resource data; copy validated resources back before preparing another isolated run.
+function copy(relative){const src=path.join(root,relative),dst=path.join(preview,relative);if(!fs.existsSync(src))return;fs.mkdirSync(path.dirname(dst),{recursive:true});fs.cpSync(src,dst,{recursive:fs.statSync(src).isDirectory(),force:true});if(fs.existsSync(src+'.meta'))fs.copyFileSync(src+'.meta',dst+'.meta');}
+for(const f of ['Assets/RoyalAves/Scripts/Meta/WorldMap','Assets/RoyalAves/Editor/RoyalAvesWorldMapSetup.cs','Assets/RoyalAves/Editor/RoyalAvesWorldMapCapture.cs','Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs','Assets/RoyalAves/Resources/RoyalAvesWorldMapKit.asset','Assets/RoyalAves/Art/MapKitV2','Assets/RoyalAves/Art/MapKitV3','Assets/Settings','Assets/SweetSugar/Settings/SweetSugarURP.asset','ProjectSettings/GraphicsSettings.asset','ProjectSettings/QualitySettings.asset','ProjectSettings/TagManager.asset','Tools/level-map/mapkit-v2-image-manifest.json'])copy(f);
+const cache=path.join(root,'Library/PackageCache'),entries=fs.readdirSync(cache),deps={};
+copy('Assets/RoyalAves/Editor/RoyalAvesPostmanRigBuilder.cs');
+copy('Assets/RoyalAves/Characters/PostmanV8');
+copy('Assets/SweetSugar/Settings/SweetSugarURP_Renderer2D.asset');
+copy('Tools/level-map/mapkit-v3-image-manifest.json');
+copy('Assets/RoyalAves/Scripts/Meta/SeasonConfig.cs');
+copy('Assets/RoyalAves/Resources/RoyalAvesSeasons.asset');
+copy('Assets/RoyalAves/Editor/RoyalAvesMapLayoutControls.cs');
+copy('Assets/RoyalAves/Editor/RoyalAvesMapLibrary.cs');
+copy('Assets/RoyalAves/Resources/MapLibrary');
+copy('Assets/RoyalAves/Editor/RoyalAvesMapIslandControls.cs');
+copy('Assets/RoyalAves/Editor/RoyalAvesMapSimulatorPreview.cs');
+copy('Assets/RoyalAves/Editor/RoyalAvesMapPreviewInput.cs');
+// The input bridge now belongs to runtime Meta; remove only its obsolete isolated editor copy.
+if(!fs.existsSync(path.join(root,'Assets/RoyalAves/Editor/RoyalAvesMapPreviewInput.cs')))
+  for(const suffix of ['', '.meta'])fs.rmSync(path.join(preview,'Assets/RoyalAves/Editor/RoyalAvesMapPreviewInput.cs'+suffix),{force:true});
+const navigationBatch=path.join(__dirname,'MapHomeNavigationValidation.cs');
+if(fs.existsSync(navigationBatch))fs.copyFileSync(navigationBatch,path.join(preview,'Assets/Editor/MapHomeNavigationValidation.cs'));
+const navigationReference=path.join(__dirname,'MapNavigationReferenceCapture.cs');
+if(fs.existsSync(navigationReference))fs.copyFileSync(navigationReference,path.join(preview,'Assets/Editor/MapNavigationReferenceCapture.cs'));
+const topHudCapture=path.join(__dirname,'TopHudV24Capture.cs');
+if(fs.existsSync(topHudCapture))fs.copyFileSync(topHudCapture,path.join(preview,'Assets/Editor/TopHudV24Capture.cs'));
+const natureValidation=path.join(__dirname,'NatureV29Validation.cs');
+if(fs.existsSync(natureValidation))fs.copyFileSync(natureValidation,path.join(preview,'Assets/Editor/NatureV29Validation.cs'));
+const santaValidation=path.join(__dirname,'SantaV30Validation.cs');
+if(fs.existsSync(santaValidation))fs.copyFileSync(santaValidation,path.join(preview,'Assets/Editor/SantaV30Validation.cs'));
+const snowValidation=path.join(__dirname,'SnowV33Validation.cs');
+if(fs.existsSync(snowValidation))fs.copyFileSync(snowValidation,path.join(preview,'Assets/Editor/SnowV33Validation.cs'));
+const winterValidation=path.join(__dirname,'WinterV34Validation.cs');
+if(fs.existsSync(winterValidation))fs.copyFileSync(winterValidation,path.join(preview,'Assets/Editor/WinterV34Validation.cs'));
+const winterEditorValidation=path.join(__dirname,'WinterV35Validation.cs');
+if(fs.existsSync(winterEditorValidation))fs.copyFileSync(winterEditorValidation,path.join(preview,'Assets/Editor/WinterV35Validation.cs'));
+const frozenValidation=path.join(__dirname,'FrozenV36Validation.cs');
+if(fs.existsSync(frozenValidation))fs.copyFileSync(frozenValidation,path.join(preview,'Assets/Editor/FrozenV36Validation.cs'));
+const nightValidation=path.join(__dirname,'NightV36Validation.cs');
+if(fs.existsSync(nightValidation))fs.copyFileSync(nightValidation,path.join(preview,'Assets/Editor/NightV36Validation.cs'));
+const winterV37Validation=path.join(__dirname,'WinterV37Validation.cs');
+if(fs.existsSync(winterV37Validation))fs.copyFileSync(winterV37Validation,path.join(preview,'Assets/Editor/WinterV37Validation.cs'));
+const piecesV38Validation=path.join(__dirname,'PiecesV38Validation.cs');
+if(fs.existsSync(piecesV38Validation))fs.copyFileSync(piecesV38Validation,path.join(preview,'Assets/Editor/PiecesV38Validation.cs'));
+const moonIceV39Validation=path.join(__dirname,'MoonIceV39Validation.cs');
+if(fs.existsSync(moonIceV39Validation))fs.copyFileSync(moonIceV39Validation,path.join(preview,'Assets/Editor/MoonIceV39Validation.cs'));
+const iceSparklesV40Validation=path.join(__dirname,'IceSparklesV40Validation.cs');
+if(fs.existsSync(iceSparklesV40Validation))fs.copyFileSync(iceSparklesV40Validation,path.join(preview,'Assets/Editor/IceSparklesV40Validation.cs'));
+const glossyLevelsV41Validation=path.join(__dirname,'GlossyLevelsV41Validation.cs');
+if(fs.existsSync(glossyLevelsV41Validation))fs.copyFileSync(glossyLevelsV41Validation,path.join(preview,'Assets/Editor/GlossyLevelsV41Validation.cs'));
+const medallionsV42Validation=path.join(__dirname,'MedallionsV42Validation.cs');
+if(fs.existsSync(medallionsV42Validation))fs.copyFileSync(medallionsV42Validation,path.join(preview,'Assets/Editor/MedallionsV42Validation.cs'));
+const tokenArcV43Validation=path.join(__dirname,'TokenArcV43Validation.cs');
+if(fs.existsSync(tokenArcV43Validation))fs.copyFileSync(tokenArcV43Validation,path.join(preview,'Assets/Editor/TokenArcV43Validation.cs'));
+const mailboxV44Validation=path.join(__dirname,'MailboxV44Validation.cs');
+if(fs.existsSync(mailboxV44Validation))fs.copyFileSync(mailboxV44Validation,path.join(preview,'Assets/Editor/MailboxV44Validation.cs'));
+copy('Assets/RoyalAves/Resources/RoyalAvesWorldMapIslands.asset');
+copy('Assets/RoyalAves/Resources/RoyalAvesWorldMapLayout.asset');
+copy('Assets/RoyalAves/Resources/RoyalAvesWorldMapSimpleLayout.asset');
+copy('Assets/RoyalAves/Resources/WorldMapWindowProfiles.json');
+copy('Assets/RoyalAves/Resources/WorldMapSnowPieceProfiles.json');
+copy('Assets/RoyalAves/Resources/WorldMapMailboxAnimation.asset');
+const mailboxV45Validation=path.join(__dirname,'MailboxV45Validation.cs');
+if(fs.existsSync(mailboxV45Validation))fs.copyFileSync(mailboxV45Validation,path.join(preview,'Assets/Editor/MailboxV45Validation.cs'));
+const lampsV47Validation=path.join(__dirname,'LampsV47Validation.cs');
+if(fs.existsSync(lampsV47Validation))fs.copyFileSync(lampsV47Validation,path.join(preview,'Assets/Editor/LampsV47Validation.cs'));
+const lampLetterV48Validation=path.join(__dirname,'LampLetterV48Validation.cs');
+if(fs.existsSync(lampLetterV48Validation))fs.copyFileSync(lampLetterV48Validation,path.join(preview,'Assets/Editor/LampLetterV48Validation.cs'));
+const adornmentsGroundV49Validation=path.join(__dirname,'AdornmentsGroundV49Validation.cs');
+if(fs.existsSync(adornmentsGroundV49Validation))fs.copyFileSync(adornmentsGroundV49Validation,path.join(preview,'Assets/Editor/AdornmentsGroundV49Validation.cs'));
+copy('Assets/RoyalAves/Resources/RoyalAvesMission100.asset');
+copy('Assets/RoyalAves/Resources/RoyalAvesMission100Layout.asset');
+const mission100V50Bake=path.join(__dirname,'Mission100V50Bake.cs');
+if(fs.existsSync(mission100V50Bake))fs.copyFileSync(mission100V50Bake,path.join(preview,'Assets/Editor/Mission100V50Bake.cs'));
+const mission100V50Validation=path.join(__dirname,'Mission100V50Validation.cs');
+if(fs.existsSync(mission100V50Validation))fs.copyFileSync(mission100V50Validation,path.join(preview,'Assets/Editor/Mission100V50Validation.cs'));
+const batchSource=path.join(__dirname,'PolishPreviewBatch.cs');
+for(const name of ['ArtV51Upgrade','ArtV51Validation','WorkScenesV52Bake','WorkScenesV52Validation','MagicLandscapesV53Bake','MagicLandscapesV53Validation','MagicLandscapesV53Characters','EntranceV54Bake','EntranceV54Validation','PostalHudV55Validation','PostalHudV56Validation','PostalHudV57Validation','PostalHudV58Validation','PostalHudV59Validation','LevelPolishV60Validation','LevelHudStyleV61Validation']){
+ const source=path.join(__dirname,name+'.cs');if(fs.existsSync(source))fs.copyFileSync(source,path.join(preview,'Assets/Editor',name+'.cs'));
+}
+if(fs.existsSync(batchSource))fs.copyFileSync(batchSource,path.join(preview,'Assets/Editor/PolishPreviewBatch.cs'));
+const islandBatch=path.join(__dirname,'IslandValidationBatch.cs');
+if(fs.existsSync(islandBatch))fs.copyFileSync(islandBatch,path.join(preview,'Assets/Editor/IslandValidationBatch.cs'));
+const biomeBatch=path.join(__dirname,'BiomeValidationBatch.cs');
+if(fs.existsSync(biomeBatch))fs.copyFileSync(biomeBatch,path.join(preview,'Assets/Editor/BiomeValidationBatch.cs'));
+const seasonBatch=path.join(__dirname,'SeasonV5ValidationBatch.cs');
+if(fs.existsSync(seasonBatch))fs.copyFileSync(seasonBatch,path.join(preview,'Assets/Editor/SeasonV5ValidationBatch.cs'));
+const simpleBatch=path.join(__dirname,'SimpleV6ValidationBatch.cs');
+if(fs.existsSync(simpleBatch))fs.copyFileSync(simpleBatch,path.join(preview,'Assets/Editor/SimpleV6ValidationBatch.cs'));
+const postmanBatch=path.join(__dirname,'PostmanRigValidationBatch.cs');
+if(fs.existsSync(postmanBatch))fs.copyFileSync(postmanBatch,path.join(preview,'Assets/Editor/PostmanRigValidationBatch.cs'));
+const postmanMapBatch=path.join(__dirname,'PostmanMapValidationBatch.cs');
+if(fs.existsSync(postmanMapBatch))fs.copyFileSync(postmanMapBatch,path.join(preview,'Assets/Editor/PostmanMapValidationBatch.cs'));
+const groundV13Batch=path.join(__dirname,'GroundV13PreviewBatch.cs');
+if(fs.existsSync(groundV13Batch))fs.copyFileSync(groundV13Batch,path.join(preview,'Assets/Editor/GroundV13PreviewBatch.cs'));
+const groundV14Batch=path.join(__dirname,'GroundV14ValidationBatch.cs');
+if(fs.existsSync(groundV14Batch))fs.copyFileSync(groundV14Batch,path.join(preview,'Assets/Editor/GroundV14ValidationBatch.cs'));
+const libraryV15Batch=path.join(__dirname,'MapLibraryV15ValidationBatch.cs');
+if(fs.existsSync(libraryV15Batch))fs.copyFileSync(libraryV15Batch,path.join(preview,'Assets/Editor/MapLibraryV15ValidationBatch.cs'));
+const libraryV16Batch=path.join(__dirname,'MapLibraryV16ValidationBatch.cs');
+if(fs.existsSync(libraryV16Batch))fs.copyFileSync(libraryV16Batch,path.join(preview,'Assets/Editor/MapLibraryV16ValidationBatch.cs'));
+const buildingsV17Batch=path.join(__dirname,'MapBuildingsV17PreviewBatch.cs');
+if(fs.existsSync(buildingsV17Batch))fs.copyFileSync(buildingsV17Batch,path.join(preview,'Assets/Editor/MapBuildingsV17PreviewBatch.cs'));
+const groundArtV21Batch=path.join(__dirname,'GroundArtV21PreviewBatch.cs');
+if(fs.existsSync(groundArtV21Batch))fs.copyFileSync(groundArtV21Batch,path.join(preview,'Assets/Editor/GroundArtV21PreviewBatch.cs'));
+const treeBatch=path.join(__dirname,'TreeV9ValidationBatch.cs');
+if(fs.existsSync(treeBatch))fs.copyFileSync(treeBatch,path.join(preview,'Assets/Editor/TreeV9ValidationBatch.cs'));
+const treeV10Batch=path.join(__dirname,'TreeV10ValidationBatch.cs');
+if(fs.existsSync(treeV10Batch))fs.copyFileSync(treeV10Batch,path.join(preview,'Assets/Editor/TreeV10ValidationBatch.cs'));
+const ids=fs.readdirSync(path.join(root,'Assets/SweetSugar/Resources/Levels')).filter(x=>/^Level_\d+\.asset$/.test(x)).map(x=>Number(x.match(/\d+/)[0])).sort((a,b)=>a-b);
+fs.writeFileSync(path.join(preview,'Assets/Editor/island-level-fixtures.json'),JSON.stringify({ids}));
+function pkg(name){if(deps[name])return;const dir=entries.find(e=>e.startsWith(name+'@'));if(!dir)throw Error('Missing cached package '+name);const folder=path.join(cache,dir),meta=JSON.parse(fs.readFileSync(path.join(folder,'package.json'),'utf8'));deps[name]='file:'+folder.replaceAll('\\','/');for(const dep of Object.keys(meta.dependencies||{}))if(!dep.startsWith('com.unity.modules.'))pkg(dep);}
+for(const name of ['com.unity.ugui','com.unity.render-pipelines.universal','com.unity.2d.sprite'])pkg(name);
+deps['com.unity.modules.animation']='1.0.0';deps['com.unity.modules.director']='1.0.0';
+fs.writeFileSync(path.join(preview,'Packages/manifest.json'),JSON.stringify({dependencies:deps},null,2));
+console.log(JSON.stringify({preview,localPackages:Object.keys(deps).length}));
+
+copy('Assets/RoyalAves/Resources/MapHudV56');
+
+copy('Assets/RoyalAves/Resources/MapHudV57');
+copy('Assets/RoyalAves/Fonts/Calistoga SDF.asset');
+copy('Assets/RoyalAves/Fonts/Calistoga-Regular.ttf');
+
+// Gameplay postprocessors depend on builders outside this isolated map project.
+// Keep the production texture import metadata copied above instead of reimporting gameplay art.
+for(const suffix of ["", ".meta"])fs.rmSync(path.join(preview,"Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs"+suffix),{force:true});

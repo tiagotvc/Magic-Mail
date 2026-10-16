@@ -1,0 +1,26 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "postal-ground-details-v3",
+      "folder": "GreenLand",
+      "file": "postal-ground-details-v3.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 2,
+      "names": [
+        "coral-shrub",
+        "gold-shrub",
+        "mint-shrub",
+        "tulips",
+        "bells",
+        "rocks"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent sprite atlas for the Magic Mail world map. The attached purple tree is a STYLE REFERENCE only. Create a 3 column x 2 row sheet of six separate, complete, simple 2D cartoon ground props, same illustrated language and thin warm ivory outer cutout outline as the reference. TOP ROW: low broad coral-red shrub with THREE big smooth rounded lobes; low broad golden-yellow shrub with THREE big rounded lobes; low broad mint-teal shrub with THREE big rounded lobes. BOTTOM ROW: a small clump of THREE broad tulip-like violet flowers with two big leaves; a low clump of THREE golden bell flowers and two big leaves; a broad rounded lavender rock cluster with THREE simple chunky stones. Each item fills its own equal cell with generous transparent gutters, centered, no overlap. Shrubs are wide, not tall, two clean flat color bands maximum, a small understated highlight, NO tiny leaves, NO internal leaf texture, NO gloss or realistic shading, NO fine decorative details. Flat horizontal base touching the bottom of the silhouette, no dangling floating stem, no ground plane, no soil mound, no shadows, no labels. Saturated harmonious violet, teal, coral, warm yellow. Genuine transparent background. Crisp readable mobile game illustrations, not 3D renders. No envelopes, stamps or parcels.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-978175ba-2258-480a-a535-e06445a58f04.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/round-purple-tree-glow.png"
+      ]
+    }
+  ]
+}

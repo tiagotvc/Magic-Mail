@@ -1,0 +1,19 @@
+{
+  "generator": "Built-in image_gen",
+  "specs": [
+    {
+      "key": "dog",
+      "file": "dog-courier-poses-glow-spaced.png",
+      "target": "dog-courier-poses-glow.png",
+      "subjects": "same caramel dog, idle upper left, wag upper right, sniff lower left, carrying envelope lower right",
+      "prompt": "Use case: precise-object-edit. Edit the provided sprite sheet ONLY to correct spacing and crop safety. Preserve exactly the simple glossy cartoon artwork, palette, cream contour, soft lighting, object identities and poses. Target: same caramel dog, idle upper left, wag upper right, sniff lower left, carrying envelope lower right. Make a true regular 2 by 2 grid on square transparent canvas. EACH object must occupy at most 75 percent of its cell width and 75 percent of its cell height. Place each object centered horizontally in its cell, with ground contact at 85 percent down its cell. Preserve at least 10 percent EMPTY transparent padding on every side of every cell, particularly around the midline divisions. Reduce the rendered size of the objects to achieve padding; do NOT crop any part. No artifact or portion may cross a midline into another cell. Four separate objects, four equal cells. Same dog body size for its four poses, feet equal baseline. No background, checkerboard, grid lines, shadows, text, sparkles, extra objects or stray pixels. Truly transparent clean alpha. Do not add detail or realism; preserve current approved broad cartoon highlights."
+    },
+    {
+      "key": "props",
+      "file": "small-postal-props-glow-spaced.png",
+      "target": "small-postal-props-glow.png",
+      "subjects": "parcels upper left, yellow flowers upper right, postal sign lower left, shrub lower right",
+      "prompt": "Use case: precise-object-edit. Edit the provided sprite sheet ONLY to correct spacing and crop safety. Preserve exactly the simple glossy cartoon artwork, palette, cream contour, soft lighting, object identities and poses. Target: parcels upper left, yellow flowers upper right, postal sign lower left, shrub lower right. Make a true regular 2 by 2 grid on square transparent canvas. EACH object must occupy at most 75 percent of its cell width and 75 percent of its cell height. Place each object centered horizontally in its cell, with ground contact at 85 percent down its cell. Preserve at least 10 percent EMPTY transparent padding on every side of every cell, particularly around the midline divisions. Reduce the rendered size of the objects to achieve padding; do NOT crop any part. No artifact or portion may cross a midline into another cell. Four separate objects, four equal cells. Same dog body size for its four poses, feet equal baseline. No background, checkerboard, grid lines, shadows, text, sparkles, extra objects or stray pixels. Truly transparent clean alpha. Do not add detail or realism; preserve current approved broad cartoon highlights."
+    }
+  ]
+}

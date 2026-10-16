@@ -1,0 +1,24 @@
+{
+  "id": "christmas-scarf-and-flags-cartoon",
+  "folder": "Christmas",
+  "file": "christmas-scarf-and-flags-cartoon.png",
+  "transparent": true,
+  "columns": 2,
+  "rows": 1,
+  "names": [
+    "scarf-red",
+    "flag-envelope-holiday"
+  ],
+  "subjects": "simple red scarf with cream trim, side knot and two short hanging ends; small red festive flag with gold envelope emblem and cream trim",
+  "prompt": "Use case: style-transfer. Redraw the target in IMAGE 1 with the simple 2D painted cartoon style of approved lamp and mailbox in IMAGES 2 and 3. Subject list, exact layout and position: simple red scarf with cream trim, side knot and two short hanging ends; small red festive flag with gold envelope emblem and cream trim. Make a strict 2 columns by 1 rows equal grid, subjects in reading order, each object centered within its own cell, generous empty margins, maximum 65% cell width and 70% cell height. No cell crossings. Clean continuous opaque cream-white outer silhouette outline, simple large cel shade regions and a couple broad highlights. Retain ONLY the listed overlay pieces; these are separate attachments for existing props, not scenery backgrounds. Snow is a white cut-paper-like cartoon cap with one blue-lavender shadow stripe and broad highlight, no fur or textures. CRITICAL remove ALL glow fog, colored haze, cast shadows, surrounding glow, stray dots and realistic material rendering from IMAGE 1. Fully transparent exterior (alpha zero), clean crisp silhouette. No additional reference subjects, no text or checkerboard. Soft bright lighting INSIDE artwork only. No outside light whatsoever. Keep exact number of subjects.",
+  "status": "generated-review-pending",
+  "baseFamily": "christmas-scarf-and-flags",
+  "references": [
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Christmas/christmas-scarf-and-flags.png",
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+  ],
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-97d91ddb-d665-4e42-a0cd-2fa5c117a376.png",
+  "path": "Assets/RoyalAves/Art/MapKitV3/Christmas/christmas-scarf-and-flags-cartoon.png",
+  "tool": "built-in image_gen"
+}

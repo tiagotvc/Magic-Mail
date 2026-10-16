@@ -50,8 +50,11 @@ namespace SweetSugar.Scripts.GUI.Boost
         {
             if (name == "Main Camera") return;
             if (LevelManager.THIS == null) return;
+            // Correio Mágico: os ícones da barra de reforços dentro da fase não têm "check" (só os do popup
+            // pré-fase têm) - sem essa checagem, ativar esses ícones (ex.: troca de orientação) lançava
+            // UnassignedReferenceException e travava o jogo (ver OrientationActivator.SetActiveList).
             if (LevelManager.THIS.gameStatus == GameState.Map)
-                check.SetActive(false);
+                check?.SetActive(false);
             FindBoostProduct();
             ShowPlus(BoostCount() <= 0);
             boostCount.text = "" + PlayerPrefs.GetInt("" + type);
@@ -83,7 +86,10 @@ namespace SweetSugar.Scripts.GUI.Boost
                 UnCheckBoost();
                 return;
             }
-            if (IsLocked() || checkOn || (LevelManager.THIS.gameStatus != GameState.Playing && LevelManager.THIS.gameStatus != GameState.Map))
+            // Correio Mágico: toda fase começa em GameState.Tutorial (AnimationEventManager "PrePlay") e só vira
+            // Playing depois do primeiro movimento no tabuleiro - igual ao resto do jogo (MouseDown/Up, Square),
+            // liberar os reforços também nesse estado, senão tocar neles antes da primeira jogada não faz nada.
+            if (IsLocked() || checkOn || (LevelManager.THIS.gameStatus != GameState.Playing && LevelManager.THIS.gameStatus != GameState.Map && LevelManager.THIS.gameStatus != GameState.Tutorial))
                 return;
             if (BoostCount() > 0)
             {

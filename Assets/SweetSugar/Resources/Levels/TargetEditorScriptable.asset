@@ -97,7 +97,7 @@ MonoBehaviour:
           - icon: {fileID: 21300000, guid: b60f104913f7f4f4ba14f86e8eff79e4, type: 3}
             uiSprite: 0
           - icon: {fileID: 21300000, guid: 182f3100e66e3b94cad95d88a70d0718, type: 3}
-            uiSprite: 0
+            uiSprite: 1
     prefabs:
     - {fileID: 1055345148094608, guid: 4ebed1d82b94548d0ab47103e3f205e5, type: 3}
   - name: JellyBlock
@@ -134,12 +134,14 @@ MonoBehaviour:
       array:
       - sprites:
           array:
-          - icon: {fileID: 21300000, guid: 61f39616737786f458f8335d7508542b, type: 3}
+          - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
             uiSprite: 0
-          - icon: {fileID: 21300000, guid: fa12e4db0d809f947b4b844929812d67, type: 3}
+          - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
             uiSprite: 0
-          - icon: {fileID: 21300000, guid: fa12e4db0d809f947b4b844929812d67, type: 3}
+          - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
             uiSprite: 0
+          - icon: {fileID: 21300000, guid: 578ba430c2ea4dcbb274dfb0a6cae0ef, type: 3}
+            uiSprite: 1
     prefabs:
     - {fileID: 1793582136509744, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
   - name: Stars

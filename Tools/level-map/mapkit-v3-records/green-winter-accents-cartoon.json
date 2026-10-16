@@ -1,0 +1,24 @@
+{
+  "id": "green-winter-accents-cartoon",
+  "folder": "Christmas",
+  "file": "green-winter-accents-cartoon.png",
+  "transparent": true,
+  "columns": 2,
+  "rows": 1,
+  "names": [
+    "postal-snowman",
+    "gift-sleigh"
+  ],
+  "subjects": "friendly simple snowman courier with purple scarf and cap, gold envelope badge and cream mailbag; small rounded purple-gold sleigh carrying three large red cream and teal gift parcels",
+  "prompt": "Use case: style-transfer. IMAGE 1 is the edit target atlas. IMAGES 2 and 3 are the APPROVED style masters: the illustrated postal lamp and mailbox. Redraw the artwork in IMAGE 1 to match those masters precisely. Preserve subjects, order and grid: friendly simple snowman courier with purple scarf and cap, gold envelope badge and cream mailbag; small rounded purple-gold sleigh carrying three large red cream and teal gift parcels. This target was rejected for looking like detailed glossy 3D miniatures and missing the white outline. Required fix: a CLEAR CONTINUOUS WARM-WHITE/CREAM OUTLINE around every complete object's OUTER silhouette and inner arch openings, about 2 percent of object width. Gold trim is INSIDE that outline and does NOT count as the silhouette outline. Use simple 2D hand-painted cartoon with 2-3 broad cel shading regions and just broad soft highlight accents like the masters. Flatten away realistic metallic reflections, material textures, tile details, stitching, swirly decorations, tiny jewels and studio 3D shading. Retain only a few LARGE shapes and postal envelope emblems. Do not lose all light: keep softly luminous rounded illustrated surfaces, not plain flat icon vectors. Palette unchanged: purple, cream, teal and golden yellow. Same regular 2 columns x 1 rows, one subject per cell in reading order. Make objects maximum 65 percent of each cell width and 70 percent height, base at 82 percent down cell, generous transparent margins and gutters. No crossing boundaries, no cropping. Actual transparent background with clean alpha, no checkerboard, floor, cast shadows, text, extra subjects, borders or stray pixels. Do not include reference lamp/mailbox in output. Output only the corrected target sheet. Remove ALL surrounding glow haze, fuzzy fur, grass textures, stray dots, stray marks and dust. Use clean opaque cream outlines and transparent exterior. The empty sixth cell if present must stay completely empty.",
+  "status": "generated-review-pending",
+  "baseFamily": "green-winter-accents",
+  "references": [
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/Christmas/green-winter-accents.png",
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+  ],
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-62402c66-7149-4cac-814e-bf21836301c2.png",
+  "path": "Assets/RoyalAves/Art/MapKitV3/Christmas/green-winter-accents-cartoon.png",
+  "tool": "built-in image_gen"
+}

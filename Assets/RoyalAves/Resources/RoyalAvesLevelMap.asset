@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47511848639b4dc8bf005015a47e79af, type: 3}
+  m_Name: RoyalAvesLevelMap
+  m_EditorClassIdentifier: 
+  enabledByDefault: 1
+  useWorldMap: 1
+  futureLevelsShown: 0
+  background: {fileID: 21300000, guid: 5e95958ceddb4547822ccb8eced1fdc0, type: 3}
+  levelButton: {fileID: 0}
+  horizonMaterial: {fileID: 2100000, guid: 9c55bb7de36a442bb6dd14d7713246fb, type: 2}
+  horizon: 0.82
+  bend: 0.24
+  perspective: 0.2
+  curveDepth: 11
+  crestCurvature: 0.025
+  worldRadius: 14
+  cameraHeight: 2.4
+  horizonObjectTilt: 70
+  nodeSize: 136
+  visibleLevels: 18
+  roadBorder: {r: 0.76, g: 0.49, b: 0.14, a: 1}
+  road: {r: 1, g: 0.94, b: 0.72, a: 1}
+  roadStripe: {r: 0.76, g: 0.4, b: 0.87, a: 1}
+  lockedTint: {r: 0.59, g: 0.64, b: 0.7, a: 1}
+  levelsPerRegion: 25
+  regions:
+  - title: Jardim Postal
+    ground: {r: 0.33, g: 0.7, b: 0.54, a: 1}
+    path: {r: 0.67, g: 0.87, b: 0.61, a: 1}
+    skyTint: {r: 1, g: 1, b: 1, a: 1}
+    propTint: {r: 1, g: 1, b: 1, a: 1}
+    tree: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    building: {fileID: 21300000, guid: b8f8ee02570142679c38c324b0989328, type: 3}
+    character: {fileID: 21300000, guid: 8daca7bd0785ca449b8f9d5f4a9d89ce, type: 3}
+    buildings: 0.12
+  - title: Vila das Cartas
+    ground: {r: 0.45, g: 0.69, b: 0.67, a: 1}
+    path: {r: 0.91, g: 0.81, b: 0.55, a: 1}
+    skyTint: {r: 1, g: 0.93, b: 0.88, a: 1}
+    propTint: {r: 1, g: 1, b: 1, a: 1}
+    tree: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    building: {fileID: 21300000, guid: b8f8ee02570142679c38c324b0989328, type: 3}
+    character: {fileID: 21300000, guid: 8daca7bd0785ca449b8f9d5f4a9d89ce, type: 3}
+    buildings: 0.68
+  - title: Bosque Encantado
+    ground: {r: 0.37, g: 0.22, b: 0.6, a: 1}
+    path: {r: 0.61, g: 0.42, b: 0.79, a: 1}
+    skyTint: {r: 0.9, g: 0.89, b: 1, a: 1}
+    propTint: {r: 0.86, g: 0.7, b: 1, a: 1}
+    tree: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    building: {fileID: 21300000, guid: b8f8ee02570142679c38c324b0989328, type: 3}
+    character: {fileID: 21300000, guid: 8daca7bd0785ca449b8f9d5f4a9d89ce, type: 3}
+    buildings: 0.06
+  - title: "F\xE1brica de Encomendas"
+    ground: {r: 0.84, g: 0.47, b: 0.7, a: 1}
+    path: {r: 0.96, g: 0.72, b: 0.83, a: 1}
+    skyTint: {r: 1, g: 0.84, b: 0.98, a: 1}
+    propTint: {r: 1, g: 1, b: 1, a: 1}
+    tree: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    building: {fileID: 21300000, guid: 3a4779b1d5814963b1ad2f152ea0ffd8, type: 3}
+    character: {fileID: 21300000, guid: 8daca7bd0785ca449b8f9d5f4a9d89ce, type: 3}
+    buildings: 0.72

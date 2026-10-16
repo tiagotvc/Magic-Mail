@@ -1,0 +1,535 @@
+fileFormatVersion: 2
+guid: fbd9905be1d045849bff58981a92d3e2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9133155102839464478
+    second: Placa roxa com moldura dourada-9_0
+  - first:
+      213: -1364393353300857504
+    second: Placa roxa com moldura dourada-9_1
+  - first:
+      213: -5708023229127541629
+    second: Placa roxa com moldura dourada-9_2
+  - first:
+      213: -8842102902406969137
+    second: Placa roxa com moldura dourada-9_3
+  - first:
+      213: 9046444083867477858
+    second: Placa roxa com moldura dourada-9_4
+  - first:
+      213: 2578807932707990681
+    second: Placa roxa com moldura dourada-9_5
+  - first:
+      213: -1017257901970603115
+    second: Placa roxa com moldura dourada-9_6
+  - first:
+      213: 8130866470173247793
+    second: Placa roxa com moldura dourada-9_7
+  - first:
+      213: -4454212954928728753
+    second: Placa roxa com moldura dourada-9_8
+  - first:
+      213: -8076562677861389984
+    second: Placa roxa com moldura dourada-9_9
+  - first:
+      213: -638063353871467439
+    second: Placa roxa com moldura dourada-9_10
+  - first:
+      213: -3591808181027454683
+    second: Placa roxa com moldura dourada-9_11
+  - first:
+      213: 1437744857275072339
+    second: Placa roxa com moldura dourada-9_12
+  - first:
+      213: 5881825204352641524
+    second: Placa roxa com moldura dourada-9_13
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 95
+        width: 979
+        height: 1309
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e12ea4f2d2c7fbe70800000000000000
+      internalID: 9133155102839464478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_1
+      rect:
+        serializedVersion: 2
+        x: 424
+        y: 1390
+        width: 203
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06d299a5973b01de0800000000000000
+      internalID: -1364393353300857504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_2
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 1395
+        width: 17
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38cbc229d1709c0b0800000000000000
+      internalID: -5708023229127541629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_3
+      rect:
+        serializedVersion: 2
+        x: 702
+        y: 1399
+        width: 76
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc8059af14a8a4580800000000000000
+      internalID: -8842102902406969137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_4
+      rect:
+        serializedVersion: 2
+        x: 715
+        y: 1393
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 267ea53d6fc6b8d70800000000000000
+      internalID: 9046444083867477858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_5
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 1327
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99ce405d624c9c320800000000000000
+      internalID: 2578807932707990681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_6
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 1271
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 593451ce359f1e1f0800000000000000
+      internalID: -1017257901970603115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_7
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 1209
+        width: 63
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1398fc6b9f3a6d070800000000000000
+      internalID: 8130866470173247793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_8
+      rect:
+        serializedVersion: 2
+        x: 438
+        y: 911
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f45b78bbae47f22c0800000000000000
+      internalID: -4454212954928728753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_9
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 895
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 069e4e339094aef80800000000000000
+      internalID: -8076562677861389984
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_10
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 882
+        width: 23
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15cfb40a2c42527f0800000000000000
+      internalID: -638063353871467439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_11
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 881
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52144845d75572ec0800000000000000
+      internalID: -3591808181027454683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_12
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 881
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35f76878455e3f310800000000000000
+      internalID: 1437744857275072339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Placa roxa com moldura dourada-9_13
+      rect:
+        serializedVersion: 2
+        x: 452
+        y: 799
+        width: 13
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f9e0603cd070a150800000000000000
+      internalID: 5881825204352641524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Placa roxa com moldura dourada-9_0: 9133155102839464478
+      Placa roxa com moldura dourada-9_1: -1364393353300857504
+      Placa roxa com moldura dourada-9_10: -638063353871467439
+      Placa roxa com moldura dourada-9_11: -3591808181027454683
+      Placa roxa com moldura dourada-9_12: 1437744857275072339
+      Placa roxa com moldura dourada-9_13: 5881825204352641524
+      Placa roxa com moldura dourada-9_2: -5708023229127541629
+      Placa roxa com moldura dourada-9_3: -8842102902406969137
+      Placa roxa com moldura dourada-9_4: 9046444083867477858
+      Placa roxa com moldura dourada-9_5: 2578807932707990681
+      Placa roxa com moldura dourada-9_6: -1017257901970603115
+      Placa roxa com moldura dourada-9_7: 8130866470173247793
+      Placa roxa com moldura dourada-9_8: -4454212954928728753
+      Placa roxa com moldura dourada-9_9: -8076562677861389984
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

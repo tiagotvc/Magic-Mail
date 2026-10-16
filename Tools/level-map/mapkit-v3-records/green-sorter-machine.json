@@ -1,0 +1,19 @@
+{
+  "id": "green-sorter-machine",
+  "folder": "GreenLand",
+  "file": "green-sorter-machine.png",
+  "transparent": true,
+  "columns": 3,
+  "rows": 1,
+  "names": [
+    "machine-body",
+    "stamp-arm",
+    "conveyor-wheel"
+  ],
+  "subjects": "small teal-purple rounded machine BODY with a purple low conveyor and gold envelope plaque but NO stamping arm; separate gold-purple vertical stamping arm with round purple seal foot; separate purple conveyor wheel with gold hub",
+  "prompt": "Use case: stylized-concept. Original production artwork for Magic Mail casual match-3 world map. SIMPLE painted cartoon cutout, only a few large rounded shapes, appealing rounded illustrated volume, broad soft luminous highlights upper-left, richer gentle underside shadows, thin warm cream contour. Warm polished candy-like finish WITHOUT photorealism, realistic textures, tiny details or hard 3D render. Palette cream, royal purple, golden yellow, mint/teal, plus specified world colors. No text, letters of alphabet, numbers, HUD, floor, cast shadow, watermark, border frame or checkerboard. Actual transparent alpha. Keep each item COMPLETE. Strict regular atlas 3 equal columns by 1 equal rows, 3 separate items in reading order, left-to-right top-to-bottom. EACH object occupies maximum 65 percent of cell width and 70 percent of cell height, centered horizontally with foot/base at 82 percent down each cell. Generous empty transparent gutters, at least 12 percent inside every cell. NOTHING crosses cell boundaries. Unused cells completely empty. Subjects in strict order: small teal-purple rounded machine BODY with a purple low conveyor and gold envelope plaque but NO stamping arm; separate gold-purple vertical stamping arm with round purple seal foot; separate purple conveyor wheel with gold hub. Parts of SAME machine, matching proportions, no envelopes on conveyor. Each isolated part. Arm motion will be implemented in engine.",
+  "status": "generated-review-pending",
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-98106700-f190-4b2f-a225-4a7c9e3d0c82.png",
+  "path": "Assets/RoyalAves/Art/MapKitV3/GreenLand/green-sorter-machine.png",
+  "tool": "built-in image_gen"
+}

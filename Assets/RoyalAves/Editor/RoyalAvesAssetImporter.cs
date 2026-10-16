@@ -1,4 +1,4 @@
-﻿// Import settings for the exported Royal Aves assets: everything under Assets/RoyalAves/Art becomes a UI-ready
+// Import settings for the exported Royal Aves assets: everything under Assets/RoyalAves/Art becomes a UI-ready
 // sprite, music streams from disk and short sound effects are decompressed on load.
 using System.Collections.Generic;
 using System.IO;
@@ -74,18 +74,153 @@ namespace RoyalAves.EditorTools
         public const string FramePiecesFolder = GameFolder + "Moldura/";
         public const float FrameBand = 256f;
 
+        // The four board icons refreshed on 2026-10-09 render at 95% of their original size.
+        static readonly HashSet<string> CompactPieceAssets = new HashSet<string>
+        {
+            "Assets/RoyalAves/Art/Pieces/envelope.png",
+            "Assets/RoyalAves/Art/Pieces/gift.png",
+            "Assets/RoyalAves/Art/Pieces/key.png",
+            "Assets/RoyalAves/Art/Pieces/stamp.png",
+        };
+        const float RefreshedPieceScale = 0.95f;
+
+        // Keep dynamite clear of cell borders, with the same scale in idle and explosion frames.
+        const float DynamiteScale = 0.90f;
+
+        public const string ParcelStackFolder = "Assets/RoyalAves/Art/Obstacles/ParcelStack/";
+        public const string GrassFloorAsset = "Assets/RoyalAves/Art/Obstacles/grass.png";
+        public const string GrassSparseAsset = "Assets/RoyalAves/Art/Obstacles/grass-sparse.png";
+        public const float FloorCanvasUnits = 1.95f;
+        // Rounded leaf edges overlap adjacent cells to cover the board's grid strokes.
+        public const float GrassEdgeOverlap = 1.08f;
+        // The board cell is 0.82 units and its square scales children by 0.42.
+        // A 1.9-unit canvas therefore stays inside the cell even at full opaque coverage.
+        public const float ParcelCanvasUnits = 1.9f;
+        public const float ParcelBodyUnits = 1.72f;
+
+        public static void GetParcelFit(string path, out Vector2 scale, out Vector2 offset)
+            => GetCellSpriteFit(path, ParcelBodyUnits, ParcelCanvasUnits, out scale, out offset);
+
+        public static void GetGrassFit(string path, out Vector2 scale, out Vector2 offset)
+            => GetCellSpriteFit(path, FloorCanvasUnits * GrassEdgeOverlap, FloorCanvasUnits, out scale, out offset);
+
+        static void GetCellSpriteFit(string path, float bodyUnits, float canvasUnits, out Vector2 scale, out Vector2 offset)
+        {
+            var source = new Texture2D(2, 2);
+            try
+            {
+                if (!source.LoadImage(File.ReadAllBytes(path))) throw new System.InvalidOperationException("PNG inválido: " + path);
+                int left = source.width, right = -1, bottom = source.height, top = -1;
+                var pixels = source.GetPixels32();
+                for (int y = 0; y < source.height; y++)
+                    for (int x = 0; x < source.width; x++)
+                        if (pixels[y * source.width + x].a >= 128)
+                        {
+                            left = Mathf.Min(left, x); right = Mathf.Max(right, x);
+                            bottom = Mathf.Min(bottom, y); top = Mathf.Max(top, y);
+                        }
+                if (right < left || top < bottom) throw new System.InvalidOperationException("Sprite vazio: " + path);
+                float ppu = CanvasPixelsPerUnit(path, canvasUnits);
+                scale = new Vector2(bodyUnits * ppu / (right - left + 1), bodyUnits * ppu / (top - bottom + 1));
+                var center = new Vector2((left + right + 1f - source.width) / (2f * ppu), (bottom + top + 1f - source.height) / (2f * ppu));
+                offset = -Vector2.Scale(center, scale);
+            }
+            finally { Object.DestroyImmediate(source); }
+        }
+
+        static float ParcelPixelsPerUnit(string path)
+            => CanvasPixelsPerUnit(path, ParcelCanvasUnits);
+
+        static float CanvasPixelsPerUnit(string path, float canvasUnits)
+        {
+            if (!File.Exists(path)) return 128f;
+            var header = new byte[24];
+            using (var stream = File.OpenRead(path))
+                if (stream.Read(header, 0, header.Length) != header.Length) return 128f;
+            int width = (header[16] << 24) | (header[17] << 16) | (header[18] << 8) | header[19];
+            int height = (header[20] << 24) | (header[21] << 16) | (header[22] << 8) | header[23];
+            return Mathf.Max(width, height) / canvasUnits;
+        }
+
+        public static void ConfigureParcelStack(TextureImporter importer)
+            => ConfigureCellSprite(importer, ParcelPixelsPerUnit(importer.assetPath));
+
+        public static void ConfigureGrassFloor(TextureImporter importer)
+            => ConfigureCellSprite(importer, CanvasPixelsPerUnit(importer.assetPath, FloorCanvasUnits));
+
+        static void ConfigureCellSprite(TextureImporter importer, float pixelsPerUnit)
+        {
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.spritePixelsPerUnit = pixelsPerUnit;
+            var settings = new TextureImporterSettings();
+            importer.ReadTextureSettings(settings);
+            settings.spriteAlignment = (int)SpriteAlignment.Center;
+            settings.spritePivot = new Vector2(0.5f, 0.5f);
+            settings.spriteMeshType = SpriteMeshType.FullRect;
+            importer.SetTextureSettings(settings);
+            importer.alphaIsTransparency = true;
+            importer.mipmapEnabled = false;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.filterMode = FilterMode.Bilinear;
+            importer.maxTextureSize = 2048;
+            importer.textureCompression = TextureImporterCompression.Uncompressed;
+        }
+
         public static float PixelsPerUnit(string path) =>
+            path.StartsWith("Assets/RoyalAves/Art/Obstacles/FrankingMachine/") ? 660f :
+            path.StartsWith("Assets/RoyalAves/Art/Obstacles/MailCubby/") ? (Path.GetFileName(path).StartsWith("CM_escaninho_carta") ? 2050f : 660f) :
+            path == GrassFloorAsset || path == GrassSparseAsset ? CanvasPixelsPerUnit(path, FloorCanvasUnits) :
+            path.StartsWith(ParcelStackFolder) ? ParcelPixelsPerUnit(path) :
+            (path == RoyalAvesDinamiteBuilder.IdlePath || path == RoyalAvesDinamiteBuilder.SheetPath)
+                ? 128f / DynamiteScale :
+            CompactPieceAssets.Contains(path) ? 128f / RefreshedPieceScale :
             path.StartsWith(FramePiecesFolder) ? FrameBand :
             path == BoardFrameAsset ? 200 : BoardArtFolders.Any(path.StartsWith) ? 128 : 100;
 
         void OnPreprocessTexture()
         {
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
+            // Snow modal pieces use explicit sprite rectangles to remove transparent export margins.
+            // Their builder owns these settings, including the four separate snow corners.
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/modal/")) return;
             if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
+            // Map sheets/backgrounds own their import contract. Forcing Single here
+            // erased their sub-sprites on every reimport and displayed whole atlases.
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV2/") ||
+                assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV3/")) return;
             var importer = (TextureImporter)assetImporter;
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/Obstacles/MailCubby/"))
+            {
+                ConfigureCellSprite(importer, PixelsPerUnit(assetPath));
+                return;
+            }
+            if (assetPath == GrassFloorAsset || assetPath == GrassSparseAsset)
+            {
+                ConfigureGrassFloor(importer);
+                return;
+            }
+            if (assetPath.StartsWith(ParcelStackFolder))
+            {
+                ConfigureParcelStack(importer);
+                return;
+            }
             importer.textureType = TextureImporterType.Sprite;
-            importer.spriteImportMode = SpriteImportMode.Single;
+            // The dinamite sheet and the colour bomb's and propeller's spin sheets are grids of frames (sliced by their
+            // builders), so they must stay Multiple.
+            var multiSheets = assetPath == RoyalAvesDinamiteBuilder.SheetPath
+                || assetPath == RoyalAvesColorBombSpinBuilder.SheetPath
+                || assetPath == RoyalAvesPropellerSpinBuilder.SheetPath;
+            importer.spriteImportMode = multiSheets ? SpriteImportMode.Multiple : SpriteImportMode.Single;
             importer.spritePixelsPerUnit = PixelsPerUnit(assetPath);
+            if (assetPath == RoyalAvesDinamiteBuilder.IdlePath)
+            {
+                var settings = new TextureImporterSettings();
+                importer.ReadTextureSettings(settings);
+                settings.spriteAlignment = (int)SpriteAlignment.Custom;
+                settings.spritePivot = RoyalAvesDinamiteBuilder.SpritePivot;
+                importer.SetTextureSettings(settings);
+            }
             importer.alphaIsTransparency = true;
             importer.mipmapEnabled = false;
             importer.maxTextureSize = 2048;

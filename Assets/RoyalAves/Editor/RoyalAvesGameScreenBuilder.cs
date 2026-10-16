@@ -71,12 +71,12 @@ namespace RoyalAves.EditorTools
             var portraitBack = Load("fundo-retrato");
             var bar = Load("barra-reforcos");
             var button = Load("botao-reforco");
-            var gear = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/UI/Buttons/configuracoes.png");
+            var gear = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/UI/Buttons/engrenagem-plana.png");
             if (new[] { frame, portraitBack, bar, button, gear }.Any(s => s == null))
             {
                 EditorUtility.DisplayDialog("Tela de jogo", "Faltam imagens em " + Art +
                     " (moldura-fase, fundo-retrato, barra-reforcos, botao-reforco) " +
-                    "ou Art/UI/Buttons/configuracoes.", "OK");
+                    "ou Art/UI/Buttons/engrenagem-plana.", "OK");
                 return;
             }
 

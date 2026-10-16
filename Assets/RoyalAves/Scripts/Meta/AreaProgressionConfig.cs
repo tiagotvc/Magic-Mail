@@ -61,6 +61,19 @@ namespace RoyalAves.Meta
         public Sprite layer;
         [Tooltip("Ícone da melhoria na lista.")]
         public Sprite icon;
+        [Tooltip("Onde o móvel está dentro da camada (0..1, y de baixo para cima). O efeito de construção varre só essa região. " +
+                 "Preenchido por \"Gerar camada\" no Editor de áreas; vazio = a camada inteira.")]
+        public Rect bounds;
+
+        [HideInInspector] public Vector4[] outline; // points on the furniture's silhouette: x, y, outward nx, ny (see AreaStageReveal.RevealRegion)
+
+        [Tooltip("Como esta melhoria aparece quando é comprada (testável no Editor de áreas).")]
+        public AreaStageReveal.BuildEffect effect;
+
+        public AreaStageReveal.RevealRegion Region =>
+            new AreaStageReveal.RevealRegion { bounds = RevealBounds, outline = outline, style = effect };
+
+        public Rect RevealBounds => bounds.width > 0.001f && bounds.height > 0.001f ? bounds : new Rect(0, 0, 1, 1);
     }
 
     [Serializable]

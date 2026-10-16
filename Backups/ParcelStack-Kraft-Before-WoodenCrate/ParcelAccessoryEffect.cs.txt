@@ -1,0 +1,150 @@
+using System.Collections;
+using UnityEngine;
+
+namespace RoyalAves.Effects
+{
+    // Uses the accessory pixels of the old state while the closed package reveals the next state.
+    public sealed class ParcelAccessoryEffect : MonoBehaviour
+    {
+        const float SealDuration = 0.30f;
+        const float RibbonDuration = 0.38f;
+        const int RibbonSegments = 12;
+        Mesh mesh;
+        Material material;
+        Color32[] colors;
+        Vector3 direction;
+        float spin;
+        float duration;
+        bool seal;
+        bool verticalRibbon;
+        Vector3[] restVertices;
+        Vector3[] movingVertices;
+
+        public static void Play(SpriteRenderer source, int oldState)
+        {
+            var root = new GameObject("ParcelAccessoryRemovalFX");
+            root.transform.SetParent(source.transform.parent, false);
+            root.transform.localPosition = source.transform.localPosition;
+            root.transform.localRotation = source.transform.localRotation;
+            root.transform.localScale = source.transform.localScale;
+            root.AddComponent<ParcelAccessoryEffect>().Initialize(source, oldState);
+        }
+
+        void Initialize(SpriteRenderer source, int oldState)
+        {
+            Rect region;
+            bool circular = oldState == 4;
+            seal = circular;
+            verticalRibbon = oldState == 3;
+            duration = seal ? SealDuration : RibbonDuration;
+            if (circular)
+            {
+                region = new Rect(0.39f, 0.41f, 0.21f, 0.21f);
+                direction = new Vector3(0.10f, 0.38f); spin = 45f;
+            }
+            else if (oldState == 3)
+            {
+                region = new Rect(0.41f, 0.12f, 0.18f, 0.76f);
+                direction = new Vector3(0.22f, 0.30f); spin = 34f;
+            }
+            else
+            {
+                region = new Rect(0.10f, 0.43f, 0.80f, 0.165f);
+                direction = new Vector3(-0.22f, 0.25f); spin = -30f;
+            }
+            var visual = new GameObject("DetachedAccessory");
+            visual.transform.SetParent(transform, false);
+            mesh = seal ? ParcelTearEffect.BuildRegion(source.sprite, region, true) : BuildRibbon(source.sprite, region, verticalRibbon);
+            if (!seal)
+            {
+                restVertices = mesh.vertices;
+                movingVertices = new Vector3[restVertices.Length];
+            }
+            visual.AddComponent<MeshFilter>().sharedMesh = mesh;
+            material = new Material(source.sharedMaterial);
+            material.SetTexture("_MainTex", source.sprite.texture);
+            var renderer = visual.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = material;
+            renderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
+            renderer.sortingOrder = PowerUpEffectOrder.Value + 1;
+            colors = new Color32[mesh.vertexCount];
+            for (int i = 0; i < colors.Length; i++) colors[i] = source.color;
+            mesh.colors32 = colors;
+            ParcelSoundEffects.Play(oldState);
+            ParcelSparkEffect.Play(source, false);
+            StartCoroutine(Animate(visual.transform));
+        }
+
+        IEnumerator Animate(Transform visual)
+        {
+            float elapsed = 0f;
+            while (elapsed < duration)
+            {
+                elapsed += Time.deltaTime * ParcelFeedbackSettings.Speed;
+                float t = Mathf.Clamp01(elapsed / duration);
+                float eased = 1f - Mathf.Pow(1f - t, 3f);
+                if (seal)
+                {
+                    visual.localPosition = direction * eased * ParcelFeedbackSettings.Intensity;
+                    visual.localRotation = Quaternion.Euler(0f, 0f, spin * eased);
+                    visual.localScale = Vector3.one * (1f + Mathf.Sin(t * Mathf.PI) * 0.15f - t * 0.10f);
+                }
+                else
+                {
+                    // The free tip curls first; the peel front then travels along the ribbon.
+                    for (int i = 0; i < movingVertices.Length; i++)
+                    {
+                        float distanceFromTip = (i / 2) / (float)RibbonSegments;
+                        float peel = Mathf.Clamp01((t * 1.35f - distanceFromTip) * 3f);
+                        var curl = (verticalRibbon ? Vector3.right : Vector3.up) * (Mathf.Sin(peel * Mathf.PI) * 0.16f);
+                        movingVertices[i] = restVertices[i] + (direction * (peel * peel) + curl) * ParcelFeedbackSettings.Intensity;
+                    }
+                    mesh.vertices = movingVertices;
+                    mesh.RecalculateBounds();
+                }
+                float alpha = 1f - Mathf.SmoothStep(0f, 1f, Mathf.Clamp01((t - 0.45f) / 0.55f));
+                for (int i = 0; i < colors.Length; i++) colors[i].a = (byte)(255f * alpha);
+                mesh.colors32 = colors;
+                yield return null;
+            }
+            Destroy(gameObject);
+        }
+
+        static Mesh BuildRibbon(Sprite sprite, Rect region, bool vertical)
+        {
+            var vertices = new Vector3[(RibbonSegments + 1) * 2];
+            var uv = new Vector2[vertices.Length];
+            var triangles = new int[RibbonSegments * 6];
+            var textureRect = sprite.textureRect;
+            for (int i = 0; i <= RibbonSegments; i++)
+            {
+                float t = i / (float)RibbonSegments;
+                for (int side = 0; side < 2; side++)
+                {
+                    var point = vertical
+                        ? new Vector2(side == 0 ? region.xMin : region.xMax, region.yMax - t * region.height)
+                        : new Vector2(region.xMin + t * region.width, side == 0 ? region.yMin : region.yMax);
+                    int v = i * 2 + side;
+                    vertices[v] = new Vector3((point.x * sprite.rect.width - sprite.pivot.x) / sprite.pixelsPerUnit,
+                        (point.y * sprite.rect.height - sprite.pivot.y) / sprite.pixelsPerUnit);
+                    uv[v] = new Vector2((textureRect.x + point.x * textureRect.width) / sprite.texture.width,
+                        (textureRect.y + point.y * textureRect.height) / sprite.texture.height);
+                }
+                if (i == RibbonSegments) continue;
+                int start = i * 2, index = i * 6;
+                triangles[index] = start; triangles[index + 1] = start + 1; triangles[index + 2] = start + 2;
+                triangles[index + 3] = start + 1; triangles[index + 4] = start + 3; triangles[index + 5] = start + 2;
+            }
+            var result = new Mesh { name = "ParcelPeelingRibbon", vertices = vertices, uv = uv, triangles = triangles };
+            result.RecalculateBounds();
+            result.RecalculateNormals();
+            return result;
+        }
+
+        void OnDestroy()
+        {
+            if (mesh != null) Destroy(mesh);
+            if (material != null) Destroy(material);
+        }
+    }
+}

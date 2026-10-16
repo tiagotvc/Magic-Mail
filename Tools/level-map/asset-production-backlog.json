@@ -1,0 +1,916 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "status": "planning-only",
+  "styleReferences": [
+    "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+    "Assets/RoyalAves/Art/MapKitV2/Sprites/mailbox-poses.png"
+  ],
+  "baseApprovedCatalog": "mapkit-v2-image-manifest.json",
+  "productionRules": [
+    "preserve simple shapes and painted luminous cartoon finish",
+    "prefer separate PNG parts to crowded sheets",
+    "no baked world background",
+    "snow/hats are attachments, not whole-world duplicates",
+    "fountains remain static",
+    "planned requests are not existing files",
+    "background and weather vary by authored area with reversible transitions"
+  ],
+  "entries": [
+    {
+      "id": "shared-clouds",
+      "world": "shared",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "puff-small",
+        "puff-wide",
+        "cloud-strip"
+      ],
+      "description": "Nuvens de massas grandes e simples, claras com sombra suave.",
+      "animation": "slow-drift-loop",
+      "implementationNotes": "Camadas de céu; deslocamento e parallax discretos, loop fora da área visível. Não comprar uma folha de frames para cada nuvem.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "shared-mail-floaters",
+      "world": "shared",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "envelope-cream",
+        "envelope-purple",
+        "envelope-teal",
+        "postcard",
+        "parcel-small"
+      ],
+      "description": "Cartas e pequenas encomendas visíveis em rios, alinhadas à paleta Magic Mail.",
+      "animation": "flow-path-bob",
+      "implementationNotes": "Fluxo sobre água ou magia; separar da interface e limitar densidade perto dos níveis.",
+      "attachmentSlots": [
+        "giftRibbon",
+        "snowPatch"
+      ]
+    },
+    {
+      "id": "shared-particle-masks",
+      "world": "shared",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "smoke-soft-a",
+        "smoke-soft-b",
+        "steam-soft",
+        "spark-dot",
+        "snowflake-soft"
+      ],
+      "description": "Máscaras cartoon limpas para fumaça, vapor, brasas e neve.",
+      "animation": "particle-system",
+      "implementationNotes": "Texturas simples, animação no motor; não gerar vídeo. Glows somente em partículas luminosas.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "shared-route-passage-kit",
+      "world": "shared",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "mesh-recipe",
+      "variants": [
+        "narrow-plank-bridge",
+        "arched-postal-bridge",
+        "stepping-platforms",
+        "wide-gate"
+      ],
+      "description": "Passagens com espessura, laterais e encaixes no terreno.",
+      "animation": "static",
+      "implementationNotes": "Modelos/cartões de acabamento a combinar com cores por mundo; número do nível sobre superfície real.",
+      "attachmentSlots": [
+        "edgeSnow",
+        "garland",
+        "poleFlag"
+      ]
+    },
+    {
+      "id": "shared-river-surface",
+      "world": "shared",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "material-recipe",
+      "variants": [
+        "water-flow",
+        "magical-letter-current"
+      ],
+      "description": "Superfície separada do chão, duas ou três cores largas e linhas de fluxo.",
+      "animation": "flow-offset",
+      "implementationNotes": "Materiais do mundo, sem atlas de texturas rejeitado; cartas flutuantes são objetos independentes.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "green-letter-factory",
+      "world": "green-land",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "main-building",
+        "chimney",
+        "side-letter-chute"
+      ],
+      "description": "Fábrica postal simples: corpo creme, telhado roxo, grande envelope dourado e tubo teal.",
+      "animation": "building-static-chimney-smoke",
+      "implementationNotes": "Construção de poucas massas, sem tijolos miúdos; reaproveitar fábrica anterior como referência e diferenciar fachada.",
+      "attachmentSlots": [
+        "roofSnow",
+        "chimneySnow",
+        "garland",
+        "doorWreath"
+      ]
+    },
+    {
+      "id": "green-sorter-machine",
+      "world": "green-land",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "machine-body",
+        "stamp-arm",
+        "conveyor-wheel"
+      ],
+      "description": "Máquina de carimbar correspondências com rosto/forma simpática de poucos elementos.",
+      "animation": "stamp-cycle-and-wheel",
+      "implementationNotes": "Braço e roda independentes; cartas chegam por caminho próprio; sem animação frenética.",
+      "attachmentSlots": [
+        "machineSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "green-postal-fountain",
+      "world": "green-land",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "envelope-fountain",
+        "seal-fountain"
+      ],
+      "description": "Fontes estáticas de bacia arredondada e envelope/selo central, água ilustrada.",
+      "animation": "static",
+      "implementationNotes": "Não usar partículas, jatos animados, ondulação nem pulse nesta fonte.",
+      "attachmentSlots": [
+        "rimSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "green-river-details",
+      "world": "green-land",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "mail-reed",
+        "seal-islet",
+        "postal-dock"
+      ],
+      "description": "Juncos com cartas, ilhota-selo e pequeno píer; complementam o rio de cartas.",
+      "animation": "static",
+      "implementationNotes": "Píer precisa de geometria simples para mudança de vista; estas imagens são fachada/decoração.",
+      "attachmentSlots": [
+        "edgeSnow",
+        "garland"
+      ]
+    },
+    {
+      "id": "green-route-landmarks",
+      "world": "green-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "postal-gate",
+        "mail-bag-arch",
+        "covered-postal-stop"
+      ],
+      "description": "Portão, arco de sacola de correio e parada coberta; marcam transições de região.",
+      "animation": "static",
+      "implementationNotes": "Não substituir geometria navegável pela pintura do arco.",
+      "attachmentSlots": [
+        "roofSnow",
+        "archGarland"
+      ]
+    },
+    {
+      "id": "green-dog-animation-parts",
+      "world": "green-land",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "dog-body-master",
+        "dog-tail",
+        "dog-envelope"
+      ],
+      "description": "Peças derivadas do cachorro existente para gesto de cauda sem pular entre corpos.",
+      "animation": "tail-sway-occasional",
+      "implementationNotes": "Preservar identidade exata; não redesenhar cachorro diferente. As quatro poses existentes continuam para gestos.",
+      "attachmentSlots": [
+        "headHat",
+        "neckScarf"
+      ]
+    },
+    {
+      "id": "green-flags-and-banners",
+      "world": "green-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "envelope-flag",
+        "postal-bunting"
+      ],
+      "description": "Bandeiras e bandeirolas com ícones postais, sem texto pequeno.",
+      "animation": "gentle-sway",
+      "implementationNotes": "Separar tecido e suporte ou deformação pequena com pivô preso.",
+      "attachmentSlots": [
+        "poleSnow",
+        "seasonRibbon"
+      ]
+    },
+    {
+      "id": "green-garden-props",
+      "world": "green-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "envelope-bench",
+        "seal-topiary",
+        "parcel-cart"
+      ],
+      "description": "Banco-envelope, topiária de selo e carrinho de pacotes.",
+      "animation": "static",
+      "implementationNotes": "Poucos contornos; bancos/cartinhos fora da faixa interativa.",
+      "attachmentSlots": [
+        "topSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "green-winter-accents",
+      "world": "green-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "postal-snowman",
+        "gift-sleigh"
+      ],
+      "description": "Boneco de neve carteiro e trenó de presentes como objetos exclusivos do Natal.",
+      "animation": "static",
+      "implementationNotes": "São additions sazonais; não substituir cachorro/agência permanentes.",
+      "attachmentSlots": [
+        "headHat"
+      ]
+    },
+    {
+      "id": "christmas-snow-roofs",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "gable-left",
+        "gable-right",
+        "flat-wide",
+        "factory-step"
+      ],
+      "description": "Neve em telhados: quatro perfis coerentes com os prédios atuais.",
+      "animation": "attached-static",
+      "implementationNotes": "Gerar sobre bases reais para preservar contorno/perspectiva; não uma faixa de neve universal.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-snow-foliage",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "pine-upper",
+        "pine-middle",
+        "pine-lower",
+        "round-crown"
+      ],
+      "description": "Camadas de neve grandes para pinheiro e copas arredondadas.",
+      "animation": "attached-static",
+      "implementationNotes": "Montar por encaixes e evitar cobrir toda a cor da árvore.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-snow-small-props",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "mailbox-arch",
+        "lamp-cap",
+        "parcel-top",
+        "sign-top"
+      ],
+      "description": "Neve ajustada à caixa, luminária, encomenda e placa.",
+      "animation": "attached-static",
+      "implementationNotes": "Caixa aberta/fechada compartilha neve de topo; peças móveis recebem próprio encaixe se necessário.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-snow-ground-edges",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "mesh-or-overlay-recipe",
+      "variants": [
+        "bank-lip",
+        "bridge-edge",
+        "fountain-rim",
+        "basalt-cold-ledge"
+      ],
+      "description": "Neve nas bordas de chão, ponte, fonte e basalto frio.",
+      "animation": "attached-static",
+      "implementationNotes": "No 3D, malha/cor por superfície; no cartão, PNG de forma correspondente. Nada de colar imagem de tela sobre o mundo.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-hats",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "hat-front",
+        "hat-three-quarter",
+        "hat-side"
+      ],
+      "description": "Gorros vermelhos com borda creme, sombra suave e pompom grande.",
+      "animation": "attached-to-pose",
+      "implementationNotes": "Encaixe por cabeça/pose. Frente e lado são variantes; não esticar um gorro em todo personagem.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-garlands",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "garland-straight",
+        "garland-arch",
+        "wreath"
+      ],
+      "description": "Guirlandas e coroas simples com detalhe de carta dourada.",
+      "animation": "attached-static",
+      "implementationNotes": "Cordão/curva posicionados por sockets; não tapar portas ou envelope principal.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-gift-ribbons",
+      "world": "christmas",
+      "priority": "P0",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "bow-red",
+        "ribbon-cross",
+        "sealed-letter-gold"
+      ],
+      "description": "Laços, fita cruzada e selo postal natalino.",
+      "animation": "attached-static",
+      "implementationNotes": "Serve a caixas, encomendas, postes e cartas flutuantes.",
+      "attachmentSlots": [
+        "none"
+      ]
+    },
+    {
+      "id": "christmas-lights",
+      "world": "christmas",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "bulb-gold",
+        "bulb-red",
+        "bulb-teal"
+      ],
+      "description": "Lâmpadas pequenas e arredondadas em fio criado no motor.",
+      "animation": "slow-low-contrast-pulse",
+      "implementationNotes": "Sem piscar sincronizado em toda a cena; emissividade opcional com limites de exposição.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "christmas-scarf-and-flags",
+      "world": "christmas",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "scarf-red",
+        "flag-envelope-holiday"
+      ],
+      "description": "Cachecol e bandeira sazonal com ícone postal.",
+      "animation": "attached-static-or-sway",
+      "implementationNotes": "Mapa continua sendo Green/Lava; Natal é decoração, não outro mundo.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "lava-sky",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "background-raster",
+      "variants": [
+        "peach-orange",
+        "coral-dusk",
+        "ember-night"
+      ],
+      "description": "Somente céu simples em camadas, sem chão, prédios ou fases embutidos.",
+      "animation": "slow-layer-parallax",
+      "implementationNotes": "Laranja dominante; sombras frias/lilás preservam contraste. Não colorir todos os objetos de vermelho.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "lava-horizon-volcanoes",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "round-single",
+        "twin-cones",
+        "wide-caldera"
+      ],
+      "description": "Silhuetas grandes de vulcões ao fundo, duas ou três massas de cor.",
+      "animation": "static-with-separate-smoke",
+      "implementationNotes": "Fumaça é partícula/camada separada; não gerar vulcão com fumaça fixa no mesmo PNG.",
+      "attachmentSlots": [
+        "coldLedgeSnow"
+      ]
+    },
+    {
+      "id": "lava-basalt-props",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "basalt-cluster",
+        "split-boulder",
+        "stone-mail-pedestal"
+      ],
+      "description": "Pedras arredondadas de basalto e pedestal postal.",
+      "animation": "static",
+      "implementationNotes": "Faces largas, brilho suave nas bordas e fissuras pequenas com luz interna.",
+      "attachmentSlots": [
+        "coldLedgeSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-geyser-holes",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "mesh-or-sprite-parts",
+      "variants": [
+        "round-rim",
+        "cracked-rim",
+        "mineral-basin"
+      ],
+      "description": "Bocas de gêiser e bacias minerais apoiadas no chão, com depressão visível.",
+      "animation": "rim-static-plume-animated",
+      "implementationNotes": "Boca não gira/estica; jato separado sobe e dissipa fora do caminho dos níveis.",
+      "attachmentSlots": [
+        "coolOuterRimSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-geyser-fx",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "particle-recipe",
+      "variants": [
+        "steam-pulse",
+        "ember-jet",
+        "soft-fumarole"
+      ],
+      "description": "Vapor, jato estilizado de brasa e fumaça baixa.",
+      "animation": "seeded-staggered-cycle",
+      "implementationNotes": "Usar máscaras compartilhadas; ciclos diferentes, preview reproduzível, pausa quando fora da vista.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "lava-surface-materials",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "material-recipe",
+      "variants": [
+        "river-lava",
+        "quiet-lava-pool",
+        "obsidian",
+        "mineral-ochre",
+        "ash-lilac",
+        "purple-crystal-rock"
+      ],
+      "description": "Materiais/cartoon colors do mundo, faixas largas e bordas frias/quentes.",
+      "animation": "lava-flow-and-gentle-pulse",
+      "implementationNotes": "Água comum não substitui lava recolorida sem composição; geometrias de cortes e margens próprias.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "lava-passages",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "mesh-recipe",
+      "variants": [
+        "basalt-arch-bridge",
+        "thermal-metal-bridge",
+        "rope-over-lava",
+        "stepped-stone-islands",
+        "tunnel-entrance"
+      ],
+      "description": "Cinco famílias de passagem sobre lava e entre plataformas.",
+      "animation": "static",
+      "implementationNotes": "Mesmo sistema de conexão do Green; silhouette e suporte próprios.",
+      "attachmentSlots": [
+        "coldEdgeSnow",
+        "garland",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-mailbox",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "basalt-mailbox-closed",
+        "basalt-mailbox-open"
+      ],
+      "description": "Caixa de correio resistente ao calor, roxo/basalto, borda dourada e bandeira teal.",
+      "animation": "two-state-occasional",
+      "implementationNotes": "Tem identidade postal; não simples pedra com buraco.",
+      "attachmentSlots": [
+        "topSnow",
+        "flagRibbon"
+      ]
+    },
+    {
+      "id": "lava-postal-lamp",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "ember-postal-lamp"
+      ],
+      "description": "Luminária postal com base de basalto e selo de brasa brilhante.",
+      "animation": "lamp-static-optional-glow",
+      "implementationNotes": "Comparar com luminária aprovada; no máximo uma camada de halo suave.",
+      "attachmentSlots": [
+        "capSnow",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-forge-factory",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "forge-building",
+        "forge-chimney",
+        "hot-letter-chute"
+      ],
+      "description": "Fábrica/forja de selos com chaminé grossa e envelope dourado central.",
+      "animation": "static-with-smoke",
+      "implementationNotes": "Não virar fábrica industrial realista; teto separado para variar e receber Natal.",
+      "attachmentSlots": [
+        "roofSnowColdZone",
+        "garland",
+        "doorWreath"
+      ]
+    },
+    {
+      "id": "lava-stamp-machine",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "stamp-base",
+        "stamp-arm"
+      ],
+      "description": "Carimbador de selo quente com braço simplificado.",
+      "animation": "stamp-cycle",
+      "implementationNotes": "Compartilhar controlador da máquina Green; desenhos e paleta distintos.",
+      "attachmentSlots": [
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-crystals",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "teal-crystal",
+        "purple-cluster",
+        "seal-crystal"
+      ],
+      "description": "Cristais grandes teal/roxo com planos e luz interior.",
+      "animation": "static-or-gentle-glow",
+      "implementationNotes": "Variação de contraste frio sem sair do bioma lava.",
+      "attachmentSlots": [
+        "snowPatch",
+        "ribbon"
+      ]
+    },
+    {
+      "id": "lava-thermal-flora",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "ember-tree",
+        "thermal-flower",
+        "ash-shrub"
+      ],
+      "description": "Árvore de brasa, flor termal e arbusto de cinza cartoon.",
+      "animation": "subtle-sway",
+      "implementationNotes": "Aparência térmica própria; não reutilizar tudo verde com filtro vermelho.",
+      "attachmentSlots": [
+        "branchSnowCold",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-postal-boat",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-parts",
+      "variants": [
+        "metal-letter-boat",
+        "boat-flag"
+      ],
+      "description": "Barquinho postal de metal mágico entre ilhas de lava.",
+      "animation": "local-bob-and-flag-sway",
+      "implementationNotes": "Casco apoia na superfície do rio; não cruzar faixa de clique.",
+      "attachmentSlots": [
+        "holidayFlag",
+        "giftRibbon"
+      ]
+    },
+    {
+      "id": "lava-letter-floaters",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "enchanted-envelope",
+        "metal-sealed-parcel"
+      ],
+      "description": "Cartas encantadas/seladas com aro dourado para o fluxo da lava.",
+      "animation": "flow-path-bob",
+      "implementationNotes": "Versão postal do rio; não papel real queimando com cinzas pretas.",
+      "attachmentSlots": [
+        "giftRibbon"
+      ]
+    },
+    {
+      "id": "lava-cave-kit",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "cave-back-layer",
+        "large-stalactite",
+        "glowing-letter-lantern"
+      ],
+      "description": "Caverna aberta em corte com massas grandes e lanternas de correspondência.",
+      "animation": "mostly-static",
+      "implementationNotes": "A caverna conserva legibilidade/horizonte; teto não cobre a faixa interativa.",
+      "attachmentSlots": [
+        "garland",
+        "redBow"
+      ]
+    },
+    {
+      "id": "lava-landmark-set",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png",
+      "variants": [
+        "thermal-post-office",
+        "postal-observatory",
+        "anchored-mail-balloon",
+        "caldera-grand-agency"
+      ],
+      "description": "Marcos distintos para campo termal, altitude, crateras e final.",
+      "animation": "static-balloon-local-bob",
+      "implementationNotes": "Pinturas como decoração/fachada; volumes necessários recebem geometria.",
+      "attachmentSlots": [
+        "roofSnowColdZone",
+        "garland",
+        "doorWreath"
+      ]
+    },
+    {
+      "id": "lava-courier-dog-accessories",
+      "world": "lava-land",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "courier-goggles",
+        "heat-mail-bag"
+      ],
+      "description": "Óculos e bolsa para o mesmo cachorro, com formas simples.",
+      "animation": "attached-to-pose",
+      "implementationNotes": "Não trocar a identidade do mascote; acessórios separados coexistem com gorro/cachecol sem cobrir olhos.",
+      "attachmentSlots": [
+        "none"
+      ]
+    },
+    {
+      "id": "lava-christmas-adapters",
+      "world": "christmas",
+      "priority": "P1",
+      "status": "planned-not-generated",
+      "type": "transparent-png-overlay",
+      "variants": [
+        "basalt-snow-cap",
+        "volcano-cold-ledge-snow",
+        "forge-garland",
+        "geyser-outer-rim-snow"
+      ],
+      "description": "Encaixes natalinos específicos para rocha fria, forja e margem externa do gêiser.",
+      "animation": "attached-static",
+      "implementationNotes": "Neve só em zonas frias/edifícios; lava e boca ativa do gêiser continuam visíveis.",
+      "attachmentSlots": []
+    },
+    {
+      "id": "prehistoric-macro-kit",
+      "world": "prehistoric",
+      "priority": "P2",
+      "status": "planned-not-generated",
+      "type": "concept-and-parts",
+      "variants": [
+        "baby-triceratops",
+        "diplodocus-horizon",
+        "pterosaur-silhouette",
+        "dinosaur-egg",
+        "fern",
+        "giant-leaf",
+        "fossil-mailbox",
+        "wood-postal-hut",
+        "bone-arch",
+        "stamp-footprint"
+      ],
+      "description": "Famílias reservadas ao próximo mundo: dinossauros, vegetação gigante e correio pré-histórico.",
+      "animation": "future-plan",
+      "implementationNotes": "Quantidade de fases não definida; primeiro conceituar o elenco e terreno depois dos pilotos Green/Lava.",
+      "attachmentSlots": [
+        "futureHeadHat",
+        "futureLeafSnow",
+        "futureRedBow"
+      ]
+    },
+    {
+      "id": "green-area-sky-bases",
+      "world": "green-land",
+      "priority": "P0",
+      "type": "background-raster",
+      "variants": [
+        "clear-blue",
+        "warm-sunset",
+        "overcast-blue-gray",
+        "garden-lilac"
+      ],
+      "description": "Bases de céu sem objetos, com paletas próprias por área; horizonte e nuvens separados.",
+      "animation": "spatial-area-blend",
+      "implementationNotes": "Não reutilizar o mesmo postal-sky em todas as regiões. Poucas bases e variações autoradas; sem mapa inteiro pintado.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-sun-rays",
+      "world": "shared",
+      "priority": "P0",
+      "type": "transparent-png-or-material-recipe",
+      "variants": [
+        "sun-disc",
+        "soft-ray-wide",
+        "soft-ray-narrow"
+      ],
+      "description": "Sol independente e fachos largos de luz cartoon suave.",
+      "animation": "slow-drift-and-cloud-occlusion",
+      "implementationNotes": "Raios em camadas discretas no fundo/laterais; não exigir luz volumétrica real. Sem raios solares celestes na caverna fechada/noite.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-storm-clouds",
+      "world": "shared",
+      "priority": "P0",
+      "type": "transparent-png",
+      "variants": [
+        "storm-cloud-large",
+        "storm-cloud-strip"
+      ],
+      "description": "Nuvens densas simples e arredondadas para tempestade e céu carregado.",
+      "animation": "layered-drift",
+      "implementationNotes": "Cinza-azul/lilás e variantes vulcânicas, sem céu/raio/fumaça embutidos.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-rain-kit",
+      "world": "shared",
+      "priority": "P0",
+      "type": "transparent-mask-and-particle-recipe",
+      "variants": [
+        "rain-streak",
+        "small-splash",
+        "river-ripple"
+      ],
+      "description": "Gotas estilizadas, pequeno impacto e ondulação para superfícies de rio.",
+      "animation": "rain-emission-and-ripple-expansion",
+      "implementationNotes": "Onde houver teto, água ou piso, usar volumes/máscaras autoradas. Fontes estáticas excluídas de efeitos de água animada.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-wind-kit",
+      "world": "shared",
+      "priority": "P0",
+      "type": "transparent-png-or-line-recipe",
+      "variants": [
+        "gust-arc",
+        "loose-leaf"
+      ],
+      "description": "Arcos leves de vento e folhas; cartas reutilizam sprites postais existentes.",
+      "animation": "seeded-gust-burst",
+      "implementationNotes": "Mesmo vetor de vento orienta chuva, fumaça, bandeiras e folhas. Prédios e níveis não deformam.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-lightning-kit",
+      "world": "shared",
+      "priority": "P1",
+      "type": "procedural-lines-or-transparent-mask",
+      "variants": [
+        "wide-fork",
+        "short-fork",
+        "cloud-inner-light"
+      ],
+      "description": "Raios cartoon distantes e clarão interno discreto na nuvem.",
+      "animation": "rare-localized-pulse",
+      "implementationNotes": "Evitar flashes brancos de tela inteira. Modo de efeitos leves mantém nuvens/chuva sem clarão.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    },
+    {
+      "id": "weather-mist-kit",
+      "world": "shared",
+      "priority": "P1",
+      "type": "transparent-png-or-material-recipe",
+      "variants": [
+        "soft-low-mist",
+        "mist-strip"
+      ],
+      "description": "Névoa leve de bosque, serra, plataforma termal e caverna.",
+      "animation": "slow-lateral-drift",
+      "implementationNotes": "Densidade autorada por região; reduzir camada no corredor dos níveis; diferenciar névoa ambiente de fumaça local.",
+      "status": "planned-not-generated",
+      "attachmentSlots": []
+    }
+  ],
+  "environmentPlan": "environment-weather-roadmap.json"
+}

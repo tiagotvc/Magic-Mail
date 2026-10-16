@@ -1,0 +1,33 @@
+{
+  "tool": "built-in image_gen; opaque ground material paintings, source pixels preserved",
+  "jobs": [
+    {
+      "id": "lawn-brush-v21",
+      "folder": "GroundPaint",
+      "kind": "ground-material",
+      "file": "lawn-brush-v21.png",
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "lawn-brush"
+      ],
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Asset type: fully opaque seamless TILEABLE hand-painted GRASS/SOIL SURFACE COLOR TEXTURE for a cheerful glossy 2D Magic Mail saga map. Completely flat TOP-DOWN orthographic material swatch, fills entire square edge to edge. Vivid rich emerald green, spring green and warm lime, with large organic broad softly interlocking color patches and smooth rounded highlight transitions, a few short curved paint strokes and tiny sparse grouped freckles. Candy Crush's clean illustrated simplicity, Crash Bandicoot's irregular chunky natural shapes. Artistic painted surfaces, saturated harmonious color, gentle gloss suggested by broad soft yellow-green highlights over deeper teal-green shaded patches. Medium-scale features, no microdetail or grain; broad areas of calm. NOT realistic grass, NO blades/tufts, plants, rocks, puddles, flowers, leaves, trees, buildings, props, footprints, paths or islands. No border/edge/outline, perspective, horizon, shadows from objects, glow, vignette, labels or text. No grids, regular rows, square facets, circles or evenly repeated symbols. Avoid extreme brightness or dark black areas. A subtle readable stylized natural soil texture, not a busy patterned fabric. Seamless repeat on all four edges.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-d70b1703-a8a7-417c-ae5f-269682258050.png"
+    },
+    {
+      "id": "path-brush-v21",
+      "folder": "GroundPaint",
+      "kind": "ground-material",
+      "file": "path-brush-v21.png",
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "path-brush"
+      ],
+      "transparent": false,
+      "prompt": "Use case: stylized-concept. Asset type: fully opaque seamless TILEABLE painted WARM CLAY/SAND SURFACE COLOR TEXTURE for a cheerful glossy 2D Magic Mail saga map path. Completely flat TOP-DOWN orthographic square material swatch fills whole image edge to edge. Warm apricot sand and honey beige with a few broad irregular overlapping soft areas, gently curving ochre shaded washes and large cream-satin softly shaped highlights. Clean Candy Crush map simplicity, softly chunky organic Crash Bandicoot surface shapes. Smooth large gradients, crisp-but-soft painted edges, saturated warm but light palette. Medium-scale natural variation with wide calm areas, restrained warm freckles in only a few tiny clusters. NO stones, pebbles, cracks, lava, puddles, plants, actual props, bricks, tile grids, paths/boundaries, shapes of a whole island or ornaments. Not realistic dirt or phototexture. No little noisy brush strokes, grain, harsh creases, shadows from objects, vignette, glow, perspective, horizon, border, outline, text, icons or symbols. Avoid pale flat dead color and avoid heavy contrast; readable smooth stylized clay material. Seamless repeat on all edges.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-f5280b8c-6118-47bd-90f8-237723ba0c1e.png"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# Encomenda — visual cartoon aprovado aplicado
+
+O usuário aprovou o conceito de volume cartoon suave e pediu sua aplicação no projeto. O estado 4 usa exatamente o PNG aprovado `Concepts/CM_pilha_cartoon_suave_conceito04_00.png`, sem edição de pixels. Os estados 3, 2 e 1 foram gerados com image_gen integrada como edições desse conceito; o estado 1 recebeu uma correção para manter a mesma cor da caixa interna revelada no estado 2.
+
+Arquivos ativos em `Assets/RoyalAves/Art/Obstacles/ParcelStack/`:
+
+- `CM_pilha_estado04_00.png`: pacote intacto com duas faixas claras e etiqueta.
+- `CM_pilha_estado03_00.png`: faixa vertical rasgada/removida; faixa horizontal preservada.
+- `CM_pilha_estado02_00.png`: faixas removidas e papel kraft rasgado, revelando a caixa interna.
+- `CM_pilha_estado01_00.png`: caixa interna exposta, com dois restos de papel kraft.
+
+Os nomes e GUIDs ativos foram mantidos para preservar referências no prefab e nos objetivos. Os quatro estados são PNG RGBA de 1254×1254, com alpha real. A escala e posição do prefab foram recalculadas para manter o corpo visível em 0,7224×0,7224 dentro da célula de 0,82. O conjunto anterior está em `Backups/ParcelStack-embrulho-realista-v2`.
+
+O preparador do editor agora usa o estado intacto como ícone de objetivo e processa solicitações pendentes quando o Unity estiver fora de Play/compilação/importação. A sincronização foi solicitada por `Temp/parcel-stack-prepare.request`. A compilação do editor passou. Foram conferidos os quatro PNGs, encaixe, GUIDs e igualdade exata entre conceito aprovado e estado 4. O teste visual em Play permanece pendente.
+
+A animação do último rasgo usa a textura do estado 1 atual automaticamente; a meta continua contando somente pacotes totalmente destruídos. A animação entre estados continua sendo a próxima etapa, conforme a ordem pedida pelo usuário.
+
+## Prompt do estado 4
+
+É o conceito aprovado. Prompt original completo em `Pilha_Conceito_Cartoon_Suave.md`.
+
++## Estado 3
+
+Use case: precise-object-edit. Produce an official damage-state sprite for Correio Mágico by editing the approved referenced cartoon postal parcel. STATE 3 (first damage): tear ONLY the broad vertical cream paper packaging band away, leaving a short ragged cream tab at the upper edge and another at the bottom edge, each inside the silhouette. Keep horizontal band fully intact and in its original position. Keep golden kraft outer wrapping and small blank lower-right label unchanged. The vertical stripe should now be absent over the front, exposing the golden paper. No torn hole in the box body. Preserve EXACT same square canvas, SINGLE box silhouette, width, height, rounded corners, position, baseline, almost frontal slight overhead camera and upper-left lighting. Maintain approved soft polished 2.5D cartoon game style: broad gentle highlights, simple smooth bevels, few chunky shapes, restrained gradients, clean honey-kraft/cream palette, no heavy ink outline, no realistic grain or paper fibers. Only wrapping/protection changes INSIDE the silhouette. True transparent alpha PNG; same clear margins as reference. No background, shadow outside box, loose debris, text, digits, crown, screws, rivets, additional boxes, scene, UI, watermark. This state must read immediately at a 70px cell size and remain exactly as large as the intact box.
+
+## Estado 2
+
+Use case: precise-object-edit. Produce an official damage-state sprite for Correio Mágico by editing the approved referenced cartoon postal parcel. STATE 2 (second damage): remove BOTH broad cream packaging bands completely. Golden kraft wrapping remains but is visibly torn: a large peeled-back patch across the upper-left front exposes a smooth lighter honey-colored rigid cardboard box underneath, with two or three chunky curled paper edges INSIDE the silhouette. Keep lower-right blank cream label on surviving wrapping. About 40 percent of the front has wrapping removed. No fine scratches, ragged paper fibers or realistic texture. Preserve EXACT same square canvas, SINGLE box silhouette, width, height, rounded corners, position, baseline, almost frontal slight overhead camera and upper-left lighting. Maintain approved soft polished 2.5D cartoon game style: broad gentle highlights, simple smooth bevels, few chunky shapes, restrained gradients, clean honey-kraft/cream palette, no heavy ink outline, no realistic grain or paper fibers. Only wrapping/protection changes INSIDE the silhouette. True transparent alpha PNG; same clear margins as reference. No background, shadow outside box, loose debris, text, digits, crown, screws, rivets, additional boxes, scene, UI, watermark. This state must read immediately at a 70px cell size and remain exactly as large as the intact box.
+
+## Estado 1
+
+Use case: precise-object-edit. Produce an official damage-state sprite for Correio Mágico by editing the approved referenced cartoon postal parcel. STATE 1 (last protection): remove BOTH cream bands and almost all the outer kraft wrapping including the blank label. Reveal a FULL-SIZE smooth honey-golden rigid cardboard box with a simple shallow lid seam, rounded corners and the same outer shape as the reference. Leave only two broad golden kraft-paper scraps attached at bottom left and right edge, about 15 percent of the front. Chunky smooth cartoon tear edges, no realistic fibers. The box is never empty or smaller; it remains the same large square postal target. Preserve EXACT same square canvas, SINGLE box silhouette, width, height, rounded corners, position, baseline, almost frontal slight overhead camera and upper-left lighting. Maintain approved soft polished 2.5D cartoon game style: broad gentle highlights, simple smooth bevels, few chunky shapes, restrained gradients, clean honey-kraft/cream palette, no heavy ink outline, no realistic grain or paper fibers. Only wrapping/protection changes INSIDE the silhouette. True transparent alpha PNG; same clear margins as reference. No background, shadow outside box, loose debris, text, digits, crown, screws, rivets, additional boxes, scene, UI, watermark. This state must read immediately at a 70px cell size and remain exactly as large as the intact box.
+
+## Correção de consistência do estado 1
+
++Use case: precise-object-edit. Image 1 is EDIT TARGET: the almost unwrapped final state with a large golden box, horizontal lid seam and two kraft paper scraps. Image 2 is COLOR/MATERIAL REFERENCE: the preceding torn-wrap state, whose upper-left tear exposes a light honey-tan cardboard box. Correct ONLY the exposed rigid cardboard body of Image 1 to match the smooth LIGHT HONEY-TAN cardboard color and material seen inside the tear in Image 2. Keep the two attached kraft-paper scraps their existing deeper golden orange color, making their contrast with cardboard obvious. Keep exact same canvas dimensions, transparent alpha, large outer square footprint, corners, camera, lighting, lid seam position, all paper-scrap geometry and placement. No bands, label, text or debris. Stay in the approved soft rounded simple 2.5D cartoon mobile puzzle style; no grain, realistic fibers, heavy outlines or metal. This is the LAST damage state of the SAME box, so its inner body must look like the box exposed in Image 2. Do not shrink, crop, reposition or change the silhouette. Genuine transparent PNG.
