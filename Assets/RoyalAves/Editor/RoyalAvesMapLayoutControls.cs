@@ -12,6 +12,15 @@ namespace RoyalAves.EditorTools
         const string AssetPath="Assets/RoyalAves/Resources/RoyalAvesWorldMapSimpleLayout.asset";
         bool editing;
         bool snowOpen=true,lightsOpen,iceOpen;
+        int selectedPiece;
+        string pieceOwner;
+        bool pieceOpen=true;
+        bool wholeEffectsOpen;
+        bool editPieceInPreview;
+        string dragPieceId;
+        Vector2 pieceDragStart,pieceOffsetStart;
+        bool adornmentsOpen=true,adornmentPoseOpen=true;
+        string adornmentSelection,adornmentOwner;
         public bool Editing=>editing;
         WorldMapLibraryItem addItem;
         WorldMapAssetCategory addCategory;
@@ -27,6 +36,7 @@ namespace RoyalAves.EditorTools
 
         public static WorldMapLayout GetOrCreate()
         {
+            if(WorldMapMission100.Active)return WorldMapMission100.Current.layout;
             var asset=AssetDatabase.LoadAssetAtPath<WorldMapLayout>(AssetPath);
             if(asset!=null)return asset;
             asset=ScriptableObject.CreateInstance<WorldMapLayout>();
@@ -39,7 +49,7 @@ namespace RoyalAves.EditorTools
         }
         WorldMapLayout.Chapter EnsureChapter(int chapter,WorldMapView world)
         {
-            layout=layout??GetOrCreate();
+            var currentLayout=GetOrCreate();if(layout!=currentLayout){layout=currentLayout;ClearSelection();}
             var data=layout.Find(chapter);
             if(data?.manual==true)
             {
@@ -124,10 +134,12 @@ namespace RoyalAves.EditorTools
             if(selected==null)return;
             EditorGUI.BeginChangeCheck();
             var sprite=(Sprite)EditorGUILayout.ObjectField("Objeto",selected.EffectiveSprite(world.CameraModel.Kit),typeof(Sprite),false);
+            var caption=EditorGUILayout.TextField("Texto da placa (English)",selected.caption);
             var phase=EditorGUILayout.FloatField("Fase / posição",selected.level);
             var side=EditorGUILayout.FloatField("Lateral (− esquerda / + direita)",selected.lateral);
             var size=EditorGUILayout.Slider("Tamanho",selected.EffectiveHeight(world.CameraModel.Kit),.12f,3);
             var kind=(PropKind)EditorGUILayout.EnumPopup("Tipo / animação",selected.kind);
+            var workMotion=(WorldMapWorkMotion)EditorGUILayout.EnumPopup("Rotina do correio",selected.workMotion);
             var rotation=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Rotação do raio (°)",selected.rotation,-80,80):selected.rotation;
             var intensity=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Intensidade da luz",selected.intensity,.05f,1):selected.intensity;
             var thickness=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Espessura do raio",selected.thickness,.2f,4):selected.thickness;
@@ -141,22 +153,33 @@ namespace RoyalAves.EditorTools
             if(useTheme)
                 theme=EditorGUILayout.Popup("Tema do objeto",theme==WorldMapObjectTheme.Ice?1:0,new[]{"Da temporada (Natal: gelo)","Gelo"})==1?WorldMapObjectTheme.Ice:WorldMapObjectTheme.Season;
             var snowEffect=selected.snowEffect;var lightsEffect=selected.lightsEffect;var iceEffect=selected.iceEffect;
+            var effectPieces=selected.effectPieces;
+            var customAdornments=selected.customAdornments;
+            var adornments=DrawAdornments(world,sprite,selected.adornments,ref customAdornments,ref effectPieces);
             EditorGUILayout.Space();EditorGUILayout.LabelField("Encaixe dos efeitos neste objeto",EditorStyles.boldLabel);
             using(new EditorGUI.DisabledScope(!useTheme))
             {
-                var snowAvailable=kind==PropKind.Tree||kind==PropKind.Small||kind==PropKind.Mailbox||kind==PropKind.Lamp||kind==PropKind.Landmark;
-                snowEffect=DrawEffectPose("Neve",snowEffect,ref snowOpen,snowAvailable);
-                lightsEffect=DrawEffectPose("Luzes de Natal",lightsEffect,ref lightsOpen,kind==PropKind.Tree);
-                iceEffect=DrawEffectPose("Gelo",iceEffect,ref iceOpen,kind==PropKind.Tree);
+                effectPieces=DrawPieces(world,selected.id,effectPieces);
+                var shrub=WorldMapScenery.IsShrub(new PropPlacement{sprite=sprite,kind=kind},world.CameraModel.Kit);
+                lightsEffect=DrawEffectPose("Luzes de Natal",lightsEffect,ref lightsOpen,kind==PropKind.Tree||shrub||kind==PropKind.Landmark&&sprite!=null&&WorldMapWindowLight.IsBuilding(sprite));
+                var changed=GUI.changed;wholeEffectsOpen=EditorGUILayout.Foldout(wholeEffectsOpen,"Ajuste geral de neve / gelo (opcional)",true);GUI.changed=changed;
+                if(wholeEffectsOpen)
+                {
+                    var snowAvailable=kind==PropKind.Tree||kind==PropKind.Small||kind==PropKind.Mailbox||kind==PropKind.Lamp||kind==PropKind.Landmark;
+                    snowEffect=DrawEffectPose("Neve",snowEffect,ref snowOpen,snowAvailable);
+                    iceEffect=DrawEffectPose("Gelo",iceEffect,ref iceOpen,kind==PropKind.Tree);
+                }
             }
             EditorGUILayout.HelpBox("Ajustes relativos à peça. Use o preview de Natal ou o tema Gelo para visualizar; Salvar disposição grava os encaixes.",MessageType.None);
             if(EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(layout,"Ajustar objeto do mapa");
                 selected.sprite=sprite;selected.keepSprite=true;selected.level=ClampPhase(phase,owner);
+                selected.caption=caption;
+                selected.workMotion=workMotion;
                 selected.lateral=side;selected.height=size;selected.customSize=true;selected.kind=kind;selected.rotation=rotation;selected.intensity=intensity;selected.thickness=thickness;selected.flipX=flipX;selected.theme=theme;
                 selected.groundPinned=groundPinned;selected.groundDepth=groundDepth;
-                selected.snowEffect=snowEffect;selected.lightsEffect=lightsEffect;selected.iceEffect=iceEffect;Changed(world);
+                selected.snowEffect=snowEffect;selected.lightsEffect=lightsEffect;selected.iceEffect=iceEffect;selected.effectPieces=effectPieces;selected.customAdornments=customAdornments;selected.adornments=adornments;Changed(world);
             }
             if(GUILayout.Button("Usar tamanho padrão da categoria"))
             {Undo.RecordObject(layout,"Padronizar tamanho do objeto");selected.customSize=false;Changed(world);}
@@ -164,6 +187,68 @@ namespace RoyalAves.EditorTools
             {Undo.RecordObject(layout,"Remover objeto do mapa");if(!string.IsNullOrEmpty(selected.sourceId))layout.hiddenExtras.Add(selected.sourceId);owner.entries.Remove(selected);ClearSelection();Changed(world);}
         }
 
+        WorldMapAdornment[] DrawAdornments(WorldMapView world,Sprite source,WorldMapAdornment[] saved,ref bool custom,ref WorldMapPiecePose[] poses)
+        {
+            var changed=GUI.changed;adornmentsOpen=EditorGUILayout.Foldout(adornmentsOpen,"Adereços",true);GUI.changed=changed;if(!adornmentsOpen)return saved;
+            var kit=world.CameraModel.Kit;
+            var values=custom?saved??Array.Empty<WorldMapAdornment>():WorldMapAdornment.Defaults(source,kit);
+            if(adornmentOwner!=selected.id){adornmentOwner=selected.id;adornmentSelection=null;}
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                Sprite add=null;string label=null;bool lamp=false;
+                if(GUILayout.Button("Adicionar carta")){add=kit.envelopeCream;label="Carta";}
+                if(GUILayout.Button("Adicionar lâmpada")){add=kit.christmasBulbs.Length>0?kit.christmasBulbs[0]:null;label="Lâmpada";lamp=true;}
+                if(GUILayout.Button("Outro sprite"))label="Adereço";
+                if(label!=null)
+                {
+                    var item=WorldMapAdornment.Create(add,label,lamp);values=values.Concat(new[]{item}).ToArray();custom=true;adornmentSelection=item.id;GUI.changed=true;
+                    if(lamp)poses=WorldMapPiecePose.Set(poses,item.id,new WorldMapEffectPose{rotation=180});
+                }
+            }
+            if(values.Length>0)
+            {
+                int index=Mathf.Max(0,Array.FindIndex(values,a=>a.id==adornmentSelection));
+                changed=GUI.changed;index=EditorGUILayout.Popup("Selecionar adereço",index,values.Select((a,i)=>(i+1)+". "+a.label).ToArray());GUI.changed=changed;
+                var item=values[index];adornmentSelection=item.id;
+                var pieces=world.EffectPieces(selected.id);int live=Array.FindIndex(pieces,p=>p.Id==item.id);if(live>=0)selectedPiece=live;
+                changed=GUI.changed;editPieceInPreview=EditorGUILayout.Toggle("Arrastar peças no preview",editPieceInPreview);GUI.changed=changed;
+                EditorGUI.BeginChangeCheck();
+                item.label=EditorGUILayout.TextField("Nome",item.label);item.sprite=(Sprite)EditorGUILayout.ObjectField("Arte do adereço",item.sprite,typeof(Sprite),false);
+                item.size=EditorGUILayout.Slider("Tamanho relativo (%)",item.size*100,1.5f,160)/100;
+                item.motion=(WorldMapAdornmentMotion)EditorGUILayout.EnumPopup("Movimento da peça",item.motion);
+                if(item.motion==WorldMapAdornmentMotion.OwlBlink)item.alternate=(Sprite)EditorGUILayout.ObjectField("Olhos fechados",item.alternate,typeof(Sprite),false);
+                item.behind=EditorGUILayout.Toggle("Atrás do objeto",item.behind);item.emissive=EditorGUILayout.Toggle("Luz própria",item.emissive);
+                if(item.emissive){item.lightColor=EditorGUILayout.ColorField("Cor da aura",item.lightColor);item.blink=EditorGUILayout.Toggle("Piscar",item.blink);}
+                var pose=WorldMapPiecePose.Find(poses,item.id);pose=DrawEffectPose("Encaixe do adereço",pose,ref adornmentPoseOpen,true);
+                if(EditorGUI.EndChangeCheck()){values=(WorldMapAdornment[])values.Clone();values[index]=item;poses=WorldMapPiecePose.Set(poses,item.id,pose);custom=true;}
+                using(new EditorGUILayout.HorizontalScope())
+                {
+                    if(GUILayout.Button("Duplicar adereço"))
+                    {
+                        var duplicate=item;duplicate.id="adornment-"+Guid.NewGuid().ToString("N");duplicate.label=item.label+" (cópia)";values=values.Concat(new[]{duplicate}).ToArray();pose.offset.x+=.06f;poses=WorldMapPiecePose.Set(poses,duplicate.id,pose);adornmentSelection=duplicate.id;custom=true;GUI.changed=true;
+                    }
+                    if(GUILayout.Button("Remover adereço")){values=values.Where(a=>a.id!=item.id).ToArray();poses=poses?.Where(p=>p.id!=item.id).ToArray();custom=true;adornmentSelection=null;GUI.changed=true;}
+                }
+            }
+            if(GUILayout.Button("Restaurar adereços padrão")){custom=false;values=null;poses=poses?.Where(p=>!p.id.StartsWith("adornment-")).ToArray();GUI.changed=true;}
+            EditorGUILayout.HelpBox("Os adereços acompanham este objeto. Ajuste posição, rotação, escala e Ativo; Salvar disposição grava no jogo. Outro sprite permite usar qualquer arte.",MessageType.None);
+            return custom?values:saved;
+        }
+        WorldMapPiecePose[] DrawPieces(WorldMapView world,string ownerId,WorldMapPiecePose[] values)
+        {
+            EditorGUILayout.Space();EditorGUILayout.LabelField("Peças individuais de neve e gelo",EditorStyles.boldLabel);
+            var pieces=world.EffectPieces(ownerId);
+            if(pieces.Length==0){EditorGUILayout.HelpBox("Use o preview de Natal ou o tema Gelo para selecionar as peças deste objeto.",MessageType.None);return values;}
+            if(pieceOwner!=ownerId){pieceOwner=ownerId;selectedPiece=0;pieceOpen=true;}
+            selectedPiece=Mathf.Clamp(selectedPiece,0,pieces.Length-1);
+            var changed=GUI.changed;selectedPiece=EditorGUILayout.Popup("Selecionar peça",selectedPiece,pieces.Select(p=>p.Label).ToArray());GUI.changed=changed;
+            changed=GUI.changed;editPieceInPreview=EditorGUILayout.Toggle("Selecionar / arrastar peças no preview",editPieceInPreview);GUI.changed=changed;
+            var piece=pieces[selectedPiece];var pose=WorldMapPiecePose.Find(values,piece.Id);
+            EditorGUI.BeginChangeCheck();pose=DrawEffectPose(piece.Label,pose,ref pieceOpen,true);
+            if(EditorGUI.EndChangeCheck())values=WorldMapPiecePose.Set(values,piece.Id,pose);
+            EditorGUILayout.HelpBox("Posição, rotação, escala e Ativo afetam somente a peça selecionada. Salvar disposição grava os ajustes.",MessageType.None);
+            return values;
+        }
         static WorldMapEffectPose DrawEffectPose(string label,WorldMapEffectPose pose,ref bool open,bool automatic)
         {
             var changed=GUI.changed;open=EditorGUILayout.Foldout(open,label,true);GUI.changed=changed;
@@ -212,6 +297,23 @@ namespace RoyalAves.EditorTools
             var e=Event.current;
             var uv=new Vector2((e.mousePosition.x-imageRect.x)/imageRect.width,1-(e.mousePosition.y-imageRect.y)/imageRect.height);
             var control=GUIUtility.GetControlID(FocusType.Passive);
+            if(editPieceInPreview&&selected!=null&&e.type==EventType.MouseDown&&e.button==0&&imageRect.Contains(e.mousePosition))
+            {
+                var pieces=world.EffectPieces(selected.id);int hit=-1;float area=float.PositiveInfinity;
+                for(int i=0;i<pieces.Length;i++)if(pieces[i].gameObject.activeSelf&&world.ProjectEffectPiece(pieces[i],out var box)&&box.Contains(uv)&&box.width*box.height<area){hit=i;area=box.width*box.height;}
+                if(hit>=0)
+                {
+                    selectedPiece=hit;pieceOwner=selected.id;var piece=pieces[hit];
+                    if(piece.Id.StartsWith("adornment-"))adornmentSelection=piece.Id;
+                    var plane=new Plane(piece.transform.parent.forward,piece.transform.position);var ray=world.Cam.ViewportPointToRay(uv);
+                    if(plane.Raycast(ray,out var distance))
+                    {
+                        dragPieceId=piece.Id;pieceDragStart=piece.transform.parent.InverseTransformPoint(ray.GetPoint(distance));
+                        pieceOffsetStart=WorldMapPiecePose.Find(selected.effectPieces,dragPieceId).offset;
+                        Undo.RecordObject(layout,"Arrastar peça de neve ou gelo");GUIUtility.hotControl=dragControl=control;e.Use();
+                    }
+                }
+            }
             if(e.type==EventType.MouseDown&&e.button==0&&imageRect.Contains(e.mousePosition))
             {
                 var index=-1;var depth=float.PositiveInfinity;
@@ -226,8 +328,24 @@ namespace RoyalAves.EditorTools
                     selected=owner.entries.Find(x=>x.id==p.id&&!string.IsNullOrEmpty(p.id))??
                         owner.entries.Find(x=>x.sprite==p.sprite&&Mathf.Abs(world.Route.MetersAt(x.level)-p.s)<.02f&&Mathf.Abs(x.lateral-p.offset)<.02f);
                     Undo.RecordObject(layout,"Arrastar objeto do mapa");
+                    dragPieceId=null;
                     GUIUtility.hotControl=dragControl=control;e.Use();
                 }
+            }
+            if(e.type==EventType.MouseDrag&&selected!=null&&GUIUtility.hotControl==dragControl&&dragControl!=0&&!string.IsNullOrEmpty(dragPieceId))
+            {
+                var piece=world.EffectPieces(selected.id).FirstOrDefault(p=>p.Id==dragPieceId);
+                if(piece!=null)
+                {
+                    var ray=world.Cam.ViewportPointToRay(uv);var plane=new Plane(piece.transform.parent.forward,piece.transform.position);
+                    if(plane.Raycast(ray,out var distance))
+                    {
+                        Vector2 local=piece.transform.parent.InverseTransformPoint(ray.GetPoint(distance));var pose=WorldMapPiecePose.Find(selected.effectPieces,dragPieceId);
+                        pose.offset=pieceOffsetStart+(local-pieceDragStart)/selected.EffectiveHeight(world.CameraModel.Kit);
+                        selected.effectPieces=WorldMapPiecePose.Set(selected.effectPieces,dragPieceId,pose);Changed(world);
+                    }
+                }
+                e.Use();
             }
             if(e.type==EventType.MouseDrag&&selected!=null&&GUIUtility.hotControl==dragControl&&dragControl!=0)
             {
@@ -241,8 +359,18 @@ namespace RoyalAves.EditorTools
                 e.Use();
             }
             if(e.type==EventType.MouseUp&&dragControl!=0&&GUIUtility.hotControl==dragControl)
-            {GUIUtility.hotControl=0;dragControl=0;e.Use();}
+            {GUIUtility.hotControl=0;dragControl=0;dragPieceId=null;e.Use();}
             if(selected==null)return;
+            if(editPieceInPreview)
+            {
+                var pieces=world.EffectPieces(selected.id);
+                if(pieces.Length>0&&world.ProjectEffectPiece(pieces[Mathf.Clamp(selectedPiece,0,pieces.Length-1)],out var pieceRect))
+                {
+                    var box=new Rect(imageRect.x+pieceRect.x*imageRect.width,imageRect.y+(1-pieceRect.yMax)*imageRect.height,pieceRect.width*imageRect.width,pieceRect.height*imageRect.height);
+                    Handles.BeginGUI();Handles.color=Color.cyan;Handles.DrawAAPolyLine(2,new Vector3(box.x,box.y),new Vector3(box.xMax,box.y),new Vector3(box.xMax,box.yMax),new Vector3(box.x,box.yMax),new Vector3(box.x,box.y));Handles.EndGUI();
+                }
+                return;
+            }
             for(var i=0;i<world.Props.Count;i++)
                 if(world.Props[i].id==selected.id&&world.ProjectProp(i,aspect,out var r,out _))
                 {

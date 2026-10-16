@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +10,13 @@ namespace RoyalAves.Meta.WorldMap
         public const string ResourcePath = "RoyalAvesWorldMapLayout";
         public const string SimpleResourcePath="RoyalAvesWorldMapSimpleLayout";
         public static bool IsExtra(string id)=>id!=null&&(id.StartsWith("thermal-")||id.StartsWith("entrance-")||id.StartsWith("river-"));
-        public static WorldMapLayout For(WorldMapKit kit)=>Resources.Load<WorldMapLayout>(kit.simpleBase?SimpleResourcePath:ResourcePath);
+        public static WorldMapLayout For(WorldMapKit kit)=>kit.simpleBase&&WorldMapMission100.Active?WorldMapMission100.Current.layout:Resources.Load<WorldMapLayout>(kit.simpleBase?SimpleResourcePath:ResourcePath);
         [Serializable] public sealed class Entry
         {
             public string id;
             public string sourceId;
+            public string caption;
+            public WorldMapWorkMotion workMotion;
             public float level, lateral, height = 1;
             public bool customSize;
             public bool keepSprite;
@@ -25,6 +27,9 @@ namespace RoyalAves.Meta.WorldMap
             public bool flipX;
             public WorldMapObjectTheme theme;
             public WorldMapEffectPose snowEffect,lightsEffect,iceEffect;
+            public WorldMapPiecePose[] effectPieces;
+            public bool customAdornments;
+            public WorldMapAdornment[] adornments;
             public bool groundPinned;
             [Range(0,.30f)] public float groundDepth=.06f;
             [Range(-80,80)] public float rotation=50;     // LightShaft
@@ -44,13 +49,13 @@ namespace RoyalAves.Meta.WorldMap
                 :WorldMapPropSizing.Height(EffectiveSprite(kit),kind,kit);
             public PropPlacement Placement(WorldMapRoute route, WorldMapKit kit) => new PropPlacement
             {
-                id=id,s=route.MetersAt(level),offset=lateral,height=EffectiveHeight(kit),sprite=EffectiveSprite(kit),alt=alternate,
-                kind=kind,seed=seed,shadow=shadow,bottomPivot=bottomPivot,flipX=flipX,theme=theme,snowEffect=snowEffect,lightsEffect=lightsEffect,iceEffect=iceEffect,groundPinned=groundPinned,groundDepth=groundDepth,rotation=rotation,intensity=intensity,thickness=thickness,fixedPlacement=customSize||keepSprite
+                id=id,caption=caption,workMotion=workMotion,s=route.MetersAt(level),offset=lateral,height=EffectiveHeight(kit),sprite=EffectiveSprite(kit),alt=alternate,
+                kind=kind,seed=seed,shadow=shadow,bottomPivot=bottomPivot,flipX=flipX,theme=theme,snowEffect=snowEffect,lightsEffect=lightsEffect,iceEffect=iceEffect,effectPieces=effectPieces==null?null:(WorldMapPiecePose[])effectPieces.Clone(),customAdornments=customAdornments,adornments=WorldMapAdornment.Copy(adornments),groundPinned=groundPinned,groundDepth=groundDepth,rotation=rotation,intensity=intensity,thickness=thickness,fixedPlacement=customSize||keepSprite
             };
             public static Entry From(PropPlacement p, WorldMapRoute route) => new Entry
             {
-                id=Guid.NewGuid().ToString("N"),sourceId=IsExtra(p.id)?p.id:null,level=route.LevelAt(p.s),lateral=p.offset,height=p.height,
-                customSize=true,keepSprite=true,sprite=p.sprite,alternate=p.alt,kind=p.kind,seed=p.seed,shadow=p.shadow,bottomPivot=p.bottomPivot,flipX=p.flipX,theme=p.theme,snowEffect=p.snowEffect,lightsEffect=p.lightsEffect,iceEffect=p.iceEffect,groundPinned=p.groundPinned,groundDepth=p.groundDepth,rotation=p.rotation>0||p.rotation<0?p.rotation:50,intensity=p.intensity>0?p.intensity:.35f,thickness=p.thickness>0?p.thickness:1
+                id=Guid.NewGuid().ToString("N"),caption=p.caption,workMotion=p.workMotion,sourceId=IsExtra(p.id)?p.id:null,level=route.LevelAt(p.s),lateral=p.offset,height=p.height,
+                customSize=true,keepSprite=true,sprite=p.sprite,alternate=p.alt,kind=p.kind,seed=p.seed,shadow=p.shadow,bottomPivot=p.bottomPivot,flipX=p.flipX,theme=p.theme,snowEffect=p.snowEffect,lightsEffect=p.lightsEffect,iceEffect=p.iceEffect,effectPieces=p.effectPieces==null?null:(WorldMapPiecePose[])p.effectPieces.Clone(),customAdornments=p.customAdornments,adornments=WorldMapAdornment.Copy(p.adornments),groundPinned=p.groundPinned,groundDepth=p.groundDepth,rotation=p.rotation>0||p.rotation<0?p.rotation:50,intensity=p.intensity>0?p.intensity:.35f,thickness=p.thickness>0?p.thickness:1
             };
         }
         [Serializable] public sealed class Chapter
@@ -75,3 +80,4 @@ namespace RoyalAves.Meta.WorldMap
         }
     }
 }
+

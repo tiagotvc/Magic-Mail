@@ -35,10 +35,16 @@ namespace RoyalAves.Meta
             }
         }
 
-        void OnEnable() => shown = null;
+        void OnEnable() { shown = null; Apply(); }
 
         void LateUpdate()
         {
+            Apply();
+        }
+
+        void Apply()
+        {
+            if (boost == null) boost = GetComponent<BoostIcon>();
             var on = boost.check != null && boost.check.activeSelf;
             if (on == shown) return;
             shown = on;
@@ -48,6 +54,11 @@ namespace RoyalAves.Meta
                 centerMaterial.SetFloat("_HsvSaturation", on ? selectedSaturation : inactiveSaturation);
                 centerMaterial.SetFloat("_HsvShift", on ? selectedHueShift : 0f);
             }
+        }
+
+        void OnDestroy()
+        {
+            if (centerMaterial != null) Destroy(centerMaterial);
         }
     }
 }

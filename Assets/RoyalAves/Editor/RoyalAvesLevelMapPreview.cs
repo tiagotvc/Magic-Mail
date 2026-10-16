@@ -30,12 +30,17 @@ namespace RoyalAves.EditorTools
         Vector2 settingsScroll,previewPan;
         float sidebarWidth=420,previewZoom=1;
         bool resizing,panning;
+        bool mapPointerDown,mapDragged;
+        Vector2 mapPressPosition;
+        int mapDragControl;
+        double lastMapDrag,lastPreviewFrame;
         int seasonPreview;
         readonly RoyalAvesMapIslandControls islandControls=new RoyalAvesMapIslandControls();
         readonly RoyalAvesMapLayoutControls layoutControls=new RoyalAvesMapLayoutControls();
         static bool creatingScenePreview;
         bool scenePreview;
         bool santaSettings;
+        bool nightSettings=true;
         PointerEventData scenePointer;
 
         // The Simulator can show the same saved map before Play without editing game.unity.
@@ -67,7 +72,11 @@ namespace RoyalAves.EditorTools
             return moving;
         }
         internal void BeginSceneDrag(){scenePointer=new PointerEventData(null);map.BeginDrag(scenePointer);}
-        internal void DragScenePreview(float fraction,float deltaTime)=>map.DragByViewport(fraction,deltaTime);
+        internal void DragScenePreview(float fraction,float deltaTime)
+        {
+            map.DragByViewport(fraction,deltaTime);
+            level=map.Cursor;
+        }
         internal void EndSceneDrag(){if(scenePointer!=null)map.EndDrag(scenePointer);}
         internal void ScrollScenePreview(float delta)=>map.Scroll(delta);
 
@@ -150,6 +159,59 @@ namespace RoyalAves.EditorTools
             RenderCanvas();
         }
 
+        void RenderWindow()
+        {
+            if(camera==null||map==null)return;
+            var now=EditorApplication.timeSinceStartup;
+            var deltaTime=lastPreviewFrame>0?(float)(now-lastPreviewFrame):0;
+            lastPreviewFrame=now;
+            // PreviewAt resets velocity. Use it only for an explicit sidebar/toolbar position change;
+            // mouse navigation advances the same drag, easing and inertia used by the game.
+            if(!Mathf.Approximately(level,map.Cursor))map.PreviewAt(level);
+            RenderScenePreview(deltaTime);
+        }
+
+        internal void HandleMapNavigation(Event e,Rect imageRect)
+        {
+            var control=GUIUtility.GetControlID("WorldMapPreviewNavigation".GetHashCode(),FocusType.Passive);
+            var uv=new Vector2((e.mousePosition.x-imageRect.x)/imageRect.width,1-(e.mousePosition.y-imageRect.y)/imageRect.height);
+            var inMap=imageRect.Contains(e.mousePosition)&&uv.y>.13f&&uv.y<.90f;
+            if(e.type==EventType.MouseDown&&e.button==0&&inMap&&GUIUtility.hotControl==0)
+            {
+                mapPointerDown=true;mapDragged=false;mapPressPosition=e.mousePosition;
+                lastMapDrag=EditorApplication.timeSinceStartup;
+                GUIUtility.hotControl=mapDragControl=control;e.Use();
+            }
+            if(mapPointerDown&&e.type==EventType.MouseDrag&&GUIUtility.hotControl==mapDragControl)
+            {
+                var delta=mapDragged?e.delta:e.mousePosition-mapPressPosition;
+                if(mapDragged||delta.sqrMagnitude>=36)
+                {
+                    if(!mapDragged){BeginSceneDrag();mapDragged=true;}
+                    var now=EditorApplication.timeSinceStartup;
+                    DragScenePreview(-delta.y/imageRect.height,(float)(now-lastMapDrag));lastMapDrag=now;
+                }
+                e.Use();Repaint();
+            }
+            if(mapPointerDown&&(e.type==EventType.Ignore||e.type==EventType.MouseUp&&e.button==0))
+            {
+                var click=!mapDragged&&inMap&&!layoutControls.Editing&&e.type==EventType.MouseUp;
+                EndMapNavigation();
+                if(click)map.TryCatchSanta(uv);
+                if(e.type==EventType.MouseUp)e.Use();
+                Repaint();
+            }
+        }
+
+        void EndMapNavigation()
+        {
+            if(mapDragged&&map!=null)EndSceneDrag();
+            if(mapDragControl!=0&&GUIUtility.hotControl==mapDragControl)GUIUtility.hotControl=0;
+            mapPointerDown=mapDragged=false;mapDragControl=0;
+        }
+
+        void OnLostFocus()=>EndMapNavigation();
+
         void RenderCanvas()
         {
             if(camera==null||capture==null)return;
@@ -176,6 +238,20 @@ namespace RoyalAves.EditorTools
             settingsScroll=EditorGUILayout.BeginScrollView(settingsScroll);
             EditorGUILayout.LabelField("Mapa de níveis · Base ilustrada v6",EditorStyles.boldLabel);
             EditorGUILayout.LabelField("Configurações salvas são usadas no jogo.",EditorStyles.miniLabel);
+            var mission=WorldMapMission100.Current;
+            if(mission!=null)
+            {
+                EditorGUI.BeginChangeCheck();
+                bool enabled=EditorGUILayout.Toggle("Missão Central · fases 1–100",mission.enabled);
+                if(EditorGUI.EndChangeCheck()){Undo.RecordObject(mission,"Alternar missão da Central");mission.enabled=enabled;EditorUtility.SetDirty(mission);AssetDatabase.SaveAssetIfDirty(mission);layoutControls.ClearSelection();needsRebuild=true;}
+                if(mission.enabled)
+                {
+                    if(level<=100)EditorGUILayout.LabelField(WorldMapMission100.LandscapeTitle(Mathf.CeilToInt(level)),EditorStyles.boldLabel);
+                    using(new EditorGUILayout.HorizontalScope())
+                    foreach(var start in new[]{1,21,41,61,81})if(GUILayout.Button(start.ToString())){level=start;previewReached=start;needsRebuild=true;}
+                    if(GUILayout.Button("Selecionar roteiro e personagens"))Selection.activeObject=mission;
+                }
+            }
             if(map!=null&&islandControls.Draw(ref level,map.World,WorldMapLevelCatalog.Count))
             {layoutControls.ClearSelection();Build(capture.width,capture.height,Mathf.Clamp(Mathf.CeilToInt(level),1,Mathf.Max(1,count)));}
             EditorGUILayout.Space();
@@ -185,6 +261,7 @@ namespace RoyalAves.EditorTools
             EditorGUILayout.HelpBox("O preview de season não altera a season ativa. Natal coloca neve sobre os objetos de qualquer área e aplica o chão nevado.",MessageType.None);
             if(GUILayout.Button("Editar seasons e camadas do mapa"))EditorApplication.ExecuteMenuItem("Royal Aves/Editor de temporadas");
             DrawSantaSettings();
+            DrawNightSettings();
             EditorGUI.BeginChangeCheck();
             level = EditorGUILayout.Slider("Avançar no mundo", level, 1, Mathf.Max(1, map?.World!=null?map.World.Route.LevelSlots+1.5f:count));
             if (EditorGUI.EndChangeCheck() && map != null)
@@ -208,7 +285,7 @@ namespace RoyalAves.EditorTools
             GUILayout.BeginArea(new Rect(pane.x,0,pane.width,28),EditorStyles.toolbar);
             using(new EditorGUILayout.HorizontalScope())
             {
-                GUILayout.Label("Preview · arraste objetos · botão do meio move a visão",EditorStyles.miniLabel);
+                GUILayout.Label("Arraste o mapa para avançar e voltar · botão do meio move a visão",EditorStyles.miniLabel);
                 previewZoom=GUILayout.HorizontalSlider(previewZoom,1,4,GUILayout.Width(110));
                 if(GUILayout.Button("Enquadrar",EditorStyles.toolbarButton,GUILayout.Width(75))){previewZoom=1;previewPan=Vector2.zero;}
             }
@@ -216,7 +293,7 @@ namespace RoyalAves.EditorTools
             pane.yMin=28;
             if(capture!=null&&map!=null)
             {
-                Render();
+                if(Event.current.type==EventType.Repaint)RenderWindow();
                 GUI.BeginGroup(pane);
                 var area=new Rect(0,0,pane.width,pane.height);
                 EditorGUI.DrawRect(area,new Color(.12f,.12f,.12f));
@@ -232,14 +309,37 @@ namespace RoyalAves.EditorTools
                 var fit=Mathf.Min(area.width/capture.width,area.height/capture.height)*previewZoom;
                 var imageRect=new Rect(area.center.x+previewPan.x-capture.width*fit*.5f,area.center.y+previewPan.y-capture.height*fit*.5f,capture.width*fit,capture.height*fit);
                 GUI.DrawTexture(imageRect,capture,ScaleMode.StretchToFill);
-                if(!layoutControls.Editing&&e.type==EventType.MouseUp&&e.button==0&&imageRect.Contains(e.mousePosition))
-                {
-                    var uv=new Vector2((e.mousePosition.x-imageRect.x)/imageRect.width,1-(e.mousePosition.y-imageRect.y)/imageRect.height);
-                    if(map.TryCatchSanta(uv))e.Use();
-                }
+                // Object/effect editing claims its own hit first; dragging empty ground still navigates.
                 layoutControls.Overlay(imageRect,map.World,level);
+                HandleMapNavigation(e,imageRect);
                 GUI.EndGroup();Repaint();
             }
+        }
+
+        void DrawNightSettings()
+        {
+            nightSettings=EditorGUILayout.Foldout(nightSettings,"Dia e noite",true);if(!nightSettings||previewKit==null)return;
+            var saved=Resources.Load<WorldMapKit>(WorldMapKit.ResourcePath);
+            EditorGUI.BeginChangeCheck();
+            var cycle=EditorGUILayout.Toggle("Ciclo automático",previewKit.dayNightCycle);
+            var minutes=EditorGUILayout.Slider("Ciclo completo (min)",previewKit.dayNightCycleMinutes,.5f,30);
+            float amount=previewKit.night;
+            using(new EditorGUI.DisabledScope(cycle))amount=EditorGUILayout.Slider("Dia → noite",amount,0,1);
+            using(new EditorGUILayout.HorizontalScope())
+            {
+                if(GUILayout.Button("Dia")){cycle=false;amount=0;GUI.changed=true;}
+                if(GUILayout.Button("Entardecer")){cycle=false;amount=.45f;GUI.changed=true;}
+                if(GUILayout.Button("Noite")){cycle=false;amount=1;GUI.changed=true;}
+            }
+            if(EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(saved,"Ajustar dia e noite");
+                saved.dayNightCycle=previewKit.dayNightCycle=cycle;saved.dayNightCycleMinutes=previewKit.dayNightCycleMinutes=minutes;
+                saved.night=previewKit.night=amount;EditorUtility.SetDirty(saved);Repaint();
+                map?.World?.ConfigureDayNight(cycle,minutes,amount);
+            }
+            EditorGUILayout.HelpBox("O ciclo começa de dia. Os botões permitem conferir a transição e os encaixes à noite. Salve para usar esses ajustes no jogo.",MessageType.None);
+            if(GUILayout.Button("Salvar dia e noite"))AssetDatabase.SaveAssetIfDirty(saved);
         }
 
         void DrawSantaSettings()
@@ -279,6 +379,7 @@ namespace RoyalAves.EditorTools
 
         void Cleanup()
         {
+            EndMapNavigation();lastPreviewFrame=0;
             // Edit-mode MonoBehaviours are not guaranteed an OnDestroy callback on preview-scene close.
             if(map!=null&&map.World!=null)map.World.Dispose();
             map = null;

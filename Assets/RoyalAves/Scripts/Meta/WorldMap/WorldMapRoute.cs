@@ -81,6 +81,8 @@ namespace RoyalAves.Meta.WorldMap
             var bridge = Islands==null?new HashSet<int>(BridgeAfter):new HashSet<int>();
             if(Islands!=null)
                 for(var i=1;i<Islands.islands.Count;i++)bridge.Add(Islands.FirstLevel(i)-1);
+            // The first mission crosses one connected postal campus, independent of island sizing.
+            if(WorldMapMission100.Active)bridge.RemoveWhere(level=>level<100);
             pos[1] = StartPad;
             for (var i = 2; i <= LevelSlots; i++)
             {
@@ -150,7 +152,13 @@ namespace RoyalAves.Meta.WorldMap
                     IntegratedRamp(meters-gap.start+ease)-IntegratedRamp(meters-gap.end);
             }
             var amplitude=Islands?.unifiedBase==true?.36f:.30f;
-            return amplitude*Mathf.Sin(travel*(Mathf.PI*2/9.6f));
+            var original=amplitude*Mathf.Sin(travel*(Mathf.PI*2/9.6f));
+            if(WorldMapMission100.Active&&meters<Pos(100))
+            {
+                float transition=Mathf.SmoothStep(0,1,Mathf.InverseLerp(MetersAt(95),MetersAt(100),meters));
+                return Mathf.Lerp(.40f*Mathf.Sin(travel*(Mathf.PI*2/14.4f)),original,transition);
+            }
+            return original;
         }
 
         public bool InGap(float meters, float pad = 0)

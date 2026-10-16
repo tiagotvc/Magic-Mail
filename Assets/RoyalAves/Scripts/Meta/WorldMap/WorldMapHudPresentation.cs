@@ -19,9 +19,8 @@ namespace RoyalAves.Meta.WorldMap
         readonly Dictionary<int,Button> tabs=new Dictionary<int,Button>();
         Button avatarSource,coinsSource,livesSource,settingsSource;
         Button[] navSources;
-        WorldMapPanelGraphic navigationPanel;
+        WorldMapPostalGraphic navigationPanel;
         Material navigationLabelMaterial;
-        Material navigationSurfaceMaterial;
         WorldMapTopHud topHud;
         int selectedTab=2;
         bool active;
@@ -92,7 +91,7 @@ namespace RoyalAves.Meta.WorldMap
         }
         public void Tick()
         {
-            foreach(var pair in texts)if(pair.source!=null&&pair.target!=null&&pair.source.text!=pair.target.text)pair.target.text=pair.source.text;
+            foreach(var pair in texts)if(pair.source!=null&&pair.target!=null){var value=WorldMapMission100.English(pair.source.text);if(value!=pair.target.text)pair.target.text=value;}
             foreach(var pair in pictures)if(pair.source!=null&&pair.target!=null&&pair.source.sprite!=pair.target.sprite)pair.target.sprite=pair.source.sprite;
         }
         public void SelectTab(int key)
@@ -105,7 +104,7 @@ namespace RoyalAves.Meta.WorldMap
                 var label=button.transform.Find("Label")?.GetComponent<TextMeshProUGUI>();
                 if(label!=null)label.gameObject.SetActive(chosen);
                 var icon=button.transform.Find("Icon") as RectTransform;
-                if(icon!=null){icon.sizeDelta=Vector2.one*(chosen?194:pair.Key==0?158:pair.Key==4?170:165);icon.anchoredPosition=new Vector2(0,chosen?13:-16);}
+                if(icon!=null){icon.sizeDelta=Vector2.one*(chosen?154:pair.Key==0?110:pair.Key==1?116:112);icon.anchoredPosition=new Vector2(0,chosen?45:0);}
                 if(button.image!=null)button.image.color=Color.clear;
             }
         }
@@ -143,25 +142,16 @@ namespace RoyalAves.Meta.WorldMap
                 }
             }
             if(nav==null)return;
-            Remember(nav);nav.sizeDelta=new Vector2(nav.sizeDelta.x,205);nav.anchoredPosition=new Vector2(nav.anchoredPosition.x,102.5f);
-            if(content.Find("Menus") is RectTransform menus){Remember(menus);menus.offsetMin=new Vector2(menus.offsetMin.x,205);}
+            const float navHeight=166;
+            Remember(nav);nav.sizeDelta=new Vector2(nav.sizeDelta.x,navHeight);nav.anchoredPosition=new Vector2(nav.anchoredPosition.x,navHeight*.5f);
+            if(content.Find("Menus") is RectTransform menus){Remember(menus);menus.offsetMin=new Vector2(menus.offsetMin.x,navHeight);}
             var background=nav.GetComponent<Image>();Remember(background);
-            if(background!=null){background.sprite=null;background.color=new Color(.105f,.105f,.105f);}
-            var panel=new GameObject("FaixaDoMapa",typeof(RectTransform),typeof(CanvasRenderer),typeof(WorldMapPanelGraphic));
+            if(background!=null){background.sprite=null;background.color=Color.clear;}
+            var panel=new GameObject("FaixaDoMapa",typeof(RectTransform),typeof(CanvasRenderer),typeof(WorldMapPostalGraphic));
             panel.layer=nav.gameObject.layer;panel.transform.SetParent(nav,false);panel.transform.SetAsFirstSibling();
             var rect=(RectTransform)panel.transform;rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.offsetMin=rect.offsetMax=Vector2.zero;
-            navigationPanel=panel.GetComponent<WorldMapPanelGraphic>();navigationPanel.bottom=true;navigationPanel.raycastTarget=false;panels.Add(panel);
-            if(kit.navigationSurface!=null)
-            {
-                navigationSurfaceMaterial=new Material(kit.navigationSurface){name="Abas moldadas do mapa",hideFlags=HideFlags.HideAndDontSave};
-                if(kit.navigationPaint!=null&&kit.navigationSelectedPaint!=null)
-                {
-                    navigationSurfaceMaterial.SetTexture("_BasePaint",kit.navigationPaint);navigationSurfaceMaterial.SetTexture("_ActivePaint",kit.navigationSelectedPaint);
-                    navigationSurfaceMaterial.SetVector("_BasePaintRect",kit.navigationPaintRect);navigationSurfaceMaterial.SetVector("_ActivePaintRect",kit.navigationSelectedPaintRect);
-                    navigationSurfaceMaterial.SetFloat("_UsePaintedNav",1);
-                }
-                navigationPanel.material=navigationSurfaceMaterial;
-            }
+            navigationPanel=panel.GetComponent<WorldMapPostalGraphic>();navigationPanel.surface=WorldMapPostalGraphic.Surface.Navigation;
+            navigationPanel.raycastTarget=false;navigationPanel.ConfigureNavigation();panels.Add(panel);
             foreach(Transform child in nav)
             {
                 if(child==panel.transform)continue;
@@ -174,7 +164,7 @@ namespace RoyalAves.Meta.WorldMap
                     var icons=kit.mapNavIcons.Length==5?kit.mapNavIcons:kit.navIcons;
                     if(icons!=null&&key<icons.Length&&icons[key]!=null)icon.sprite=icons[key];
                     icon.color=Color.white;icon.preserveAspect=true;
-                    icon.rectTransform.anchorMin=icon.rectTransform.anchorMax=new Vector2(.5f,.62f);
+                    icon.rectTransform.anchorMin=icon.rectTransform.anchorMax=new Vector2(.5f,.60f);
                     icon.rectTransform.pivot=new Vector2(.5f,.5f);icon.rectTransform.anchoredPosition=Vector2.zero;
                     icon.rectTransform.sizeDelta=Vector2.one*(key==2?130:110);
                 }
@@ -182,12 +172,13 @@ namespace RoyalAves.Meta.WorldMap
                 {
                     if(child.name!="Eventos"&&child.name!="Ranking"&&child.name!="Equipes"&&child.name!="Coleção")
                     {
-                        var text=label.text;restore.Add(()=>{if(label!=null)label.text=text;});label.text="Mapa";
+                        var text=label.text;restore.Add(()=>{if(label!=null)label.text=text;});label.text=WorldMapMission100.English("Mapa");
                     }
+                    else if(WorldMapMission100.Active){var text=label.text;restore.Add(()=>{if(label!=null)label.text=text;});label.text=WorldMapMission100.English(text);}
                     var color=label.color;restore.Add(()=>{if(label!=null)label.color=color;});
-                    label.color=new Color(1,.96f,.82f);Remember(label.rectTransform);
-                    if(navigationFont!=null)label.font=navigationFont;
-                    label.enableVertexGradient=false;label.fontStyle=FontStyles.Normal;label.fontSize=42;
+                    label.color=new Color(.38f,.22f,.10f);Remember(label.rectTransform);
+                    if(WorldMapHudTheme.Current!=null&&WorldMapHudTheme.Current.font!=null)label.font=WorldMapHudTheme.Current.font;else if(navigationFont!=null)label.font=navigationFont;
+                    label.enableVertexGradient=false;label.fontStyle=FontStyles.Normal;label.fontSize=31;
                     label.enableAutoSizing=false;label.alignment=TextAlignmentOptions.Center;
                     if(navigationLabelMaterial==null&&label.fontSharedMaterial!=null)
                     {
@@ -195,17 +186,18 @@ namespace RoyalAves.Meta.WorldMap
                         // Never change the shared font asset or instantiate a material each frame.
                         navigationLabelMaterial=new Material(label.fontSharedMaterial){name="Legenda da navegação do mapa",hideFlags=HideFlags.HideAndDontSave};
                         navigationLabelMaterial.SetColor(ShaderUtilities.ID_FaceColor,Color.white);
-                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth,0);
+                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth,.065f);
+                        navigationLabelMaterial.SetColor(ShaderUtilities.ID_OutlineColor,new Color(1,.96f,.83f));
                         navigationLabelMaterial.EnableKeyword("UNDERLAY_ON");navigationLabelMaterial.DisableKeyword("UNDERLAY_INNER");
-                        navigationLabelMaterial.SetColor(ShaderUtilities.ID_UnderlayColor,new Color(.23f,.055f,.32f,.72f));
-                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayOffsetX,.10f);
-                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayOffsetY,-.18f);
+                        navigationLabelMaterial.SetColor(ShaderUtilities.ID_UnderlayColor,new Color(.25f,.12f,.045f,.40f));
+                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayOffsetX,-.15f);
+                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayOffsetY,.25f);
                         navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayDilate,0);
                         navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlaySoftness,.025f);
                     }
                     if(navigationLabelMaterial!=null){label.fontSharedMaterial=navigationLabelMaterial;label.UpdateMeshPadding();}
                     label.rectTransform.anchorMin=new Vector2(0,0);label.rectTransform.anchorMax=new Vector2(1,0);
-                    label.rectTransform.anchoredPosition=new Vector2(0,36);label.rectTransform.sizeDelta=new Vector2(0,42);
+                    label.rectTransform.anchoredPosition=new Vector2(0,52);label.rectTransform.sizeDelta=new Vector2(0,42);
                 }
             }
             var order=new[]{2,0,1,3,4};
@@ -222,7 +214,6 @@ namespace RoyalAves.Meta.WorldMap
             for(var i=restore.Count-1;i>=0;i--)restore[i]();restore.Clear();
             foreach(var panel in panels)if(panel!=null){panel.SetActive(false);if(Application.isPlaying)Object.Destroy(panel);else Object.DestroyImmediate(panel);}panels.Clear();
             if(navigationLabelMaterial!=null){if(Application.isPlaying)Object.Destroy(navigationLabelMaterial);else Object.DestroyImmediate(navigationLabelMaterial);navigationLabelMaterial=null;}
-            if(navigationSurfaceMaterial!=null){if(Application.isPlaying)Object.Destroy(navigationSurfaceMaterial);else Object.DestroyImmediate(navigationSurfaceMaterial);navigationSurfaceMaterial=null;}
             topHud?.Dispose();topHud=null;
             texts.Clear();pictures.Clear();tabs.Clear();header=null;nav=null;navigationPanel=null;
         }
@@ -234,7 +225,8 @@ namespace RoyalAves.Meta.WorldMap
     // to the original game controls; this class only owns their visual presentation.
     public sealed class WorldMapTopHud
     {
-        public const float Height=210;
+        public const float Height=188;
+        public const float TopInset=32;
         public readonly RectTransform Root;
         public readonly List<(TMP_Text source,TMP_Text target)> TextBindings=new List<(TMP_Text,TMP_Text)>();
         readonly WorldMapKit kit;
@@ -248,27 +240,42 @@ namespace RoyalAves.Meta.WorldMap
         }
         public WorldMapTopHud(RectTransform parent,RectTransform source,WorldMapKit kit,TMP_FontAsset font,Button avatar,Button coins,Button lives,Button settings)
         {
-            this.kit=kit;this.font=font!=null?font:source.GetComponentInChildren<TMP_Text>(true)?.font;
+            this.kit=kit;var theme=WorldMapHudTheme.Current;
+            this.font=theme!=null&&theme.font!=null?theme.font:font!=null?font:source.GetComponentInChildren<TMP_Text>(true)?.font;
             Root=Rect(parent,"HUDDoMapa",0,0,0,Height);Root.anchorMin=new Vector2(0,1);Root.anchorMax=Vector2.one;
-            Root.pivot=new Vector2(.5f,1);Root.anchoredPosition=Vector2.zero;
-            Art(Root,"FundoRoxoDourado",0,540,Height/2,1080,Height,false);
-            var lifeButton=Control(Root,"Lives",278,85,300,145,lives!=null?lives:SourceButton(source,"Lives"));
-            Art(lifeButton,"Contador",1,43,-10,212,73,false);
-            Art(lifeButton,"Coracao",3,-72,-13,126,112);
+            Root.pivot=new Vector2(.5f,1);Root.anchoredPosition=new Vector2(0,-TopInset);
+            Plate(Root,"ApprovedCrystalEnamel",540,Height/2,1080,Height,WorldMapPostalGraphic.Surface.Header);
+            var lifeSource=lives!=null?lives:SourceButton(source,"Lives");var coinSource=coins!=null?coins:SourceButton(source,"Coins");
+            var lifeButton=Control(Root,"Lives",235,89,365,140,lifeSource);
             var lifeValue=source.Find("Lives/Heart/Count")?.GetComponent<TMP_Text>();
             var lifeLabel=source.Find("Lives/Frame/Label")?.GetComponent<TMP_Text>();
-            Bind(lifeValue,Text(lifeButton,"Value","5",-72,-13,90,90,66));
-            Bind(lifeLabel,Text(lifeButton,"State","Cheio",65,-10,139,68,43));
-            var avatarButton=Control(Root,"Avatar",500,89,160,160,avatar!=null?avatar:SourceButton(source,"Avatar"));
-            Art(avatarButton,"CarteiroAdulto",2,0,0,160,160);
-            var coinButton=Control(Root,"Coins",724,85,270,140,coins!=null?coins:SourceButton(source,"Coins"));
-            Art(coinButton,"Contador",1,18,-10,205,73,false);
-            Art(coinButton,"CartaDourada",4,-83,-9,116,96);
+            Bind(lifeValue,Text(lifeButton,"Value","5",-69,0,83,86,63));
+            var state=Text(lifeButton,"State","Full",55,0,124,61,44);Dark(state);
+            state.enableAutoSizing=true;state.fontSizeMin=26;state.fontSizeMax=44;Bind(lifeLabel,state);
+            Control(Root,"PlusLives",390,88,64,64,lifeSource);
+            var avatarButton=Control(Root,"Avatar",527,92,173,173,avatar!=null?avatar:SourceButton(source,"Avatar"));
+            var placement=WorldMapPostalGraphic.PortraitPlacement;
+            var portrait=Rect(Root,"IndependentPortrait",0,0,0,0);
+            portrait.anchorMin=placement.min;portrait.anchorMax=placement.max;portrait.offsetMin=portrait.offsetMax=Vector2.zero;
+            portrait.gameObject.AddComponent<CanvasRenderer>();
+            var art=portrait.gameObject.AddComponent<WorldMapPostalGraphic>();art.surface=WorldMapPostalGraphic.Surface.Portrait;art.raycastTarget=false;
+            var coinButton=Control(Root,"Coins",760,89,270,140,coinSource);
             var coinTexts=source.Find("Coins")?.GetComponentsInChildren<TMP_Text>(true);
-            var value=Text(coinButton,"Value","0",42,-10,120,68,50);value.enableAutoSizing=true;value.fontSizeMin=30;value.fontSizeMax=50;
+            var value=Text(coinButton,"Value","0",25,0,100,66,51);Dark(value);value.enableAutoSizing=true;value.fontSizeMin=24;value.fontSizeMax=51;
             Bind(coinTexts!=null&&coinTexts.Length>0?coinTexts[0]:null,value);
-            var gear=Control(Root,"Settings",916,76,106,115,settings!=null?settings:SourceButton(source,"Settings"));
-            Art(gear,"Engrenagem",5,0,0,88,98);
+            Control(Root,"PlusCoins",866,88,64,64,coinSource);
+            Control(Root,"Settings",967,90,105,105,settings!=null?settings:SourceButton(source,"Settings"));
+        }
+        static void Dark(TMP_Text text)
+        {
+            text.color=new Color(.27f,.095f,.32f);text.fontSharedMaterial=text.font.material;
+        }
+        static void Plate(Transform parent,string name,float x,float y,float width,float height,WorldMapPostalGraphic.Surface style)
+        {
+            var r=Rect(parent,name,x,y,width,height);
+            if(name!="ApprovedCrystalEnamel")r.anchorMin=r.anchorMax=new Vector2(.5f,.5f);
+            r.gameObject.AddComponent<CanvasRenderer>();var graphic=r.gameObject.AddComponent<WorldMapPostalGraphic>();
+            graphic.surface=style;graphic.raycastTarget=false;
         }
         void Bind(TMP_Text source,TMP_Text target){if(source!=null){target.text=source.text;TextBindings.Add((source,target));}}
         static Button SourceButton(Transform source,string name)=>source.Find(name)?.GetComponentInChildren<Button>(true);
@@ -316,6 +323,7 @@ namespace RoyalAves.Meta.WorldMap
     public sealed class WorldMapPanelGraphic : MaskableGraphic
     {
         public bool bottom;
+        public bool quietPostal;
         int selectedIndex;
         public int SelectedIndex
         {
@@ -325,6 +333,13 @@ namespace RoyalAves.Meta.WorldMap
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();var r=rectTransform.rect;
+            if(quietPostal)
+            {
+                Quad(vh,r.min,r.max,new Color(.31f,.21f,.45f),new Color(.57f,.42f,.68f));
+                Quad(vh,new Vector2(r.xMin,r.yMin),new Vector2(r.xMax,r.yMin+2.5f),new Color(.81f,.51f,.19f),new Color(1,.86f,.55f));
+                Quad(vh,new Vector2(r.xMin,r.yMax-2),r.max,new Color(1,.91f,.72f,.04f),new Color(1,.91f,.72f,.18f));
+                return;
+            }
             if(bottom)
             {
                 if(material!=null&&material.shader.name=="RoyalAves/UI/MapNavigation")

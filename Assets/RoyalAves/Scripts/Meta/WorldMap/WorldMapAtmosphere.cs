@@ -83,7 +83,9 @@ namespace RoyalAves.Meta.WorldMap
             var n=Night;
             l.background.color=Color.Lerp(Color.white,new Color(.20f,.26f,.52f),n);
             l.gradient.enabled=!l.background.enabled;l.gradient.mode=7;
-            l.gradient.skyTop=Color.Lerp(s.skyTop,new Color(.03f,.05f,.17f),n);l.gradient.skyBottom=Color.Lerp(s.skyBottom,new Color(.12f,.18f,.42f),n);l.gradient.SetVerticesDirty();
+            l.gradient.skyTop=Color.Lerp(s.skyTop,new Color(.03f,.05f,.17f),n);
+            var dusk=Mathf.Sin(n*Mathf.PI)*.60f;
+            l.gradient.skyBottom=Color.Lerp(Color.Lerp(s.skyBottom,new Color(.96f,.43f,.26f),dusk),new Color(.12f,.18f,.42f),n);l.gradient.SetVerticesDirty();
             l.moon.mode=13;l.moon.time=time;l.moon.enabled=n>.01f;l.moon.canvasRenderer.SetAlpha(n);l.moon.SetVerticesDirty();
             var underwater=s.terrain==WorldMapTerrainTheme.CoastLand;
             var cavern=s.terrain==WorldMapTerrainTheme.CrystalLand;
@@ -132,7 +134,7 @@ namespace RoyalAves.Meta.WorldMap
             if(mode==13)
             {
                 // Lua grande e brilhante + estrelas que piscam (noite).
-                var moon=new Vector2(r.xMin+r.width*.30f,r.yMin+r.height*.30f);   // dentro da faixa de ceu visivel entre o HUD e o horizonte
+                var moon=new Vector2(r.xMin+r.width*.47f,r.yMin+r.height*.40f);
                 for(var i=0;i<46;i++)
                 {
                     var sp=new Vector2(r.xMin+r.width*Mathf.Repeat(i*.6180339f,1),r.yMin+r.height*(.08f+.84f*Mathf.Repeat(i*.3819f+.13f,1)));
@@ -140,14 +142,8 @@ namespace RoyalAves.Meta.WorldMap
                     Circle(vh,sp,1.6f+i%3*.9f,new Color(1,.97f,.85f,.85f*tw));
                     if(i%6==0){Line(vh,sp-new Vector2(7,0),sp+new Vector2(7,0),1.2f,new Color(1,1,.9f,.5f*tw));Line(vh,sp-new Vector2(0,7),sp+new Vector2(0,7),1.2f,new Color(1,1,.9f,.5f*tw));}
                 }
-                Circle(vh,moon,175,new Color(.55f,.68f,1,.05f));
-                Circle(vh,moon,125,new Color(.62f,.74f,1,.08f));
-                Circle(vh,moon,88,new Color(.75f,.84f,1,.16f));
-                Circle(vh,moon,60,new Color(.98f,.99f,1,1));
-                Circle(vh,moon+new Vector2(-18,12),13,new Color(.80f,.86f,.96f,.9f));
-                Circle(vh,moon+new Vector2(17,-11),18,new Color(.82f,.88f,.97f,.9f));
-                Circle(vh,moon+new Vector2(6,26),8,new Color(.84f,.90f,.98f,.9f));
-                Circle(vh,moon+new Vector2(-23,-23),10,new Color(.83f,.89f,.97f,.9f));
+                MoonHalo(vh,moon,180);
+                GlossyMoon(vh,moon,60);
                 return;
             }
             if(mode==12)
@@ -274,6 +270,46 @@ namespace RoyalAves.Meta.WorldMap
             var i = vh.currentVertCount;
             vh.AddVert(a, color, Vector2.zero); vh.AddVert(b, color, Vector2.zero); vh.AddVert(c, color, Vector2.zero);
             vh.AddTriangle(i, i + 1, i + 2);
+        }
+        static void GlossyMoon(VertexHelper vh,Vector2 center,float radius)
+        {
+            const int segments=64,rings=28;var start=vh.currentVertCount;
+            Color Paint(Vector2 p)
+            {
+                float r=p.magnitude,z=Mathf.Sqrt(Mathf.Clamp01(1-r*r));
+                float light=Mathf.Clamp01(.28f+z*.57f-p.x*.24f+p.y*.25f);
+                var c=Color.Lerp(new Color(.40f,.61f,.84f),new Color(1,.98f,.84f),light);
+                var a=p-new Vector2(-.20f,-.18f);var b=p-new Vector2(.28f,.10f);
+                float craters=Mathf.Exp(-a.sqrMagnitude/.025f)*.075f+Mathf.Exp(-b.sqrMagnitude/.045f)*.06f;
+                c=Color.Lerp(c,new Color(.53f,.67f,.78f),craters);
+                float shine=Mathf.Exp(-Mathf.Pow((p.x+.29f)/.38f,2)-Mathf.Pow((p.y-.43f)/.17f,2));
+                c=Color.Lerp(c,new Color(1,1,.97f),shine*.92f);c.a=1;return c;
+            }
+            vh.AddVert(center,Paint(Vector2.zero),Vector2.zero);
+            for(int ring=1;ring<=rings;ring++)for(int k=0;k<segments;k++)
+            {
+                float t=ring/(float)rings,angle=k*Mathf.PI*2/segments;var p=new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*t;
+                vh.AddVert(center+p*radius,Paint(p),Vector2.zero);
+                int current=start+1+(ring-1)*segments+k,next=start+1+(ring-1)*segments+(k+1)%segments;
+                if(ring==1)vh.AddTriangle(start,current,next);
+                else{int inner=current-segments,innerNext=next-segments;vh.AddTriangle(inner,current,next);vh.AddTriangle(inner,next,innerNext);}
+            }
+        }
+        static void MoonHalo(VertexHelper vh,Vector2 center,float radius)
+        {
+            const int segments=48,rings=24;var start=vh.currentVertCount;
+            vh.AddVert(center,new Color(.65f,.78f,1,.28f),Vector2.zero);
+            for(int ring=1;ring<=rings;ring++)
+            {
+                float t=ring/(float)rings;var color=new Color(.65f,.78f,1,.28f*Mathf.Exp(-t*t*4)*(1-t));
+                for(int k=0;k<segments;k++)
+                {
+                    float angle=k*Mathf.PI*2/segments;vh.AddVert(center+new Vector2(Mathf.Cos(angle),Mathf.Sin(angle))*radius*t,color,Vector2.zero);
+                    int current=start+1+(ring-1)*segments+k,next=start+1+(ring-1)*segments+(k+1)%segments;
+                    if(ring==1)vh.AddTriangle(start,current,next);
+                    else{int inner=current-segments,innerNext=next-segments;vh.AddTriangle(inner,current,next);vh.AddTriangle(inner,next,innerNext);}
+                }
+            }
         }
         static void Circle(VertexHelper vh, Vector2 center, float radius, Color color)
         {

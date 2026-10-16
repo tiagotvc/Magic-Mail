@@ -39,6 +39,7 @@ namespace RoyalAves.Meta.WorldMap
             public Color channelColor=new Color32(35,175,225,255);
             [Range(0,9)] public int palette;
             public bool customColors;
+            public bool customPathColor;
             public Color ground=new Color32(104,183,138,255), path=new Color32(185,230,158,255), water=new Color32(73,191,209,255);
             [Tooltip("Atlas de chão com quatro quadrantes no padrão dos materiais do mapa. Vazio usa o chão do tema.")]
             public Sprite groundMaterials;
@@ -82,6 +83,7 @@ namespace RoyalAves.Meta.WorldMap
             Color C(string hex){ColorUtility.TryParseHtmlString(hex,out var c);return c;}
             if(lawn!=null){p.outerA=C(lawn);p.pathA=C(lane);p.water=C(liquid);}
             if(island.customColors){p.outerA=island.ground;p.pathA=island.path;p.water=island.water;}
+            if(island.customPathColor)p.pathA=island.path;
             if(lawn!=null||island.customColors)
             {
                 p.outerB=p.outerA*.94f;p.pathB=p.pathA*.94f;

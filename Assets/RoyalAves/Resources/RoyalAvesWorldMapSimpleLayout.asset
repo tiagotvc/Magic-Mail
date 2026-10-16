@@ -31,29 +31,61 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: df7e33c2362f46d89362bddef2b82017
       sourceId: 
-      level: 7.9026823
-      lateral: 1.8604743
+      level: 7.9983807
+      lateral: -2.040521
       height: 1.42
       customSize: 1
       keepSprite: 1
-      sprite: {fileID: -1170391820591366839, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+      sprite: {fileID: 21300000, guid: 64815dc7eafd7324d87ac9ac6a15ad7e, type: 3}
       alternate: {fileID: 0}
       kind: 2
       seed: 30
       shadow: 1
       bottomPivot: 0
-      flipX: 0
+      flipX: 1
       theme: 0
-      groundPinned: 0
-      groundDepth: 0.06
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 1, y: 1}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      groundPinned: 1
+      groundDepth: 0.093
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 95a20191e92b448994192b8d012bcdb7
       sourceId: 
       level: 2.8341703
@@ -69,14 +101,30 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 8e1129434c654c1a9473c00514546c1f
       sourceId: 
-      level: 6.9946985
-      lateral: -1.8769273
+      level: 7.0793295
+      lateral: 2.0057979
       height: 1.58
       customSize: 1
       keepSprite: 1
@@ -88,10 +136,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.006
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 378d44c48fd244209a45a6133385f3a1
       sourceId: 
       level: -0.008365819
@@ -107,10 +171,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.001
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 078b1ac325f444dfac2451f79188ac79
       sourceId: 
       level: 11.9
@@ -126,10 +206,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: c1485476b18f4f8a8a4d9e126955f896
       sourceId: 
       level: 14.499999
@@ -145,10 +241,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 873aec1bd56541699094659b16653c39
       sourceId: 
       level: 14.8
@@ -164,10 +276,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: fdd5a19239864aebb85ef49c58c4750c
       sourceId: 
       level: 17
@@ -183,10 +311,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f1ff0589300a4e719ae4970c701ffb56
       sourceId: 
       level: 17.4
@@ -202,10 +346,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 639a5397ea4c4dcea4a2ed101f43b67a
       sourceId: 
       level: 18
@@ -221,10 +381,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: a6e060f1ce9a495eaa91e4faf82a35e5
       sourceId: 
       level: 19.6
@@ -240,10 +416,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f5b2cb86f5cc4ba087335e7697ca0dc6
       sourceId: 
       level: 19.8
@@ -259,10 +451,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 65c9ea437075419fb383d4aaaff8f552
       sourceId: entrance-tree-0
       level: -1.3000001
@@ -278,10 +486,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 3722b3d7332f4bd0b222cf61057ef882
       sourceId: entrance-tree-1
       level: -1.0499998
@@ -297,10 +521,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: a317275901464be9ba3d244dd8d57510
       sourceId: river-20-wake-0
       level: 20.47647
@@ -316,10 +556,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 32aa32477b0b436d94f9b47adabff68e
       sourceId: 
       level: 0.015761852
@@ -335,10 +591,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.099
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: caafd6314b684cd59e13ded1166defad
       sourceId: 
       level: 1.6101102
@@ -354,10 +626,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.045
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 6acccc613ac1481588ef8966faee461e
       sourceId: 
       level: 4.30592
@@ -373,10 +661,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 1
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: -0.0043, y: 0.0731}
+        scale: {x: 1, y: 1}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: -0.0018000001, y: -0.0117}
+        scale: {x: 1, y: 1}
+        rotation: 20
       groundPinned: 1
       groundDepth: 0.106000006
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 3c08542caf0f40afabbd678ee09d82f5
       sourceId: 
       level: 4.1098843
@@ -392,10 +696,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.065
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 3ddf0b245ad14917af0f93e966670314
       sourceId: 
       level: 0.49829736
@@ -411,10 +731,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.096
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: bbf52a86804447239bd37c1e6212edce
       sourceId: 
       level: 1.1063763
@@ -430,10 +766,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 1
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.088
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 34611f6fd3d447e3bdd2b7707c031e1d
       sourceId: 
       level: 2.1553137
@@ -449,10 +801,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 4b6829d9080e4461b591153c72a791dc
       sourceId: 
       level: 2.5393832
@@ -468,10 +836,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 1
       groundDepth: 0.076
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 1
     manual: 1
     entries:
@@ -490,10 +874,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f9f5ef5753e8469789e75e1076c02722
       sourceId: 
       level: 23
@@ -509,10 +909,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 9bdbace4768546989e21006cc8f1f7fb
       sourceId: 
       level: 26.6
@@ -528,10 +944,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 70d23c51ee2545b0a88fe79180e3eb47
       sourceId: 
       level: 26.8
@@ -547,10 +979,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 0ddbd8159a1b4e66a02f9703f51041e9
       sourceId: 
       level: 27.8
@@ -566,10 +1014,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: e2e19e909534486ca9f3d95c5da515c7
       sourceId: 
       level: 29.1
@@ -585,10 +1049,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 641a8bcc6d6c45d39e8bbbea45ab42f7
       sourceId: 
       level: 30.2
@@ -604,10 +1084,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 9123b07fed6644ac98660ec4ebccc5b0
       sourceId: 
       level: 31.9
@@ -623,10 +1119,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 5c7c5b4edefd42adac3251b0ce14c844
       sourceId: 
       level: 33.8
@@ -642,10 +1154,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 811f3352334f4ea7b97cc71e5365b982
       sourceId: 
       level: 34.500004
@@ -661,10 +1189,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 6c4046b276c241f58be62c20bbaa28ce
       sourceId: 
       level: 37
@@ -680,10 +1224,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: ccff4f1a48fb4d759da03be6014e338b
       sourceId: 
       level: 37.4
@@ -699,10 +1259,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: e6fbe4cb95a44a72989cd5a1d88597b7
       sourceId: 
       level: 39.6
@@ -718,10 +1294,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: b0d66bfcc96c4178b2b3c146d677a009
       sourceId: 
       level: 39.8
@@ -737,10 +1329,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 800edb0c90b649d4b18da2d15efc969c
       sourceId: 
       level: 24.984034
@@ -756,10 +1364,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: d686e1b667404f1ea9b030edbf9d347d
       sourceId: 
       level: 24.3
@@ -775,10 +1399,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: c7e2fae080cc4a7dbc328c386ffd74c1
       sourceId: river-20-wake-1
       level: 20.52353
@@ -794,10 +1434,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: dfe7fea73e204f33b7a1dd0d55d0312d
       sourceId: river-40-wake-0
       level: 40.47647
@@ -813,10 +1469,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 2
     manual: 1
     entries:
@@ -835,10 +1507,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 40ee7179ed3d4ce3b2b2857b496a10a5
       sourceId: river-50-wake-1
       level: 50.52353
@@ -854,10 +1542,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: ef1e87aa3c65469c9812bf7bfd6137c9
       sourceId: 
       level: 51.699997
@@ -873,10 +1577,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 4afb5c0bd41f405d8073d8bdb853d3b7
       sourceId: 
       level: 53
@@ -892,10 +1612,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 6c97753697d54b1fbf38003d8e0c0bce
       sourceId: 
       level: 56.6
@@ -911,10 +1647,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f37bbc05b7874051b9b14279b805b753
       sourceId: 
       level: 56.8
@@ -930,10 +1682,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 7be33dc919e54712b3e50dcd15541045
       sourceId: 
       level: 57.8
@@ -949,10 +1717,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 1b27249c38eb49b2bb59a148b8037b63
       sourceId: 
       level: 59.100002
@@ -968,10 +1752,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 53f842498eb14ea4a7d87759c3fdcd7a
       sourceId: 
       level: 60.2
@@ -987,10 +1787,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 3
     manual: 1
     entries:
@@ -1009,10 +1825,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: e03af6f7781e467093a98cf59be58975
       sourceId: 
       level: 63.8
@@ -1028,10 +1860,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 3cd1361d13024decb2f696a09db917e8
       sourceId: 
       level: 64.5
@@ -1047,10 +1895,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 92287608ea4e44a1af36c9729a112162
       sourceId: 
       level: 67
@@ -1066,10 +1930,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: c510b546e1fa4bd893d10482f8b709f7
       sourceId: 
       level: 67.4
@@ -1085,10 +1965,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 5a780b903656400cb7b41e5c97bde025
       sourceId: 
       level: 69.6
@@ -1104,10 +2000,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 43bcfac1f9ed4331be1d970c42852254
       sourceId: 
       level: 69.8
@@ -1123,10 +2035,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 5
     manual: 1
     entries:
@@ -1145,10 +2073,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 9f5b59c5878948b68bb997088fab08d2
       sourceId: 
       level: 101.69999
@@ -1164,10 +2108,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: ed14fe3231864e89a252168dce867d8d
       sourceId: 
       level: 103
@@ -1183,10 +2143,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: bf1aef7897f2485f8475d5817518ad24
       sourceId: 
       level: 105.6
@@ -1202,10 +2178,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: fa7e2e732b6d4176835d2b1841c51d01
       sourceId: 
       level: 106.80001
@@ -1221,10 +2213,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 6c7796829d344648845c2690e3348ddf
       sourceId: 
       level: 107.80001
@@ -1240,10 +2248,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 7c571131a2c9448483226a75129e55e4
       sourceId: 
       level: 108
@@ -1259,10 +2283,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 124e03fdcd5f41b2adec013b65d15940
       sourceId: 
       level: 109.1
@@ -1278,10 +2318,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 78782f0441e04414a2124d43fbca70aa
       sourceId: 
       level: 110.4
@@ -1297,10 +2353,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 2e5be860da854bb6bb4b88b4fce4cb9f
       sourceId: 
       level: 111.9
@@ -1316,10 +2388,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 741fd295e1ff482bb25b48d6099c0c6c
       sourceId: 
       level: 113
@@ -1335,10 +2423,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 1bba114ba98740c89016f89047ced428
       sourceId: 
       level: 114.5
@@ -1354,10 +2458,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: dd63f77e116d466ea29e2d1fb680e9a7
       sourceId: 
       level: 114.80001
@@ -1373,10 +2493,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: c6a14e62cd1e43cfb94b3ebc44816484
       sourceId: 
       level: 117
@@ -1392,10 +2528,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 617fb76898034a5f8dfe01c2029862a0
       sourceId: 
       level: 117.4
@@ -1411,10 +2563,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f563ad4054604e4696eb30dfeb990774
       sourceId: 
       level: 118
@@ -1430,10 +2598,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 68a39efc3d484d1b8dbc0caf82c2bb2b
       sourceId: 
       level: 119.6
@@ -1449,10 +2633,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: e99e828d05314f60b8c7ef06b9cb7314
       sourceId: 
       level: 119.80001
@@ -1468,10 +2668,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 6
     manual: 1
     entries: []
@@ -1493,10 +2709,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: d7488e824ddf4243ac8d75871abeb5fb
       sourceId: river-150-wake-1
       level: 150.52353
@@ -1512,10 +2744,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: d0e19b8b75714837b71be240b28c7b27
       sourceId: 
       level: 151.7
@@ -1531,10 +2779,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 50ea46d5205b46158c8f36c849b433fc
       sourceId: 
       level: 153
@@ -1550,10 +2814,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 2714e39fde7b48a1a51f4bae6139c114
       sourceId: 
       level: 155.60002
@@ -1569,10 +2849,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 66445ef7c46c4c71a37117f803b3a037
       sourceId: 
       level: 156.8
@@ -1588,10 +2884,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: f06e9c90a1b143f0b508fbf1ae161495
       sourceId: 
       level: 157.8
@@ -1607,10 +2919,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 97e09f5b46014057908a717d8a6146b7
       sourceId: 
       level: 158
@@ -1626,10 +2954,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 61703c112cd14a62ada7836f005ad9d0
       sourceId: 
       level: 159.1
@@ -1645,10 +2989,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 8
     manual: 1
     entries:
@@ -1667,10 +3027,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 1884b2f96960441b92a67d8c35890c3a
       sourceId: 
       level: 163
@@ -1686,10 +3062,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 8f03fa5687b24f31b957680cc516f979
       sourceId: 
       level: 164.49998
@@ -1705,10 +3097,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 7e33cc347e7d41099a83a504653c87fd
       sourceId: 
       level: 167
@@ -1724,10 +3132,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 85a9ffdad79a4d7ebe3a1f4fbad25178
       sourceId: 
       level: 167.39998
@@ -1743,10 +3167,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 2c8eb497f6754510adf46072ab0aefca
       sourceId: 
       level: 168
@@ -1762,10 +3202,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: 4963c1b35ec8414d85873159401e898a
       sourceId: 
       level: 169.60002
@@ -1781,10 +3237,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
     - id: eb072054fa854d4c81ce6aeed0cde3ea
       sourceId: 
       level: 169.8
@@ -1800,10 +3272,26 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   - index: 4
     manual: 1
     entries:
@@ -1822,8 +3310,24 @@ MonoBehaviour:
       bottomPivot: 0
       flipX: 0
       theme: 0
+      snowEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      lightsEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
+      iceEffect:
+        visibility: 0
+        offset: {x: 0, y: 0}
+        scale: {x: 0, y: 0}
+        rotation: 0
       groundPinned: 0
       groundDepth: 0.06
       rotation: 50
       intensity: 0.35
+      thickness: 1
   hiddenExtras: []

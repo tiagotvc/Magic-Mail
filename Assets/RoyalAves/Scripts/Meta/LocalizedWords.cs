@@ -27,7 +27,8 @@ namespace RoyalAves.Meta
 
         static LocalizedWords instance;
         public static LocalizedWords Instance =>
-            instance != null ? instance : instance = Resources.Load<LocalizedWords>(ResourcePath);
+            instance != null ? instance : instance = Resources.Load<LocalizedWords>(ResourcePath)
+                ?? Resources.Load<LocalizedWords>("Fonts/" + ResourcePath);
 
         /// The word for "key" in whatever language CrosssceneData.selectedLanguage currently points to
         /// (English if nothing matches). Returns "key" itself if there's no entry for it — missing

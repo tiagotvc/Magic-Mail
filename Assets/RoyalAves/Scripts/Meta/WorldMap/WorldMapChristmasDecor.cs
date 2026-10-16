@@ -13,6 +13,8 @@ namespace RoyalAves.Meta.WorldMap
         readonly Func<Texture,Material> material;
         readonly List<GameObject> pieces=new List<GameObject>();
         readonly List<MeshRenderer> lights=new List<MeshRenderer>();
+        readonly List<MeshRenderer> halos=new List<MeshRenderer>();
+        Material glowMaterial;
         readonly List<MeshRenderer> iceDrawings=new List<MeshRenderer>();
         readonly List<Mesh> ownedMeshes=new List<Mesh>();
         readonly MaterialPropertyBlock block=new MaterialPropertyBlock();
@@ -26,7 +28,7 @@ namespace RoyalAves.Meta.WorldMap
             iceRoot=new GameObject("GeloDoObjeto"){layer=layer}.transform;iceRoot.SetParent(root.transform,false);
         }
         public void SetActive(bool active)=>root.SetActive(active);
-        public void Tick(WorldMapKit kit,Sprite sprite,float size,float time,WorldMapEffectPose lightPose,WorldMapEffectPose icePose,bool tree)
+        public void Tick(WorldMapKit kit,Sprite sprite,float size,float time,WorldMapEffectPose lightPose,WorldMapEffectPose icePose,bool tree,float night=0,bool shrub=false,WorldMapPiecePose[] piecePoses=null)
         {
             var first=kit.christmasBulbs.Length>0?kit.christmasBulbs[0]:null;
             root.SetActive(first!=null||kit.christmasIcicles!=null);
@@ -34,14 +36,20 @@ namespace RoyalAves.Meta.WorldMap
             {
                 Clear();source=sprite;height=size;ice=kit.christmasIcicles;bulb=first;Build(kit);
             }
-            lightPose.Apply(lightsRoot,size,new Vector2(0,.60f),tree&&first!=null);
+            lightPose.Apply(lightsRoot,size,new Vector2(0,.60f),(tree||shrub)&&first!=null);
             icePose.Apply(iceRoot,size,new Vector2(0,.28f),tree&&ice!=null);
+            foreach(var drawing in iceDrawings)drawing.GetComponent<WorldMapEffectPiece>().Apply(piecePoses,size);
             for(var i=0;i<lights.Count;i++)
             {
                 var pulse=Mathf.SmoothStep(0,1,Mathf.InverseLerp(-.45f,.65f,Mathf.Sin(time*3.2f+i*1.7f)));
-                var brightness=Mathf.Lerp(.18f,1,pulse);
-                block.Clear();block.SetColor("_Tint",new Color(brightness,brightness,brightness,1));block.SetFloat("_Emission",pulse*.55f);
+                var brightness=Mathf.Lerp(.18f+night*.12f,1,pulse);
+                block.Clear();block.SetColor("_Tint",new Color(brightness,brightness,brightness,1));block.SetFloat("_Emission",pulse*.55f+night*(.4f+pulse*2.2f));
                 lights[i].SetPropertyBlock(block);
+                if(i<halos.Count)
+                {
+                    var tint=i%3==0?new Color(1,.68f,.12f):i%3==1?new Color(1,.12f,.05f):new Color(.08f,1,.75f);
+                    tint.a=night*(.10f+pulse*.65f);block.Clear();block.SetColor("_Color",tint);halos[i].SetPropertyBlock(block);
+                }
             }
             foreach(var drawing in iceDrawings)
             {
@@ -58,6 +66,7 @@ namespace RoyalAves.Meta.WorldMap
         }
         void Build(WorldMapKit kit)
         {
+            if(glowMaterial==null&&kit.glow!=null)glowMaterial=new Material(kit.glow){hideFlags=HideFlags.HideAndDontSave};
             var shape=WorldMapCards.Get(source,height,true);var vertices=shape.vertices;var indices=shape.triangles;
             bool pine=source.name.IndexOf("pine",StringComparison.OrdinalIgnoreCase)>=0||source.name.IndexOf("pinheiro",StringComparison.OrdinalIgnoreCase)>=0;
             int rows=pine?2:1;
@@ -81,6 +90,12 @@ namespace RoyalAves.Meta.WorldMap
                     light.transform.localRotation=Quaternion.Euler(0,0,180);
                     light.transform.localPosition=new Vector3(Mathf.Lerp(left,right,t),y-sag*4*t*(1-t),-.003f);
                     lights.Add(drawing);
+                    if(glowMaterial!=null)
+                    {
+                        var halo=Piece("HaloDeNatal_"+row+"_"+i,WorldMapWindowLight.Quad,Texture2D.whiteTexture,out var haloDrawing);
+                        haloDrawing.sharedMaterial=glowMaterial;halo.transform.localPosition=light.transform.localPosition+new Vector3(0,-height*.035f,-.018f);
+                        halo.transform.localScale=Vector3.one*height*.23f;halos.Add(haloDrawing);
+                    }
                 }
             }
             if(ice!=null)for(var side=-1;side<=1;side+=2)
@@ -95,11 +110,24 @@ namespace RoyalAves.Meta.WorldMap
                     x=point.x;bottom=point.y;break;
                 }
                 float size=height*.115f;
-                var cluster=Piece("GeloGalhoBaixo_"+side,WorldMapCards.Get(ice,size,true),ice.texture,out var drawing);
-                cluster.transform.SetParent(iceRoot,false);iceDrawings.Add(drawing);
-                cluster.transform.localPosition=new Vector3(x,bottom-size*.94f,-.006f);
+                var original=WorldMapCards.Get(ice,size,true);var region=ice.rect;var texture=ice.texture;
+                for(int part=0;part<3;part++)
+                {
+                    var clip=new Rect((region.x+region.width*part/3f)/texture.width,region.y/texture.height,region.width/(3*texture.width),region.height/texture.height);
+                    var iceMesh=WorldMapSeparatedSnow.Clip(original,clip);var center=iceMesh.bounds.center;var points=iceMesh.vertices;
+                    for(int i=0;i<points.Length;i++)points[i]-=center;iceMesh.vertices=points;iceMesh.RecalculateBounds();ownedMeshes.Add(iceMesh);
+                    var cluster=Piece("GeloGalhoBaixo_"+side+"_"+part,iceMesh,ice.texture,out var drawing);
+                    cluster.transform.SetParent(iceRoot,false);iceDrawings.Add(drawing);
+                    cluster.transform.localPosition=new Vector3(x,bottom-size*.94f,-.006f)+center;
+                    cluster.gameObject.AddComponent<WorldMapEffectPiece>();
+                }
             }
             foreach(var piece in pieces)piece.transform.localPosition-=Vector3.up*height*(piece.transform.parent==lightsRoot ? .60f : .28f);
+            foreach(var drawing in iceDrawings)
+            {
+                bool left=drawing.name.Contains("_-1_");var part=drawing.name.Substring(drawing.name.LastIndexOf('_')+1);
+                drawing.GetComponent<WorldMapEffectPiece>().Init((left?"ice-left-":"ice-right-")+part,(left?"Gelo esquerdo ":"Gelo direito ")+(int.Parse(part)+1));
+            }
         }
         static Vector2 Horizontal(Vector3[] v,int[] indices,float y)
         {
@@ -135,7 +163,7 @@ namespace RoyalAves.Meta.WorldMap
             var mesh=new Mesh{name="FioNatalCurvo",vertices=v,uv=uv,triangles=triangles};mesh.RecalculateBounds();return mesh;
         }
         static void Destroy(UnityEngine.Object obj){if(Application.isPlaying)UnityEngine.Object.Destroy(obj);else UnityEngine.Object.DestroyImmediate(obj);}
-        void Clear(){foreach(var piece in pieces)Destroy(piece);pieces.Clear();lights.Clear();iceDrawings.Clear();foreach(var mesh in ownedMeshes)Destroy(mesh);ownedMeshes.Clear();}
-        public void Dispose(){Clear();if(root!=null)Destroy(root);}
+        void Clear(){foreach(var piece in pieces)Destroy(piece);pieces.Clear();lights.Clear();halos.Clear();iceDrawings.Clear();foreach(var mesh in ownedMeshes)Destroy(mesh);ownedMeshes.Clear();}
+        public void Dispose(){Clear();if(glowMaterial!=null)Destroy(glowMaterial);if(root!=null)Destroy(root);}
     }
 }

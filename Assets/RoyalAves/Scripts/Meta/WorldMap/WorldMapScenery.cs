@@ -114,6 +114,8 @@ namespace RoyalAves.Meta.WorldMap
         public PropKind kind;
         public Sprite sprite;
         public Sprite alt;         // segunda pose (caixa aberta, cachorro...)
+        public string caption;
+        public WorldMapWorkMotion workMotion;
         public int seed;
         public bool shadow;
         public bool fixedPlacement; // Explicit editor choices keep their exact anchors.
@@ -121,6 +123,9 @@ namespace RoyalAves.Meta.WorldMap
         public bool flipX;
         public WorldMapObjectTheme theme;
         public WorldMapEffectPose snowEffect,lightsEffect,iceEffect;
+        public WorldMapPiecePose[] effectPieces;
+        public bool customAdornments;
+        public WorldMapAdornment[] adornments;
         public bool groundPinned;
         public float groundDepth;
         public float rotation, intensity, thickness; // LightShaft: graus (+ vem da esquerda) e opacidade; o tamanho e o height
@@ -412,8 +417,14 @@ namespace RoyalAves.Meta.WorldMap
         // Both source lamps have their head on the left. Mailbox doors also point left.
         public static bool MirrorTowardLane(PropPlacement p)=>
             (p.kind==PropKind.Lamp||p.kind==PropKind.Mailbox)&&p.offset<0;
-        public static bool IsMirrored(PropPlacement p)=>(MirrorTowardLane(p)||p.kind==PropKind.Character&&p.offset>0)^p.flipX;
+        public static bool IsMirrored(PropPlacement p)=>(MirrorTowardLane(p)||p.kind==PropKind.Character&&((p.offset>0)^(WorldMapMission100.Character(p.sprite)?.facingLeft??false)))^p.flipX;
         public static bool HasIceTheme(PropPlacement p,bool seasonalSnow)=>p.theme==WorldMapObjectTheme.Ice||p.theme==WorldMapObjectTheme.Season&&seasonalSnow;
+        public static bool IsShrub(PropPlacement p,WorldMapKit kit)
+        {
+            if(p.kind!=PropKind.Small||p.sprite==null)return false;
+            var name=p.sprite.name.ToLowerInvariant();
+            return p.sprite==kit.shrub||p.sprite==kit.shrubCoral||p.sprite==kit.shrubGold||p.sprite==kit.shrubMint||name.Contains("shrub")||name.Contains("bush")||name.Contains("arbusto");
+        }
 
         static Cast CastOf(int chapter, WorldMapKit k)
         {

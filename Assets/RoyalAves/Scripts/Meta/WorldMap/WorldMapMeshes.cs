@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace RoyalAves.Meta.WorldMap
 {
-    // Medalhao postal procedural (mesma especificacao do postal-level-token.obj: face roxa, aro dourado, lateral creme),
-    // gerado em codigo para ter normais/cores por vertice sem depender do mapeamento de submalhas do OBJ.
+    // Domed level medallion with a separate gold rim. Vertex alpha distinguishes
+    // the lacquered face from the metal without requiring material submeshes.
     public static class WorldMapTokenMesh
     {
         public const float Radius = 0.46f;
-        public const float SideHeight = .09f;
-        public const float FaceHeight = .125f;
-        public const float FaceRadius = .411f;
+        public const float SideHeight = .052f;
+        public const float FaceHeight = .105f;
+        public const float FaceRadius = .418f;
         public const float RimInner = .445f;
         const int Segments = 128;
 
@@ -21,14 +21,16 @@ namespace RoyalAves.Meta.WorldMap
 
         public static Mesh Build()
         {
-            var cream = Vc(new Color32(255, 223, 178, 255));
-            var creamLow = Vc(new Color32(221, 171, 112, 255));
-            var gold = Vc(new Color32(255, 246, 212, 255));
+            var cream = Vc(new Color32(255, 225, 164, 255));
+            var creamLow = Vc(new Color32(224, 167, 82, 255));
+            var gold = Vc(new Color32(255, 242, 190, 255));
             var goldDark = Vc(new Color32(214, 177, 119, 255));
             var purpleOuter = Vc(new Color32(166, 88, 204, 255));
             var purpleInner = Vc(new Color32(209, 139, 230, 255));
             cream.a = creamLow.a = gold.a = goldDark.a = 0;
             purpleOuter = purpleInner = Color.white;
+            var crystal=Color.white;crystal.a=2;
+            var channel=Color.white;channel.a=3;
             var v = new List<Vector3>();
             var n = new List<Vector3>();
             var c = new List<Color>();
@@ -56,14 +58,16 @@ namespace RoyalAves.Meta.WorldMap
                 }
             }
 
-            // Continuous rounded cream body: warm underside, light side and a broad visible top rim.
-            Ring(Radius*.96f,0,Radius,.018f,d=>d,creamLow,creamLow);
-            Ring(Radius,.018f,Radius,SideHeight*.76f,d=>d,creamLow,cream);
-            Ring(Radius,SideHeight*.76f,Radius*.985f,SideHeight,d=>(d+Vector3.up).normalized,cream,gold);
-            Ring(Radius*.985f,SideHeight,FaceRadius,SideHeight+.008f,d=>Vector3.up,gold,gold);
-            Ring(FaceRadius,SideHeight+.008f,FaceRadius*.965f,FaceHeight-.004f,d=>(Vector3.up+d*.2f).normalized,purpleOuter,purpleInner);
-            Ring(FaceRadius*.965f,FaceHeight-.004f,FaceRadius*.4f,FaceHeight,d=>Vector3.up,purpleOuter,purpleInner);
-            Ring(FaceRadius*.4f,FaceHeight,0,FaceHeight,d=>Vector3.up,purpleOuter,purpleInner);
+            // Match the navigation bar: white crystal base, thin gold, purple channel, gold lip.
+            Ring(Radius*.97f,0,Radius,.014f,d=>d,crystal,crystal);
+            Ring(Radius,.014f,Radius*.99f,.040f,d=>(d+Vector3.up*.3f).normalized,crystal,crystal);
+            Ring(Radius*.99f,.040f,Radius*.955f,SideHeight,d=>(d+Vector3.up).normalized,crystal,crystal);
+            Ring(Radius*.955f,SideHeight,Radius*.943f,.058f,d=>Vector3.up,gold,gold);
+            Ring(Radius*.943f,.058f,Radius*.918f,.064f,d=>Vector3.up,channel,channel);
+            Ring(Radius*.918f,.064f,FaceRadius,.068f,d=>Vector3.up,gold,gold);
+            Ring(FaceRadius,.068f,FaceRadius*.87f,FaceHeight-.025f,d=>(Vector3.up+d*.4f).normalized,purpleOuter,purpleInner);
+            Ring(FaceRadius*.87f,FaceHeight-.025f,FaceRadius*.55f,FaceHeight-.006f,d=>(Vector3.up+d*.15f).normalized,purpleOuter,purpleInner);
+            Ring(FaceRadius*.55f,FaceHeight-.006f,0,FaceHeight,d=>Vector3.up,purpleOuter,purpleInner);
 
             // Corrige o enrolamento de cada triangulo para que a face aponte para a normal do vertice.
             for (var i = 0; i < t.Count; i += 3)
@@ -82,6 +86,59 @@ namespace RoyalAves.Meta.WorldMap
             return mesh;
         }
 
+        // A small reward reads through its silhouette and broad facets, never a painted outline.
+        public static Mesh BuildRewardStar()
+        {
+            var contour=new List<Vector2>();
+            var corners=new Vector2[10];
+            for(int i=0;i<10;i++){float a=i*Mathf.PI/5;corners[i]=new Vector2(Mathf.Sin(a),Mathf.Cos(a))*(i%2==0?.129f:.068f);}
+            for(int i=0;i<10;i++)
+            {
+                var p=corners[i];var enter=Vector2.Lerp(p,corners[(i+9)%10],.16f);var exit=Vector2.Lerp(p,corners[(i+1)%10],.16f);
+                for(int j=0;j<5;j++){float t=j/4f;contour.Add((1-t)*(1-t)*enter+2*(1-t)*t*p+t*t*exit);}
+            }
+            var v=new List<Vector3>();var colors=new List<Color>();var indices=new List<int>();
+            Color Shade(Vector2 p,bool outer)
+            {
+                var warm=Color.Lerp(new Color(1,.48f,.035f),new Color(1,.91f,.27f),Mathf.Clamp01(.52f+p.y*3.1f-p.x*1.4f));
+                if(outer)warm=Color.Lerp(warm,new Color(1,.78f,.13f),.25f);
+                else warm=Color.Lerp(warm,new Color(1,.97f,.48f),.34f);
+                return Vc(warm);
+            }
+            v.Add(new Vector3(-.014f,.022f,-.010f));colors.Add(Vc(new Color(1,.91f,.28f)));
+            foreach(var p in contour){v.Add(new Vector3(p.x*.82f,p.y*.82f,-.006f));colors.Add(Shade(p,false));}
+            foreach(var p in contour){v.Add(new Vector3(p.x,p.y,0));colors.Add(Shade(p,true));}
+            int count=contour.Count;
+            for(int i=0;i<count;i++)
+            {
+                int a=1+i,b=1+(i+1)%count,c=a+count,d=b+count;
+                indices.Add(0);indices.Add(b);indices.Add(a);
+                indices.Add(a);indices.Add(b);indices.Add(c);indices.Add(b);indices.Add(d);indices.Add(c);
+            }
+            for(int i=0;i<indices.Count;i+=3)
+                if(Vector3.Cross(v[indices[i+1]]-v[indices[i]],v[indices[i+2]]-v[indices[i]]).z>0)
+                {int swap=indices[i+1];indices[i+1]=indices[i+2];indices[i+2]=swap;}
+            var mesh=new Mesh{name="RoundedRewardStar_NoOutline",vertices=v.ToArray(),colors=colors.ToArray(),triangles=indices.ToArray()};
+            mesh.uv=new Vector2[v.Count];mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+        }
+
+        public static Mesh BuildSkull()
+        {
+            var v=new List<Vector3>();var colors=new List<Color>();var triangles=new List<int>();
+            void Oval(float x,float y,float rx,float ry,Color color,float z)
+            {
+                int start=v.Count;v.Add(new Vector3(x,y,z));colors.Add(Vc(color));
+                const int steps=48;for(int k=0;k<=steps;k++){float a=k*Mathf.PI*2/steps;v.Add(new Vector3(x+Mathf.Cos(a)*rx,y+Mathf.Sin(a)*ry,z));colors.Add(Vc(color));if(k>0){triangles.Add(start);triangles.Add(start+k+1);triangles.Add(start+k);}}
+            }
+            var edge=new Color(1,.92f,.70f);var face=new Color(1,.48f,.65f);var ink=new Color(.34f,.015f,.13f);
+            Oval(0,.025f,.17f,.137f,edge,0);Oval(0,-.067f,.118f,.077f,edge,0);
+            Oval(0,.025f,.158f,.125f,face,-.003f);Oval(0,-.067f,.105f,.066f,face,-.003f);
+            Oval(-.065f,.023f,.044f,.051f,ink,-.006f);Oval(.065f,.023f,.044f,.051f,ink,-.006f);
+            Oval(0,-.045f,.019f,.022f,ink,-.007f);
+            for(int k=-1;k<=1;k++)Oval(k*.048f,-.12f,.019f,.028f,face,-.005f);
+            var mesh=new Mesh{name="SeloCaveiraNivel",vertices=v.ToArray(),colors=colors.ToArray(),triangles=triangles.ToArray()};
+            mesh.uv=new Vector2[v.Count];mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+        }
         delegate Vector3 Vector3Func(Vector3 dir);
     }
 

@@ -34,7 +34,7 @@ namespace RoyalAves.Meta
         WorldMapSantaBalloon santaBalloon;
         public event Action<bool> SantaEventCaught;
         public bool SantaBalloonVisible=>santaBalloon!=null&&santaBalloon.Visible;
-        public bool NeedsPreviewFrames=>world!=null&&(world.SantaNeedsFrames||world.ChristmasNeedsFrames||SantaBalloonVisible);
+        public bool NeedsPreviewFrames=>world!=null&&(world.SantaNeedsFrames||world.ChristmasNeedsFrames||world.NightNeedsFrames||world.IceNeedsFrames||world.MailboxNeedsFrames||world.CharacterNeedsFrames||world.AdornmentNeedsFrames||SantaBalloonVisible);
         LobbyFeaturesConfig art;
         RectTransform viewport;
         CurvedMapRoad road;
@@ -218,7 +218,7 @@ namespace RoyalAves.Meta
             controls.pivot = new Vector2(0.5f, 0);
             controls.sizeDelta = new Vector2(0, 80);
             controls.anchoredPosition = new Vector2(0, bottom + 12);
-            map.currentButton = map.MakeButton(controls, "Meu nível", new Vector2(0.85f, 0.5f), new Vector2(220, 76),
+            map.currentButton = map.MakeButton(controls, WorldMapMission100.English("Meu nível"), new Vector2(0.85f, 0.5f), new Vector2(220, 76),
                 art != null ? art.pill : null, () => map.FocusCurrent());
             map.playButton = map.MakeButton(controls, "Jogar", new Vector2(0.82f, 0.5f), new Vector2(340, 126),
                 art != null ? art.buttonGreen : null, () => map.Select(map.nextLevel));

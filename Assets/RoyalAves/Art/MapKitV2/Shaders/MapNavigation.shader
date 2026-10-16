@@ -10,6 +10,7 @@ Shader "RoyalAves/UI/MapNavigation"
         _BasePaintRect("Purple artwork bounds",Vector)=(0,0,1,1)
         _ActivePaintRect("Lilac artwork bounds",Vector)=(0,0,1,1)
         _UsePaintedNav("Use painted backplates",Float)=0
+        _QuietChrome("Restrained postal chrome",Float)=0
         _StencilComp("Stencil Comparison",Float)=8
         _Stencil("Stencil ID",Float)=0
         _StencilOp("Stencil Operation",Float)=0
@@ -41,7 +42,7 @@ Shader "RoyalAves/UI/MapNavigation"
             float _SelectedCell;
             sampler2D _BasePaint,_ActivePaint;
             float4 _BasePaintRect,_ActivePaintRect;
-            float _UsePaintedNav;
+            float _UsePaintedNav,_QuietChrome;
             v2f vert(appdata v)
             {v2f o;o.local=v.vertex;o.vertex=UnityObjectToClipPos(v.vertex);o.color=v.color;o.uv=v.uv;return o;}
             float RoundedDistance(float2 p,float2 lo,float2 hi,float4 radii)
@@ -65,7 +66,7 @@ Shader "RoyalAves/UI/MapNavigation"
             float4 frag(v2f i):SV_Target
             {
                 float2 size=_PanelSize.xy,p=i.uv*size;
-                float rail=12.5,body=size.y-rail,radius=min(84,size.y*.412);
+                float rail=lerp(12.5,5,_QuietChrome),body=size.y-rail,radius=min(84,size.y*.412);
                 float bodyDistance=RoundedDistance(p,float2(0,0),float2(size.x,body),float4(4,4,radius,radius));
                 float bodyAlpha=Coverage(bodyDistance);
                 float cellWidth=size.x/5,id=min(4,floor(p.x/cellWidth));
@@ -123,6 +124,15 @@ Shader "RoyalAves/UI/MapNavigation"
                     painted=lerp(painted,paintedGold,goldAlpha);
                     color=lerp(color,painted.rgb,smoothstep(.55,.98,painted.a));
                     alpha*=smoothstep(.05,.9,painted.a);
+                }
+                if(_QuietChrome>.5)
+                {
+                    float3 quietLow=lerp(float3(.29,.20,.43),float3(.47,.31,.64),chosen);
+                    float3 quietHigh=lerp(float3(.43,.30,.56),float3(.66,.47,.79),chosen);
+                    float3 quietFace=lerp(quietLow,quietHigh,t);
+                    quietFace=lerp(quietFace,float3(.82,.69,.92),exp(-depth/1.8)*facing*.28);
+                    color=lerp(quietFace,Gold(goldT),goldAlpha*.85);
+                    alpha=max(bodyAlpha,goldAlpha)*i.color.a;
                 }
                 #ifdef UNITY_UI_CLIP_RECT
                 alpha*=UnityGet2DClipping(i.local.xy,_ClipRect);

@@ -46,10 +46,16 @@ namespace RoyalAves.Meta.WorldMap
         }
         bool HostVisible(int index)
         {
-            if(index<0||index>=world.Props.Count||world.SceneryCard(index)==null)return false;
+            if(index<0||index>=world.Props.Count)return false;
+            var cover=world.SceneryCard(index);
+            // Pooled cards hidden behind the opening's crest may not have been assigned art yet.
+            // They cannot host an event and must not interrupt the preview's render loop.
+            if(cover==null||!cover.gameObject.activeInHierarchy)return false;
+            var renderer=cover.GetComponent<MeshRenderer>();
+            if(renderer==null||!renderer.enabled||renderer.sharedMaterial==null)return false;
             var p=world.Props[index];
             // Small also includes signs, parcels and benches: identify actual shrubs by their art.
-            var art=world.SceneryCard(index).GetComponent<MeshRenderer>().sharedMaterial.mainTexture;
+            var art=renderer.sharedMaterial.mainTexture;
             var name=((art!=null?art.name:"")+" "+(p.sprite!=null?p.sprite.name:"")).ToLowerInvariant();
             var shrub=p.sprite!=null&&(p.sprite==kit.shrub||p.sprite==kit.shrubCoral||p.sprite==kit.shrubGold||p.sprite==kit.shrubMint)||
                 name.Contains("shrub")||name.Contains("bush")||name.Contains("arbusto");

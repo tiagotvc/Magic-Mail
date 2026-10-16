@@ -81,6 +81,9 @@ namespace RoyalAves.EditorTools
         void OnPreprocessTexture()
         {
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
+            // Snow modal pieces use explicit sprite rectangles to remove transparent export margins.
+            // Their builder owns these settings, including the four separate snow corners.
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/modal/")) return;
             if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
             // Map sheets/backgrounds own their import contract. Forcing Single here
             // erased their sub-sprites on every reimport and displayed whole atlases.

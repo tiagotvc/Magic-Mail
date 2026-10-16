@@ -9,9 +9,13 @@ Shader "RoyalAves/WorldMap/Water"
         _HazeNear ("Bruma inicio", Float) = 16
         _HazeFar ("Bruma fim", Float) = 52
         _NightAmount ("Noite", Range(0,1)) = 0
+        _IceNight("Luar no gelo",Float)=0
+        _IceClock("Animação do reflexo",Float)=0
+        _IceLightCount("Luzes refletidas",Float)=0
         _NightColor ("Cor da noite", Color) = (0.34,0.42,0.78,1)
         _MapTime("Tempo do mapa",Float)=0
         _HasWakeSprite("Reflexos por Sprite",Float)=0
+        _Frozen("Passagem congelada",Float)=0
     }
     SubShader
     {
@@ -30,7 +34,10 @@ Shader "RoyalAves/WorldMap/Water"
                 half4 _Tint; half4 _Line; half4 _HazeColor; half _HazeNear; half _HazeFar; half _NightAmount; half4 _NightColor;
                 float _MapTime;
                 half _HasWakeSprite;
+                half _Frozen;
+                float4 _IceLights[12],_IceLightColors[12];float _IceLightCount,_IceNight,_IceClock;
             CBUFFER_END
+            #include "MapFrozenIce.hlsl"
             struct A { float4 pos : POSITION; half4 col : COLOR; float2 uv : TEXCOORD0;float2 motion:TEXCOORD1; };
             struct V { float4 pos : SV_POSITION; half4 col : COLOR; float2 uv : TEXCOORD0; float depth : TEXCOORD1;float motion:TEXCOORD2; };
             V vert(A i)
@@ -62,7 +69,16 @@ Shader "RoyalAves/WorldMap/Water"
                 float reflection=exp(-pow((i.col.a-.34-.04*sin(i.uv.x*.7+time*.1))/.055,2));
                 c=lerp(c,_Line.rgb,reflection*.13);
                 c=lerp(c,_Line.rgb,(1-smoothstep(.008,.025,shore))*.14);
+                if(_Frozen>.5)
+                {
+                    c=FrozenLake(i.uv,shore);
+                    // A scalloped snow fringe stays opaque above the glassy ice.
+                    float snowEdge=.035+.012*sin(i.uv.x*4.3)+.006*sin(i.uv.x*9.1);
+                    float snow=1-smoothstep(snowEdge,snowEdge+.012,shore);
+                    c=lerp(c,IcePaintColor(half3(.97,.99,1)),snow);
+                }
                 c *= lerp(half3(1,1,1), _NightColor.rgb, _NightAmount);
+                c+=FrozenNightLight(i.uv)*_Frozen;
                 half h = saturate((i.depth - _HazeNear) / max(0.01, _HazeFar - _HazeNear));
                 c = lerp(c, _HazeColor.rgb, h * h * 0.85);
                 return half4(c, 1);

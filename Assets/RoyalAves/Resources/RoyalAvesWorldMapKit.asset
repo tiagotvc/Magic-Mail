@@ -17,6 +17,7 @@ MonoBehaviour:
   shadow: {fileID: 4800000, guid: 9dd417fd052e06a4da17c014808b8ac6, type: 3}
   water: {fileID: 4800000, guid: 9ea21ee16e3bcf74a85c7f5c376248ec, type: 3}
   glow: {fileID: 4800000, guid: 977db54b79184ddbb7a23c7b626c1e9e, type: 3}
+  windowGlow: {fileID: 4800000, guid: f8d48a5f340828343962bcf882467d63, type: 3}
   beam: {fileID: 4800000, guid: e11fb0e21366c254cbc852b6c0b3d59c, type: 3}
   sparkle: {fileID: 4800000, guid: 4b3073523d7ebdf45a13d2680e93c912, type: 3}
   vapor: {fileID: 4800000, guid: 8d55a9f7fe31421ea1d01431860701ec, type: 3}
@@ -56,6 +57,9 @@ MonoBehaviour:
   focusAhead: -2.55
   renderScale: 1
   tokenScale: 0.62
+  night: 0
+  dayNightCycle: 0
+  dayNightCycleMinutes: 4
   illustratedProjection: 1
   illustratedSize: 4
   tuningVersion: 15
@@ -112,6 +116,66 @@ MonoBehaviour:
     overlay: {fileID: 21300000, guid: d7a7eeb0ff89e8302bc97f73ca19f0f9, type: 3}
   - source: {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
     overlay: {fileID: 21300000, guid: b2d0cc9a67bc95c1e665dc9e74f4f858, type: 3}
+  christmasBulbs:
+  - {fileID: 3325764520207057675, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  - {fileID: 2015713533693807065, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  - {fileID: -1861400038217015374, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  christmasIcicles: {fileID: 21300000, guid: 391aad49609a8b316c45ae77012223e3, type: 3}
+  treeDecorationProfiles:
+  - source: {fileID: 21300000, guid: 9853163cc457366613d5338f6a4393b9, type: 3}
+    leftIce: {x: 0.2391486, y: 0.4713465}
+    rightIce: {x: 0.7633556, y: 0.3639589}
+  - source: {fileID: 21300000, guid: e22cc5c962dc822555a7f422145d03bd, type: 3}
+    leftIce: {x: 0.2366616, y: 0.4330225}
+    rightIce: {x: 0.7671494, y: 0.5205955}
+  - source: {fileID: 21300000, guid: 201336f274882bf947a8a46fdb1794d3, type: 3}
+    leftIce: {x: 0.2543945, y: 0.1661562}
+    rightIce: {x: 0.7680664, y: 0.5782656}
+  - source: {fileID: 21300000, guid: 9c97bdd9412342d385350519caf58310, type: 3}
+    leftIce: {x: 0.2991616, y: 0.2044987}
+    rightIce: {x: 0.7046494, y: 0.2178432}
+  - source: {fileID: 21300000, guid: 29b69c9086e1433b97b09a71a6ab0e54, type: 3}
+    leftIce: {x: 0.3317057, y: 0.3399844}
+    rightIce: {x: 0.7008464, y: 0.2784609}
+  - source: {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    leftIce: {x: 0.2808689, y: 0.2453661}
+    rightIce: {x: 0.7412348, y: 0.24203}
+  - source: {fileID: 21300000, guid: 17255d3b3ca54d6983a7f7bcc4dcb4b3, type: 3}
+    leftIce: {x: 0.4111328, y: 0.2638125}
+    rightIce: {x: 0.5927734, y: 0.2267031}
+  - source: {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
+    leftIce: {x: 0.2828482, y: 0.1853215}
+    rightIce: {x: 0.7226593, y: 0.1845137}
+  - source: {fileID: 21300000, guid: 1473c66de9cc45c4ae60afe5682bfaa7, type: 3}
+    leftIce: {x: 0.2369691, y: 0.193747}
+    rightIce: {x: 0.7678571, y: 0.2958551}
+  - source: {fileID: 406077303871232680, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+    leftIce: {x: 0.2319728, y: 0.2191387}
+    rightIce: {x: 0.7666667, y: 0.2322774}
+  - source: {fileID: 1455077550942160976, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+    leftIce: {x: 0.2319413, y: 0.2106154}
+    rightIce: {x: 0.7691874, y: 0.2121538}
+  - source: {fileID: -1202962339879284403, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2322006, y: 0.2120302}
+    rightIce: {x: 0.7661812, y: 0.2321307}
+  - source: {fileID: 8897882817926027608, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2335165, y: 0.2430487}
+    rightIce: {x: 0.7664835, y: 0.2273501}
+  - source: {fileID: -6188665227271562376, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2323446, y: 0.2112731}
+    rightIce: {x: 0.7676554, y: 0.2112731}
+  - source: {fileID: 1007921232901123686, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+    leftIce: {x: 0.2342233, y: 0.1595088}
+    rightIce: {x: 0.7657767, y: 0.1485439}
+  - source: {fileID: 21300000, guid: caa93c4dda31454d9e990ffbfe9bf59a, type: 3}
+    leftIce: {x: 0.2691388, y: 0.3018533}
+    rightIce: {x: 0.7348485, y: 0.2779298}
+  - source: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    leftIce: {x: 0.3161882, y: 0.1989825}
+    rightIce: {x: 0.6862041, y: 0.1694769}
+  - source: {fileID: -390668926164980875, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+    leftIce: {x: 0.234375, y: 0.184022}
+    rightIce: {x: 0.765625, y: 0.184022}
   groundPaint: {fileID: 21300000, guid: 3293d88e250349140aa69ac00de2a929, type: 3}
   groundIllustration: {fileID: 21300000, guid: 556cfa635645d124596d1735d99c28f2, type: 3}
   levelCrown: {fileID: -1405306228871016635, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
@@ -426,63 +490,3 @@ MonoBehaviour:
   waterRocks: {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
   seasonPreview: 0
   christmasPreview: 0
-  christmasBulbs:
-  - {fileID: 3325764520207057675, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
-  - {fileID: 2015713533693807065, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
-  - {fileID: -1861400038217015374, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
-  christmasIcicles: {fileID: 21300000, guid: 391aad49609a8b316c45ae77012223e3, type: 3}
-  treeDecorationProfiles:
-  - source: {fileID: 21300000, guid: 9853163cc457366613d5338f6a4393b9, type: 3}
-    leftIce: {x: 0.2391486, y: 0.4713465}
-    rightIce: {x: 0.7633556, y: 0.3639589}
-  - source: {fileID: 21300000, guid: e22cc5c962dc822555a7f422145d03bd, type: 3}
-    leftIce: {x: 0.2366616, y: 0.4330225}
-    rightIce: {x: 0.7671494, y: 0.5205955}
-  - source: {fileID: 21300000, guid: 201336f274882bf947a8a46fdb1794d3, type: 3}
-    leftIce: {x: 0.2543945, y: 0.1661562}
-    rightIce: {x: 0.7680664, y: 0.5782656}
-  - source: {fileID: 21300000, guid: 9c97bdd9412342d385350519caf58310, type: 3}
-    leftIce: {x: 0.2991616, y: 0.2044987}
-    rightIce: {x: 0.7046494, y: 0.2178432}
-  - source: {fileID: 21300000, guid: 29b69c9086e1433b97b09a71a6ab0e54, type: 3}
-    leftIce: {x: 0.3317057, y: 0.3399844}
-    rightIce: {x: 0.7008464, y: 0.2784609}
-  - source: {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
-    leftIce: {x: 0.2808689, y: 0.2453661}
-    rightIce: {x: 0.7412348, y: 0.2420300}
-  - source: {fileID: 21300000, guid: 17255d3b3ca54d6983a7f7bcc4dcb4b3, type: 3}
-    leftIce: {x: 0.4111328, y: 0.2638125}
-    rightIce: {x: 0.5927734, y: 0.2267031}
-  - source: {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
-    leftIce: {x: 0.2828482, y: 0.1853215}
-    rightIce: {x: 0.7226593, y: 0.1845137}
-  - source: {fileID: 21300000, guid: 1473c66de9cc45c4ae60afe5682bfaa7, type: 3}
-    leftIce: {x: 0.2369691, y: 0.1937470}
-    rightIce: {x: 0.7678571, y: 0.2958551}
-  - source: {fileID: 406077303871232680, guid: 41e50814136a2db25e336b0c64996609, type: 3}
-    leftIce: {x: 0.2319728, y: 0.2191387}
-    rightIce: {x: 0.7666667, y: 0.2322774}
-  - source: {fileID: 1455077550942160976, guid: 41e50814136a2db25e336b0c64996609, type: 3}
-    leftIce: {x: 0.2319413, y: 0.2106154}
-    rightIce: {x: 0.7691874, y: 0.2121538}
-  - source: {fileID: -1202962339879284403, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
-    leftIce: {x: 0.2322006, y: 0.2120302}
-    rightIce: {x: 0.7661812, y: 0.2321307}
-  - source: {fileID: 8897882817926027608, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
-    leftIce: {x: 0.2335165, y: 0.2430487}
-    rightIce: {x: 0.7664835, y: 0.2273501}
-  - source: {fileID: -6188665227271562376, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
-    leftIce: {x: 0.2323446, y: 0.2112731}
-    rightIce: {x: 0.7676554, y: 0.2112731}
-  - source: {fileID: 1007921232901123686, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
-    leftIce: {x: 0.2342233, y: 0.1595088}
-    rightIce: {x: 0.7657767, y: 0.1485439}
-  - source: {fileID: 21300000, guid: caa93c4dda31454d9e990ffbfe9bf59a, type: 3}
-    leftIce: {x: 0.2691388, y: 0.3018533}
-    rightIce: {x: 0.7348485, y: 0.2779298}
-  - source: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
-    leftIce: {x: 0.3161882, y: 0.1989825}
-    rightIce: {x: 0.6862041, y: 0.1694769}
-  - source: {fileID: -390668926164980875, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
-    leftIce: {x: 0.2343750, y: 0.1840220}
-    rightIce: {x: 0.7656250, y: 0.1840220}

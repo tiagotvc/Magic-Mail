@@ -64,6 +64,8 @@ namespace RoyalAves.EditorTools
             else{Field("terrain","Tema do chão");Field("palette","Paleta do chão (0–9)");}
             Field("customColors","Personalizar cores");
             if(item.FindPropertyRelative("customColors").boolValue){Field("ground","Chão lateral");Field("path","Trilha");Field("water","Água / lava");}
+            Field("customPathColor","Cor independente da estrada");
+            if(item.FindPropertyRelative("customPathColor").boolValue&&!item.FindPropertyRelative("customColors").boolValue)Field("path","Cor da estrada");
             Field("groundMaterials","Textura do chão (opcional)");
             EditorGUILayout.Space(5);EditorGUILayout.LabelField("Passagem para a próxima ilha",EditorStyles.boldLabel);
             Field("channelWidth","Largura da água");Field("channelDepth","Profundidade do rebaixo");

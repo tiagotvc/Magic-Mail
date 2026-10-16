@@ -1,0 +1,323 @@
+fileFormatVersion: 2
+guid: 8d8d4fa3d18de0642b7aa33f250a10d3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1495800006111727292
+    second: Gelos de neve e longos pingentes-8_0
+  - first:
+      213: 2170015778048004462
+    second: Gelos de neve e longos pingentes-8_1
+  - first:
+      213: -8798952027962486670
+    second: Gelos de neve e longos pingentes-8_2
+  - first:
+      213: -9102436677497664343
+    second: Gelos de neve e longos pingentes-8_3
+  - first:
+      213: -6671449609694071931
+    second: Gelos de neve e longos pingentes-8_4
+  - first:
+      213: 4189790897807441411
+    second: Gelos de neve e longos pingentes-8_5
+  - first:
+      213: 3143468570551692569
+    second: Gelos de neve e longos pingentes-8_6
+  - first:
+      213: 5460319717994978202
+    second: Gelos de neve e longos pingentes-8_7
+  - first:
+      213: 96721203826061450
+    second: Gelos de neve e longos pingentes-8_8
+  - first:
+      213: -2263195401777207272
+    second: Gelos de neve e longos pingentes-8_9
+  - first:
+      213: -7779094416041077704
+    second: Gelos de neve e longos pingentes-8_10
+  - first:
+      213: 2951342448393430181
+    second: Gelos de neve e longos pingentes-8_11
+  - first:
+      213: -8004860017048015904
+    second: Snow0
+  - first:
+      213: -2857931472522853388
+    second: Snow1
+  - first:
+      213: -1082549423775312622
+    second: Snow2
+  - first:
+      213: -4352134921269661786
+    second: Snow3
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Snow0
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 1219
+        width: 270
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0eb202fd93609e090800000000000000
+      internalID: -8004860017048015904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snow1
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 1198
+        width: 270
+        height: 196
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f3cddbb7769658d0800000000000000
+      internalID: -2857931472522853388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snow2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 142
+        width: 206
+        height: 230
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2159110e8030af0f0800000000000000
+      internalID: -1082549423775312622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Snow3
+      rect:
+        serializedVersion: 2
+        x: 748
+        y: 140
+        width: 211
+        height: 229
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6af2623095c1a93c0800000000000000
+      internalID: -4352134921269661786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Gelos de neve e longos pingentes-8_0: -1495800006111727292
+      Gelos de neve e longos pingentes-8_1: 2170015778048004462
+      Gelos de neve e longos pingentes-8_10: -7779094416041077704
+      Gelos de neve e longos pingentes-8_11: 2951342448393430181
+      Gelos de neve e longos pingentes-8_2: -8798952027962486670
+      Gelos de neve e longos pingentes-8_3: -9102436677497664343
+      Gelos de neve e longos pingentes-8_4: -6671449609694071931
+      Gelos de neve e longos pingentes-8_5: 4189790897807441411
+      Gelos de neve e longos pingentes-8_6: 3143468570551692569
+      Gelos de neve e longos pingentes-8_7: 5460319717994978202
+      Gelos de neve e longos pingentes-8_8: 96721203826061450
+      Gelos de neve e longos pingentes-8_9: -2263195401777207272
+      Snow0: -8004860017048015904
+      Snow1: -2857931472522853388
+      Snow2: -1082549423775312622
+      Snow3: -4352134921269661786
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

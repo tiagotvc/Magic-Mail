@@ -50,6 +50,7 @@ namespace RoyalAves.EditorTools
             }
             var changed = created;
             changed|=Set(ref kit.glow,AssetDatabase.LoadAssetAtPath<Shader>(Shaders+"MapGlow.shader"));
+            changed|=Set(ref kit.windowGlow,AssetDatabase.LoadAssetAtPath<Shader>(Shaders+"MapWindowGlow.shader"));
             changed|=Set(ref kit.beam,AssetDatabase.LoadAssetAtPath<Shader>(Shaders+"MapBeam.shader"));
             changed|=Set(ref kit.sparkle,AssetDatabase.LoadAssetAtPath<Shader>(Shaders+"MapSparkle.shader"));
             changed|=Set(ref kit.vapor,AssetDatabase.LoadAssetAtPath<Shader>(Shaders+"MapVapor.shader"));

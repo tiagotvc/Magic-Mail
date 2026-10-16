@@ -16,6 +16,7 @@ namespace RoyalAves.Meta.WorldMap
         public Shader shadow;
         public Shader water;
         public Shader glow;
+        public Shader windowGlow;
         public Shader beam;
         public Shader sparkle;
         public Shader vapor;
@@ -50,6 +51,13 @@ namespace RoyalAves.Meta.WorldMap
         [Range(0.3f, 2.5f)] public float tokenScale = 0.62f;
         [Header("Dia e noite")]
         [Range(0, 1), Tooltip("0 = dia, 1 = noite. Escurece o mundo, troca sol por lua e acende luzes.")] public float night;
+        public bool dayNightCycle=true;
+        [Range(.5f,30)] public float dayNightCycleMinutes=4;
+        public static float NightAt(float seconds,float minutes)
+        {
+            var phase=Mathf.Repeat(seconds/Mathf.Max(30,minutes*60),1);
+            return Mathf.SmoothStep(0,1,Mathf.InverseLerp(.20f,.80f,.5f-.5f*Mathf.Cos(phase*Mathf.PI*2)));
+        }
         public bool illustratedProjection = true;
         public float illustratedSize = 4.0f;
         [Tooltip("Usado pelo setup do editor para migrar valores ajustados em versoes anteriores.")]
@@ -119,6 +127,8 @@ namespace RoyalAves.Meta.WorldMap
         [System.NonSerialized] public bool customGround;
         [System.NonSerialized] public bool simpleGroundVariant;
         [System.NonSerialized] public Color simpleLawnColor,simplePathColor;
+        [System.NonSerialized] public bool simpleGreenGradient,simplePathOverride;
+        [System.NonSerialized] public Vector2 simpleIslandSpan;
         public Sprite[] Family => terrainTheme==WorldMapTerrainTheme.ForestLand?forestFamily:terrainTheme==WorldMapTerrainTheme.CoastLand?coastFamily:terrainTheme==WorldMapTerrainTheme.AuroraLand?auroraFamily:terrainTheme==WorldMapTerrainTheme.DesertLand?desertFamily:terrainTheme==WorldMapTerrainTheme.OrchardLand?orchardFamily:terrainTheme==WorldMapTerrainTheme.MarshLand?marshFamily:terrainTheme==WorldMapTerrainTheme.CloudLand?cloudFamily:terrainTheme==WorldMapTerrainTheme.CrystalLand?crystalFamily:terrainTheme==WorldMapTerrainTheme.GreenLand?gardenFamily:null;
         [HideInInspector] public int seasonPreview;
         public bool christmasPreview;
