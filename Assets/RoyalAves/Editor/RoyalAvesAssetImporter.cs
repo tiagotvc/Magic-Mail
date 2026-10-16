@@ -180,6 +180,25 @@ namespace RoyalAves.EditorTools
 
         void OnPreprocessTexture()
         {
+            if (assetPath.StartsWith("Assets/RoyalAves/Resources/UI/Hud/"))
+            {
+                var hudImporter = (TextureImporter)assetImporter;
+                hudImporter.textureType = TextureImporterType.Sprite;
+                hudImporter.spriteImportMode = SpriteImportMode.Single;
+                hudImporter.maxTextureSize = 4096;
+                hudImporter.alphaIsTransparency = true;
+                hudImporter.mipmapEnabled = false;
+                hudImporter.npotScale = TextureImporterNPOTScale.None;
+                foreach (var platform in new[] { "Standalone", "Android", "iPhone" })
+                {
+                    var settings = hudImporter.GetPlatformTextureSettings(platform);
+                    settings.name = platform;
+                    settings.overridden = true;
+                    settings.maxTextureSize = 4096;
+                    hudImporter.SetPlatformTextureSettings(settings);
+                }
+                return;
+            }
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
             if (assetPath.StartsWith(DialogFolder)) return; // hand-sliced per-character sheets, left alone
             var importer = (TextureImporter)assetImporter;

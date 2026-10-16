@@ -30,7 +30,57 @@ namespace SweetSugar.Scripts.GUI
         public HorizontalLayoutGroup hg;
         public List<TargetGUI> list = new List<TargetGUI>();
         public TextMeshProUGUI description;
+        [Header("HUD: distribuicao centralizada das metas")]
+        [Min(1)] public float goalSlotWidth = 150f;
+        [Min(0)] public float goalSpacing = 12f;
+        [Range(0, .4f)] public float goalSideInset = .12f;
+        readonly Dictionary<TargetGUI, Vector3> authoredGoalScales = new Dictionary<TargetGUI, Vector3>();
         HorizontalLayoutGroup group;
+
+        bool IsGameplayHud()
+        {
+            for (var parent = transform.parent; parent != null; parent = parent.parent)
+                if (parent.name == "TopPanel") return true;
+            return false;
+        }
+
+        void CenterGameplayGoals()
+        {
+            if (!IsGameplayHud() || hg == null) return;
+            // Shrinking layout cells alone does not shrink the fixed-size icon and number inside them.
+            // Position the complete items and scale their contents together to the usable cream area.
+            hg.enabled = false;
+            var area = hg.transform as RectTransform;
+            if (area == null) return;
+            float usableWidth = Mathf.Max(0, area.rect.width * (1 - 2 * goalSideInset) - 20);
+            var active = list.Where(item => item != null && item.gameObject.activeSelf).ToArray();
+            float naturalWidth = Mathf.Max(0, active.Length - 1) * goalSpacing;
+            foreach (var item in active)
+            {
+                if (!authoredGoalScales.ContainsKey(item)) authoredGoalScales[item] = item.transform.localScale;
+                naturalWidth += goalSlotWidth * Mathf.Abs(authoredGoalScales[item].x);
+            }
+            float fit = naturalWidth > 0 ? Mathf.Min(1, usableWidth / naturalWidth) : 1;
+            float x = -naturalWidth * fit * .5f;
+            foreach (var item in active)
+            {
+                var rect = (RectTransform)item.transform;
+                float width = goalSlotWidth * Mathf.Abs(authoredGoalScales[item].x) * fit;
+                rect.anchorMin = rect.anchorMax = new Vector2(.5f, .5f);
+                rect.pivot = new Vector2(.5f, .5f);
+                rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, goalSlotWidth);
+                rect.localScale = authoredGoalScales[item] * fit;
+                rect.anchoredPosition = new Vector2(x + width * .5f, 0);
+                x += width + goalSpacing * fit;
+            }
+            // The hidden description must not reserve horizontal space.
+            if (description != null) description.gameObject.SetActive(false);
+        }
+
+        void LateUpdate()
+        {
+            if (IsGameplayHud()) CenterGameplayGoals();
+        }
 
         void OnEnable()
         {
@@ -60,6 +110,11 @@ namespace SweetSugar.Scripts.GUI
 
         private void OnLevelLoaded()
         {
+            if (IsGameplayHud())
+            {
+                CenterGameplayGoals();
+                return;
+            }
             group = GetComponent<HorizontalLayoutGroup>();
             if (group != null)
             {
@@ -77,6 +132,8 @@ namespace SweetSugar.Scripts.GUI
             yield return new WaitUntil(() => LevelManager.THIS.levelData.GetTargetSprites().Length > 0);
 
             ClearTargets();
+            foreach (var item in list)
+                if (item != null) item.gameObject.SetActive(false);
             SetTargets();
         }
 
@@ -96,11 +153,13 @@ namespace SweetSugar.Scripts.GUI
                 list[i].gameObject.SetActive(true);
                 list[i].BindTargetGUI(subTargetContainer);
             }
+            CenterGameplayGoals();
         }
 
         private void SetDescription(string descr)
         {
             description.text = descr;
+            if (IsGameplayHud()) return;
             if (descr != "")
             {
                 hg.padding.left = 58;

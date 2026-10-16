@@ -68,6 +68,8 @@ namespace RoyalAves.Meta
             foreach (var image in hudImages)
                 if (image.name == "MolduraFase")
                 {
+                    // The production HUD is assigned manually; do not replace its artwork with legacy seasonal frames.
+                    if (image.sprite != null && image.sprite.name.StartsWith("hud-base-purple-gold")) continue;
                     // The authored sprite is the default, including after a Play-mode script reload.
                     image.overrideSprite = null;
                     SeasonalHudLights.SetChristmas(image, false);
@@ -78,6 +80,7 @@ namespace RoyalAves.Meta
             foreach (var image in hudImages)
             {
                 if (image.name != "MolduraFase") continue;
+                if (image.sprite != null && image.sprite.name.StartsWith("hud-base-purple-gold")) continue;
                 image.overrideSprite = frame;
                 SeasonalHudLights.SetChristmas(image, appearance.theme == BoardBorderTheme.Christmas);
             }
