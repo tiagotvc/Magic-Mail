@@ -69,3 +69,23 @@ Blob aumentado: deformação horizontal de 22% e vertical de 20%, com retorno el
 
 
 Revisão do impacto elástico: compressão em 0,055 s (28% na largura e 24% na altura), seguida de rebote amortecido por 0,365 s. A base permanece apoiada durante a deformação; posição e escala originais são restauradas ao terminar. Compilação validada sem erros.
+
+## Máquina inerte na campanha — 19/10/2026
+
+Sintoma: as franqueadoras pintadas no criador de fases aparecem no tabuleiro, mas nenhum impacto produz alavanca, carta ou som.
+
+Causa: `FrankingMachineCell.AcceptImpact` só aceita o impacto se a fase tiver uma meta chamada `MachineLetters` com quantidade restante maior que zero. A fase 11 tem 13 células de franqueadora, mas `TargetLevel11.asset` só tem metas de coletar peças (tipo 0) e estrelas (tipo 5). Sem a meta das cartas a máquina fica completamente inerte — não é bug de animação nem de impacto.
+
+Solução na fase: no editor de níveis, painel **Metas da fase**, botão **+**, escolher **Colete cartas da franqueadora** e definir a quantidade.
+
+Prevenção: `ValidateFrankingMachineTargets` roda ao salvar a fase e avisa, na janela e no console, quando existe franqueadora sem essa meta.
+
+### Meta acompanha a máquina — 19/10/2026
+
+Pedido do usuário: a meta deve vir junto com o elemento, como em grama e gelo, mas a quantidade de cartas é **digitada**, não deduzida do número de máquinas no tabuleiro.
+
+Implementado em `LevelMakerEditor`:
+
+- Pintar uma franqueadora marca `pendingMachineTarget`. No desenho seguinte do painel **Metas da fase**, `EnsureFrankingMachineTarget` adiciona a meta **Colete cartas da franqueadora** se ela ainda não existir, com o padrão de 8 cartas (`TargetLevel.AddTargetType`), registra Undo e salva fase e metas pelo fluxo existente.
+- O campo **Cartas** do painel continua editável: a quantidade é manual, porque `MachineLetters` tem `setCount = Manually`. Grama, gelo e caixa seguem com `FromLevel`, contando células do tabuleiro.
+- Fases antigas: ao salvar, se houver franqueadora sem a meta, ela é adicionada da mesma forma. Se a meta existir mas estiver em zero, o editor avisa em vez de alterar o número escolhido.

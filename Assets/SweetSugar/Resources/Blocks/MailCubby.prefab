@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3738634377075609794}
   - component: {fileID: 9186033965813610974}
   - component: {fileID: 4853942126647792588}
+  - component: {fileID: 5311900274110000001}
   m_Layer: 10
   m_Name: MailCubby
   m_TagString: Untagged
@@ -198,3 +199,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Gameplay.MailCubbyCell
   visualPrefab: {fileID: 3885611776136051177, guid: f63223ca8bf0c46419c5e094a86cedf9, type: 3}
+--- !u!114 &5311900274110000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998675273255439974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed494627769496f8ca327b32685cc65, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  order: 6

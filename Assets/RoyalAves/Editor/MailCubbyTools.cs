@@ -14,12 +14,12 @@ namespace RoyalAves.EditorTools
         [MenuItem("Royal Aves/Elementos/Escaninho/Criar prefab da animação")]
         public static void Build()
         {
-            var cabinetSprite = Import("CM_armario_base_v1.png", 660);
-            var doorSprite = Import("CM_armario_porta_v1.png", 660);
+            var cabinetSprite = Import("CM_armario_modelo_base_v2.png", 660);
+            var doorSprite = Import("CM_armario_porta_fechada_v3.png", 660);
             const string letterPath = Art + "CM_escaninho_carta_cartoon_v2.png";
             var letterSprite = Import("CM_escaninho_carta_cartoon_v2.png", 2050);
             if (letterSprite == null) throw new System.InvalidOperationException("Envelope original do jogo não encontrado.");
-            GetLetterFit(letterPath, letterSprite, out float letterScale, out Vector2 letterOffset);
+            var letterBounds = GetVisibleBounds(letterPath, letterSprite);
             Directory.CreateDirectory(Path.GetDirectoryName(Prefab));
             var root = new GameObject("MailCubby_2x2");
             try
@@ -29,43 +29,60 @@ namespace RoyalAves.EditorTools
                 cabinet.transform.SetParent(root.transform, false);
                 animation.cabinet = cabinet.AddComponent<SpriteRenderer>();
                 animation.cabinet.sprite = cabinetSprite;
-                animation.cabinetVisibleBounds = GetVisibleBounds(Art + "CM_armario_base_v1.png", cabinetSprite);
+                var bodyBounds = GetVisibleBounds(Art + "CM_armario_modelo_base_v2.png", cabinetSprite);
+                animation.cabinetVisibleBounds = bodyBounds;
                 animation.cabinet.sortingLayerName = RoyalAves.Effects.PowerUpEffectOrder.SortingLayer;
                 animation.cabinet.sortingOrder = 30;
-                animation.letters = new SpriteRenderer[4];
-                var locations = new[] { new Vector2(-0.32f, 0.19f), new Vector2(0.32f, 0.19f), new Vector2(-0.32f, -0.34f), new Vector2(0.32f, -0.34f) };
-                for (int i = 0; i < 4; i++)
+                animation.lettersPerHit = new[] { MailCubbyCell.LettersPerHit, MailCubbyCell.LettersPerHit,
+                    MailCubbyCell.LettersPerHit, MailCubbyCell.LettersPerHit };
+                animation.letters = new SpriteRenderer[MailCubbyCell.LettersPerCabinet];
+                int stackDepth = MailCubbyCell.LettersPerNiche / 3;
+                float letterScale = bodyBounds.width * 0.235f / letterBounds.width;
+                float letterHeight = letterBounds.height * letterScale;
+                var shelfFloors = new[] { bodyBounds.yMin + bodyBounds.height * 0.405f, bodyBounds.yMin + bodyBounds.height * 0.075f };
+                for (int i = 0; i < animation.letters.Length; i++)
                 {
                     var letter = new GameObject("Letter_" + i);
                     letter.transform.SetParent(root.transform, false);
-                    letter.transform.localPosition = locations[i] + letterOffset;
-                    // Compensate the taller cupboard fit so the envelope and round seal keep their proportions.
-                    letter.transform.localScale = new Vector3(letterScale, letterScale * 0.86f, letterScale);
-                    letter.transform.localRotation = Quaternion.Euler(0, 0, i % 2 == 0 ? 4 : -4);
+                    int niche = i / MailCubbyCell.LettersPerNiche;
+                    int column = i % 3;
+                    int depth = (i % MailCubbyCell.LettersPerNiche) / 3;
+                    float depthScale = letterScale * (1f - depth * 0.035f);
+                    var visibleCenter = new Vector2(bodyBounds.center.x + (column - 1) * bodyBounds.width * 0.255f
+                        + depth * bodyBounds.width * 0.008f,
+                        shelfFloors[niche] + letterHeight * (0.5f + depth * 0.12f));
+                    letter.transform.localPosition = visibleCenter - letterBounds.center * depthScale;
+                    letter.transform.localScale = Vector3.one * depthScale;
                     animation.letters[i] = letter.AddComponent<SpriteRenderer>();
                     animation.letters[i].sprite = letterSprite;
                     animation.letters[i].sortingLayerName = animation.cabinet.sortingLayerName;
-                    animation.letters[i].sortingOrder = 31;
+                    animation.letters[i].sortingOrder = 31 + stackDepth - depth;
+                    animation.letters[i].color = Color.Lerp(Color.white, new Color(0.72f, 0.55f, 0.34f),
+                        depth / (float)Mathf.Max(1, stackDepth - 1) * 0.65f);
                 }
                 animation.doors = new SpriteRenderer[2];
-                var doorBounds = GetVisibleBounds(Art + "CM_armario_porta_v1.png", doorSprite);
-                var doorScale = new Vector3(0.63f / doorBounds.width, 1.16f / doorBounds.height, 1f);
+                var doorBounds = GetVisibleBounds(Art + "CM_armario_porta_fechada_v3.png", doorSprite);
+                float doorScale = bodyBounds.width * 0.443f / doorBounds.width;
+                float doorWidth = doorBounds.width * doorScale;
                 for (int i = 0; i < 2; i++)
                 {
-                    var door = new GameObject(i == 0 ? "GlassDoor_Left" : "GlassDoor_Right");
+                    var door = new GameObject(i == 0 ? "ClosedDoor_Left" : "ClosedDoor_Right");
                     door.transform.SetParent(root.transform, false);
                     float sign = i == 0 ? -1f : 1f;
-                    float visualCenterX = i == 0 ? doorBounds.center.x : -doorBounds.center.x;
-                    door.transform.localPosition = new Vector3(sign * 0.32f - visualCenterX * doorScale.x,
-                        -0.12f - doorBounds.center.y * doorScale.y, -0.02f);
-                    door.transform.localScale = doorScale;
+                    float visibleCenterX = bodyBounds.center.x + sign * (doorWidth * 0.5f + bodyBounds.width * 0.001f);
+                    door.transform.localPosition = new Vector3(visibleCenterX + sign * doorBounds.center.x * doorScale,
+                        bodyBounds.yMin + bodyBounds.height * 0.39f - doorBounds.center.y * doorScale, -0.02f);
+                    door.transform.localScale = Vector3.one * doorScale;
                     var renderer = door.AddComponent<SpriteRenderer>();
                     renderer.sprite = doorSprite;
                     renderer.flipX = i == 1;
                     renderer.sortingLayerName = animation.cabinet.sortingLayerName;
-                    renderer.sortingOrder = 32;
+                    renderer.sortingOrder = 32 + stackDepth;
                     animation.doors[i] = renderer;
                 }
+                // Closed doors stay inside the frame. Open-door extents must not shrink
+                // the body when the board fits this object into its four reserved cells.
+                animation.cabinetVisibleBounds = bodyBounds;
                 var plaque = new GameObject("StockCounter");
                 plaque.transform.SetParent(root.transform, false);
                 plaque.transform.localPosition = new Vector3(0, -0.69f, -0.04f);
@@ -84,7 +101,7 @@ namespace RoyalAves.EditorTools
             finally { DestroyImmediate(root); }
             AssetDatabase.Refresh();
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab);
-            Debug.Log("Armário postal: duas portas removíveis, quatro cartas e topo à frente do grid.");
+            Debug.Log("Armário postal: portas fechadas, corpo ajustado ao 2x2 e 36 cartas em seis pilhas.");
         }
 
         static void GetLetterFit(string path, Sprite sprite, out float scale, out Vector2 offset)
@@ -143,8 +160,8 @@ namespace RoyalAves.EditorTools
 
         void OnGUI()
         {
-            EditorGUILayout.LabelField("Prévia visual — cheio → vazio", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox("Em Play, selecione o objeto criado na cena e enquadre-o com F. Cada impacto de teste emite uma carta. Esta prévia não configura células ou metas da fase.", MessageType.Info);
+            EditorGUILayout.LabelField("Preview visual - full to empty", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Primeiro impacto remove as portas. Cada nicho recebe dois impactos de nove cartas. Cinco impactos esvaziam as seis pilhas de seis cartas.", MessageType.Info);
             using (new EditorGUI.DisabledScope(!Application.isPlaying))
             {
                 if (GUILayout.Button("Criar prévia na cena"))
@@ -158,8 +175,11 @@ namespace RoyalAves.EditorTools
                 }
                 using (new EditorGUI.DisabledScope(preview == null))
                 {
-                    if (GUILayout.Button("Impacto: emitir uma carta")) preview.PlayAcceptedHit();
-                    if (GUILayout.Button("Reiniciar: cheio")) preview.ResetStock();
+                    if (preview != null)
+                    {
+                        if (GUILayout.Button(preview.DoorsAttached ? "Primeiro impacto: remover portas" : "Impacto: enviar nove cartas")) preview.PlayAcceptedHit();
+                        if (GUILayout.Button("Reiniciar: cheio")) preview.ResetStock();
+                    }
                 }
             }
         }

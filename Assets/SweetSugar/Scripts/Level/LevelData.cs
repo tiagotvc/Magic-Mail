@@ -265,7 +265,9 @@ namespace SweetSugar.Scripts.Level
                     i.targetLevel.prefabs.Any(prefab => prefab != null && prefab.name == squareTypeName));
                 if (subTargetContainer != null)
                 {
-                    if (subTargetContainer.targetLevel.setCount == SetCount.FromLevel && _sqType != SquareTypes.IceBlock)
+                    // Ice and the mail cabinet set their own count in InitTarget, from the level data.
+                    if (subTargetContainer.targetLevel.setCount == SetCount.FromLevel &&
+                        _sqType != SquareTypes.IceBlock && _sqType != SquareTypes.MailCubby)
                         subTargetContainer.changeCount(1);
                     var targetComponent = gameObject.AddCachedComponent<TargetComponent>();
                     targetComponent.field = gameObject.GetComponent<Square>().field;
@@ -456,9 +458,11 @@ namespace SweetSugar.Scripts.Level
 
         public void SortMergeBlocks()
         {
+            // Every prefab in Resources/Blocks needs a BindLayer. A block without one used to throw
+            // here and abort the whole level-editor grid; now it just sorts as a non-layered block.
             var array = Resources.LoadAll<BindLayer>("Blocks");
             var list = array.OrderBy(i => i.order).ToList();
-            var blocks1 = blocks.Where(i=>i.squareType != SquareTypes.NONE).Select(i => new {block = i, layered = list.Find(x => x.name == i.squareType.ToString()).GetComponent<LayeredBlock>()
+            var blocks1 = blocks.Where(i=>i.squareType != SquareTypes.NONE).Select(i => new {block = i, layered = list.Find(x => x.name == i.squareType.ToString())?.GetComponent<LayeredBlock>()
                                                                                                                     != null});
             var b1 = blocks1.Where(i => i.layered == false).DistinctBy(i=>i.block.squareType);
             var b2 = blocks1.Where(i => i.layered);

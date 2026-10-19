@@ -18,6 +18,7 @@ namespace RoyalAves.Gameplay
         LevelData data;
         float nextImpactTime;
         SweetSugar.Scripts.System.AnimateItems barrier;
+        bool excludedFromSquareTargets;
 
         public void Initialize(MailCubbyAnimation animation, Square[] cells)
         {
@@ -36,8 +37,10 @@ namespace RoyalAves.Gameplay
         void UpdateDeliveryDestination()
         {
             var sprite = Animation.letters[0].sprite;
-            var gui = FindObjectsByType<SweetSugar.Scripts.TargetScripts.TargetSystem.TargetGUI>(FindObjectsSortMode.None)
-                .FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name != "MachineLetters" && item.image != null && (item.image.sprite == sprite ||
+            var huds = FindObjectsByType<SweetSugar.Scripts.TargetScripts.TargetSystem.TargetGUI>(FindObjectsSortMode.None);
+            // The machine goal shares this letter icon, so the cabinet goal is matched by name first.
+            var gui = huds.FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name == "MailCubby" && item.image != null)
+                ?? huds.FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name != "MachineLetters" && item.image != null && (item.image.sprite == sprite ||
                     (item.subTargetContainer?.extraObjects != null && item.subTargetContainer.extraObjects.Contains(sprite))));
             if (gui == null)
             {
@@ -88,11 +91,20 @@ namespace RoyalAves.Gameplay
         {
             if (manager == null || manager.levelData != data) return;
             Collected++;
-            var collectedCell = Cells[Collected - 1].GetSubSquare().GetComponent<MailCubbyCell>();
-            if (collectedCell != null) collectedCell.CountsAsObjective = false;
-            foreach (var target in data.TargetCounters)
-                if (target.targetLevel.name != "MachineLetters" && target.extraObjects != null && target.extraObjects.Contains(Animation.letters[0].sprite))
-                    target.changeCount(-1);
+            if (!excludedFromSquareTargets)
+            {
+                foreach (var square in Cells)
+                {
+                    if (square == null) continue;
+                    var marker = square.GetSubSquare().GetComponent<MailCubbyCell>();
+                    if (marker != null) marker.CountsAsObjective = false;
+                }
+                excludedFromSquareTargets = true;
+            }
+            var goal = data.TargetCounters.FirstOrDefault(t => t.targetLevel.name == "MailCubby")
+                ?? data.TargetCounters.FirstOrDefault(t => t.targetLevel.name != "MachineLetters" &&
+                    t.extraObjects != null && t.extraObjects.Contains(Animation.letters[0].sprite));
+            goal?.changeCount(-1);
         }
 
         void BreakEmptyCabinet()

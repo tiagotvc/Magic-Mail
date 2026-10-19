@@ -2129,6 +2129,9 @@ namespace SweetSugar.Scripts.Editor
                 }
                 else EditorGUILayout.LabelField(definition.name == "IceBlock"
                     ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.IceLayer.CountCells(levelData)}"
+                    : definition.name == "MailCubby"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData)}" +
+                      $" ({RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData) / RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} armário(s) x {RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} cartas)"
                     : "Quantidade automática pelo tabuleiro", EditorStyles.miniLabel);
                 GUILayout.Space(5);
             }
@@ -2144,6 +2147,16 @@ namespace SweetSugar.Scripts.Editor
                 GUILayout.Width(160), GUILayout.ExpandWidth(false));
             if (tutorial != levelData.selectedTutorial) { levelData.selectedTutorial = tutorial; dirtyLevel = true; }
             GUILayout.EndHorizontal();
+            if (pendingMachineTarget)
+            {
+                pendingMachineTarget = false;
+                EnsureFrankingMachineTarget(targetLevel);
+            }
+            if (pendingCubbyTarget)
+            {
+                pendingCubbyTarget = false;
+                EnsureBoardTarget(targetLevel, "MailCubby", "Meta de cartas do armario postal adicionada.");
+            }
             edit?.Invoke();
         }
 
@@ -3297,6 +3310,9 @@ namespace SweetSugar.Scripts.Editor
             squareBlockSelected = null;
             if (dirtyLevel)
             {
+                ValidateMailCubbyGroups();
+                ValidateMailCubbyTarget();
+                ValidateFrankingMachineTargets();
                 if (!FileName.Contains(".txt"))
                     FileName += ".txt";
                 SaveToScriptable(_levelNumber);
@@ -3810,6 +3826,208 @@ namespace SweetSugar.Scripts.Editor
             }
         }
 
+        private bool pendingMachineTarget;
+        private bool pendingCubbyTarget;
+
+        // The cabinet goal follows its cells like grass and ice do: the count comes from the board,
+        // four letters per cabinet, so the designer only paints the furniture.
+        private void EnsureBoardTarget(TargetLevel targetLevel, string goalName, string notification)
+        {
+            if (targetEditorScriptable == null || targetLevel == null) return;
+            int type = targetEditorScriptable.targets.FindIndex(i => i.name == goalName);
+            if (type < 0) return;
+            if (targetLevel.targets != null && targetLevel.targets.Any(i => i.targetType.type == type)) return;
+            Undo.RecordObject(targetLevel, "Adicionar meta");
+            targetLevel.AddTargetType(type, targetEditorScriptable);
+            SaveTargetChanges(targetLevel);
+            ShowNotification(new GUIContent(notification));
+        }
+
+        // Painting a franking machine brings its goal along, the way grass and ice goals follow their
+        // cells. The difference is the count: the machine's letters are typed by the designer instead
+        // of being read from the board, so the goal starts at the default and stays editable.
+        private void EnsureFrankingMachineTarget(TargetLevel targetLevel)
+        {
+            EnsureBoardTarget(targetLevel, "MachineLetters", "Meta de cartas da franqueadora adicionada.");
+        }
+
+        private const int MailCubbySize = 2;
+
+        private bool IsInsideField(int col, int row)
+        {
+            var field = GetField();
+            return col >= 0 && row >= 0 && col < field.maxCols && row < field.maxRows;
+        }
+
+        private bool HasMailCubby(int col, int row)
+        {
+            if (!IsInsideField(col, row)) return false;
+            return levelData.GetBlock(row, col).blocks.Any(i => i.squareType == SquareTypes.MailCubby);
+        }
+
+        private bool IsMailCubbyAnchor(int col, int row)
+        {
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                    if (!HasMailCubby(col + x, row + y)) return false;
+            return true;
+        }
+
+        // The group this cell belongs to, or the cell itself when it is a leftover single cell.
+        private Vector2Int MailCubbyOrigin(int col, int row)
+        {
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                    if (IsMailCubbyAnchor(col - x, row - y)) return new Vector2Int(col - x, row - y);
+            return new Vector2Int(col, row);
+        }
+
+        private void RemoveMailCubbyCell(int col, int row)
+        {
+            if (!HasMailCubby(col, row)) return;
+            var block = levelData.GetBlock(row, col);
+            block.blocks.RemoveAll(i => i.squareType == SquareTypes.MailCubby);
+            if (block.obstacle == SquareTypes.MailCubby)
+            {
+                block.obstacle = SquareTypes.NONE;
+                block.obstacleLayer = 1;
+            }
+            if (block.blocks.Count == 0)
+                block.blocks.Add(new SquareTypeLayer {squareType = SquareTypes.EmptySquare});
+            block.MergeEmptySquares();
+        }
+
+        // Clicking any cell of an existing cabinet clears that cabinet; clicking a free cell
+        // stamps a new one anchored there. Nothing is written when the 2x2 does not fit.
+        private void MailCubbyBrush(int col, int row)
+        {
+            if (HasMailCubby(col, row))
+            {
+                var origin = MailCubbyOrigin(col, row);
+                for (int y = 0; y < MailCubbySize; y++)
+                    for (int x = 0; x < MailCubbySize; x++)
+                        RemoveMailCubbyCell(origin.x + x, origin.y + y);
+                var remaining = levelData.GetField(subLevelNumber - 1).levelSquares.Max(i => i.blocks.Count);
+                layers = Mathf.Max(1, remaining);
+                layer = Mathf.Clamp(layer, 0, layers - 1);
+                dirtyLevel = true;
+                return;
+            }
+
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                {
+                    if (!IsInsideField(col + x, row + y))
+                    {
+                        ShowNotification(new GUIContent("O armario ocupa 2x2 e nao cabe nesta borda."));
+                        return;
+                    }
+                    if (HasMailCubby(col + x, row + y))
+                    {
+                        ShowNotification(new GUIContent("Ja existe um armario encostado aqui."));
+                        return;
+                    }
+                    if (levelData.GetBlock(row + y, col + x).block == SquareTypes.NONE)
+                    {
+                        ShowNotification(new GUIContent("O armario 2x2 nao pode cobrir um buraco."));
+                        return;
+                    }
+                }
+
+            var prototype = SquareUtils.GetBlockPrefab(SquareTypes.MailCubby).Last().GetComponent<Square>();
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                {
+                    var block = levelData.GetBlock(row + y, col + x);
+                    block.obstacle = SquareTypes.MailCubby;
+                    block.obstacleLayer = 1;
+                    AddBlock(block, prototype);
+                }
+            pendingCubbyTarget = true;
+            dirtyLevel = true;
+        }
+
+        // Levels painted before the 2x2 brush can still hold single cabinet cells, which load as
+        // invisible walls. Warn on save instead of shipping an unplayable board.
+        private void ValidateMailCubbyGroups()
+        {
+            var orphans = new List<string>();
+            for (int sub = 0; sub < levelData.fields.Count; sub++)
+            {
+                var field = levelData.fields[sub];
+                for (int index = 0; index < field.levelSquares.Length; index++)
+                {
+                    var block = field.levelSquares[index];
+                    if (!block.blocks.Any(i => i.squareType == SquareTypes.MailCubby)) continue;
+                    int blockCol = index % field.maxCols, blockRow = index / field.maxCols;
+                    bool grouped = false;
+                    for (int y = 0; y < MailCubbySize && !grouped; y++)
+                        for (int x = 0; x < MailCubbySize && !grouped; x++)
+                        {
+                            bool full = true;
+                            for (int gy = 0; gy < MailCubbySize && full; gy++)
+                                for (int gx = 0; gx < MailCubbySize && full; gx++)
+                                {
+                                    int c = blockCol - x + gx, r = blockRow - y + gy;
+                                    full = c >= 0 && r >= 0 && c < field.maxCols && r < field.maxRows &&
+                                           field.levelSquares[r * field.maxCols + c].blocks
+                                               .Any(i => i.squareType == SquareTypes.MailCubby);
+                                }
+                            grouped = full;
+                        }
+                    if (!grouped) orphans.Add("subfase " + (sub + 1) + " (" + blockCol + "," + blockRow + ")");
+                }
+            }
+            if (orphans.Count == 0) return;
+            ShowNotification(new GUIContent("Armario incompleto: " + orphans.Count + " celula(s) solta(s)."));
+            Debug.LogWarning("Armario postal incompleto neste nivel. Cada armario precisa de um quadrado 2x2 inteiro. " +
+                             "Celulas soltas viram bloqueios invisiveis em: " + string.Join(", ", orphans));
+        }
+
+        // The franking machine only reacts while the level has a MachineLetters goal with a count left
+        // (FrankingMachineCell.AcceptImpact). Without it the machine is painted but completely inert.
+        // A level saved before the goal followed the brush still gets it, so the cabinet always counts.
+        private void ValidateMailCubbyTarget()
+        {
+            if (targetEditorScriptable == null) return;
+            bool hasCubby = levelData.fields.Any(f => f.levelSquares != null && f.levelSquares
+                .Any(b => b.blocks.Any(i => i.squareType == SquareTypes.MailCubby)));
+            if (!hasCubby) return;
+            var targetLevel = GetTargetLevel();
+            bool hasGoal = targetLevel != null && targetLevel.targets != null && targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MailCubby");
+            if (!hasGoal) pendingCubbyTarget = true;
+        }
+
+        private void ValidateFrankingMachineTargets()
+        {
+            bool hasMachine = levelData.fields.Any(f => f.levelSquares != null && f.levelSquares
+                .Any(b => b.blocks.Any(i => i.squareType == SquareTypes.FrankingMachine)));
+            if (!hasMachine || targetEditorScriptable == null) return;
+            var targetLevel = GetTargetLevel();
+            bool hasGoal = targetLevel != null && targetLevel.targets != null && targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MachineLetters" &&
+                t.CountDrawer != null && t.CountDrawer.count > 0);
+            if (hasGoal) return;
+            // Levels painted before the goal followed the brush: bring the goal in on the next repaint
+            // instead of only complaining. Without it the machine never emits a letter.
+            bool missingEntirely = targetLevel == null || targetLevel.targets == null || !targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MachineLetters");
+            if (missingEntirely)
+            {
+                pendingMachineTarget = true;
+                ShowNotification(new GUIContent("Meta de cartas da franqueadora adicionada."));
+                return;
+            }
+            ShowNotification(new GUIContent("Meta de cartas da franqueadora esta zerada."));
+            Debug.LogWarning("Esta fase tem franqueadora e a meta \"Colete cartas da franqueadora\" esta em zero. " +
+                             "Com a meta zerada a maquina nao emite carta nenhuma. Defina a quantidade no painel " +
+                             "\"Metas da fase\" do editor de niveis.");
+        }
+
         private void SetSquareType(int col, int row)
         {
             dirtyLevel = true;
@@ -3824,6 +4042,19 @@ namespace SweetSugar.Scripts.Editor
                 AddMenuItem(menu, "DOWN", 3, squareBlock);
                 AddMenuItem(menu, "NONE", 4, squareBlock);
                 menu.ShowAsContext();
+                return;
+            }
+
+            // Magic Mail: a machine on the board is useless without its letters goal, so painting one
+            // adds the goal (count typed in the goals panel) on the next repaint.
+            if (squareType == SquareTypes.FrankingMachine && !deleteBlock) pendingMachineTarget = true;
+
+            // Magic Mail: the mail cabinet is a single 2x2 object built by the top-left cell.
+            // A lone cell would load as an invisible blocking square, so the brush always
+            // stamps or clears the whole group.
+            if (squareType == SquareTypes.MailCubby && !deleteBlock)
+            {
+                MailCubbyBrush(col, row);
                 return;
             }
 

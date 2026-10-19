@@ -37,7 +37,7 @@ namespace RoyalAves.Gameplay
         }
 
         static GameObject GetCellAsset() => AssetDatabase.LoadAssetAtPath<GameObject>(CellPrefabPath);
-        public static GameObject GetPrefab(SquareTypes type) => IsActive && type == SquareTypes.SolidBlock ? GetCellAsset() : null;
+        public static GameObject GetPrefab(SquareTypes type) => IsActive && type == SquareTypes.MailCubby ? GetCellAsset() : null;
     }
 }
 #endif

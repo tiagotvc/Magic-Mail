@@ -230,6 +230,16 @@ namespace RoyalAves.EditorTools
             if (assetPath.StartsWith("Assets/RoyalAves/Art/Obstacles/MailCubby/"))
             {
                 ConfigureCellSprite(importer, PixelsPerUnit(assetPath));
+                importer.maxTextureSize = 4096;
+                foreach (var platform in new[] { "Standalone", "Android", "iPhone" })
+                {
+                    var settings = importer.GetPlatformTextureSettings(platform);
+                    settings.name = platform;
+                    settings.overridden = true;
+                    settings.maxTextureSize = 4096;
+                    settings.textureCompression = TextureImporterCompression.Uncompressed;
+                    importer.SetPlatformTextureSettings(settings);
+                }
                 return;
             }
             if (assetPath == GrassFloorAsset || assetPath == GrassSparseAsset)

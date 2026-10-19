@@ -878,20 +878,24 @@ namespace SweetSugar.Scripts.Blocks
             return false;
         }
 
-        // A diagonal cannot squeeze across the corner of a wall, obstacle or missing cell.
+        // A diagonal slides around a blocker, so one open L-shaped route is enough: either around the
+        // side cell or around the cell below. It is refused only when both routes are sealed by a wall,
+        // an obstacle, a missing cell or the edge of the field.
         public bool CanFallDiagonallyTo(Square destination)
         {
             if (destination == null || field == null || destination.field != field ||
                 IsNone() || destination.IsNone() || !CanGoOut() || !destination.CanGoInto()) return false;
             int dx = destination.col - col, dy = destination.row - row;
             if (Mathf.Abs(dx) != 1 || Mathf.Abs(dy) != 1) return false;
-            var side = field.GetSquare(col + dx, row);
-            var forward = field.GetSquare(col, row + dy);
-            if (side == null || forward == null || !side.IsFree() || !forward.IsFree()) return false;
             var horizontal = new Vector2(dx, 0);
             var vertical = new Vector2(0, -dy);
-            return PassageOpen(this, side, horizontal) && PassageOpen(side, destination, vertical) &&
+            var side = field.GetSquare(col + dx, row);
+            var forward = field.GetSquare(col, row + dy);
+            bool viaSide = side != null && side.IsFree() &&
+                PassageOpen(this, side, horizontal) && PassageOpen(side, destination, vertical);
+            bool viaForward = forward != null && forward.IsFree() &&
                 PassageOpen(this, forward, vertical) && PassageOpen(forward, destination, horizontal);
+            return viaSide || viaForward;
         }
 
         static bool PassageOpen(Square from, Square to, Vector2 direction)

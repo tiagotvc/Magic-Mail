@@ -1,0 +1,9 @@
+# Armário fechado e encaixe no grid — 19/10/2026
+
+Correção solicitada: as portas abertas eram apenas uma referência de conceito. O estado inicial agora tem duas portas fechadas, sólidas, roxas, com borda e puxadores dourados junto à emenda central. Elas cobrem ambos os nichos e caem no primeiro impacto. Estoque de 36 cartas, seis pilhas de seis e quatro impactos de nove cartas preservados.
+
+O encaixe anterior incluía as portas abertas nos limites de ajuste, diminuindo o corpo e deixando espaço nas células. `MailCubbyTools` agora serializa somente os limites visíveis da moldura. `MailCubbyCell` ajusta a largura do corpo às duas colunas e preserva a escala uniforme, com a base alinhada ao limite inferior das quatro células; o topo pode ultrapassar ligeiramente a borda superior pela proporção da arte.
+
+Nova arte: `Assets/RoyalAves/Art/Obstacles/MailCubby/CM_armario_porta_fechada_v3.png`, criada com a ferramenta integrada image_gen. Prompt: uma porta esquerda fechada frontal, retângulo alto de largura aproximada de 65% da altura, painel roxo lavanda sólido com rebaixo e moldura arredondada, borda fina dourada e puxador dourado na direita junto à emenda central; mesmo estilo cartoon brilhante da base, sem vidro, texto, dobradiças externas, fundo ou sombra. A porta direita usa o sprite espelhado. Margens aparadas por alpha; dimensões finais 900 × 1427 px. A escala uniforme de cada folha corresponde a 44,3% da largura da moldura.
+
+Validação: runtime e editor compilados sem erros, prefab reconstruído, estado fechado visualizado e capturado no laboratório em Play. Captura: `Logs/mail-cubby-closed-fit-v3.png`. Confirmados visualmente o preenchimento das duas colunas, alinhamento inferior e ausência de cartas aparecendo através das portas. O ciclo completo de cinco impactos não foi repetido nesta revisão.

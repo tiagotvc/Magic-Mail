@@ -221,3 +221,22 @@ MonoBehaviour:
             uiSprite: 1
     prefabs:
     - {fileID: 1055345148094608, guid: 07e827af6e2b43f7b84690d579e0b7a0, type: 3}
+  - name: MailCubby
+    localization:
+      description:
+        text: Colete as cartas do escaninho
+        index: -1
+      failed:
+        text: Faltaram cartas do escaninho
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 52339e7c581a77c4aa4016549f7954d6, type: 3}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 1998675273255439974, guid: fedd346967dc457a8e626c7448a5948a, type: 3}

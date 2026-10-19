@@ -13,6 +13,7 @@ namespace RoyalAves.Effects
         // Sprite it needs from these at runtime instead.
         public Texture2D HalfLeft;
         public Texture2D HalfRight;
+        public Texture2D EngineNozzle;
         public Material FlameMaterial;
     }
 }

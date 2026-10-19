@@ -1,0 +1,620 @@
+fileFormatVersion: 2
+guid: 23808fd35bce47b5830be74dc5a48236
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4402157569657274016
+    second: CM_armario_porta_roxa_v1_0
+  - first:
+      213: -6992379570898404011
+    second: CM_armario_porta_roxa_v1_1
+  - first:
+      213: 7966834679465383945
+    second: CM_armario_porta_roxa_v1_2
+  - first:
+      213: -96470099446479891
+    second: CM_armario_porta_roxa_v1_3
+  - first:
+      213: 5899561056449135205
+    second: CM_armario_porta_roxa_v1_4
+  - first:
+      213: 3081611142592226216
+    second: CM_armario_porta_roxa_v1_5
+  - first:
+      213: 5224056889295819065
+    second: CM_armario_porta_roxa_v1_6
+  - first:
+      213: -7817774188037817224
+    second: CM_armario_porta_roxa_v1_7
+  - first:
+      213: -5902470553955633067
+    second: CM_armario_porta_roxa_v1_8
+  - first:
+      213: -8967025606061490784
+    second: CM_armario_porta_roxa_v1_9
+  - first:
+      213: -8387516357735345855
+    second: CM_armario_porta_roxa_v1_10
+  - first:
+      213: 2973943492163957271
+    second: CM_armario_porta_roxa_v1_11
+  - first:
+      213: -1542809539476034660
+    second: CM_armario_porta_roxa_v1_12
+  - first:
+      213: -4128611820798301105
+    second: CM_armario_porta_roxa_v1_13
+  - first:
+      213: -5741012133314016265
+    second: CM_armario_porta_roxa_v1_14
+  - first:
+      213: 513107921248721913
+    second: CM_armario_porta_roxa_v1_15
+  - first:
+      213: 7732390215644244069
+    second: CM_armario_porta_roxa_v1_16
+  - first:
+      213: -5608546367187559
+    second: CM_armario_porta_roxa_v1_17
+  - first:
+      213: -9142475996572509540
+    second: CM_armario_porta_roxa_v1_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 660
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 1
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_0
+      rect:
+        serializedVersion: 2
+        x: 194
+        y: 1547
+        width: 89
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0610847930568e2c0800000000000000
+      internalID: -4402157569657274016
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_1
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 1563
+        width: 74
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55df6e5d3d316fe90800000000000000
+      internalID: -6992379570898404011
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_2
+      rect:
+        serializedVersion: 2
+        x: 642
+        y: 1565
+        width: 70
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9081ccd4ee1ef8e60800000000000000
+      internalID: 7966834679465383945
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_3
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 1547
+        width: 47
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de3cb07a4f449aef0800000000000000
+      internalID: -96470099446479891
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_4
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 1561
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 562016c06837fd150800000000000000
+      internalID: 5899561056449135205
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 55
+        width: 959
+        height: 1494
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a36812d10514ca20800000000000000
+      internalID: 3081611142592226216
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_6
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 1527
+        width: 25
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 931d8e400149f7840800000000000000
+      internalID: 5224056889295819065
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_7
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 1519
+        width: 6
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87cb9cbdbcfa18390800000000000000
+      internalID: -7817774188037817224
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_8
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 1529
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5587546cd46361ea0800000000000000
+      internalID: -5902470553955633067
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_9
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1488
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ad7fda78b9be8380800000000000000
+      internalID: -8967025606061490784
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 1257
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1411865cf4e899b80800000000000000
+      internalID: -8387516357735345855
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_11
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 1256
+        width: 12
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 712748879d1954920800000000000000
+      internalID: 2973943492163957271
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 984
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9b6273e5e6d69ae0800000000000000
+      internalID: -1542809539476034660
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_13
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 833
+        width: 12
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4ca6dd5c6934b6c0800000000000000
+      internalID: -4128611820798301105
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_14
+      rect:
+        serializedVersion: 2
+        x: 927
+        y: 806
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fb4c96c1e3d350b0800000000000000
+      internalID: -5741012133314016265
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_15
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 528
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fb18719fecee1700800000000000000
+      internalID: 513107921248721913
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_16
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 253
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5686e24eee7fe4b60800000000000000
+      internalID: 7732390215644244069
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_17
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 199
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 995d31a8e031ceff0800000000000000
+      internalID: -5608546367187559
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CM_armario_porta_roxa_v1_18
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 143
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9a92c025866f1180800000000000000
+      internalID: -9142475996572509540
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    outline: []
+    customData:
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices:
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable: {}
+  mipmapLimitGroupName:
+  pSDRemoveMatte: 0
+  userData:
+  assetBundleName:
+  assetBundleVariant:

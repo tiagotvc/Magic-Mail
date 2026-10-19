@@ -89,3 +89,85 @@ As áreas entre os cantos arredondados recebem azul suave, evitando frestas pret
 
 Grid: os cantos externos do fundo azul agora têm recorte arredondado de raio 20% da célula, acompanhando a moldura. O recorte é aplicado apenas quando os dois lados do canto não têm vizinho jogável; as junções internas mantêm o azul contínuo.
 
+
+## Uso no criador de fases — correção de 19/10/2026
+
+Sintoma relatado: as células pintadas com o armário ficavam com um bloqueio invisível, sem peça caindo. Causa: o móvel é um único objeto 2×2 construído pela célula superior-esquerda (`MailCubbyCell.IsGroupAnchor`), mas o prefab tem `sizeInSquares` 1×1 e o pincel do editor pintava uma célula por clique. Células soltas não encontram âncora, não criam o móvel, e o `SpriteRenderer` da célula é desligado no `LateUpdate` — sobra um bloqueio sem arte. Comprovado em `Level_11`, com duas células isoladas em (1,3) e (6,4).
+
+Correções aplicadas:
+
+- `LevelMakerEditor`: pincel próprio do armário. Um clique em célula livre carimba o 2×2 inteiro a partir dela; um clique em qualquer célula de um armário existente apaga o armário todo. O carimbo é recusado, com aviso na janela, se o 2×2 não couber na borda, encostar em outro armário ou cobrir um buraco. O pincel "-1" continua operando camada a camada.
+- `LevelMakerEditor.SaveLevel`: `ValidateMailCubbyGroups` avisa na janela e no console se o nível ainda tiver células de armário fora de um 2×2 completo, listando subfase e coordenadas.
+- `MailCubbyCell`: célula órfã não vira mais parede invisível. Depois de dois quadros sem dono, ela se remove com aviso no console, mantendo o tabuleiro jogável.
+
+Pendência conhecida: a prévia do editor desenha o armário inteiro em cada uma das quatro células, então um armário aparece como quatro. Falta também um tipo de meta próprio: o laboratório usa o índice de `SolidBlock` com o ícone da carta, e `TargetEditorScriptable` ainda não tem entrada para as cartas do armário.
+
+### Causa do "sumiço de linhas" no criador de fases — 19/10/2026
+
+O log da Unity apontou o erro real: `NullReferenceException` em `SquareBlocks.SortMergeBlocks` (`LevelData.cs:461`), chamada por `SquareUtils.GetSquareTextures` dentro de `LevelMakerEditor.GUIGameField`. A exceção estourava no meio do `OnGUI`, então a grade parava de ser desenhada a partir da célula do armário — daí as linhas sumirem, seguidas de "Invalid GUILayout state".
+
+`SortMergeBlocks` faz `Resources.LoadAll<BindLayer>("Blocks")` e, para cada camada da célula, procura o prefab pelo nome do enum e chama `GetComponent<LayeredBlock>()` no resultado. `MailCubby.prefab` e `FrankingMachine.prefab` eram os únicos prefabs de bloco **sem o componente `BindLayer`**, então o `Find` devolvia nulo e a chamada quebrava. O gelo não quebra porque já tinha `BindLayer` (order 5).
+
+Correções: `BindLayer` com `order: 6` (mesmo do SolidBlock) adicionado aos dois prefabs, e proteção contra nulo em `SortMergeBlocks`, para que um bloco futuro sem `BindLayer` seja tratado como não-camadado em vez de derrubar a grade inteira do editor.
+
+## Meta própria do armário — 19/10/2026
+
+**Histórico:** os valores abaixo foram substituídos pela revisão de dois nichos amplos no fim do documento.
+
+Pedido do usuário: o armário deve seguir a lógica da grama, do gelo e da caixa. Ao ser colocado, a fase ganha uma meta de cartas igual a **4 × o número de armários**, porque cada móvel carrega quatro cartas, e as cartas voam até o contador da meta.
+
+- Novo tipo de objetivo **MailCubby** em `TargetEditorScriptable`, com `setCount = FromLevel`, ícone da carta (`CM_escaninho_carta_cartoon_v2`) e prefab `Resources/Blocks/MailCubby.prefab`. Rótulo no editor: "Cartas do armário postal".
+- `MailCubbyCell.CountLetters(levelData)` conta as células de armário da fase. Como cada armário ocupa quatro células e entrega quatro cartas, a contagem de células **é** a quantidade de cartas. É lida dos dados da fase, então o número já aparece correto na tela inicial, antes de o tabuleiro existir.
+- `SweetSugar.Scripts.TargetScripts.MailCubby` (em `MailCubbyTarget.cs`) atende o carregador legado quando o armário é a meta principal, no mesmo molde de `IceBlock`.
+- `TargetCounter` recebeu o armário na mesma exceção do gelo: a quantidade inicial vem dos dados da fase, e não de componentes de cena. `LevelData.SetSquareTarget` deixa de somar uma unidade por célula para o armário, evitando contagem dobrada.
+- `LevelMakerEditor`: carimbar um armário adiciona a meta sozinho, e o painel mostra "Quantidade automática pelo tabuleiro: N (x armário(s) x 4 cartas)". Fases antigas recebem a meta ao salvar.
+- `MailCubbyBoardController` passa a procurar a meta pelo nome `MailCubby` antes de cair no casamento por sprite, porque a meta da franqueadora usa o mesmo ícone de carta. Vale para o destino do voo e para a baixa no contador.
+
+## Novo desenho e ciclo de impactos — 19/10/2026
+
+Direção visual aprovada para explorar: armário postal cartoon com moldura roxa e dourada, quatro nichos abertos em grade 2×2 e vários envelopes visíveis em cada nicho. A quantidade desenhada em cada nicho deve corresponder ao número de cartas que ele entrega. O desenho pode mostrar mais cartas do que o conceito anterior, sem aumentar a quantidade de impactos necessária para esvaziar e remover o armário.
+
+**Ciclo completo: cinco impactos aceitos por armário.**
+
+1. Primeiro impacto: as duas portas se soltam e caem; nenhum nicho é limpo, nenhuma carta voa e a meta não muda.
+2. Segundo ao quinto impacto: cada impacto limpa um nicho ainda cheio. Todas as cartas daquele nicho saem em sequência, fazem a pirueta e seguem pelo rastro até o contador da meta. Cada carta reduz a meta ao concluir o voo.
+3. Depois que o quarto nicho termina de entregar suas cartas, o armário se quebra e libera as quatro células, como no comportamento atual. A quebra aguarda a fila de voos.
+
+Assim, preservam-se os cinco impactos totais: um para as portas e quatro para os nichos; não se acrescenta um impacto separado para a quebra final. Os impactos continuam deduplicados por ativação, para que um especial que alcance várias células do armário não limpe vários nichos de uma vez.
+
+A quantidade da meta deixa de ser quatro cartas por armário. A primeira implementação usa três cartas por nicho, doze por armário; múltiplos armários somam seus estoques. A quebra visual de um nicho remove todas as cartas dele do móvel enquanto seus envelopes voam individualmente.
+
+Efeitos a produzir para o novo conceito: arrancar e derrubar portas no primeiro impacto; feedback de acerto e limpeza clara do nicho atingido; ejeção escalonada das cartas, cada uma voando ao HUD; reação leve do corpo a cada impacto; quebra do armário vazio após a última entrega. Reutilizar a pirueta, o rastro, o voo ao contador e o efeito de quebra já existentes quando possível. A animação deve manter a resolução do tabuleiro aguardando voos e quebra, como hoje.
+
+Implementação anterior: arte roxa/dourada aberta, prefab com doze envelopes e configuração inicial de três cartas por nicho. A revisão atual mantém doze cartas por armário e redistribui a saída em quatro impactos de três cartas depois da remoção das portas.
+
+## Revisão: dois nichos amplos — 19/10/2026
+
+Ajuste pedido pelo usuário para reduzir o visual de cartas empilhadas: o móvel agora tem somente dois nichos horizontais grandes, com seis cartas visíveis em cada um. O estoque e a meta permanecem em 12 cartas por armário.
+
+Os cinco impactos também permanecem: o primeiro remove as portas sem coleta; os quatro seguintes enviam três cartas por impacto. Assim, cada nicho recebe dois hits — um remove a primeira fileira e o outro a segunda. Após o quarto hit de conteúdo (quinto total), as 12 cartas chegam ao contador, o armário quebra e libera as quatro células.
+
+A contagem automática converte quatro células pintadas em um armário de 12 cartas. A arte-base atualizada está em `CM_armario_roxo_2nichos_v1.png`; a versão anterior foi preservada. As duas folhas horizontais independentes cobrem cada nicho. O corpo segue a proporção da arte no espaço 2×2 e os sprites do armário usam compressão desativada nas plataformas móveis. As cartas ficaram maiores e mais espaçadas em duas fileiras de três. O laboratório confirmou que o primeiro hit remove as portas sem coleta; os quatro seguintes entregam três cartas cada. Resultado final: 12 cartas coletadas, meta 0, armário quebrado e quatro células liberadas.
+
+## Modelo de referência com portas laterais — 19/10/2026
+
+**Estado visual vigente:** portas fechadas e corpo preenchendo as duas colunas, conforme a correção em [Armario_Portas_Fechadas.md](Armario_Portas_Fechadas.md). As portas abertas descritas nesta seção são histórico de conceito; estoque de 36 cartas preservado.
+
+### Atualização aprovada: seis cartas por pilha
+
+O usuário escolheu **36 cartas por armário**, em seis pilhas de seis envelopes, mantendo os cinco impactos. `LettersPerNiche` passa a 18 e `LettersPerHit` a 9; a contagem automática da meta e o laboratório usam esses valores. O primeiro impacto remove as portas; os quatro seguintes entregam nove cartas cada.
+
+O layout reutiliza a arte de carta existente, com seis planos por pilha: deslocamento progressivo para cima e à direita, redução uniforme de 3,5% por plano e sombra mais quente nas cartas de trás. Há 36 sprites reais animáveis, sem cartas decorativas extras. As três primeiras camadas de cada uma das três pilhas saem no primeiro impacto de conteúdo do nicho, e as três restantes no segundo. Ordem de desenho e cor de repouso são restauradas ao reiniciar.
+
+Verificação em Unity: prefab com 36 objetos `Letter_`, captura em `Logs/mail-cubby-stacks-36.png`, estoque/meta iniciais em 36. Uma entrega de nove cartas confirmou coletadas=9 e meta=27. Runtime e editor compilados sem erros. Esta atualização substitui as referências a 12 cartas e duas cartas por pilha abaixo.
+
+O novo modelo fornecido pelo usuário substitui o móvel ornamentado e as folhas horizontais: moldura dourada arredondada simples, topo roxo com medalhão vermelho e envelope, dois nichos largos separados por uma prateleira e duas portas roxas abertas para os lados, com puxadores dourados externos. Seis pilhas, três por prateleira; cada pilha tem dois envelopes reais e animáveis, mantendo o estoque de 12 e os cinco impactos atuais.
+
+Artes geradas com image_gen integrado em `Assets/RoyalAves/Art/Obstacles/MailCubby/`:
+
+- `CM_armario_modelo_base_v2.png`: prompt para recriar fielmente a estrutura simples roxa e dourada da referência, vazia, sem portas/cartas, exatamente dois nichos, sem colunas, pés ou ornamentos extras, vista frontal e transparência.
+- `CM_armario_modelo_porta_aberta_v2.png`: prompt para porta esquerda independente, roxa sólida com rebaixo, borda externa e puxador dourados, vista já aberta de perfil, mais estreita no lado da dobradiça, sem vidro, texto ou fundo. A direita usa o mesmo sprite espelhado.
+
+`MailCubbyTools.Build` monta o prefab com posições calculadas pelos limites visíveis das artes. As cartas mantêm escala uniforme e a ordem de desenho de frente/fundo é preservada ao reiniciar. `MailCubbyCell` encaixa a composição completa, incluindo portas, no espaço 2×2 com escala uniforme e alinhamento inferior. O primeiro impacto continua arrancando as duas portas; os quatro seguintes entregam três cartas cada. Regras de estoque/meta e deduplicação de impactos preservadas.
+
+Validação: runtime e editor compilados sem erros com referências atuais do Unity; prefab reconstruído e modelo visualizado em Play no laboratório. Captura de tela em `Logs/mail-cubby-live.png`; o comando de laboratório `render` captura o tabuleiro sem a sobreposição do HUD em `Logs/mail-cubby-model-v2.png`. O ciclo completo de cinco impactos não foi repetido nesta revisão visual.

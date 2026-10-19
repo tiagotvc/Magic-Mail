@@ -8,9 +8,103 @@ A meta conta pacotes completos: danos intermediários não coletam; apenas a con
 
 Direção visual mais recente: pacote fechado em todos os estados; retirar selo, fita vertical e fita horizontal até restar papel pardo. A conclusão anima o desaparecimento inteiro do pacote, sem abrir ou rasgar sua embalagem.
 
-## Escopo e situação atual
+## Revisão para 200 níveis — 19/10/2026
 
-Implementar os 11 elementos previstos para as primeiras 100 fases, fechando regras, comportamento, arte, animação, áudio, objetivos e configuração no editor. O guia é uma proposta: suas regras e pendências são insumos de design, e não decisões já homologadas. As implementações e revisões abaixo registram o andamento após a aprovação do plano.
+Esta revisão inclui o Gelo: **12 elementos principais, sendo 11 originais + Gelo**. A progressão abaixo é uma proposta para playtest e substitui as estreias do roteiro histórico de 100 fases nas seções seguintes. Nenhum tabuleiro foi alterado nesta revisão.
+
+A antiga Pilha atualmente é a **Caixa de madeira**, com quatro estados, tábuas e lascas. As descrições de pacote com selo e fitas acima são históricas; consultar `Caixa_Cartoon_Sem_Carimbo.md` e `Caixa_Lascas_Madeira.md`.
+
+### Elementos: como funciona e onde aparece
+
+Tabela única de consulta para os 12 elementos. **Estreia** é a fase que ensina o elemento sozinho; **reforço** é a faixa em que ele volta combinado com os anteriores. Status "implementado" significa protótipo jogável integrado ao editor e à meta, não aceite final em Play.
+
+| # | Elemento | Como funciona | Estreia | Reforço / combinações | Status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Caixa de madeira (antiga Pilha) | Obstáculo fixo de uma célula, quatro estados. Não cai nem troca; sai por match adjacente ou especial, uma tábua por impacto, com lascas a cada dano. Bloqueia foguetes, bombas e canhão na própria célula. A meta conta a caixa destruída, só ao fim da animação. | 1 | 2–10 e barreira recorrente em toda a campanha | Implementado; falta aceite de áudio e conferência final das barreiras em Play |
+| 2 | Grama | Piso de 1–2 camadas abaixo da peça. Match na própria célula ou especial remove um nível; peça ou caixa acima absorve o impacto. A meta conta a célula completamente limpa. | 4 | 5–10 junto com a Caixa | Implementado; aceite visual em Play e som pendentes |
+| 3 | Armário postal (Escaninho) | Objeto fixo de 2×2. O primeiro impacto derruba as portas sem coletar; os quatro seguintes soltam uma carta cada rumo à meta; o corpo vazio quebra e libera as quatro células. Estoque finito. | 11 | 12–20 com Caixa e Grama | Protótipo; contrato de estoque/deduplicação e aceite visual pendentes |
+| 4 | Franqueadora (Máquina de Franquear) | Gerador fixo de uma célula, dentro do grid. Cada impacto adjacente ou especial aciona a alavanca e emite uma carta direto para a meta (`MachineLetters`, padrão 8); para ao completar. | 21 | 22–30, contrastando geração contínua com o estoque finito do Armário | **Aceita pelo usuário em 19/10/2026**, com meta própria no editor (quantidade digitada); resta acabamento sonoro |
+| 5 | Gelo | Overlay acima da peça: grosso → fino → removido, uma camada por impacto. Prende troca, queda e ativação de power-up. O match precisa incluir a peça congelada; especiais também quebram. A peça sobrevive ao impacto final. A meta conta a célula liberada. | 31 (fino) e 36 (grosso) | 37–45 com Caixa e Grama | Implementado; validação completa das regras em Play pendente |
+| 6 | Carta Voadora | Alvo móvel, não combinável; acompanha queda e teleporte. Um impacto adjacente ou power-up captura e a carta voa até a meta. | 46 | 47–60 | A produzir — próximo efeito recomendado |
+| 7 | Central de Rotas | Painel com compartimentos por cor/símbolo. Só aceita match da cor designada (ou power-up); cada entrega avança o compartimento até a conclusão. | 61 | 62–80 | A produzir |
+| 8 | Malote | Alvo móvel com dois impactos: o primeiro rompe a cinta, o segundo coleta. Mantém a vida durante queda e portal. | 81 | 82–100, consolidando as cem primeiras | A produzir |
+| 9 | Encomenda Encantada | Proteção mágica: match não causa dano, só reação visual ineficaz; apenas power-up ou especial válido libera e coleta. | 101 | 102–120 | A produzir |
+| 10 | Tinteiro | Obstáculo fixo com cinco estados; ao quebrar espalha Tinta nas células elegíveis. Dependência aberta: a Tinta virou Grama, então é preciso decidir se volta a existir um piso de tinta próprio ou outro resultado. | 121, condicionada a essa decisão | 122–140 | A produzir; maior risco de retrabalho |
+| 11 | Fita | Overlay superior sobre peça ou obstáculo compatível; bloqueia troca, queda e ativação, e absorve o impacto que a remove. | 141 | 142–160 | A produzir; Fita + Gelo exige regra explícita de prioridade de camadas |
+| 12 | Cofre | Obstáculo fixo com cinco etapas de proteção; só power-ups removem as proteções, depois ele abre e coleta. Reaproveita o filtro de dano da Encantada. | 161 | 162–180 | A produzir |
+
+Sem estreias de 181 a 200: domínio do conjunto, alternando combinações, respiros e desafios até o fechamento. As estreias das seções históricas mais abaixo (31, 41, 51, 61, 71, 81 e 91) pertencem ao roteiro de 100 fases e foram substituídas por esta tabela.
+
+### Inventário dos efeitos
+
+Cinco elementos têm implementação/protótipo e efeitos próprios. Isso não significa campanha integrada ou aceite completo em Play.
+
+| Elemento existente | Efeitos disponíveis | Trabalho restante |
+| --- | --- | --- |
+| Caixa | Tábuas removidas, lascas e quebra final | Conferência final de barreiras em Play e áudio |
+| Grama | Dois níveis e desfolhar | Aceite visual/sonoro e combinações |
+| Armário 2×2 | Duas portas removíveis, dois nichos e seis cartas por nicho; mantém cinco impactos. Queda das portas, entrega escalonada ao HUD e quebra vazia usam os efeitos existentes | Validar sequência completa em Play e meta automática de 12 cartas por armário |
+| Franqueadora 1×1 | Alavanca, compressão/rebote, ejeção e voo à meta | Aceita pelo usuário em 19/10/2026, com meta própria no editor; resta acabamento sonoro |
+| Gelo | Dois níveis; quebra em cinco cacos no grosso e sete no fino | Matches, especiais, cascatas, reinício, meta e som em Play |
+
+**Sete elementos do plano original ainda precisam de regra fechada, protótipo e produção de efeitos:**
+
+| Elemento | Efeitos a produzir |
+| --- | --- |
+| Carta Voadora | Flutuação, movimento, reação ao impacto, captura, rastro e voo à meta |
+| Central de Rotas | Recepção por cor/símbolo, confirmação ou recusa, progresso dos compartimentos e conclusão |
+| Malote | Movimento/queda, rompimento da cinta, estado danificado e coleta final |
+| Encomenda Encantada | Proteção mágica, reação sem dano ao match, impacto válido de especial e liberação |
+| Tinteiro | Estados de dano, rachaduras, ruptura, respingos e aplicação no grid |
+| Fita | Fixação sobre conteúdo, tensão, dano, rasgo/descolamento e liberação |
+| Cofre | Estados de proteção, reação sem dano, impactos metálicos, remoção das proteções e abertura/coleta |
+
+Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando aplicável e integração com editor/objetivos. Reaproveitar o voo de cartas e a fragmentação existentes quando adequados; efeito compartilhado não comprova mecânica pronta.
+
+**Dependência adicional do Tinteiro:** a antiga Tinta Mágica foi substituída pela Grama (`Tinta_Magica.md`); `InkFloorLayer` usa atualmente o desfolhar da grama. Antes de produzir a ruptura, decidir se o Tinteiro volta a criar um piso próprio de Tinta ou terá outro resultado. Mantendo tinta, faltam também estados do piso, aplicação, limpeza, partículas, áudio e regra da meta. Esse é um pacote adicional aos sete elementos pendentes. A proposta original espalha tinta ao quebrar o Tinteiro; não prevê automaticamente propagação por jogada.
+
+### Progressão proposta
+
+| Fases | Estreia / foco |
+| --- | --- |
+| 1–10 | Caixa na 1; Grama na 4; depois combinação das duas |
+| 11–20 | Armário na 11: portas, cartas e liberação do espaço 2×2 |
+| 21–30 | Franqueadora na 21: geração de cartas versus estoque do armário |
+| 31–45 | Gelo fino na 31; grosso a partir da 36; depois combinar com Caixa e Grama |
+| 46–60 | Carta Voadora na 46: alvo móvel e coleta |
+| 61–80 | Central de Rotas na 61: exigência por cor/símbolo |
+| 81–100 | Malote na 81: resistência em alvo móvel; consolidar as primeiras 100 |
+| 101–120 | Encomenda Encantada na 101: planejar especiais |
+| 121–140 | Tinteiro na 121, condicionado à definição do piso gerado |
+| 141–160 | Fita na 141: bloqueio e liberação de conteúdos compatíveis |
+| 161–180 | Cofre na 161: especiais e resistência progressiva |
+| 181–200 | Domínio do conjunto; alternar combinações, respiros e desafios até o fechamento |
+
+Reservar pelo menos duas fases de reforço após cada estreia antes de combinações exigentes. Não reunir todos os obstáculos na reta final. Layouts, camadas, quantidades e jogadas dependem de playtest. Os temas do mapa não obrigam a mesma sequência de mecânicas: Gelo pode aparecer antes de uma região de inverno. Não é necessário criar mais obstáculos apenas para preencher 200 fases.
+
+### Gelo incorporado ao contrato
+
+- Overlay acima da peça: grosso → fino → removido; pode começar fino.
+- Prende troca e queda. Match deve incluir a peça congelada; match apenas adjacente não quebra. Especiais também causam dano.
+- Um impacto remove uma camada, preservando a peça inclusive no dano final. Power-up congelado não ativa com o impacto que o libera.
+- Meta conta uma célula completamente liberada; grosso não conta duas unidades.
+- Quebra própria já produzida, sem bloquear a resolução. Referências: `Gelo.md` e `Metas_Gelo_Caixa.md`.
+- Fita + Gelo precisa de regra explícita de compatibilidade e prioridade; suporte a camadas não autoriza essa combinação automaticamente.
+
+### Ordem recomendada de produção
+
+1. Concluir aceite em Play dos cinco elementos existentes e suas fases de ensino.
+2. Carta Voadora → Central de Rotas → Malote.
+3. Encomenda Encantada, incluindo feedback de impacto inválido.
+4. Fechar Tinteiro/Tinta e validar aplicação e metas antes da arte final.
+5. Fita e conteúdos compatíveis; depois Cofre, reutilizando o filtro de dano da Encantada.
+6. Integrar e balancear a campanha até 200, com metas possíveis e reinício consistente.
+
+Próximo efeito novo recomendado: **Carta Voadora**. Maior risco de retrabalho: **Tinteiro/Tinta**. Maior atenção às camadas: **Fita + Gelo**. Esta revisão documental não substitui validação em Play.
+
+## Escopo e situação atual (plano original de 100 fases)
+
+Escopo original, substituído pela revisão acima: implementar os 11 elementos previstos para as primeiras 100 fases, fechando regras, comportamento, arte, animação, áudio, objetivos e configuração no editor. O guia é uma proposta: suas regras e pendências são insumos de design, e não decisões já homologadas. As implementações e revisões abaixo registram o andamento após a aprovação do plano.
 
 O projeto usa Unity 6000.6.0f1, Sweet Sugar e conteúdo próprio em `Assets/RoyalAves`. A inspeção inicial encontrou:
 
@@ -140,7 +234,7 @@ Pilha de Encomendas: quatro estados de pacote fechado aplicados e validados pelo
 
 Grama (substitui a direção visual de Tinta Mágica neste piso): regras validadas em laboratório isolado, com uma ou duas camadas, objetivo por célula limpa e composição com pacote. Direção mais recente segue a referência anexada: tapete quadrado fechado de folhas pequenas arredondadas, inicial claro e seguinte escuro, com encaixe pelos limites visíveis para preencher a célula inteira e ícone sincronizado. Desfolhar integrado aos dois danos, com folhas arredondadas em giro/dispersão e contagem final após a animação; controles de velocidade/dispersão no painel. Aceite visual em Play e som ainda pendentes. Regras e instruções em `Docs/Grama.md`. A relação futura com o Tinteiro será definida na etapa correspondente.
 
-Escaninho/Armário postal: laboratório 2×2 criado em 14/10/2026. Visual atual com duas portas de vidro; primeiro impacto remove as duas sem coletar, quatro impactos seguintes entregam cartas, e o vazio quebra liberando as células. Corpo estreito e topo à frente do grid por decisão do usuário; contador e meta sincronizados após o voo. Impactos adjacentes e simultâneos nas quatro células conferidos no runtime. Aceite visual pelo usuário e contrato final de estoque/deduplicação ainda pendentes. Instruções em `Docs/Escaninho.md`.
+Escaninho/Armário postal: laboratório 2×2 criado em 14/10/2026. Revisão visual e mecânica: dois nichos amplos, seis cartas por nicho e cinco impactos totais — primeiro remove as portas sem coleta; os quatro seguintes enviam três cartas por hit (dois hits para esvaziar cada nicho); o armário quebra após a última entrega. Meta automática: 12 cartas por armário. Instruções em `Docs/Escaninho.md`.
 
 A inserção na campanha e os demais elementos continuam pendentes.
 

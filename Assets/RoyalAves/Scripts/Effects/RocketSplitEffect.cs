@@ -50,6 +50,9 @@ namespace RoyalAves.Effects
 
             var origin = rocketObject.transform.position;
             var spriteToHide = rocketObject.GetComponentInChildren<SpriteRenderer>();
+            var bodyHeight = spriteToHide != null && spriteToHide.sprite != null
+                ? (horizontal ? spriteToHide.bounds.size.y : spriteToHide.bounds.size.x)
+                : 155f / HalfPixelsPerUnit * RestScale;
             if (spriteToHide != null) spriteToHide.enabled = false;
 
             var root = new GameObject("RocketSplitFX");
@@ -59,8 +62,8 @@ namespace RoyalAves.Effects
             var overshootB = stopAtB ? 0f : ExitOvershoot;
             var durationA = FlightTime(origin, towardA, overshootA);
             var durationB = FlightTime(origin, towardB, overshootB);
-            BuildHalf(root.transform, data.HalfLeft, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA);
-            BuildHalf(root.transform, data.HalfRight, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB);
+            BuildHalf(root.transform, data.HalfLeft, data.EngineNozzle, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA, false, bodyHeight);
+            BuildHalf(root.transform, data.HalfRight, data.EngineNozzle, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB, true, bodyHeight);
             ScheduleCells(origin, towardA, towardB, durationA, durationB, cells, onCellPassed, overshootA, overshootB);
 
             var total = Mathf.Max(durationA, durationB);
@@ -111,8 +114,8 @@ namespace RoyalAves.Effects
 
         const float HalfPixelsPerUnit = 128f; // matches capsule-half-left/right.png's import setting
 
-        static void BuildHalf(Transform parent, Texture2D texture, Material flameMat, Vector3 from, Vector3 to,
-            bool horizontal, int sortOrder, float duration, float overshoot)
+        static void BuildHalf(Transform parent, Texture2D texture, Texture2D nozzleTexture, Material flameMat, Vector3 from, Vector3 to,
+            bool horizontal, int sortOrder, float duration, float overshoot, bool rightHalf, float bodyHeight)
         {
             if (texture == null) return;
             var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
@@ -120,7 +123,8 @@ namespace RoyalAves.Effects
 
             var half = new GameObject("RocketHalf");
             half.transform.SetParent(parent, true);
-            half.transform.localScale = Vector3.one * ActivatedScale;
+            // Match the visible rocket being replaced instead of fitting inside a width budget.
+            half.transform.localScale = Vector3.one * (bodyHeight / sprite.bounds.size.y);
             if (!horizontal) half.transform.rotation = Quaternion.Euler(0, 0, 90);
 
             var sr = half.AddComponent<SpriteRenderer>();
@@ -132,19 +136,46 @@ namespace RoyalAves.Effects
             // seu lado - antes as duas nasciam centradas exatamente na mesma posição, uma em cima da outra, e a
             // silhueta do foguete inteiro nunca aparecia.
             var direction = (to - from).normalized;
-            var halfExtent = sprite.bounds.extents.x * ActivatedScale;
-            half.transform.position = from + direction * halfExtent;
-            AddBeam(half, flameMat, sortOrder + 2, 0.34f, new Color(1f, 0.67f, 0.12f));
-            AddBeam(half, flameMat, sortOrder + 3, 0.11f, new Color(1f, 1f, 0.85f));
+            var halfExtent = sprite.bounds.extents.x * half.transform.localScale.x;
+            var rearSign = rightHalf ? -1f : 1f;
+            var exhaust = new Vector3(rearSign * sprite.bounds.extents.x, 0f, 0f);
+            var nozzleLength = 0f;
+            if (nozzleTexture != null)
+            {
+                // Keep the original hull artwork intact. Only the separate nozzle is generated.
+                // Diameter matches the 0.34-unit flame wake at the normal board scale.
+                var nozzleHeight = sprite.bounds.size.y * 0.78f;
+                var nozzleSprite = Sprite.Create(nozzleTexture,
+                    new Rect(0, 0, nozzleTexture.width, nozzleTexture.height),
+                    new Vector2(0.5f, 0.5f), nozzleTexture.height / nozzleHeight);
+                // Recess most of the motor into the hull; only the short exhaust lip protrudes.
+                nozzleLength = nozzleSprite.bounds.size.x * 0.30f;
+                var nozzle = new GameObject("EngineNozzle");
+                nozzle.transform.SetParent(half.transform, false);
+                nozzle.transform.localPosition = exhaust + Vector3.right * rearSign *
+                    (nozzleLength - nozzleSprite.bounds.extents.x);
+                var nozzleRenderer = nozzle.AddComponent<SpriteRenderer>();
+                nozzleRenderer.sprite = nozzleSprite;
+                nozzleRenderer.flipX = rightHalf;
+                nozzleRenderer.sortingLayerName = sr.sortingLayerName;
+                nozzleRenderer.sortingOrder = sortOrder;
+                exhaust.x += rearSign * nozzleLength;
+            }
+            half.transform.position = from + direction * (halfExtent + nozzleLength * half.transform.localScale.x);
+            // Each nozzle sits at the cut, with its flame trailing behind the flying half.
+            // Keep both wakes behind the hull so the mouth of the nozzle remains visible.
+            AddBeam(half, flameMat, sortOrder - 2, 0.34f, new Color(1f, 0.67f, 0.12f), exhaust);
+            AddBeam(half, flameMat, sortOrder - 1, 0.11f, new Color(1f, 1f, 0.85f), exhaust);
 
             var flame = new GameObject("Flame");
             flame.transform.SetParent(half.transform, false);
+            flame.transform.localPosition = exhaust;
             // Particle size/speed use the Flame object's own local scale (Scaling Mode: Local), which doesn't
             // inherit from its parent automatically - match the half's scale so the trail isn't oversized next to it.
             flame.transform.localScale = Vector3.one * ActivatedScale;
 
             var ps = flame.AddComponent<ParticleSystem>();
-            ConfigureFlame(ps, flameMat, sortOrder, duration);
+            ConfigureFlame(ps, flameMat, sortOrder - 3, duration);
 
             var toOvershot = to + direction * overshoot;
             LeanTween.move(half, toOvershot, duration).setEase(LeanTweenType.easeInQuad)
@@ -161,11 +192,12 @@ namespace RoyalAves.Effects
                 var emission = ps.emission;
                 emission.enabled = false;
             }
-            if (sr != null) sr.enabled = false;
+            foreach (var renderer in half.GetComponentsInChildren<SpriteRenderer>()) renderer.enabled = false;
         }
 
         static void ConfigureFlame(ParticleSystem ps, Material mat, int baseSortOrder, float duration)
         {
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             var main = ps.main;
             main.loop = false;
             main.duration = duration + TrailTail;
@@ -218,10 +250,11 @@ namespace RoyalAves.Effects
             ps.Play();
         }
 
-        static void AddBeam(GameObject half, Material source, int order, float width, Color color)
+        static void AddBeam(GameObject half, Material source, int order, float width, Color color, Vector3 exhaust)
         {
             var node = new GameObject("RocketBrightWake");
             node.transform.SetParent(half.transform, false);
+            node.transform.localPosition = exhaust;
             var trail = node.AddComponent<TrailRenderer>();
             var material = new Material(source);
             material.SetTexture("_MainTex", Texture2D.whiteTexture);
