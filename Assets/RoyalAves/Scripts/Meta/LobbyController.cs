@@ -1,8 +1,8 @@
 // Lobby of the Correio Mágico agency, laid out like the web prototype (royal-aves/src): HUD with avatar, coins, lives,
 // stars and settings; the room of the current area with its restored upgrades; "Nível N" and the area button; the bottom
 // navigation; and one shared window for the upgrades, the area chest, its reward, the next area and the settings.
-// It replaces the Sweet Sugar path map: LevelManager's Map state shows it and "Nível N" opens Sweet Sugar's pre-level
-// popup, so the levels themselves are still Sweet Sugar's.
+// The curved level map is home, including returns from every bottom-menu screen.
+// It opens Sweet Sugar's original pre-level popup and uses its existing levels and saves.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,7 +50,7 @@ namespace RoyalAves.Meta
         [SerializeField] TextMeshProUGUI areaLabel;
         [SerializeField] TextMeshProUGUI areaProgress;
 
-        [Header("Menu inferior: Eventos, Ranking, Agência, Equipes, Coleção")]
+        [Header("Menu inferior: Eventos, Ranking, Mapa, Equipes, Coleção")]
         [SerializeField] Button[] navButtons;
 
         [Header("Janela")]
@@ -108,10 +108,10 @@ namespace RoyalAves.Meta
         [Tooltip("Escreve no Console cada toque (o que está sob o dedo) e cada mudança de estado do jogo.")]
         [SerializeField] bool logDiagnostics = false;
 
-        static readonly string[] NavTitles = { "Eventos", "Ranking", "Agência", "Equipes", "Coleção" };
+        static readonly string[] NavTitles = { "Eventos", "Ranking", "Mapa", "Equipes", "Coleção" };
         const int HomeTab = 2;
 
-        // The prototype's bottom-menu screens, in the order of the navigation buttons (Agência is the lobby itself).
+        // The central button returns to the map; the remaining buttons cover it with their menu screen.
         static readonly LobbyMenus.Route[] TabRoutes =
             { LobbyMenus.Route.Events, LobbyMenus.Route.Records, LobbyMenus.Route.Home, LobbyMenus.Route.Teams, LobbyMenus.Route.Collection };
 
@@ -127,6 +127,7 @@ namespace RoyalAves.Meta
         [SerializeField] Texture2D stageBurnTexture;
 
         LobbyMenus menus;
+        CurvedLevelMap levelMap;
         StarsInfoPopup starsPopup;
         SettingsScreen settingsScreen;
         LobbyFeaturesConfig features;
@@ -173,6 +174,7 @@ namespace RoyalAves.Meta
             for (var i = 0; i < navButtons.Length; i++)
             {
                 var tab = i;
+                navButtons[i].onClick=new Button.ButtonClickedEvent();
                 navButtons[i].onClick.AddListener(() => OpenTab(tab));
             }
             modalPrimary.onClick.AddListener(() => CloseModalThen(primaryAction));
@@ -211,6 +213,8 @@ namespace RoyalAves.Meta
             // (menu Royal Aves > Criar tela de configurações), so here it is only found and given the tap sound.
             settingsScreen = content.GetComponentInChildren<SettingsScreen>(true);
             if (settingsScreen != null) settingsScreen.OnTap = PlayClick;
+
+            SetupLevelMap();
 
             modal.SetActive(false);
             restoreEffect.SetActive(false);
@@ -355,6 +359,7 @@ namespace RoyalAves.Meta
                 }
             }
             Refresh();
+            if (levelMap != null) OpenLevelMap();
             if (pendingCoins > 0)
             {
                 StartCoroutine(FlyCoins(pendingCoins));
@@ -369,6 +374,7 @@ namespace RoyalAves.Meta
 
         void Hide()
         {
+            if (levelMap != null) levelMap.Close();
             // The lobby canvas sits on the UI sorting layer, in front of the board: it is switched off FIRST, so that a
             // failure in anything below can no longer leave it covering the level. RenderRoom turns the room back on by
             // itself while it captures, so the blurred backdrop still works from here.
@@ -432,6 +438,8 @@ namespace RoyalAves.Meta
             for (var i = 0; i < layers.Count; i++)
                 layers[i].gameObject.SetActive(i < done && layers[i].sprite != null);
             var room = background.transform.parent;
+            var roomWasActive = room.gameObject.activeSelf;
+            room.gameObject.SetActive(true);
             var hidden = new List<GameObject>();
             foreach (Transform child in content.transform)
                 if (child != room && child.gameObject.activeSelf)
@@ -471,6 +479,7 @@ namespace RoyalAves.Meta
             }
             finally
             {
+                room.gameObject.SetActive(roomWasActive);
                 canvas.renderMode = oldMode;
                 canvas.worldCamera = oldCamera;
                 canvas.planeDistance = oldDistance;
@@ -560,13 +569,14 @@ namespace RoyalAves.Meta
             starsText.text = MetaProgress.Stars.ToString();
             RefreshLives();
             var level = MetaProgress.NextLevel;
-            var levelExists = level <= LevelCount();
+            var levelExists = RoyalAves.Meta.WorldMap.WorldMapLevelCatalog.Exists(level);
             playButton.interactable = levelExists;
             playText.text = levelExists ? $"Nível {level}" : "Em breve";
             areaLabel.text = MetaProgress.IsAreaComplete(config)
                 ? (MetaProgress.ChestClaimed ? "Restaurada" : "Concluída!")
                 : $"Área {MetaProgress.AreaIndex + 1}";
             areaProgress.text = $"{done}/{area.tasks.Count}";
+            if (levelMap != null && levelMap.Visible) levelMap.Open(false);
             // The pill fills with green as the area's upgrades are restored.
             if (AreaFill() is RectTransform fill)
             {
@@ -1079,8 +1089,9 @@ namespace RoyalAves.Meta
         // modal closes, however it closes ("Fechar" or the X) — both just set modal inactive.
         void SetLobbyChromeVisible(bool visible)
         {
-            if (content.transform.Find("HUD") is Transform hud) hud.gameObject.SetActive(visible);
-            if (content.transform.Find("Nav") is Transform nav) nav.gameObject.SetActive(visible);
+            if (content.transform.Find("HUD") is Transform hud) hud.gameObject.SetActive(visible&&levelMap==null);
+            if (content.transform.Find("Nav") is Transform nav) nav.gameObject.SetActive(visible&&levelMap==null);
+            levelMap?.SetChromeVisible(visible);
         }
 
         IEnumerator RestoreChromeWhenModalCloses()
@@ -1108,6 +1119,11 @@ namespace RoyalAves.Meta
             restoring = true;
             if (restoreSound != null && SoundBase.Instance != null) SoundBase.Instance.PlayOneShot(restoreSound);
             var layer = index < layers.Count ? layers[index] : null;
+            // The layer builds itself in with the dissolve + magic dust (the same one the editor previews), over just
+            // the region the furniture occupies. Started before anything is drawn, so it never flashes at full.
+            if (layer != null && layer.sprite != null)
+                StartCoroutine(AreaStageReveal.Play(this, layersRoot, new[] { layer.rectTransform }, new[] { task.Region },
+                    stageSparkle, stageBurnTexture));
             // The effect covers the whole lobby and takes every tap, so it is turned off even if the coroutine is cut
             // short (the lobby hidden, the scene reloaded): otherwise nothing in the lobby would answer again.
             if (!inHotspot)
@@ -1126,7 +1142,6 @@ namespace RoyalAves.Meta
                         restoreToken.localScale = Vector3.one * BackOut(drop);
                         restoreToken.anchoredPosition = new Vector2(0, Mathf.Lerp(420, 120, 1 - (1 - drop) * (1 - drop)));
                         restoreLabelBox.localScale = Vector3.one * BackOut(Mathf.Clamp01((p - 0.2f) / 0.5f));
-                        if (layer != null) layer.color = new Color(1, 1, 1, Mathf.Clamp01(p * 1.5f));
                         yield return null;
                     }
                 }
@@ -1231,12 +1246,51 @@ namespace RoyalAves.Meta
         {
             PlayClick();
             modal.SetActive(false);
+            levelMap?.SelectNavigationTab(tab);
+            if (tab == HomeTab && levelMap != null)
+            {
+                OpenLevelMap();
+                return;
+            }
             if (menus != null && tab < TabRoutes.Length)
             {
                 menus.Open(TabRoutes[tab]);
                 return;
             }
             if (tab != HomeTab) ComingSoon(tab < NavTitles.Length ? NavTitles[tab] : "Menu");
+        }
+
+        void SetupLevelMap()
+        {
+            var mapConfig = Resources.Load<LevelMapConfig>(LevelMapConfig.ResourcePath);
+            if (mapConfig == null || !mapConfig.enabledByDefault) return;
+            RoyalAves.Meta.WorldMap.WorldMapLevelCatalog.Refresh();
+            var nav = content.transform.Find("Nav") as RectTransform;
+            levelMap = CurvedLevelMap.Create((RectTransform)content.transform, nav, mapConfig, features,
+                LevelCount(), () => CurvedLevelMap.ReachedLevel(LevelCount()), level =>
+                {
+                    PlayClick();
+                    PlayLevelFromMenu(level);
+                }, OpenLevelMap);
+            levelMap.BindHudButtons(avatarButton,coinsButton,livesButton,settingsButton,navButtons);
+            var oldHud=content.transform.Find("HUD");
+            if(settingsButton!=null&&oldHud!=null&&!settingsButton.transform.IsChildOf(oldHud)&&settingsButton.GetComponentInParent<LobbyController>()==this)
+                settingsButton.gameObject.SetActive(false);
+            var room = background.transform.parent;
+            levelMap.transform.SetSiblingIndex(room.GetSiblingIndex() + 1);
+        }
+
+        void OpenLevelMap()
+        {
+            if (levelMap == null) return;
+            levelMap.SelectNavigationTab(HomeTab);
+            if (menus != null) menus.Close();
+            modal.SetActive(false);
+            background.transform.parent.gameObject.SetActive(false);
+            if (content.transform.Find("areas") is Transform areas) areas.gameObject.SetActive(false);
+            playButton.gameObject.SetActive(false);
+            areaButton.gameObject.SetActive(false);
+            levelMap.Open();
         }
 
         void OpenInventory()
@@ -1266,7 +1320,7 @@ namespace RoyalAves.Meta
         void PlayLevelFromMenu(int level)
         {
             if (menus != null) menus.Close();
-            if (level < 1 || level > LevelCount()) return;
+            if (!RoyalAves.Meta.WorldMap.WorldMapLevelCatalog.Exists(level)) return;
             Log($"nível {level} escolhido no menu; abrindo o pré-nível do Sweet Sugar");
             OpenLevelPopup(level);
         }
@@ -1386,7 +1440,7 @@ namespace RoyalAves.Meta
 
         static int LevelCount()
         {
-            if (CrosssceneData.totalLevels == 0) CrosssceneData.totalLevels = LoadingManager.GetLastLevelNum();
+            CrosssceneData.totalLevels = RoyalAves.Meta.WorldMap.WorldMapLevelCatalog.LastLevel;
             return CrosssceneData.totalLevels;
         }
 

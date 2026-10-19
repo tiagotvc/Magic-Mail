@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_Script: {fileID: 11500000, guid: cbd5d5e1105f413287443741e81b48da, type: 3}
+  m_Name: Magic Mail approved HUD theme
+  font: {fileID: 11400000, guid: 1643c5958f827f54cb6b414df6fe600e, type: 2}
+  artworkMaterial: {fileID: 2100000, guid: 2befee4b2da2400685df4b9804fbb465, type: 2}
+  footerMaterial: {fileID: 2100000, guid: d3a2cb1ef0224e3f84bc5b881e1e626a, type: 2}

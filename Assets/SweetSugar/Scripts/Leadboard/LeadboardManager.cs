@@ -37,11 +37,11 @@ namespace SweetSugar.Scripts.Leadboard
         
         void OnEnable()
         {
-            if (levelNumber == 0)
-                levelNumber = LevelManager.THIS.currentLevel;
-                
             GetComponent<Image>().enabled = false;
             ShowIcons(false);
+            if(!Application.isPlaying||LevelManager.THIS==null)return;
+            if (levelNumber == 0)
+                levelNumber = LevelManager.THIS.currentLevel;
 
 #if FACEBOOK
       

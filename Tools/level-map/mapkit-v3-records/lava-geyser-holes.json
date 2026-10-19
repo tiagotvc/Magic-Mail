@@ -1,0 +1,19 @@
+{
+  "id": "lava-geyser-holes",
+  "folder": "LavaLand",
+  "file": "lava-geyser-holes.png",
+  "transparent": true,
+  "columns": 3,
+  "rows": 1,
+  "names": [
+    "round-rim",
+    "cracked-rim",
+    "mineral-basin"
+  ],
+  "subjects": "low circular basalt geyser rim with dark elliptical hole and small warm glow inside; similar cracked oval rim with three broad cracks; shallow ocre mineral basin ring with dark central vent",
+  "prompt": "Use case: stylized-concept. Independent sprites for Magic Mail, a whimsical postal cartoon puzzle map. Draw SIMPLE 2D PAINTED ILLUSTRATION, large clear rounded shapes with TWO OR THREE broad cel shading tones and one broad highlight. Similar art direction to a polished casual puzzle saga map with sticker-like cream-white outlines. Absolutely not detailed 3D models, realistic materials or studio renders. SUBJECTS: low circular basalt geyser rim with dark elliptical hole and small warm glow inside; similar cracked oval rim with three broad cracks; shallow ocre mineral basin ring with dark central vent. Palette for volcanic postal world: plum-purple basalt, coral orange lava, warm gold seals, teal accent, cream envelope. CLEAR CONTINUOUS opaque CREAM-WHITE OUTER OUTLINE on each separate complete silhouette, including inner openings. Lighting inside artwork only, no surrounding glow fog, gradients outside object, no cast shadows or stray dots. Strict equal 3 columns by 1 rows sprite grid, exactly 3 objects in reading order, centered per cell, at most 60% cell width and 70% height with generous empty gutters. Actual alpha zero transparent background, no checkerboard, floor, scene, text, border or additional props. Keep all pieces separate, no overlaps and no cropping.",
+  "status": "generated-review-pending",
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-2018e294-f749-4635-87ba-e2d74c0c7bb8.png",
+  "path": "Assets/RoyalAves/Art/MapKitV3/LavaLand/lava-geyser-holes.png",
+  "tool": "built-in image_gen"
+}

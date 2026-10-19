@@ -372,7 +372,7 @@ namespace SweetSugar.Scripts.Core
             }
 
             PlayerPrefs.SetInt("Lifes", lifes);
-            PlayerPrefs.SetString("DateOfExit", ServerTime.THIS.serverTime.ToString());
+            PlayerPrefs.SetString("DateOfExit", (ServerTime.THIS!=null?ServerTime.THIS.serverTime:DateTime.UtcNow).ToString());
             PlayerPrefs.Save();
         }
 

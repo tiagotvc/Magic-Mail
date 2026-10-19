@@ -1,0 +1,14 @@
+[
+  {
+    "name": "turtle-body-v51",
+    "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-8f58145e-bae9-490e-93ac-514f9a585199.png",
+    "prompt": "Precise-object-edit for a 2D character animation rig. This is a BODY BACKING layer of the attached full-body front-facing old turtle inventor. Keep EXACT SAME canvas orientation, dimensions, margins, character size and pixel registration. Keep head, face, eyes looking at camera, long neck, white beard, huge teal shell, orange apron, BOTH UPPER ARMS ending at the elbows, thin legs and feet IDENTICAL. Remove ONLY the TWO FOREARMS from just below the elbows: remove both teal elbow cuffs, both lower arms, BOTH hands, the turquoise-orb wand on image LEFT and the wrench on image RIGHT. Where those forearms/tools overlapped the shell or apron, reconstruct the smooth glossy teal shell/orange apron underneath in matching painting. Where they were outside the body, leave true transparency. UPPER ARMS remain, ending in small rounded tips at the SAME original elbow centers; no long dangling arms, no new hands. Preserve face, beard, outline, feet, all body landmarks and glossy highlights exactly; do not redraw or re-pose anything else. No repositioning, cropping, resizing or new props. Full-size transparent body backing sprite, not a pose sheet. Exact original transparent frame, no background or cast shadow.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "name": "turtle-forearms-v51",
+    "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-0ed45870-53ab-48d1-8c6b-e17dc97f24ae.png",
+    "prompt": "Precise-object-edit/extraction for a 2D character puppet rig. From the attached front-facing old turtle inventor KEEP ONLY BOTH LOWER ARMS (forearms) with their hands, teal elbow cuff joint covers and held tools. Left piece: teal cuff at image LEFT elbow, thin green forearm, green hand and ENTIRE brass U-fork wand/turquoise orb. Right piece: teal cuff at image RIGHT elbow, thin green forearm, green hand and ENTIRE wrench. Remove EVERYTHING ELSE to real alpha: shell, head, neck, beard, apron, UPPER arms, legs and feet. Preserve the TWO FOREARMS in their EXACT ORIGINAL POSITIONS, SCALE, ANGLES and SAME FULL CANVAS of the source, as if simply lifting only these pixels off the illustration. Absolutely do NOT center, spread apart, rotate, enlarge or crop the parts. Both parts must stay registered to original elbow coordinates. The left tool remains pointing upward and right wrench angled sideways. Two separate isolated forearm+hand+tool cutouts on ONE full-size transparent layer. Preserve exact glossy painting, colors, finger shapes, creamy highlights, thin ivory contour. No new character pieces or connecting lines, labels, sheet grid, background, backdrop, glow or shadows. Real transparent alpha.",
+    "tool": "built-in image_gen"
+  }
+]

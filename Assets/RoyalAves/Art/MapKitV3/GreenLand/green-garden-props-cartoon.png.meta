@@ -1,0 +1,325 @@
+fileFormatVersion: 2
+guid: 5ce130e23835b214b9913ef919164eb6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -56426280514102315
+    second: green-garden-props-cartoon_0
+  - first:
+      213: -5510950336637794215
+    second: green-garden-props-cartoon_1
+  - first:
+      213: 7428783310465775671
+    second: green-garden-props-cartoon_2
+  - first:
+      213: -6353045943793873718
+    second: green-garden-props-cartoon_3
+  - first:
+      213: -2942085225415323944
+    second: green-garden-props-cartoon_4
+  - first:
+      213: -4906289932802248944
+    second: green-garden-props-cartoon_5
+  - first:
+      213: 4400813357532494198
+    second: green-garden-props-cartoon_6
+  - first:
+      213: 6335459391201426816
+    second: green-garden-props-cartoon_7
+  - first:
+      213: 2706857659557200451
+    second: green-garden-props-cartoon_8
+  - first:
+      213: -8135003549855499435
+    second: green-garden-props-cartoon_9
+  - first:
+      213: -55991523120018795
+    second: green-garden-props-cartoon_10
+  - first:
+      213: 7084860529387677801
+    second: green-garden-props-cartoon_11
+  - first:
+      213: -5373125919814093814
+    second: green-garden-props-cartoon_12
+  - first:
+      213: 2951061902375794896
+    second: green-garden-props-cartoon_13
+  - first:
+      213: -5549404083982061213
+    second: green-garden-props-cartoon_14
+  - first:
+      213: -2977653524660774580
+    second: green-garden-props-cartoon_15
+  - first:
+      213: -4026330373185087865
+    second: green-garden-props-cartoon_16
+  - first:
+      213: 6359304501814535824
+    second: green-garden-props-cartoon_17
+  - first:
+      213: -8843372412329916721
+    second: green-garden-props-cartoon_18
+  - first:
+      213: 7805786559749251003
+    second: green_garden_props_envelope_bench
+  - first:
+      213: 3992321829398577162
+    second: green_garden_props_seal_topiary
+  - first:
+      213: 4341584569887951315
+    second: green_garden_props_parcel_cart
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: green_garden_props_envelope_bench
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 27
+        width: 718
+        height: 546
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbf5f5ee489b35c60800000000000000
+      internalID: 7805786559749251003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_garden_props_seal_topiary
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 34
+        width: 516
+        height: 644
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0007563d83976730800000000000000
+      internalID: 3992321829398577162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_garden_props_parcel_cart
+      rect:
+        serializedVersion: 2
+        x: 1451
+        y: 25
+        width: 677
+        height: 574
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d90d72e928604c30800000000000000
+      internalID: 4341584569887951315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      green-garden-props-cartoon_0: -56426280514102315
+      green-garden-props-cartoon_1: -5510950336637794215
+      green-garden-props-cartoon_10: -55991523120018795
+      green-garden-props-cartoon_11: 7084860529387677801
+      green-garden-props-cartoon_12: -5373125919814093814
+      green-garden-props-cartoon_13: 2951061902375794896
+      green-garden-props-cartoon_14: -5549404083982061213
+      green-garden-props-cartoon_15: -2977653524660774580
+      green-garden-props-cartoon_16: -4026330373185087865
+      green-garden-props-cartoon_17: 6359304501814535824
+      green-garden-props-cartoon_18: -8843372412329916721
+      green-garden-props-cartoon_2: 7428783310465775671
+      green-garden-props-cartoon_3: -6353045943793873718
+      green-garden-props-cartoon_4: -2942085225415323944
+      green-garden-props-cartoon_5: -4906289932802248944
+      green-garden-props-cartoon_6: 4400813357532494198
+      green-garden-props-cartoon_7: 6335459391201426816
+      green-garden-props-cartoon_8: 2706857659557200451
+      green-garden-props-cartoon_9: -8135003549855499435
+      green_garden_props_envelope_bench: 7805786559749251003
+      green_garden_props_parcel_cart: 4341584569887951315
+      green_garden_props_seal_topiary: 3992321829398577162
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,88 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "postal-scenery-cartoon-v2",
+      "folder": "GreenLand",
+      "file": "postal-scenery-cartoon-v2.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 2,
+      "names": [
+        "windmill",
+        "lantern",
+        "autumn-tree",
+        "pine",
+        "kiosk",
+        "flowers"
+      ],
+      "prompt": "Use case: style-transfer. Image 1 is the EDIT TARGET: the six scenery objects in a 3-column by 2-row atlas. Images 2,3,4 are STRICT STYLE REFERENCES from the actual game. Redraw the six subjects of image 1 in exactly the drawing language of images 2-4: clean hand-drawn 2D cartoon sprites, very simple big rounded forms, limited smooth color bands, flat illustrated highlights, thin dark warm internal lines and the same thin warm-white/ivory outer cutout border. Do NOT use the target's realistic detailed fantasy style. No individual leaves, tile texture, realistic stone, metallic rendering, studio lighting, glow fog or ornate filigree. Keep the six subjects and cell order: envelope-vane windmill; curved teal postal lantern; orange rounded tree with only THREE smooth big foliage lobes like reference tree; lavender pine with only THREE broad scalloped tiers; tiny mint postal kiosk with simple purple roof and THREE parcel slots; three simple golden bell flowers in one low leafy clump. Remove the scattered stones, barrel, gardens and accessories around bases. The tree trunks and building feet are simple and flat, like the references. Complete silhouettes, substantial transparent gutters, one subject per cell, no overlaps or text. Genuine transparent alpha. No background, no ground planes, no cast shadows.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-b9a72b23-ef87-4525-9926-254741e5b8ea.png",
+      "editTarget": "Assets/RoyalAves/Art/MapKitV3/GreenLand/postal-scenery-variety.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/round-purple-tree-glow.png",
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-lamp.png",
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks-glow.png"
+      ]
+    },
+    {
+      "id": "postal-navigation-cartoon-v2",
+      "folder": "Shared",
+      "file": "postal-navigation-cartoon-v2.png",
+      "transparent": true,
+      "columns": 5,
+      "rows": 1,
+      "names": [
+        "events",
+        "ranking",
+        "agency",
+        "teams",
+        "collection"
+      ],
+      "prompt": "Use case: style-transfer. Image 1 is the EDIT TARGET: five navigation icons. Images 2 and 3 are STRICT drawing-style references from this game. Redraw the SAME five icons and left-to-right order in the simple illustrated cartoon style of the references: envelope, trophy, small postal agency, two team pawn figures, stamp album. Smooth broad flat color bands and a few drawn highlights; simple chunky silhouettes, thin warm internal lines and thin warm-white cutout outline matching the reference. No realistic material textures, no fine roof tiles, no filigree, no tiny gardens, no studio 3D rendering or glow. Keep purple, teal, ivory and gold theme. Exactly five equal cells in a single very wide horizontal strip. Each icon must occupy at most 72 percent of its cell width with AT LEAST 14 percent empty transparent gutter ON EACH SIDE. No icon may touch the next cell, and no stray colored pixels. No enclosing square buttons, no backgrounds, no cast shadows, no text. Genuine transparent alpha.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-f749fabc-f6ab-4e1b-b6d2-e0e693f715c5.png",
+      "editTarget": "Assets/RoyalAves/Art/MapKitV3/Shared/postal-navigation-icons.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/small-postal-props-glow-spaced.png",
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks-glow.png"
+      ]
+    },
+    {
+      "id": "postal-bridge-cartoon-v2",
+      "folder": "Shared",
+      "file": "postal-bridge-cartoon-v2.png",
+      "transparent": true,
+      "columns": 3,
+      "rows": 1,
+      "names": [
+        "mint",
+        "timber",
+        "logs"
+      ],
+      "prompt": "Use case: style-transfer. Image 1 is the EDIT TARGET: three top-down bridge deck sprites. Image 2 is the STRICT STYLE REFERENCE from the game. Simplify the three bridges to the reference's clean illustrated 2D cartoon drawing, not realistic wood or sculpted metal. Use broad flat rounded shapes, two or three soft color bands, restrained drawn highlights, thin warm internal lines and a thin warm-white/ivory outer cutout border matching the reference. Keep EXACTLY the same three objects and order: mint deck with three broad planks and four teal bolts; brown timber deck with three planks and simple gold corner bindings; six parallel rounded brown logs with two simple golden rope bands. Preserve top-down orthographic orientation with long axis vertical and complete silhouettes. No added decorations, no cast shadow, no ground, no scenery. Three independent cells with ample fully transparent gutters. Genuine transparent alpha. No text.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-3fd9f2dc-fa20-4580-9a84-51a6d75e6407.png",
+      "editTarget": "Assets/RoyalAves/Art/MapKitV3/Shared/postal-bridge-variants.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks-glow.png"
+      ]
+    },
+    {
+      "id": "postal-house-cartoon-v2",
+      "folder": "GreenLand",
+      "file": "postal-house-cartoon-v2.png",
+      "transparent": true,
+      "columns": 1,
+      "rows": 1,
+      "names": [
+        "house"
+      ],
+      "prompt": "Use case: style-transfer. Image 1 is the EDIT TARGET: the postal house. Images 2 and 3 are STRICT STYLE REFERENCES from the existing game. Redraw the same small postal house in their simple 2D illustrated cartoon drawing language. Keep its exact overall shape, cream walls, curved purple roof, golden chimney, round teal window, golden envelope sign and rounded teal door, front three-quarter view and complete silhouette. Simplify roof to a FEW broad smooth curved overlapping purple shapes, not many separate glossy inflated tiles. Plain simple walls, very few drawn stone details, simple warm color bands and a few drawn highlights. Match reference light direction, line weight and thin warm-white/ivory cutout outline. No realistic masonry, gradients that look studio-rendered, noisy textures, gardens, plants, extra decorative objects, cast shadow or floor. Same proportions as target so it replaces it at the same world size. No text. Genuine transparent background with generous transparent margins.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-a5789579-eaca-4de6-82f4-4194346f67ec.png",
+      "editTarget": "Assets/RoyalAves/Art/MapKitV3/GreenLand/green-post-office-polished.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/postal-region-landmarks-glow.png",
+        "Assets/RoyalAves/Art/MapKitV2/Sprites/round-purple-tree-glow.png"
+      ]
+    }
+  ]
+}

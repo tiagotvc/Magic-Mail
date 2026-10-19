@@ -1,0 +1,211 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101b97fdd0f384e59bcab0597d541e50, type: 3}
+  m_Name: RoyalAvesMission100
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.WorldMap.WorldMapMission100
+  enabled: 1
+  polishedEntrance: 1
+  layout: {fileID: 11400000, guid: c77f881d75456844f8b0c3d13c086de5, type: 2}
+  characters:
+  - sprite: {fileID: 21300000, guid: ecc9de45fc7d483ab719ac2235b69571, type: 3}
+    bodyBacking: {fileID: 0}
+    forearmSprite: {fileID: 0}
+    role: The Courier
+    wand: Crooked wood / amber
+    height: 1.45
+    facingLeft: 0
+    forearms:
+    - region:
+        serializedVersion: 2
+        x: 0.55
+        y: 0.6
+        width: 0.44
+        height: 0.13
+      heldItem:
+        serializedVersion: 2
+        x: 0.83
+        y: 0.64
+        width: 0.16
+        height: 0.3
+      elbow: {x: 0.55, y: 0.67}
+      degrees: 2.5
+      speed: 0
+      phase: 0
+      sourceElbow: {x: 0, y: 0}
+      sourceScale: {x: 0, y: 0}
+  - sprite: {fileID: 21300000, guid: aac497d37460686ef635454417c73131, type: 3}
+    bodyBacking: {fileID: 0}
+    forearmSprite: {fileID: 0}
+    role: "The Organizer \u2014 Owl Wizard"
+    wand: Straight violet / amethyst
+    height: 1.2
+    facingLeft: 1
+    forearms:
+    - region:
+        serializedVersion: 2
+        x: 0.028
+        y: 0.31
+        width: 0.255
+        height: 0.42
+      heldItem:
+        serializedVersion: 2
+        x: 0.16
+        y: 0.68
+        width: 0.12
+        height: 0.23
+      elbow: {x: 0.29, y: 0.575}
+      degrees: 3.5
+      speed: 1.35
+      phase: 0
+      sourceElbow: {x: 0, y: 0}
+      sourceScale: {x: 0, y: 0}
+  - sprite: {fileID: 21300000, guid: 4f8b47d08984f94890a69074638ebf68, type: 3}
+    bodyBacking: {fileID: 21300000, guid: ceb7dcbdcc493e23eea6c7ae78663d5e, type: 3}
+    forearmSprite: {fileID: 21300000, guid: 3e47ff62102a5e240daebe5a2bc4a59d, type: 3}
+    role: "The Inventor \u2014 Elder Turtle Wizard"
+    wand: Brass fork / turquoise
+    height: 1.04
+    facingLeft: 0
+    forearms:
+    - region:
+        serializedVersion: 2
+        x: 0.02
+        y: 0.25
+        width: 0.43
+        height: 0.45
+      heldItem:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      elbow: {x: 0.36, y: 0.434}
+      degrees: 3.8
+      speed: 1.2
+      phase: 0
+      sourceElbow: {x: 0.385, y: 0.446}
+      sourceScale: {x: 0.68, y: 0.68}
+    - region:
+        serializedVersion: 2
+        x: 0.66
+        y: 0.18
+        width: 0.32
+        height: 0.37
+      heldItem:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      elbow: {x: 0.69, y: 0.44}
+      degrees: 3.1
+      speed: 1.75
+      phase: 1.2
+      sourceElbow: {x: 0.87, y: 0.445}
+      sourceScale: {x: 0.68, y: 0.68}
+  - sprite: {fileID: 21300000, guid: a0f6e775c218435ba3495f4b8e4992c9, type: 3}
+    bodyBacking: {fileID: 0}
+    forearmSprite: {fileID: 0}
+    role: "Scribble \u2014 Ink Sprite"
+    wand: Stolen Royal Stamp
+    height: 0.68
+    facingLeft: 1
+    forearms:
+    - region:
+        serializedVersion: 2
+        x: 0.655
+        y: 0.405
+        width: 0.12
+        height: 0.14
+      heldItem:
+        serializedVersion: 2
+        x: 0.73
+        y: 0.38
+        width: 0.17
+        height: 0.23
+      elbow: {x: 0.67, y: 0.43}
+      degrees: 3.8
+      speed: 0.85
+      phase: 0
+      sourceElbow: {x: 0, y: 0}
+      sourceScale: {x: 0, y: 0}
+  - sprite: {fileID: 21300000, guid: ab2ebef5f6e2ffe7105ca26b940dc982, type: 3}
+    bodyBacking: {fileID: 0}
+    forearmSprite: {fileID: 0}
+    role: "The Loader \u2014 Gorilla"
+    wand: 
+    height: 1.12
+    facingLeft: 0
+    forearms:
+    - region:
+        serializedVersion: 2
+        x: 0.015
+        y: 0.08
+        width: 0.3
+        height: 0.4
+      heldItem:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 0
+        height: 0
+      elbow: {x: 0.21, y: 0.46}
+      degrees: 1.1
+      speed: 0.85
+      phase: 0
+      sourceElbow: {x: 0, y: 0}
+      sourceScale: {x: 0, y: 0}
+  beats:
+  - level: 1
+    title: Welcome to Magic Mail
+    description: Meet the Courier and begin your first day.
+    special: 0
+  - level: 10
+    title: The Central Gate
+    description: Enter the Magic Mail grounds.
+    special: 0
+  - level: 20
+    title: Headquarters
+    description: Prepare the royal delivery.
+    special: 0
+  - level: 30
+    title: The Royal Stamp Is Missing
+    description: Scribble stole the Royal Stamp. Follow the spilled parcels.
+    special: 0
+  - level: 40
+    title: Letters on the Loose
+    description: Recover the scattered letters at the Sorting Hall.
+    special: 0
+  - level: 50
+    title: Parcel Panic
+    description: Scribble enchanted a pile of parcels. Clear the distraction.
+    special: 1
+  - level: 60
+    title: The Owl Tower
+    description: The messenger owls point the way forward.
+    special: 0
+  - level: 70
+    title: Flight Practice
+    description: The Inventor helps the team prepare for pursuit.
+    special: 0
+  - level: 80
+    title: An Overloaded Escape
+    description: Scribble's overloaded wagon is heading for the exit.
+    special: 0
+  - level: 90
+    title: Dispatch Tower
+    description: The team regroups beneath the dispatch beacon.
+    special: 0
+  - level: 100
+    title: Stop Scribble's Wagon
+    description: Catch the wagon and recover the Royal Stamp. A dark-sealed coin hints at a larger plot.
+    special: 1

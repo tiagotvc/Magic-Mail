@@ -1,0 +1,613 @@
+fileFormatVersion: 2
+guid: c98b11c55a033a349936a2d84da79348
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5882991536633152930
+    second: christmas-snow-roofs_0
+  - first:
+      213: -495907806714595116
+    second: christmas-snow-roofs_1
+  - first:
+      213: 2800226723153053779
+    second: christmas-snow-roofs_2
+  - first:
+      213: -5455891029969232712
+    second: christmas-snow-roofs_3
+  - first:
+      213: -9198053167049450976
+    second: christmas-snow-roofs_4
+  - first:
+      213: 3246597404498259563
+    second: christmas-snow-roofs_5
+  - first:
+      213: 3014843937478776235
+    second: christmas-snow-roofs_6
+  - first:
+      213: -7504325433447218421
+    second: christmas-snow-roofs_7
+  - first:
+      213: -871722630048183020
+    second: christmas-snow-roofs_8
+  - first:
+      213: -6254131327428446500
+    second: christmas-snow-roofs_9
+  - first:
+      213: 5460352848432460441
+    second: christmas-snow-roofs_10
+  - first:
+      213: -4209834850375677808
+    second: christmas-snow-roofs_11
+  - first:
+      213: -2915212358081441366
+    second: christmas-snow-roofs_12
+  - first:
+      213: -8545659922097445934
+    second: christmas-snow-roofs_13
+  - first:
+      213: 972303433770231903
+    second: christmas-snow-roofs_14
+  - first:
+      213: 3577502631920620280
+    second: christmas-snow-roofs_15
+  - first:
+      213: -8190361250020566604
+    second: christmas-snow-roofs_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: christmas-snow-roofs_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 383
+        width: 767
+        height: 599
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a506a512a594a150800000000000000
+      internalID: 5882991536633152930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_1
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 455
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d8fe6b2a7e2e19f0800000000000000
+      internalID: -495907806714595116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_2
+      rect:
+        serializedVersion: 2
+        x: 484
+        y: 442
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35808145e576cd620800000000000000
+      internalID: 2800226723153053779
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_3
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 453
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bc9179c308c844b0800000000000000
+      internalID: -5455891029969232712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_4
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 521
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02a5cd0c063f95080800000000000000
+      internalID: -9198053167049450976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_5
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 521
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6ee2df532b3e0d20800000000000000
+      internalID: 3246597404498259563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_6
+      rect:
+        serializedVersion: 2
+        x: 758
+        y: 431
+        width: 735
+        height: 569
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba599aa7690e6d920800000000000000
+      internalID: 3014843937478776235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_7
+      rect:
+        serializedVersion: 2
+        x: 790
+        y: 47
+        width: 700
+        height: 403
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b03037427c74bd790800000000000000
+      internalID: -7504325433447218421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_8
+      rect:
+        serializedVersion: 2
+        x: 912
+        y: 453
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41d0f45f2e407e3f0800000000000000
+      internalID: -871722630048183020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_9
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 447
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd63cf981bcd439a0800000000000000
+      internalID: -6254131327428446500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_10
+      rect:
+        serializedVersion: 2
+        x: 1038
+        y: 491
+        width: 21
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 992fb174cf117cb40800000000000000
+      internalID: 5460352848432460441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_11
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 475
+        width: 19
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0984c4c1289a395c0800000000000000
+      internalID: -4209834850375677808
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_12
+      rect:
+        serializedVersion: 2
+        x: 1134
+        y: 497
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa11ab74ec51b87d0800000000000000
+      internalID: -2915212358081441366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_13
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 541
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d3e614e397b76980800000000000000
+      internalID: -8545659922097445934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_14
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 382
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5864cf42d05e7d00800000000000000
+      internalID: 972303433770231903
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_15
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 0
+        width: 704
+        height: 376
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f257a670b7d5a130800000000000000
+      internalID: 3577502631920620280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: christmas-snow-roofs_16
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 63
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b9566666ddf55e80800000000000000
+      internalID: -8190361250020566604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      christmas-snow-roofs_0: 5882991536633152930
+      christmas-snow-roofs_1: -495907806714595116
+      christmas-snow-roofs_10: 5460352848432460441
+      christmas-snow-roofs_11: -4209834850375677808
+      christmas-snow-roofs_12: -2915212358081441366
+      christmas-snow-roofs_13: -8545659922097445934
+      christmas-snow-roofs_14: 972303433770231903
+      christmas-snow-roofs_15: 3577502631920620280
+      christmas-snow-roofs_16: -8190361250020566604
+      christmas-snow-roofs_2: 2800226723153053779
+      christmas-snow-roofs_3: -5455891029969232712
+      christmas-snow-roofs_4: -9198053167049450976
+      christmas-snow-roofs_5: 3246597404498259563
+      christmas-snow-roofs_6: 3014843937478776235
+      christmas-snow-roofs_7: -7504325433447218421
+      christmas-snow-roofs_8: -871722630048183020
+      christmas-snow-roofs_9: -6254131327428446500
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

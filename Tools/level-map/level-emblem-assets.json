@@ -1,0 +1,24 @@
+{
+  "tool": "built-in ImageGen",
+  "jobs": [
+    {
+      "id": "level-emblems-v3",
+      "folder": "Shared",
+      "file": "level-emblems-v3.png",
+      "transparent": true,
+      "columns": 2,
+      "rows": 2,
+      "names": [
+        "crown",
+        "star",
+        "skull-teal",
+        "skull-violet"
+      ],
+      "prompt": "Use case: stylized-concept. Asset type: transparent 2 by 2 sprite atlas of FOUR separate premium casual mobile game level decorations for Magic Mail. The attached old crown is only a SUBJECT reference, not a style target: replace its excessive reflections and tiny envelope. TOP LEFT: broad small royal golden crown, three short rounded triangular points, center point taller, thick curved gold band with one plain violet oval gem; clean bold silhouette, rounded thick orange gold lower shading and a single soft cream highlight. TOP RIGHT: ONE plump five-point gold star, broad rounded tips and a softly beveled edge; warm amber lower shade, soft pale yellow upper fill and one tiny curved highlight, no face, no symbols. BOTTOM LEFT: charming rounded turquoise cartoon skull difficulty emblem with two big dark teal round eye sockets, a small inverted heart nose, three rounded bottom teeth, two tiny round side nubs; no badge backing. BOTTOM RIGHT: charming rounded lavender cartoon skull with two short rounded swept horns, two big dark violet eye sockets, tiny nose and three rounded teeth; no badge backing. These must be very simple, polished 2D cartoon sticker sprites readable at 24-48 screen pixels, few broad color shapes, controlled smooth gradients, thin warm ivory outline and clean internal edges. Bright saturated cheerful colors. No filigree, no chains, no wings, no realistic metal, no micro-detail, no sharp shiny starbursts, no speckles, no ground shadows, no glow fog, no words or letters, no envelope motifs. Each complete object is centered in its own equal quadrant, similar visual mass, large transparent gutters, no touching or overlap. Genuine transparent alpha background.",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-5071b31a-4daf-44c3-b153-d95be6b067fb.png",
+      "styleReferences": [
+        "Assets/RoyalAves/Art/MapKitV3/Shared/postal-level-crown.png"
+      ]
+    }
+  ]
+}

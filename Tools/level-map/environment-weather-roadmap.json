@@ -1,0 +1,771 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-13",
+  "status": "planning-only",
+  "scope": "Backgrounds and fictional area-authored weather; no generated images or runtime changes",
+  "defaults": {
+    "selection": "world + chapter + local segment, composed with active season",
+    "weatherSource": "authored; not real weather API or system clock",
+    "transition": "spatial reversible blend along world route",
+    "transitionExtent": "initial experiment: last 2-3 readable positions; tune in pilot",
+    "maximumConcurrentAreaProfiles": 2,
+    "time": "animation only, plus explicitly authored local cycle",
+    "fallback": "world base clear profile"
+  },
+  "profiles": [
+    {
+      "id": "sun-rays",
+      "effects": [
+        "sun-disc",
+        "soft-sun-rays",
+        "slow-cloud-drift"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "partly-cloudy",
+      "effects": [
+        "cloud-drift",
+        "soft-ray-occlusion"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "forest-mist",
+      "effects": [
+        "lateral-low-mist",
+        "filtered-sun-rays",
+        "sparse-leaves"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "rain-soft",
+      "effects": [
+        "sparse-rain",
+        "river-only-ripples",
+        "overcast-clouds"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "windy",
+      "effects": [
+        "gust-arcs",
+        "leaves-and-letters",
+        "flag-and-tree-sway"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "coastal-wind",
+      "effects": [
+        "horizontal-clouds",
+        "gentle-rays",
+        "flags-sway"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "storm-soft",
+      "effects": [
+        "storm-clouds",
+        "oblique-rain",
+        "gusts",
+        "localized-cloud-lightning"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "sun-after-rain",
+      "effects": [
+        "soft-rays",
+        "light-mist",
+        "optional-distant-rainbow"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "golden-hour",
+      "effects": [
+        "low-warm-sun",
+        "pink-clouds"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "volcanic-clear",
+      "effects": [
+        "warm-sky",
+        "volcano-smoke",
+        "filtered-rays"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "ember-drift",
+      "effects": [
+        "sparse-embers",
+        "cloud-drift",
+        "wind-directed-smoke"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "thermal-mist",
+      "effects": [
+        "geyser-steam",
+        "lateral-mist"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "ash-breeze",
+      "effects": [
+        "chimney-smoke",
+        "sparse-ash",
+        "wind-directed-puffs"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "ashfall-soft",
+      "effects": [
+        "sparse-ash",
+        "cool-clouds"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "volcanic-wind",
+      "effects": [
+        "gust-arcs",
+        "wind-directed-smoke",
+        "sparse-embers"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "cave-haze",
+      "effects": [
+        "low-haze",
+        "dust-motes",
+        "authored-opening-light-shafts"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "volcanic-storm",
+      "effects": [
+        "storm-clouds",
+        "gusts",
+        "localized-cloud-lightning",
+        "cold-terrace-rain"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    },
+    {
+      "id": "ember-night",
+      "effects": [
+        "sparse-embers",
+        "dark-cloud-drift",
+        "local-lava-light"
+      ],
+      "status": "planned-not-implemented",
+      "intensity": "authorable 0..1; final values to tune in pilot",
+      "seeded": true
+    }
+  ],
+  "areaBindings": [
+    {
+      "id": "green-land-bairro-environment",
+      "worldId": "green-land",
+      "chapterId": "bairro",
+      "chapterTitle": "Bairro das Primeiras Cartas",
+      "start": 1,
+      "end": 20,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "azul-dourado",
+      "horizonContent": "casas postais e copas arredondadas",
+      "defaultWeatherProfileId": "sun-rays",
+      "windDescription": "leve",
+      "visualDescription": "Sol com raios largos discretos; nuvens pequenas deslizam ao fundo.",
+      "proposedLocalVariation": "Uma passagem de nuvens reduz os raios e depois abre o céu.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-vila-environment",
+      "worldId": "green-land",
+      "chapterId": "vila",
+      "chapterTitle": "Vila dos Selos",
+      "start": 21,
+      "end": 40,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "azul-menta",
+      "horizonContent": "telhados da vila e torres com selos",
+      "defaultWeatherProfileId": "partly-cloudy",
+      "windDescription": "leve",
+      "visualDescription": "Nuvens mais largas alternam luz e sombra visual no fundo.",
+      "proposedLocalVariation": "Garoinha curta em um trecho da praça; fonte permanece estática.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-bosque-environment",
+      "worldId": "green-land",
+      "chapterId": "bosque",
+      "chapterTitle": "Bosque dos Recados",
+      "start": 41,
+      "end": 60,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "verde-azul-suave",
+      "horizonContent": "camadas de pinheiros e copas",
+      "defaultWeatherProfileId": "forest-mist",
+      "windDescription": "brisa",
+      "visualDescription": "Névoa baixa lateral e raios entre copas; folhas esparsas.",
+      "proposedLocalVariation": "Chuva suave ao atravessar uma clareira.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-canal-environment",
+      "worldId": "green-land",
+      "chapterId": "canal",
+      "chapterTitle": "Canal das Encomendas",
+      "start": 61,
+      "end": 80,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "azul-nublado",
+      "horizonContent": "docas, pontes e silhuetas da próxima margem",
+      "defaultWeatherProfileId": "rain-soft",
+      "windDescription": "moderado",
+      "visualDescription": "Chuva sobre o canal; pequenas ondulações longe dos marcadores.",
+      "proposedLocalVariation": "A chuva diminui antes de um trecho claro sobre as ilhas.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-oficina-environment",
+      "worldId": "green-land",
+      "chapterId": "oficina",
+      "chapterTitle": "Oficina dos Carimbos",
+      "start": 81,
+      "end": 100,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "pessego-industrial-cartoon",
+      "horizonContent": "chaminés, tubos e fábrica postal",
+      "defaultWeatherProfileId": "partly-cloudy",
+      "windDescription": "leve",
+      "visualDescription": "Céu próprio de oficina; fumaça fabril separada das nuvens.",
+      "proposedLocalVariation": "Sol abre sobre o pátio de carimbos; nenhum efeito move a fonte.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-campo-environment",
+      "worldId": "green-land",
+      "chapterId": "campo",
+      "chapterTitle": "Campo das Pipas",
+      "start": 101,
+      "end": 120,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "azul-aberto",
+      "horizonContent": "colinas, moinho e pipas",
+      "defaultWeatherProfileId": "windy",
+      "windDescription": "rajadas",
+      "visualDescription": "Correntes de vento visíveis em poucos arcos; bandeiras, folhas e cartas acompanham.",
+      "proposedLocalVariation": "Rajada cresce e se acalma sem empurrar câmera ou botões.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-porto-environment",
+      "worldId": "green-land",
+      "chapterId": "porto",
+      "chapterTitle": "Porto das Cartas",
+      "start": 121,
+      "end": 140,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "coral-costeiro",
+      "horizonContent": "farol, barcos e linha de costa",
+      "defaultWeatherProfileId": "coastal-wind",
+      "windDescription": "moderado",
+      "visualDescription": "Sol baixo e vento do porto; nuvens horizontais lentas.",
+      "proposedLocalVariation": "Trecho de tempestade curta no píer, seguido de abertura do céu.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-serra-environment",
+      "worldId": "green-land",
+      "chapterId": "serra",
+      "chapterTitle": "Serra do Correio",
+      "start": 141,
+      "end": 160,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "azul-cinza-altitude",
+      "horizonContent": "terraços, túnel e montanhas suaves",
+      "defaultWeatherProfileId": "storm-soft",
+      "windDescription": "rajadas",
+      "visualDescription": "Nuvens escuras em altitude, chuva oblíqua e clarão localizado nas nuvens.",
+      "proposedLocalVariation": "Névoa na saída do túnel, com retorno de luz entre as montanhas.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-jardins-environment",
+      "worldId": "green-land",
+      "chapterId": "jardins",
+      "chapterTitle": "Jardins do Relógio",
+      "start": 161,
+      "end": 180,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "lilas-azul-jardim",
+      "horizonContent": "relógio, aqueduto e topiárias",
+      "defaultWeatherProfileId": "sun-after-rain",
+      "windDescription": "leve",
+      "visualDescription": "Céu limpo após chuva; raios suaves e arco-íris opcional distante.",
+      "proposedLocalVariation": "Orvalho/bruma lateral; água das fontes segue ilustrada e parada.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "green-land-capital-environment",
+      "worldId": "green-land",
+      "chapterId": "capital",
+      "chapterTitle": "Capital das Correspondências",
+      "start": 181,
+      "end": 200,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "rosa-dourado-capital",
+      "horizonContent": "grande agência, telhados e torres",
+      "defaultWeatherProfileId": "golden-hour",
+      "windDescription": "leve",
+      "visualDescription": "Luz dourada de fim de tarde e nuvens rosadas, composição de grande entrega.",
+      "proposedLocalVariation": "Gradiente avança para crepúsculo na conclusão, mantendo níveis claros.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-portal-basalto-environment",
+      "worldId": "lava-land",
+      "chapterId": "portal-basalto",
+      "chapterTitle": "Portal de Basalto",
+      "start": 201,
+      "end": 225,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "laranja-pessego",
+      "horizonContent": "primeiro vulcão e pedras de basalto",
+      "defaultWeatherProfileId": "volcanic-clear",
+      "windDescription": "leve",
+      "visualDescription": "Céu quente, raios filtrados e fumaça separada sobre o vulcão.",
+      "proposedLocalVariation": "Faixa de nuvens de cinza anuncia o rio seguinte.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-rio-brasas-environment",
+      "worldId": "lava-land",
+      "chapterId": "rio-brasas",
+      "chapterTitle": "Rio das Brasas",
+      "start": 226,
+      "end": 250,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "laranja-coral-rio",
+      "horizonContent": "ilhas, barco metálico e vulcões baixos",
+      "defaultWeatherProfileId": "ember-drift",
+      "windDescription": "moderado",
+      "visualDescription": "Brasas esparsas sobre canais de lava; nuvens longas independentes.",
+      "proposedLocalVariation": "Rajada muda a direção de fumaça e brasas, sem cobrir a ponte.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-campos-geiseres-environment",
+      "worldId": "lava-land",
+      "chapterId": "campos-geiseres",
+      "chapterTitle": "Campos dos Gêiseres",
+      "start": 251,
+      "end": 275,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "dourado-termal",
+      "horizonContent": "bacias minerais e estação termal",
+      "defaultWeatherProfileId": "thermal-mist",
+      "windDescription": "leve",
+      "visualDescription": "Vapor dos gêiseres em ciclos separados, com névoa baixa nas laterais.",
+      "proposedLocalVariation": "Garoinha curta nas plataformas frias, vapor mais visível nas bacias.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-forja-selos-environment",
+      "worldId": "lava-land",
+      "chapterId": "forja-selos",
+      "chapterTitle": "Forja dos Selos",
+      "start": 276,
+      "end": 300,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "laranja-ambar-forja",
+      "horizonContent": "fábrica de selos e chaminés grossas",
+      "defaultWeatherProfileId": "ash-breeze",
+      "windDescription": "moderado",
+      "visualDescription": "Fumaça de chaminé e cinza suave cruzam o céu em camadas distintas.",
+      "proposedLocalVariation": "Céu abre sobre o pátio; forja conserva seu próprio movimento.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-cristais-incandescentes-environment",
+      "worldId": "lava-land",
+      "chapterId": "cristais-incandescentes",
+      "chapterTitle": "Vale dos Cristais Incandescentes",
+      "start": 301,
+      "end": 325,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "ambar-lilas-cristais",
+      "horizonContent": "cristais altos e torre do selo",
+      "defaultWeatherProfileId": "volcanic-clear",
+      "windDescription": "leve",
+      "visualDescription": "Contraste frio/quente; brilho de cristal e nuvens violetas lentas.",
+      "proposedLocalVariation": "Névoa baixa em uma fenda, sem esconder os cristais principais.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-jardins-cinza-environment",
+      "worldId": "lava-land",
+      "chapterId": "jardins-cinza",
+      "chapterTitle": "Jardins de Cinza",
+      "start": 326,
+      "end": 350,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "lilas-acinzentado",
+      "horizonContent": "árvores térmicas e estufa postal",
+      "defaultWeatherProfileId": "ashfall-soft",
+      "windDescription": "brisa",
+      "visualDescription": "Cinza em poucos flocos lentos, sombras frias e espaço livre central.",
+      "proposedLocalVariation": "Chuva mineral leve em um jardim frio; lava continua reconhecível.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-crateras-encomendas-environment",
+      "worldId": "lava-land",
+      "chapterId": "crateras-encomendas",
+      "chapterTitle": "Crateras das Encomendas",
+      "start": 351,
+      "end": 375,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "coral-crateras",
+      "horizonContent": "bordas de crateras e balão postal",
+      "defaultWeatherProfileId": "volcanic-wind",
+      "windDescription": "rajadas",
+      "visualDescription": "Rajadas nas bordas altas, fumaça inclinada e balão ancorado com oscilação pequena.",
+      "proposedLocalVariation": "Nuvens mais densas preparam entrada de caverna.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-correio-subterraneo-environment",
+      "worldId": "lava-land",
+      "chapterId": "correio-subterraneo",
+      "chapterTitle": "Correio Subterrâneo",
+      "start": 376,
+      "end": 400,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "caverna-ambar",
+      "horizonContent": "parede distante, cristais e aberturas de rocha",
+      "defaultWeatherProfileId": "cave-haze",
+      "windDescription": "corrente-local",
+      "visualDescription": "Fundo de caverna próprio, poeira/bruma lenta e luz por fendas.",
+      "proposedLocalVariation": "Sem chuva/sol celeste dentro do teto; fachos suaves por abertura autorada.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-cordilheira-vulcoes-environment",
+      "worldId": "lava-land",
+      "chapterId": "cordilheira-vulcoes",
+      "chapterTitle": "Cordilheira dos Vulcões",
+      "start": 401,
+      "end": 425,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "coral-cinza-cordilheira",
+      "horizonContent": "três vulcões e observatório postal",
+      "defaultWeatherProfileId": "volcanic-storm",
+      "windDescription": "rajadas",
+      "visualDescription": "Tempestade vulcânica com nuvens densas, vento e clarões internos raros.",
+      "proposedLocalVariation": "Chuva em terraços frios; fumos e lava persistem nas áreas quentes.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    },
+    {
+      "id": "lava-land-grande-caldeira-environment",
+      "worldId": "lava-land",
+      "chapterId": "grande-caldeira",
+      "chapterTitle": "Grande Caldeira Postal",
+      "start": 426,
+      "end": 450,
+      "status": "planned-not-implemented",
+      "skyPaletteKey": "noite-brasa",
+      "horizonContent": "grande caldeira e central postal",
+      "defaultWeatherProfileId": "ember-night",
+      "windDescription": "leve",
+      "visualDescription": "Fundo noturno âmbar/roxo, brilho de lava e brasas esparsas.",
+      "proposedLocalVariation": "Abertura das nuvens revela um crepúsculo postal na praça final.",
+      "layerRoles": [
+        "sky-base",
+        "sun-or-moon-if-compatible",
+        "far-horizon",
+        "far-clouds",
+        "near-clouds",
+        "weather-rays-or-haze",
+        "world-particles"
+      ],
+      "referenceOnly": true
+    }
+  ],
+  "seasonComposition": {
+    "baseSeason": "unchanged",
+    "christmas": {
+      "overlays": "snow caps/hats/garlands from existing season plan",
+      "weatherPolicy": "authored compatible snow variant per area; does not force every area to snowfall",
+      "rainSnowMix": "choose rain or snow family for a passage unless a sleet preset is explicitly authored",
+      "lavaPolicy": "snowfall only cold edges/structures; magma, vents and world smoke remain",
+      "hatLightCompatibility": "preserve base pose, light and node readability"
+    }
+  },
+  "constraints": [
+    "preserve fixed horizontal horizon and curved world geometry",
+    "do not bake clouds, sun rays, lightning or smoke into all-in-one backgrounds",
+    "weather sprites/particles are non-interactive",
+    "central readable marker band has reduced particle density",
+    "fountains remain static; rain ripples restricted to authored river/water surfaces",
+    "no camera shake or level movement from wind",
+    "lightning localized in background; light-effects mode disables flash",
+    "disable sunlight/rain from closed cave areas except authored openings",
+    "cull unseen emitters, pause when map closed, release transitions",
+    "no gameplay/save/difficulty effects"
+  ],
+  "prehistoricDirections": [
+    {
+      "area": "Vale dos Ovos",
+      "weather": "warm-sun-and-light-breeze"
+    },
+    {
+      "area": "Floresta dos Gigantes",
+      "weather": "tropical-shower-and-filtered-rays"
+    },
+    {
+      "area": "Pântano das Pegadas",
+      "weather": "low-mist-and-drizzle"
+    },
+    {
+      "area": "Cânion dos Fósseis",
+      "weather": "sun-and-dust-gusts"
+    },
+    {
+      "area": "Lago dos Plesiossauros",
+      "weather": "humid-clouds-and-sun-after-rain"
+    },
+    {
+      "area": "Ninhos nas Alturas",
+      "weather": "high-wind-and-distant-storm"
+    },
+    {
+      "area": "Planalto dos Herbívoros",
+      "weather": "wide-sunny-sky-and-cloud-shadows"
+    },
+    {
+      "area": "Central Postal Jurássica",
+      "weather": "warm-evening"
+    }
+  ]
+}

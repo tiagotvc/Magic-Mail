@@ -95,6 +95,210 @@ namespace RoyalAves.EditorTools
             var serialized = new SerializedObject(loading);
             serialized.FindProperty("label").objectReferenceValue = text;
             serialized.ApplyModifiedPropertiesWithoutUndo();
+
+            EnsureSeasonUi(loading);
+            var config = AssetDatabase.LoadAssetAtPath<SeasonConfig>(SeasonConfigPath);
+            if (config != null && config.Active != null) loading.ApplySeason(config.Active);
+        }
+
+        // ---- season: name, subtitle, bar and shade ----------------------------------------------------------------------
+
+        public const string SeasonConfigPath = "Assets/RoyalAves/Resources/RoyalAvesSeasons.asset";
+        const string ScrimPath = "Assets/RoyalAves/Art/UI/Generated/loading-scrim.png";
+
+        // Puts the loading screen in step with the active season: writes it into the Loading scene and saves, so the scene
+        // itself shows it (at run time LoadingScreen applies the active season again, so both always agree). Returns an
+        // error message, or null when it worked.
+        public static string ApplySeasonToScene(Season season)
+        {
+            if (!RoyalAvesTools.CanRunTool()) return "Cancelado.";
+            var setup = EditorSceneManager.GetSceneManagerSetup();
+            try
+            {
+                var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+                var loading = Object.FindFirstObjectByType<LoadingScreen>();
+                if (loading == null) return "A cena Loading não tem o componente LoadingScreen (menu Royal Aves > Criar tela de loading).";
+                EnsureSeasonUi(loading);
+                loading.ApplySeason(season);
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+                return null;
+            }
+            catch (System.Exception e)
+            {
+                return "Não consegui abrir/salvar " + ScenePath + ": " + e.Message;
+            }
+            finally
+            {
+                if (setup.Length > 0 && setup.All(s => !string.IsNullOrEmpty(s.path)))
+                    EditorSceneManager.RestoreSceneManagerSetup(setup);
+            }
+        }
+
+        // Creates, only where missing, what a season needs on the loading screen — the shade, the name, the subtitle and the
+        // progress bar — and wires it into LoadingScreen. Safe to run again: what exists is kept as the user left it. The
+        // first time, "Carregando..." moves down to make room.
+        public static void EnsureSeasonUi(LoadingScreen loading)
+        {
+            var root = (RectTransform)loading.transform;
+            var firstTime = root.Find("SeasonTitle") == null;
+            var so = new SerializedObject(loading);
+
+            // The picture behind everything and the separate logo over it. The builder names them "Art" and none; the scene as
+            // it was edited by hand calls them "title" and "logo-magic-mail", so both spellings are understood.
+            var art = root.Find("Art") ?? root.Find("title");
+            if (art == null)
+                art = Enumerable.Range(0, root.childCount).Select(root.GetChild).FirstOrDefault(c => c.GetComponent<Image>() != null);
+            if (art != null) so.FindProperty("art").objectReferenceValue = art.GetComponent<Image>();
+            var logo = root.Find("logo-magic-mail") ?? root.Find("Logo");
+            if (logo != null) so.FindProperty("logo").objectReferenceValue = logo.gameObject;
+
+            var scrim = root.Find("Scrim") as RectTransform;
+            if (scrim == null)
+            {
+                scrim = Child("Scrim", root);
+                scrim.anchorMin = Vector2.zero;
+                scrim.anchorMax = new Vector2(1f, 0.5f);
+                scrim.offsetMin = scrim.offsetMax = Vector2.zero;
+                var shade = scrim.gameObject.AddComponent<Image>();
+                shade.sprite = EnsureScrimSprite();
+                shade.raycastTarget = false;
+            }
+            so.FindProperty("scrim").objectReferenceValue = scrim.GetComponent<Image>();
+
+            var title = EnsureText(root, "SeasonTitle", new Vector2(0, 325), new Vector2(960, 130), t =>
+            {
+                RoyalAvesFonts.ApplyPostal(t);               // the game's gold lettering with its outline
+                t.fontStyle = FontStyles.UpperCase;
+                t.enableAutoSizing = true;
+                t.fontSizeMin = 40;
+                t.fontSizeMax = 96;
+            });
+            var subtitle = EnsureText(root, "SeasonSubtitle", new Vector2(0, 250), new Vector2(960, 64), t =>
+            {
+                t.font = RoyalAvesFonts.Display;
+                t.color = new Color32(0xFF, 0xF1, 0xD0, 0xFF);
+                t.enableAutoSizing = true;
+                t.fontSizeMin = 24;
+                t.fontSizeMax = 44;
+            });
+            so.FindProperty("seasonTitle").objectReferenceValue = title;
+            so.FindProperty("seasonSubtitle").objectReferenceValue = subtitle;
+
+            // The progress bar is the reusable Magic Mail component (prefab "Barra de progresso", with its card and sparkles).
+            // A simple bar from an earlier version is swapped for it, keeping its place on the screen.
+            var bar = root.Find("Bar") as RectTransform;
+            var barPrefab = MagicMail.EditorTools.MagicProgressBarBuilder.EnsurePrefab();
+            if (barPrefab != null && (bar == null || bar.GetComponent<MagicMail.MagicProgressBar>() == null))
+            {
+                // The new bar is taller than the old one: the lettering above it and "Carregando..." below move to make room.
+                if (root.Find("SeasonTitle") is RectTransform t) t.anchoredPosition = new Vector2(0, 325);
+                if (root.Find("SeasonSubtitle") is RectTransform st) st.anchoredPosition = new Vector2(0, 250);
+                if (root.Find("Label") is RectTransform lb) lb.anchoredPosition = new Vector2(0, 70);
+                var place = new Vector2(0, 165);
+                if (bar != null) Object.DestroyImmediate(bar.gameObject);
+                var instance = (GameObject)PrefabUtility.InstantiatePrefab(barPrefab, root);
+                instance.name = "Bar";
+                bar = (RectTransform)instance.transform;
+                bar.anchorMin = bar.anchorMax = new Vector2(0.5f, 0f);
+                bar.pivot = new Vector2(0.5f, 0.5f);
+                bar.sizeDelta = new Vector2(880f, 880f * 107f / 1108f);
+                bar.anchoredPosition = place;
+                bar.localScale = Vector3.one;
+            }
+            else if (bar == null)   // the prefab could not be built: a plain bar so the screen still has progress
+            {
+                bar = Child("Bar", root);
+                bar.anchorMin = bar.anchorMax = new Vector2(0.5f, 0f);
+                bar.anchoredPosition = new Vector2(0, 175);
+                bar.sizeDelta = new Vector2(820, 38);
+                Sliced(bar, "bar-bg");
+                var fill = Child("Fill", bar);
+                fill.anchorMin = Vector2.zero;
+                fill.anchorMax = new Vector2(0f, 1f);       // LoadingScreen grows its right edge with the progress
+                fill.offsetMin = fill.offsetMax = Vector2.zero;
+                Sliced(fill, "bar-fill");
+            }
+            var magicBar = bar.GetComponent<MagicMail.MagicProgressBar>();
+            so.FindProperty("progressBar").objectReferenceValue = magicBar;
+            so.FindProperty("barFill").objectReferenceValue = magicBar != null ? null : bar.Find("Fill");
+            if (magicBar != null) magicBar.ApplyPose(2.2f, 0.6f);   // a still frame, so the scene shows the bar laid out
+
+            if (firstTime && root.Find("Label") is RectTransform label)
+            {
+                label.anchorMin = label.anchorMax = new Vector2(0.5f, 0f);
+                label.anchoredPosition = new Vector2(0, 70);
+            }
+
+            // The groups the season's props live in, and the component that fills them: one group right above the art (behind the
+            // logo, the lettering and the bar), one over everything. The props themselves are made at run time from the season.
+            var behindProps = EnsureGroup(root, "AdereçosFundo");
+            var frontProps = EnsureGroup(root, "AdereçosFrente");
+            var host = root.GetComponent<SeasonProps>();
+            if (host == null) host = root.gameObject.AddComponent<SeasonProps>();
+            var hostSo = new SerializedObject(host);
+            hostSo.FindProperty("screen").enumValueIndex = (int)SeasonScreen.Loading;
+            hostSo.FindProperty("behind").objectReferenceValue = behindProps;
+            hostSo.FindProperty("front").objectReferenceValue = frontProps;
+            hostSo.ApplyModifiedPropertiesWithoutUndo();
+
+            // Back to front: art, props behind, shade, logo, name, subtitle, bar, "Carregando...", props in front.
+            var order = 0;
+            foreach (var child in new[] { art, behindProps, scrim, logo, title.transform, subtitle.transform, bar, root.Find("Label"), frontProps })
+                if (child != null) child.SetSiblingIndex(order++);
+
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // A group covering the whole screen, for a layer of props.
+        static RectTransform EnsureGroup(RectTransform root, string name)
+        {
+            var group = root.Find(name) as RectTransform;
+            if (group != null) return group;
+            group = Child(name, root);
+            group.anchorMin = Vector2.zero;
+            group.anchorMax = Vector2.one;
+            group.offsetMin = group.offsetMax = Vector2.zero;
+            return group;
+        }
+
+        static TextMeshProUGUI EnsureText(RectTransform root, string name, Vector2 position, Vector2 size, System.Action<TextMeshProUGUI> style)
+        {
+            var existing = root.Find(name);
+            if (existing != null) return existing.GetComponent<TextMeshProUGUI>();
+            var rect = Child(name, root);
+            rect.anchorMin = rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+            var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
+            text.font = RoyalAvesFonts.Display;
+            text.alignment = TextAlignmentOptions.Center;
+            text.raycastTarget = false;
+            text.text = "";
+            style(text);
+            return text;
+        }
+
+        // A dark-to-clear fade for the bottom of the art, so the name and the bar read over any picture.
+        public static Sprite EnsureScrimSprite()
+        {
+            var disk = System.IO.Path.Combine(System.IO.Directory.GetParent(Application.dataPath).FullName, ScrimPath);
+            if (!System.IO.File.Exists(disk))
+            {
+                const int height = 256;
+                var pixels = new Color32[4 * height];
+                for (var y = 0; y < height; y++)
+                {
+                    var alpha = Mathf.Pow(1f - y / (height - 1f), 1.7f) * 0.88f;   // row 0 is the bottom
+                    for (var x = 0; x < 4; x++) pixels[y * 4 + x] = new Color32(20, 5, 56, (byte)Mathf.RoundToInt(alpha * 255f));
+                }
+                var tex = new Texture2D(4, height, TextureFormat.RGBA32, false);
+                tex.SetPixels32(pixels);
+                System.IO.File.WriteAllBytes(disk, tex.EncodeToPNG());
+                Object.DestroyImmediate(tex);
+                AssetDatabase.ImportAsset(ScrimPath, ImportAssetOptions.ForceUpdate);
+            }
+            return AssetDatabase.LoadAssetAtPath<Sprite>(ScrimPath);
         }
 
         static RectTransform Child(string name, Transform parent)

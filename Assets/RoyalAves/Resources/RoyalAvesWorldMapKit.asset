@@ -1,0 +1,492 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f427472210cc9f344b1d75f9354422e3, type: 3}
+  m_Name: RoyalAvesWorldMapKit
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.WorldMap.WorldMapKit
+  surface: {fileID: 4800000, guid: 656ca07a5f8fe7146b84604cad4414fc, type: 3}
+  card: {fileID: 4800000, guid: 77c54956eda56ee4aa7cd1ba10699985, type: 3}
+  shadow: {fileID: 4800000, guid: 9dd417fd052e06a4da17c014808b8ac6, type: 3}
+  water: {fileID: 4800000, guid: 9ea21ee16e3bcf74a85c7f5c376248ec, type: 3}
+  glow: {fileID: 4800000, guid: 977db54b79184ddbb7a23c7b626c1e9e, type: 3}
+  windowGlow: {fileID: 4800000, guid: f8d48a5f340828343962bcf882467d63, type: 3}
+  beam: {fileID: 4800000, guid: e11fb0e21366c254cbc852b6c0b3d59c, type: 3}
+  sparkle: {fileID: 4800000, guid: 4b3073523d7ebdf45a13d2680e93c912, type: 3}
+  vapor: {fileID: 4800000, guid: 8d55a9f7fe31421ea1d01431860701ec, type: 3}
+  navigationSurface: {fileID: 4800000, guid: 60eda56cd91a44a3abcc97e95accb8a7, type: 3}
+  navigationPaint: {fileID: 2800000, guid: 472e9fca04ae4beb89f4b7cd98678096, type: 3}
+  navigationSelectedPaint: {fileID: 2800000, guid: 0f51b696f09246c395e10ff7ae274890, type: 3}
+  navigationPaintRect: {x: 0.011054814, y: 0.27486187, z: 0.978351, w: 0.4903315}
+  navigationSelectedPaintRect: {x: 0.023030862, y: 0.26243094, z: 0.9548595, w: 0.4930939}
+  topHudArt:
+  - {fileID: 2800000, guid: c06b95b35eb0fca06a2e25f6e79b5757, type: 3}
+  - {fileID: 2800000, guid: bb356dfd5a9a135b4f079215e649947d, type: 3}
+  - {fileID: 2800000, guid: 674bfe25ec291a9a7bdda4adbcb63708, type: 3}
+  - {fileID: 2800000, guid: aa419712ea2d34cea0445f021df8c0d5, type: 3}
+  - {fileID: 2800000, guid: 200b7a13f699d4616e9bd4fe693d85a1, type: 3}
+  - {fileID: 2800000, guid: 5818e1282b7087438f4ea4f698e3c1a7, type: 3}
+  topHudRects:
+  - {x: 0.019806542, y: 0.27486187, z: 0.9613082, w: 0.47513813}
+  - {x: 0.03653396, y: 0.19945726, z: 0.9264637, w: 0.6173677}
+  - {x: 0.044657096, y: 0.0645933, z: 0.9114832, w: 0.8835726}
+  - {x: 0.14021164, y: 0.07980769, z: 0.7222222, w: 0.8682692}
+  - {x: 0.104166664, y: 0.095703125, z: 0.79557294, w: 0.8027344}
+  - {x: 0.08372457, y: 0.065853655, z: 0.8458529, w: 0.8780488}
+  santaEventEnabled: 1
+  santaFriendly: {fileID: 21300000, guid: d816d0295ddd2db4705d74b658febc21, type: 3}
+  santaVillain: {fileID: 21300000, guid: eac6ef0dfeafeb5156b5f10b67884f35, type: 3}
+  santaFirstDelay: 4
+  santaVisibleSeconds: 4
+  santaInterval: 10
+  santaFriendlyMessage: "Voc\xEA encontrou o Papai Noel! Evento especial de Natal em breve\u2026"
+  santaVillainMessage: "Ho, ho, ho\u2026 Voc\xEA encontrou o Noel do mal! Um desafio especial vem a\xED!"
+  rendererIndex: 1
+  radius: 26
+  cameraHeight: 4.9
+  cameraBack: 4.4
+  pitch: 32
+  fov: 48
+  focusAhead: -2.55
+  renderScale: 1
+  tokenScale: 0.62
+  night: 0
+  dayNightCycle: 0
+  dayNightCycleMinutes: 4
+  illustratedProjection: 1
+  illustratedSize: 4
+  tuningVersion: 15
+  dogIdle: {fileID: 21300001, guid: 0fa04f5ad6b647838576d4300c2bd869, type: 3}
+  dogWag: {fileID: 21300002, guid: 0fa04f5ad6b647838576d4300c2bd869, type: 3}
+  dogSniff: {fileID: 21300003, guid: 0fa04f5ad6b647838576d4300c2bd869, type: 3}
+  dogCarry: {fileID: 21300004, guid: 0fa04f5ad6b647838576d4300c2bd869, type: 3}
+  mailboxClosed: {fileID: 21300001, guid: ae60d68c310e42dabb3ea0429d2f698e, type: 3}
+  mailboxOpen: {fileID: 21300002, guid: ae60d68c310e42dabb3ea0429d2f698e, type: 3}
+  lamp: {fileID: 21300000, guid: 058abc7e9bc04849b6f1b7a000216df2, type: 3}
+  tree: {fileID: 21300000, guid: caa93c4dda31454d9e990ffbfe9bf59a, type: 3}
+  parcels: {fileID: 21300001, guid: cddeed4e642a45c8b966a8f2ecabf779, type: 3}
+  flowers: {fileID: 21300002, guid: cddeed4e642a45c8b966a8f2ecabf779, type: 3}
+  sign: {fileID: 21300003, guid: cddeed4e642a45c8b966a8f2ecabf779, type: 3}
+  shrub: {fileID: 21300004, guid: cddeed4e642a45c8b966a8f2ecabf779, type: 3}
+  boat: {fileID: 21300001, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  windmill: {fileID: 21300002, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  lighthouse: {fileID: 21300003, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  hut: {fileID: 21300004, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  clock: {fileID: 21300005, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  agency: {fileID: 21300006, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  tunnel: {fileID: 21300007, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  kite: {fileID: 21300008, guid: 932796266258463a8e9b114e8f738cfa, type: 3}
+  pine: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+  postOffice: {fileID: 1462078232678690581, guid: de7d90c79c770f743b759caf51b69a07, type: 3}
+  factory: {fileID: 21300000, guid: 3a4779b1d5814963b1ad2f152ea0ffd8, type: 3}
+  cloudSmall: {fileID: -5915477735918985037, guid: 5d4ce18e31759924ea7471c7b2316382, type: 3}
+  cloudWide: {fileID: -4820244298777384654, guid: 5d4ce18e31759924ea7471c7b2316382, type: 3}
+  cloudStrip: {fileID: 1970498029587933523, guid: 5d4ce18e31759924ea7471c7b2316382, type: 3}
+  envelopeCream: {fileID: -3178552008402004633, guid: a790e973537c12b4696f88b48aba7ed6, type: 3}
+  envelopePurple: {fileID: -8593460451332571258, guid: a790e973537c12b4696f88b48aba7ed6, type: 3}
+  envelopeTeal: {fileID: -8873643670065987506, guid: a790e973537c12b4696f88b48aba7ed6, type: 3}
+  factoryBody: {fileID: 1001323861370051968, guid: 85925eca0a69aac469b7cc0e23276c9c, type: 3}
+  factoryChimney: {fileID: -1320658579757633982, guid: 85925eca0a69aac469b7cc0e23276c9c, type: 3}
+  factoryChute: {fileID: -3983345350456979391, guid: 85925eca0a69aac469b7cc0e23276c9c, type: 3}
+  fountain: {fileID: 4845895699503180785, guid: 40a00ad0f160e5c47ae62de688915e8c, type: 3}
+  bench: {fileID: 7805786559749251003, guid: 5ce130e23835b214b9913ef919164eb6, type: 3}
+  topiary: {fileID: 3992321829398577162, guid: 5ce130e23835b214b9913ef919164eb6, type: 3}
+  parcelCart: {fileID: 4341584569887951315, guid: 5ce130e23835b214b9913ef919164eb6, type: 3}
+  postalGate: {fileID: -2685654193018170174, guid: 738f6bd7ebcd58848b58800222cdb38a, type: 3}
+  skyClear: {fileID: 21300000, guid: af89dba5d3fa6964c8449b9088aba84b, type: 3}
+  skyWarm: {fileID: 21300000, guid: a57f49ee29c597b4fa22c8a1fd2e4c86, type: 3}
+  skyOvercast: {fileID: 21300000, guid: 91ca7af1ed47c38409243d3663f9facf, type: 3}
+  skyLilac: {fileID: 21300000, guid: a2924db7478254e4f9e13f703b492fe0, type: 3}
+  snowPineUpper: {fileID: -5369570173848856948, guid: b7eec1af037469647b2e83b34ec86e6b, type: 3}
+  snowPineMiddle: {fileID: 5632360947752150747, guid: b7eec1af037469647b2e83b34ec86e6b, type: 3}
+  snowPineLower: {fileID: 6336538677791067937, guid: b7eec1af037469647b2e83b34ec86e6b, type: 3}
+  snowRound: {fileID: -7181108731344808327, guid: b7eec1af037469647b2e83b34ec86e6b, type: 3}
+  snowMailbox: {fileID: -8605715249283629399, guid: 41c359a0765115d42a8e8d8e29af8f5a, type: 3}
+  snowLamp: {fileID: 9166990500974686495, guid: 41c359a0765115d42a8e8d8e29af8f5a, type: 3}
+  snowRoof: {fileID: 2651936519086238488, guid: ea9cb3a175e9214459e4cb52a33d693d, type: 3}
+  paintedSnow:
+  - source: {fileID: 21300000, guid: 379e4410132a4a45a622b39a03430a4b, type: 3}
+    overlay: {fileID: 21300000, guid: d7a7eeb0ff89e8302bc97f73ca19f0f9, type: 3}
+  - source: {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
+    overlay: {fileID: 21300000, guid: b2d0cc9a67bc95c1e665dc9e74f4f858, type: 3}
+  christmasBulbs:
+  - {fileID: 3325764520207057675, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  - {fileID: 2015713533693807065, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  - {fileID: -1861400038217015374, guid: 0f013fcddb75c50489c7b65dfd996c60, type: 3}
+  christmasIcicles: {fileID: 21300000, guid: 391aad49609a8b316c45ae77012223e3, type: 3}
+  treeDecorationProfiles:
+  - source: {fileID: 21300000, guid: 9853163cc457366613d5338f6a4393b9, type: 3}
+    leftIce: {x: 0.2391486, y: 0.4713465}
+    rightIce: {x: 0.7633556, y: 0.3639589}
+  - source: {fileID: 21300000, guid: e22cc5c962dc822555a7f422145d03bd, type: 3}
+    leftIce: {x: 0.2366616, y: 0.4330225}
+    rightIce: {x: 0.7671494, y: 0.5205955}
+  - source: {fileID: 21300000, guid: 201336f274882bf947a8a46fdb1794d3, type: 3}
+    leftIce: {x: 0.2543945, y: 0.1661562}
+    rightIce: {x: 0.7680664, y: 0.5782656}
+  - source: {fileID: 21300000, guid: 9c97bdd9412342d385350519caf58310, type: 3}
+    leftIce: {x: 0.2991616, y: 0.2044987}
+    rightIce: {x: 0.7046494, y: 0.2178432}
+  - source: {fileID: 21300000, guid: 29b69c9086e1433b97b09a71a6ab0e54, type: 3}
+    leftIce: {x: 0.3317057, y: 0.3399844}
+    rightIce: {x: 0.7008464, y: 0.2784609}
+  - source: {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    leftIce: {x: 0.2808689, y: 0.2453661}
+    rightIce: {x: 0.7412348, y: 0.24203}
+  - source: {fileID: 21300000, guid: 17255d3b3ca54d6983a7f7bcc4dcb4b3, type: 3}
+    leftIce: {x: 0.4111328, y: 0.2638125}
+    rightIce: {x: 0.5927734, y: 0.2267031}
+  - source: {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
+    leftIce: {x: 0.2828482, y: 0.1853215}
+    rightIce: {x: 0.7226593, y: 0.1845137}
+  - source: {fileID: 21300000, guid: 1473c66de9cc45c4ae60afe5682bfaa7, type: 3}
+    leftIce: {x: 0.2369691, y: 0.193747}
+    rightIce: {x: 0.7678571, y: 0.2958551}
+  - source: {fileID: 406077303871232680, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+    leftIce: {x: 0.2319728, y: 0.2191387}
+    rightIce: {x: 0.7666667, y: 0.2322774}
+  - source: {fileID: 1455077550942160976, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+    leftIce: {x: 0.2319413, y: 0.2106154}
+    rightIce: {x: 0.7691874, y: 0.2121538}
+  - source: {fileID: -1202962339879284403, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2322006, y: 0.2120302}
+    rightIce: {x: 0.7661812, y: 0.2321307}
+  - source: {fileID: 8897882817926027608, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2335165, y: 0.2430487}
+    rightIce: {x: 0.7664835, y: 0.2273501}
+  - source: {fileID: -6188665227271562376, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+    leftIce: {x: 0.2323446, y: 0.2112731}
+    rightIce: {x: 0.7676554, y: 0.2112731}
+  - source: {fileID: 1007921232901123686, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+    leftIce: {x: 0.2342233, y: 0.1595088}
+    rightIce: {x: 0.7657767, y: 0.1485439}
+  - source: {fileID: 21300000, guid: caa93c4dda31454d9e990ffbfe9bf59a, type: 3}
+    leftIce: {x: 0.2691388, y: 0.3018533}
+    rightIce: {x: 0.7348485, y: 0.2779298}
+  - source: {fileID: 21300000, guid: 233537bf4e994c4eab2bb3d4f34b00e5, type: 3}
+    leftIce: {x: 0.3161882, y: 0.1989825}
+    rightIce: {x: 0.6862041, y: 0.1694769}
+  - source: {fileID: -390668926164980875, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+    leftIce: {x: 0.234375, y: 0.184022}
+    rightIce: {x: 0.765625, y: 0.184022}
+  groundPaint: {fileID: 21300000, guid: 3293d88e250349140aa69ac00de2a929, type: 3}
+  groundIllustration: {fileID: 21300000, guid: 556cfa635645d124596d1735d99c28f2, type: 3}
+  levelCrown: {fileID: -1405306228871016635, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
+  groundBrushLawn: {fileID: 2800000, guid: 90963d819974a2719db02cea39fa98c9, type: 3}
+  groundBrushPath: {fileID: 2800000, guid: f73b48eda41078231e659d1bd09e03b7, type: 3}
+  expressiveTrees:
+  - {fileID: 21300000, guid: e22cc5c962dc822555a7f422145d03bd, type: 3}
+  - {fileID: 21300000, guid: 9853163cc457366613d5338f6a4393b9, type: 3}
+  - {fileID: 21300000, guid: 1473c66de9cc45c4ae60afe5682bfaa7, type: 3}
+  - {fileID: 21300000, guid: 201336f274882bf947a8a46fdb1794d3, type: 3}
+  expressivePostOffice: {fileID: 21300000, guid: 64815dc7eafd7324d87ac9ac6a15ad7e, type: 3}
+  expressiveWorkshop: {fileID: 21300000, guid: d71689727874322abfb63982fe876b95, type: 3}
+  mapUiTemplate: {fileID: 5563902382216681006, guid: 3ab795e93fbd7c8439dc9970007e07b2, type: 3}
+  mapNavIcons:
+  - {fileID: 21300000, guid: 17802a9c16ab288975e685f438ca309d, type: 3}
+  - {fileID: 21300000, guid: ea6973654ccca89becba5c1e5bc9dc3e, type: 3}
+  - {fileID: 21300000, guid: 35845ee5c0a6b65f75fd9f47844f1f60, type: 3}
+  - {fileID: 21300000, guid: 81dcc959f95963a0e176ee9ace6b907a, type: 3}
+  - {fileID: 21300000, guid: 215ad1b16eb3496a70501bc288b7dfe9, type: 3}
+  legacyPostOffice: {fileID: 21300000, guid: b8f8ee02570142679c38c324b0989328, type: 3}
+  bridgeDeck: {fileID: -3228120450817573808, guid: 8d3d42a5a0d1e3849a59ff8a4cffe3ef, type: 3}
+  skyGoldenOnly: {fileID: 21300000, guid: 730d4113f1d5a754abab7e2d9dd26916, type: 3}
+  groundLavaIllustration: {fileID: 21300000, guid: 89b18dbf2b15abf4ba49817a77cafda2, type: 3}
+  warmCloudSmall: {fileID: -4542698499404180269, guid: 5b134fb86d8e2d149bc40c3748de493b, type: 3}
+  warmCloudWide: {fileID: -2369195626211483947, guid: 5b134fb86d8e2d149bc40c3748de493b, type: 3}
+  lavaCloudSmall: {fileID: -8424753703687761734, guid: a71c04de9d90e60498cf73951b8d5bcc, type: 3}
+  lavaCloudWide: {fileID: -5460713252317000154, guid: a71c04de9d90e60498cf73951b8d5bcc, type: 3}
+  volcanoSingle: {fileID: 164630713761574107, guid: 11898533f7c53b649a060abfa2dd4c2c, type: 3}
+  volcanoTwin: {fileID: 6812514571679424930, guid: 11898533f7c53b649a060abfa2dd4c2c, type: 3}
+  volcanoCaldera: {fileID: 3900514362223603857, guid: 11898533f7c53b649a060abfa2dd4c2c, type: 3}
+  terrainTheme: 0
+  groundLavaLaneBounds:
+  - {x: 0.28469798, y: 0.85680026}
+  - {x: 0.28469798, y: 0.852044}
+  - {x: 0.28350893, y: 0.8460987}
+  - {x: 0.27994174, y: 0.8377753}
+  - {x: 0.27637455, y: 0.82945186}
+  - {x: 0.27042925, y: 0.8199394}
+  - {x: 0.26329488, y: 0.8080487}
+  - {x: 0.25616053, y: 0.7973472}
+  - {x: 0.2478371, y: 0.7854566}
+  - {x: 0.23713556, y: 0.773566}
+  - {x: 0.22762306, y: 0.76167536}
+  - {x: 0.21811058, y: 0.74978477}
+  - {x: 0.20740904, y: 0.73908323}
+  - {x: 0.19789656, y: 0.72957075}
+  - {x: 0.18838407, y: 0.7188692}
+  - {x: 0.18124971, y: 0.7129239}
+  - {x: 0.17768252, y: 0.7069786}
+  - {x: 0.17768252, y: 0.7034114}
+  - {x: 0.17887159, y: 0.7010333}
+  - {x: 0.18243876, y: 0.7010333}
+  - {x: 0.187195, y: 0.7034114}
+  - {x: 0.19432937, y: 0.7081677}
+  - {x: 0.20384185, y: 0.71530205}
+  - {x: 0.21335433, y: 0.7236254}
+  - {x: 0.22405589, y: 0.7331379}
+  - {x: 0.23475744, y: 0.7438395}
+  - {x: 0.24664804, y: 0.7557301}
+  - {x: 0.25972772, y: 0.7664316}
+  - {x: 0.27042925, y: 0.77713317}
+  - {x: 0.28231984, y: 0.78664565}
+  - {x: 0.2930214, y: 0.79615813}
+  - {x: 0.3025339, y: 0.80448157}
+  - {x: 0.31085733, y: 0.81161594}
+  - {x: 0.31680262, y: 0.8151831}
+  - {x: 0.3203698, y: 0.81637216}
+  - {x: 0.3203698, y: 0.81399405}
+  - {x: 0.31561357, y: 0.80923784}
+  - {x: 0.30966824, y: 0.8032925}
+  - {x: 0.30015576, y: 0.79378}
+  - {x: 0.28945422, y: 0.78426754}
+  - {x: 0.27875268, y: 0.773566}
+  - {x: 0.265673, y: 0.76167536}
+  - {x: 0.2537824, y: 0.74978477}
+  - {x: 0.24070273, y: 0.7378942}
+  - {x: 0.22881213, y: 0.7260036}
+  - {x: 0.21811058, y: 0.7164911}
+  - {x: 0.20740904, y: 0.70578957}
+  - {x: 0.20027468, y: 0.69746614}
+  - {x: 0.19670749, y: 0.69033176}
+  - {x: 0.19551843, y: 0.68676454}
+  - {x: 0.19908561, y: 0.68676454}
+  - {x: 0.20740904, y: 0.6915208}
+  - {x: 0.21692152, y: 0.7010333}
+  - {x: 0.22881213, y: 0.71173483}
+  - {x: 0.24545898, y: 0.72481453}
+  - {x: 0.26091677, y: 0.7378942}
+  - {x: 0.2775636, y: 0.7509738}
+  - {x: 0.29183233, y: 0.7628645}
+  - {x: 0.29777765, y: 0.77118784}
+  - {x: 0.30015576, y: 0.7699988}
+  - {x: 0.29539952, y: 0.7664316}
+  - {x: 0.2775636, y: 0.7581082}
+  - {x: 0.27875268, y: 0.7367051}
+  - {x: 0.31918073, y: 0.676063}
+  groundLaneBounds:
+  - {x: 0.28350893, y: 0.8579893}
+  - {x: 0.28350893, y: 0.852044}
+  - {x: 0.28231984, y: 0.8460987}
+  - {x: 0.27875268, y: 0.8377753}
+  - {x: 0.27399644, y: 0.8282628}
+  - {x: 0.26805112, y: 0.8187503}
+  - {x: 0.26210582, y: 0.8080487}
+  - {x: 0.2537824, y: 0.79615813}
+  - {x: 0.24545898, y: 0.78426754}
+  - {x: 0.23594649, y: 0.77237695}
+  - {x: 0.22524494, y: 0.76167536}
+  - {x: 0.2145434, y: 0.74978477}
+  - {x: 0.20384185, y: 0.73908323}
+  - {x: 0.19551843, y: 0.72957075}
+  - {x: 0.187195, y: 0.72005826}
+  - {x: 0.18124971, y: 0.7129239}
+  - {x: 0.17887159, y: 0.7081677}
+  - {x: 0.17768252, y: 0.70460045}
+  - {x: 0.18006064, y: 0.7034114}
+  - {x: 0.18362783, y: 0.7034114}
+  - {x: 0.18838407, y: 0.7069786}
+  - {x: 0.19432937, y: 0.71173483}
+  - {x: 0.2026528, y: 0.7188692}
+  - {x: 0.21216528, y: 0.72719264}
+  - {x: 0.22167777, y: 0.7367051}
+  - {x: 0.23356837, y: 0.7485957}
+  - {x: 0.24426992, y: 0.75929725}
+  - {x: 0.25616053, y: 0.7699988}
+  - {x: 0.26686206, y: 0.7807004}
+  - {x: 0.2775636, y: 0.79021287}
+  - {x: 0.2870761, y: 0.79972535}
+  - {x: 0.29539952, y: 0.8068597}
+  - {x: 0.30372295, y: 0.812805}
+  - {x: 0.3084792, y: 0.81637216}
+  - {x: 0.31204638, y: 0.81637216}
+  - {x: 0.31085733, y: 0.81399405}
+  - {x: 0.30729014, y: 0.80923784}
+  - {x: 0.30134484, y: 0.80210346}
+  - {x: 0.29421046, y: 0.79378}
+  - {x: 0.28469798, y: 0.7830785}
+  - {x: 0.27399644, y: 0.77237695}
+  - {x: 0.26210582, y: 0.75929725}
+  - {x: 0.2514043, y: 0.74740666}
+  - {x: 0.23951368, y: 0.7367051}
+  - {x: 0.22762306, y: 0.7260036}
+  - {x: 0.21692152, y: 0.71530205}
+  - {x: 0.20621997, y: 0.70578957}
+  - {x: 0.20027468, y: 0.69746614}
+  - {x: 0.19670749, y: 0.69033176}
+  - {x: 0.19670749, y: 0.68676454}
+  - {x: 0.20027468, y: 0.68795365}
+  - {x: 0.20859809, y: 0.69270986}
+  - {x: 0.21811058, y: 0.70222235}
+  - {x: 0.2300012, y: 0.7129239}
+  - {x: 0.24545898, y: 0.7260036}
+  - {x: 0.26091677, y: 0.73908323}
+  - {x: 0.2775636, y: 0.7521629}
+  - {x: 0.29064327, y: 0.7640535}
+  - {x: 0.2965886, y: 0.77118784}
+  - {x: 0.2989667, y: 0.77118784}
+  - {x: 0.29539952, y: 0.7652426}
+  - {x: 0.2870761, y: 0.75691915}
+  - {x: 0.28231984, y: 0.7331379}
+  - {x: 0.34652913, y: 0.6487146}
+  levelFaceActive: {fileID: -4160840123430244274, guid: 95cb6af731ce5e24e98b8f906ce3d716, type: 3}
+  levelFaceCompleted: {fileID: -864355008080662987, guid: 95cb6af731ce5e24e98b8f906ce3d716, type: 3}
+  levelFaceUpcoming: {fileID: -6745910190965891061, guid: 95cb6af731ce5e24e98b8f906ce3d716, type: 3}
+  terrainMaterials: {fileID: 21300000, guid: cf3be837ae0a9dc48b468ace493f88a9, type: 3}
+  bridgeTimber: {fileID: 5566856678496227101, guid: 8d3d42a5a0d1e3849a59ff8a4cffe3ef, type: 3}
+  bridgeLogs: {fileID: -3079618844811498712, guid: 8d3d42a5a0d1e3849a59ff8a4cffe3ef, type: 3}
+  autumnTree: {fileID: -4153602998103927406, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  postalPine: {fileID: -390668926164980875, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  mailWindmill: {fileID: 5274780683445151542, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  mailKiosk: {fileID: -4310985829527446136, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  bellFlowers: {fileID: -11272375467003097, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  curvedLantern: {fileID: -1378293677515482679, guid: ea2040058bf573a46be7cef158a3c1b1, type: 3}
+  lavaTree: {fileID: -8565021492479974315, guid: 709e989ccfd4fa3459376dab9ced270c, type: 3}
+  lavaShrub: {fileID: 4846626827668756022, guid: 709e989ccfd4fa3459376dab9ced270c, type: 3}
+  lavaFlower: {fileID: -1326473504303266938, guid: 709e989ccfd4fa3459376dab9ced270c, type: 3}
+  lavaLamp: {fileID: 21300000, guid: 2d56a4f25da444a498694cc1f5197952, type: 3}
+  lavaMailbox: {fileID: -6513776200247534323, guid: f626404d045f99746aeebe1b1556e5fd, type: 3}
+  lavaMailboxOpen: {fileID: 1563314368566721271, guid: f626404d045f99746aeebe1b1556e5fd, type: 3}
+  lavaForge: {fileID: 6815159770268335657, guid: 834fc07fdbd06b94eb9d807d5ca0b58c, type: 3}
+  lavaOffice: {fileID: -1123781256362292276, guid: e70379106f760a24f92fa151e8d5a811, type: 3}
+  lavaObservatory: {fileID: -3085620073074922071, guid: e70379106f760a24f92fa151e8d5a811, type: 3}
+  lavaCrystal: {fileID: 2547972850048067460, guid: 229708549f4fca84697a42909bee9405, type: 3}
+  lavaBoulder: {fileID: -8255640826313983827, guid: 911275a1c9e120d4cb6bf19d02de324e, type: 3}
+  navIcons:
+  - {fileID: -2840244259821532590, guid: cb5e8008c6376904bbd26ecb0ded9903, type: 3}
+  - {fileID: -4670679414708430007, guid: cb5e8008c6376904bbd26ecb0ded9903, type: 3}
+  - {fileID: 9142001247576255333, guid: cb5e8008c6376904bbd26ecb0ded9903, type: 3}
+  - {fileID: -2906355904005284331, guid: cb5e8008c6376904bbd26ecb0ded9903, type: 3}
+  - {fileID: 3440200217742414492, guid: cb5e8008c6376904bbd26ecb0ded9903, type: 3}
+  hardBadge: {fileID: 3170614429149742659, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
+  expressBadge: {fileID: 1215592849687920709, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
+  levelStar: {fileID: 5146797785118366110, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
+  shrubCoral: {fileID: 6344862151248206742, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  shrubGold: {fileID: 2454125026547011538, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  shrubMint: {fileID: 398682009815318506, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  detailTulips: {fileID: -6511007553704937336, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  detailBells: {fileID: -7247548204539006859, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  detailRocks: {fileID: -8960670122260741906, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
+  gardenFamily:
+  - {fileID: 7282277319043064301, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  - {fileID: 3422705012090789297, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  - {fileID: 6394202773621897223, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  - {fileID: -6817757486184007674, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  - {fileID: 5052792948632121396, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  - {fileID: 8760633652427754866, guid: 7fb438d3351a48948a1da169c1441ed3, type: 3}
+  forestFamily:
+  - {fileID: -4100255270362680465, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  - {fileID: -6617446682529640446, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  - {fileID: -1473845714715954976, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  - {fileID: 1964993324268017015, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  - {fileID: 172639317555428657, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  - {fileID: -509563985777930378, guid: 393b8e972bae4967bfbf7b5879f8f50e, type: 3}
+  coastFamily:
+  - {fileID: -5498164249299800001, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  - {fileID: -2208509172300365715, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  - {fileID: -4396356929464006856, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  - {fileID: 3428060553546809368, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  - {fileID: 177588029454185502, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  - {fileID: -5620012757337627757, guid: f50df1c2c4a64005969393ec5ef32192, type: 3}
+  auroraFamily:
+  - {fileID: 8486830054522854053, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  - {fileID: -1595757794878813216, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  - {fileID: 4690677971159573964, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  - {fileID: -5647636431473025478, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  - {fileID: 6727212179532721162, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  - {fileID: -8315556733428182383, guid: ccfa95a13ce34f499d8e3e150dad8b9c, type: 3}
+  geyserFrames:
+  - {fileID: 7928475655483671812, guid: 9d382b30dd95443eae12b0ce0a9f55d0, type: 3}
+  - {fileID: -2495764266270407096, guid: 9d382b30dd95443eae12b0ce0a9f55d0, type: 3}
+  - {fileID: 8483549753479201092, guid: 9d382b30dd95443eae12b0ce0a9f55d0, type: 3}
+  - {fileID: -1154644904227546262, guid: 9d382b30dd95443eae12b0ce0a9f55d0, type: 3}
+  desertFamily:
+  - {fileID: 3612004880898624962, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  - {fileID: 2501669441035885472, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  - {fileID: 6560586245265279567, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  - {fileID: -1325368088714410351, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  - {fileID: 5521731177291818406, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  - {fileID: -6113683439510636578, guid: 2fb4156d099146ff878e4b4a19e12c88, type: 3}
+  orchardFamily:
+  - {fileID: 934322378088282557, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  - {fileID: 4674859531722094357, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  - {fileID: -723112652384482807, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  - {fileID: -6186844345081385742, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  - {fileID: -2255025403550261750, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  - {fileID: -6588973417454957364, guid: a2e47d6f8ded4c0caf672285d3dec817, type: 3}
+  marshFamily:
+  - {fileID: 7157043091739893038, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  - {fileID: -7694597169411557025, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  - {fileID: 1915143292563472967, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  - {fileID: 3028531514386166682, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  - {fileID: 7549059588490635629, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  - {fileID: -2284851290323585920, guid: ce76175ce47f4a59a3cf5b8cc8aca009, type: 3}
+  cloudFamily:
+  - {fileID: 8538638587665058215, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  - {fileID: -6226997094659711281, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  - {fileID: 4923757018466020165, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  - {fileID: -3894365541789061605, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  - {fileID: -8495469491683167616, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  - {fileID: -1749729197192364910, guid: b285aa9f11cb4eb382fd1344ac2eba4f, type: 3}
+  crystalFamily:
+  - {fileID: -8692800526787152891, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  - {fileID: 3896226583691912326, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  - {fileID: -4425247171868230899, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  - {fileID: 5715250785845500894, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  - {fileID: -8230760891649071253, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  - {fileID: -2002139232888881330, guid: 0956997a5c43406fa96e48ad2d0b38a6, type: 3}
+  geyserBase: {fileID: 9070766883507112622, guid: bf4b493f00eb49aba4d2182ba1a3200e, type: 3}
+  geyserWater: {fileID: -1326146518939826520, guid: bf4b493f00eb49aba4d2182ba1a3200e, type: 3}
+  geyserSteam: {fileID: 260675021232629121, guid: bf4b493f00eb49aba4d2182ba1a3200e, type: 3}
+  meteorSprite: {fileID: -4383717446787135116, guid: bf4b493f00eb49aba4d2182ba1a3200e, type: 3}
+  snowTerrainMaterials: {fileID: 21300000, guid: dfd57683caa345d7b5cb8f7797d84382, type: 3}
+  simpleNature:
+  - {fileID: 1554780033365772513, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  - {fileID: 1007921232901123686, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  - {fileID: 4265733815798439206, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  - {fileID: -2922215092793359351, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  - {fileID: 7688592343001368903, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  - {fileID: 5409977708716515928, guid: 818b0e979eab4cf3aab13eb795bf448d, type: 3}
+  simplePostal:
+  - {fileID: -1170391820591366839, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  - {fileID: -1664641604690533581, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  - {fileID: -2567312416810897959, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  - {fileID: 345234985261537184, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  - {fileID: -3034004966876119386, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  - {fileID: -8979601971457699237, guid: 6c2999cc8e2e46d0a9d0b5d5c2bce339, type: 3}
+  simpleBridge: {fileID: 21300000, guid: 02df7f366b664a079e6a175086ffb265, type: 3}
+  simpleCrown: {fileID: 1365205443460458515, guid: a03447dffc614864874009b87e8a0e54, type: 3}
+  simpleStar: {fileID: -341398217551031929, guid: a03447dffc614864874009b87e8a0e54, type: 3}
+  simpleHard: {fileID: 9148347015999004709, guid: a03447dffc614864874009b87e8a0e54, type: 3}
+  simpleExpress: {fileID: -8338437602559098184, guid: a03447dffc614864874009b87e8a0e54, type: 3}
+  simpleCloudSmall: {fileID: -8189424833045200653, guid: 89f4ad20e14f433b8afb2bdcda528fc2, type: 3}
+  simpleCloudWide: {fileID: -4797070027300866362, guid: 89f4ad20e14f433b8afb2bdcda528fc2, type: 3}
+  postalTrees:
+  - {fileID: -1202962339879284403, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+  - {fileID: 8897882817926027608, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+  - {fileID: -6188665227271562376, guid: 1577a31aac75846dffcc1d2cf7963395, type: 3}
+  postalTreeDetails:
+  - {fileID: -8024085847530103860, guid: fbad7cf2dd3ca7765dfdd61b69451c5f, type: 3}
+  - {fileID: 2962591403446482029, guid: fbad7cf2dd3ca7765dfdd61b69451c5f, type: 3}
+  - {fileID: -8884654850055292969, guid: fbad7cf2dd3ca7765dfdd61b69451c5f, type: 3}
+  - {fileID: 2167247404525097074, guid: fbad7cf2dd3ca7765dfdd61b69451c5f, type: 3}
+  entranceTrees:
+  - {fileID: 406077303871232680, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+  - {fileID: 1455077550942160976, guid: 41e50814136a2db25e336b0c64996609, type: 3}
+  treeLeafShader: {fileID: 4800000, guid: 04901af734650c7e6ecf5753c7e826a2, type: 3}
+  postmanSprite: {fileID: 21300000, guid: 5dc57dd7f31049a9cc5154623886038a, type: 3}
+  groundDetails:
+  - {fileID: 21300000, guid: 7f0b0f7feb634a838e050c1cdfa67e5a, type: 3}
+  - {fileID: 21300000, guid: fe711a9037914d2db5a8676bd73b7128, type: 3}
+  waterRipple: {fileID: 21300000, guid: a6b7e1cc92264e2fb97eae82fabcd8fe, type: 3}
+  waterRocks: {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+  seasonPreview: 0
+  christmasPreview: 0

@@ -1,0 +1,309 @@
+fileFormatVersion: 2
+guid: 738f6bd7ebcd58848b58800222cdb38a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8761762273572837730
+    second: green-route-landmarks-cartoon_0
+  - first:
+      213: -88034433443111821
+    second: green-route-landmarks-cartoon_1
+  - first:
+      213: -5569631151859668333
+    second: green-route-landmarks-cartoon_2
+  - first:
+      213: 5475217511454134159
+    second: green-route-landmarks-cartoon_3
+  - first:
+      213: 6018021150939898302
+    second: green-route-landmarks-cartoon_4
+  - first:
+      213: 1176758613718139631
+    second: green-route-landmarks-cartoon_5
+  - first:
+      213: -1153294135518223314
+    second: green-route-landmarks-cartoon_6
+  - first:
+      213: -7653656374014657153
+    second: green-route-landmarks-cartoon_7
+  - first:
+      213: 8864218215994629681
+    second: green-route-landmarks-cartoon_8
+  - first:
+      213: 7245481967076134690
+    second: green-route-landmarks-cartoon_9
+  - first:
+      213: -3048461487032017533
+    second: green-route-landmarks-cartoon_10
+  - first:
+      213: -5274760077668346988
+    second: green-route-landmarks-cartoon_11
+  - first:
+      213: -1151320897117042737
+    second: green-route-landmarks-cartoon_12
+  - first:
+      213: 2929756102691103925
+    second: green-route-landmarks-cartoon_13
+  - first:
+      213: 1681929108939442109
+    second: green-route-landmarks-cartoon_14
+  - first:
+      213: -2685654193018170174
+    second: green_route_landmarks_postal_gate
+  - first:
+      213: 4633721521476470677
+    second: green_route_landmarks_mail_bag_arch
+  - first:
+      213: -1020664938435290858
+    second: green_route_landmarks_covered_postal_stop
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: green_route_landmarks_postal_gate
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 85
+        width: 525
+        height: 582
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c41d9b9db3aabad0800000000000000
+      internalID: -2685654193018170174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_route_landmarks_mail_bag_arch
+      rect:
+        serializedVersion: 2
+        x: 781
+        y: 84
+        width: 611
+        height: 497
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59700bb5c294e4040800000000000000
+      internalID: 4633721521476470677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green_route_landmarks_covered_postal_stop
+      rect:
+        serializedVersion: 2
+        x: 1492
+        y: 85
+        width: 595
+        height: 586
+      alignment: 9
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6195edd65aed5d1f0800000000000000
+      internalID: -1020664938435290858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      green-route-landmarks-cartoon_0: -8761762273572837730
+      green-route-landmarks-cartoon_1: -88034433443111821
+      green-route-landmarks-cartoon_10: -3048461487032017533
+      green-route-landmarks-cartoon_11: -5274760077668346988
+      green-route-landmarks-cartoon_12: -1151320897117042737
+      green-route-landmarks-cartoon_13: 2929756102691103925
+      green-route-landmarks-cartoon_14: 1681929108939442109
+      green-route-landmarks-cartoon_2: -5569631151859668333
+      green-route-landmarks-cartoon_3: 5475217511454134159
+      green-route-landmarks-cartoon_4: 6018021150939898302
+      green-route-landmarks-cartoon_5: 1176758613718139631
+      green-route-landmarks-cartoon_6: -1153294135518223314
+      green-route-landmarks-cartoon_7: -7653656374014657153
+      green-route-landmarks-cartoon_8: 8864218215994629681
+      green-route-landmarks-cartoon_9: 7245481967076134690
+      green_route_landmarks_covered_postal_stop: -1020664938435290858
+      green_route_landmarks_mail_bag_arch: 4633721521476470677
+      green_route_landmarks_postal_gate: -2685654193018170174
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

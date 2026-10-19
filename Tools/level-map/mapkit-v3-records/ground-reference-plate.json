@@ -1,0 +1,17 @@
+{
+  "id": "ground-reference-plate",
+  "folder": "GreenLand",
+  "file": "ground-reference-plate.png",
+  "transparent": false,
+  "columns": 1,
+  "rows": 1,
+  "names": [
+    "terrain"
+  ],
+  "kind": "terrain",
+  "tool": "built-in image_gen",
+  "prompt": "Edit this exact provided screenshot into a CLEAN BACKGROUND PLATE by removing overlays and props, not by redesigning the ground. PRESERVE EXACTLY the existing illustrated grass ground, its broad soft alternating pale green color bands, the darker green shoulders, soft shallow inset boundary, and the existing low gently rounded horizon at the same vertical position. Keep this SAME frontal/perspective camera composition, same smooth natural proportions, same ground silhouette and same simple subtle painted grass detail. Remove ALL top pink HUD, avatar, icons, text and bottom navigation, replacing their areas with the continuing sky above and continuing green ground below. Remove ALL buildings, factories, trees, lamps, flowers, characters, avatars and their shadows. Remove the pink/white ribbon and ALL circular level buttons, filling their areas with the original adjacent grass color/bands. Result: only the quiet warm yellow sky, its very simple distant pale cloud silhouettes, and the accurately preserved green ground with empty light-green lane and darker green shoulders. No UI, text, objects, path markings, shadows of removed objects, bright outlines, new bevels, extra decoration, repeated leaf stamps or new texture. The goal is to retain the reference ground drawing and horizon as faithfully as possible, after cleanly removing everything else. Single opaque portrait image, SAME aspect and framing as input.",
+  "reference": "C:/Users/Tiago Carvalho/Downloads/WhatsApp Image 2026-10-13 at 11.09.13 (1).jpeg",
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-17ae4bc7-2070-4085-b249-975fff0edaa5.png",
+  "destination": "Assets/RoyalAves/Art/MapKitV3/GreenLand/ground-reference-plate.png"
+}

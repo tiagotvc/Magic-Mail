@@ -1,0 +1,951 @@
+fileFormatVersion: 2
+guid: 9eb283d33f88eea4e8c18d455077d3dd
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -545798246317090594
+    second: green-winter-accents_0
+  - first:
+      213: 3582494435065560187
+    second: green-winter-accents_1
+  - first:
+      213: -241868672943205505
+    second: green-winter-accents_2
+  - first:
+      213: 22697157111583514
+    second: green-winter-accents_3
+  - first:
+      213: 6278260593260629571
+    second: green-winter-accents_4
+  - first:
+      213: -24285852031215440
+    second: green-winter-accents_5
+  - first:
+      213: 9197452031731413512
+    second: green-winter-accents_6
+  - first:
+      213: -7200698164439176522
+    second: green-winter-accents_7
+  - first:
+      213: 5783631004686395327
+    second: green-winter-accents_8
+  - first:
+      213: -487769348481742948
+    second: green-winter-accents_9
+  - first:
+      213: -2898156936618786812
+    second: green-winter-accents_10
+  - first:
+      213: 4836355444864082027
+    second: green-winter-accents_11
+  - first:
+      213: 1631548187339848834
+    second: green-winter-accents_12
+  - first:
+      213: 6640672223394332817
+    second: green-winter-accents_13
+  - first:
+      213: 56109633755364064
+    second: green-winter-accents_14
+  - first:
+      213: -8949526563106901289
+    second: green-winter-accents_15
+  - first:
+      213: 7611617887871823015
+    second: green-winter-accents_16
+  - first:
+      213: -3007334901209304157
+    second: green-winter-accents_17
+  - first:
+      213: -8917063707168207648
+    second: green-winter-accents_18
+  - first:
+      213: -2266421558443559775
+    second: green-winter-accents_19
+  - first:
+      213: 7501501181934403276
+    second: green-winter-accents_20
+  - first:
+      213: -5954161923103813893
+    second: green-winter-accents_21
+  - first:
+      213: 7125171447996390011
+    second: green-winter-accents_22
+  - first:
+      213: 7601080976707368967
+    second: green-winter-accents_23
+  - first:
+      213: -4022638033954944320
+    second: green-winter-accents_24
+  - first:
+      213: 8345435296228070044
+    second: green-winter-accents_25
+  - first:
+      213: 7860503770734695439
+    second: green-winter-accents_26
+  - first:
+      213: -5723069242127473244
+    second: green-winter-accents_27
+  - first:
+      213: 4462582547687266824
+    second: green-winter-accents_28
+  - first:
+      213: -2365762526621139327
+    second: green-winter-accents_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: tvOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: green-winter-accents_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 826
+        height: 867
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed81d31036fec68f0800000000000000
+      internalID: -545798246317090594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_1
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 861
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7c75e335b397b130800000000000000
+      internalID: 3582494435065560187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_2
+      rect:
+        serializedVersion: 2
+        x: 572
+        y: 854
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f73dce239b5b4acf0800000000000000
+      internalID: -241868672943205505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_3
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 805
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a131c03b1f2a05000800000000000000
+      internalID: 22697157111583514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_4
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 47
+        width: 939
+        height: 792
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34e02a4febcd02750800000000000000
+      internalID: 6278260593260629571
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_5
+      rect:
+        serializedVersion: 2
+        x: 1185
+        y: 821
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b89c907528b9aff0800000000000000
+      internalID: -24285852031215440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_6
+      rect:
+        serializedVersion: 2
+        x: 1191
+        y: 824
+        width: 60
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 802bb0684e9e3af70800000000000000
+      internalID: 9197452031731413512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_7
+      rect:
+        serializedVersion: 2
+        x: 1193
+        y: 822
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6baabcd9b2bf11c90800000000000000
+      internalID: -7200698164439176522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_8
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 807
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fb7a44a71c5934050800000000000000
+      internalID: 5783631004686395327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_9
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 813
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c970c63ac581b39f0800000000000000
+      internalID: -487769348481742948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_10
+      rect:
+        serializedVersion: 2
+        x: 1540
+        y: 772
+        width: 25
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 400c0890f9da7c7d0800000000000000
+      internalID: -2898156936618786812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_11
+      rect:
+        serializedVersion: 2
+        x: 1169
+        y: 798
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6066aa27af2e1340800000000000000
+      internalID: 4836355444864082027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_12
+      rect:
+        serializedVersion: 2
+        x: 1171
+        y: 807
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28cf25c9e6c64a610800000000000000
+      internalID: 1631548187339848834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_13
+      rect:
+        serializedVersion: 2
+        x: 1570
+        y: 799
+        width: 22
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19009311438682c50800000000000000
+      internalID: 6640672223394332817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_14
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 783
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ea37742a6757c000800000000000000
+      internalID: 56109633755364064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_15
+      rect:
+        serializedVersion: 2
+        x: 1221
+        y: 779
+        width: 18
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2371ae105ecc380800000000000000
+      internalID: -8949526563106901289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_16
+      rect:
+        serializedVersion: 2
+        x: 1112
+        y: 757
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7aceb941426e1a960800000000000000
+      internalID: 7611617887871823015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_17
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 765
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a3f8c447dcc346d0800000000000000
+      internalID: -3007334901209304157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_18
+      rect:
+        serializedVersion: 2
+        x: 1564
+        y: 773
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ec06be8dc9304480800000000000000
+      internalID: -8917063707168207648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_19
+      rect:
+        serializedVersion: 2
+        x: 1572
+        y: 765
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a43fa1c99d0c80e0800000000000000
+      internalID: -2266421558443559775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_20
+      rect:
+        serializedVersion: 2
+        x: 1605
+        y: 766
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cce7f5f849faa1860800000000000000
+      internalID: 7501501181934403276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_21
+      rect:
+        serializedVersion: 2
+        x: 1612
+        y: 767
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe8d3607419e5da0800000000000000
+      internalID: -5954161923103813893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_22
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 757
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7a94916ea1b1e260800000000000000
+      internalID: 7125171447996390011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_23
+      rect:
+        serializedVersion: 2
+        x: 1207
+        y: 763
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7083f9540e67c7960800000000000000
+      internalID: 7601080976707368967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_24
+      rect:
+        serializedVersion: 2
+        x: 1659
+        y: 739
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0cac32e5508bc28c0800000000000000
+      internalID: -4022638033954944320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_25
+      rect:
+        serializedVersion: 2
+        x: 830
+        y: 257
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c925ea79f21f0d370800000000000000
+      internalID: 8345435296228070044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_26
+      rect:
+        serializedVersion: 2
+        x: 695
+        y: 56
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f049242688e161d60800000000000000
+      internalID: 7860503770734695439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_27
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 61
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a5270ea8d29390b0800000000000000
+      internalID: -5723069242127473244
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_28
+      rect:
+        serializedVersion: 2
+        x: 701
+        y: 52
+        width: 10
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80ad1cfee274eed30800000000000000
+      internalID: 4462582547687266824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: green-winter-accents_29
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 18
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18ef0d1348f1b2fd0800000000000000
+      internalID: -2365762526621139327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      green-winter-accents_0: -545798246317090594
+      green-winter-accents_1: 3582494435065560187
+      green-winter-accents_10: -2898156936618786812
+      green-winter-accents_11: 4836355444864082027
+      green-winter-accents_12: 1631548187339848834
+      green-winter-accents_13: 6640672223394332817
+      green-winter-accents_14: 56109633755364064
+      green-winter-accents_15: -8949526563106901289
+      green-winter-accents_16: 7611617887871823015
+      green-winter-accents_17: -3007334901209304157
+      green-winter-accents_18: -8917063707168207648
+      green-winter-accents_19: -2266421558443559775
+      green-winter-accents_2: -241868672943205505
+      green-winter-accents_20: 7501501181934403276
+      green-winter-accents_21: -5954161923103813893
+      green-winter-accents_22: 7125171447996390011
+      green-winter-accents_23: 7601080976707368967
+      green-winter-accents_24: -4022638033954944320
+      green-winter-accents_25: 8345435296228070044
+      green-winter-accents_26: 7860503770734695439
+      green-winter-accents_27: -5723069242127473244
+      green-winter-accents_28: 4462582547687266824
+      green-winter-accents_29: -2365762526621139327
+      green-winter-accents_3: 22697157111583514
+      green-winter-accents_4: 6278260593260629571
+      green-winter-accents_5: -24285852031215440
+      green-winter-accents_6: 9197452031731413512
+      green-winter-accents_7: -7200698164439176522
+      green-winter-accents_8: 5783631004686395327
+      green-winter-accents_9: -487769348481742948
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

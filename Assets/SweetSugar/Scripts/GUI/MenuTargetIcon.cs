@@ -36,12 +36,14 @@ namespace SweetSugar.Scripts.GUI
     void OnEnable()
     {
         DisableImages();
-        var levelData = new LevelData(Application.isPlaying, LevelManager.THIS.currentLevel);
-        levelData = LoadingManager.LoadForPlay(PlayerPrefs.GetInt("OpenLevel"));
+        if(!Application.isPlaying||LevelManager.THIS==null)return;
+        var levelData = LoadingManager.LoadForPlay(Mathf.Max(1,PlayerPrefs.GetInt("OpenLevel",LevelManager.THIS.currentLevel)));
         var list = levelData.GetTargetSprites();
-        description.text = levelData.GetTargetContainersForUI().First().targetLevel.GetDescription();
-        for (int i = 0; i < list.Length; i++)
+        var targets=levelData.GetTargetContainersForUI();
+        if(description!=null)description.text=targets.Length>0?targets[0].targetLevel.GetDescription():"";
+        for (int i = 0; i < Mathf.Min(list.Length,images.Length); i++)
         {
+            if(images[i]==null)continue;
             images[i].sprite = list[i];
             images[i].gameObject.SetActive(true);
         }
@@ -51,7 +53,7 @@ namespace SweetSugar.Scripts.GUI
         {
             foreach (var item in images)
             {
-                item.gameObject.SetActive(false);
+                if(item!=null)item.gameObject.SetActive(false);
             }
         }
 
