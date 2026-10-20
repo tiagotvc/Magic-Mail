@@ -15,39 +15,6 @@ MonoBehaviour:
   targets:
     array:
     - targetType:
-        type: 0
-      sprites:
-        array:
-        - icon: {fileID: 21300000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
-          uiSprite: 0
-      CountDrawer:
-        count: 12
-      NotFinishUntilMoveOut: 0
-      ShowTheScoreForStar:
-        ShowTheScore: 0
-    - targetType:
-        type: 0
-      sprites:
-        array:
-        - icon: {fileID: 21300000, guid: 312205a54976565468e5949d49093b75, type: 3}
-          uiSprite: 0
-      CountDrawer:
-        count: 12
-      NotFinishUntilMoveOut: 0
-      ShowTheScoreForStar:
-        ShowTheScore: 0
-    - targetType:
-        type: 0
-      sprites:
-        array:
-        - icon: {fileID: 21300000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
-          uiSprite: 0
-      CountDrawer:
-        count: 12
-      NotFinishUntilMoveOut: 0
-      ShowTheScoreForStar:
-        ShowTheScore: 0
-    - targetType:
         type: 5
       sprites:
         array:
@@ -65,6 +32,19 @@ MonoBehaviour:
         - icon: {fileID: 21300000, guid: b60f104913f7f4f4ba14f86e8eff79e4, type: 3}
           uiSprite: 0
         - icon: {fileID: 21300000, guid: 182f3100e66e3b94cad95d88a70d0718, type: 3}
+          uiSprite: 1
+      CountDrawer:
+        count: 0
+      NotFinishUntilMoveOut: 0
+      ShowTheScoreForStar:
+        ShowTheScore: 0
+    - targetType:
+        type: 8
+      sprites:
+        array:
+        - icon: {fileID: 21300000, guid: 05e3182245bc4552b2207f0857cfebda, type: 3}
+          uiSprite: 0
+        - icon: {fileID: 21300000, guid: dceee3f7cee048448e47c08945d078c2, type: 3}
           uiSprite: 1
       CountDrawer:
         count: 0

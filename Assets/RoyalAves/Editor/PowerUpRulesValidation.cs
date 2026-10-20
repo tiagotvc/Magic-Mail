@@ -34,6 +34,12 @@ namespace RoyalAves.EditorTools
         static void Poll()
         {
             if (EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+            if (File.Exists("Logs/multicolor-electric.request"))
+            {
+                File.Delete("Logs/multicolor-electric.request");
+                try { ValidateElectricArcs(); }
+                catch (Exception error) { File.WriteAllText("Logs/multicolor-electric.result", error.ToString()); Debug.LogException(error); }
+            }
             const string request = "Logs/power-up-rules.request";
             try
             {
@@ -188,5 +194,87 @@ namespace RoyalAves.EditorTools
         }
 
         static void Expect(bool condition, string message) { if (!condition) throw new Exception(message); }
+
+        static void ValidateElectricArcs()
+        {
+            var root = new GameObject("ElectricArcFixture");
+            try
+            {
+                var source = new GameObject("Source").transform; source.SetParent(root.transform, false);
+                for (int i = 0; i < 16; i++)
+                {
+                    var target = new GameObject("Target").transform; target.SetParent(root.transform, false);
+                    target.position = new Vector3(Mathf.Cos(i * .65f), Mathf.Sin(i * .65f)) * (.2f + i * .3f);
+                    var node = new GameObject("ElectricArc"); node.transform.SetParent(root.transform, false);
+                    var arc = node.AddComponent<SweetSugar.Scripts.Effects.Lightning>();
+                    arc.SetLight(source.position, target.position, .82f, true, source, target);
+                    arc.Sample(SweetSugar.Scripts.Effects.Lightning.TravelTime * .5f);
+                    var travelling = arc.GetComponent<LineRenderer>();
+                    Expect(Vector3.Distance(travelling.GetPosition(travelling.positionCount - 1), target.position) > .01f,
+                        "Electric arc must travel before contacting its target.");
+                    foreach (float time in new[] { .06f, .12f, .6f, 2f })
+                    {
+                        source.position += new Vector3(.01f, -.01f);
+                        target.position += new Vector3(-.01f, .02f);
+                        arc.Sample(time);
+                        var line = arc.GetComponent<LineRenderer>();
+                        Expect(Vector3.Distance(line.GetPosition(0), source.position) < .0001f, "Electric arc detached from source.");
+                        Expect(Vector3.Distance(line.GetPosition(line.positionCount - 1), target.position) < .0001f, "Electric arc missed its target.");
+                        // The ribbon includes transparent glow margins; the visible white core is much narrower.
+                        Expect(line.widthMultiplier <= .82f * .0451f, "Electric ribbon is too thick.");
+                        Expect(line.sharedMaterial != null && !ShaderUtil.ShaderHasError(line.sharedMaterial.shader),
+                            "Electric shader is missing or failed compilation.");
+                        foreach (var renderer in arc.GetComponentsInChildren<LineRenderer>())
+                        for (int point = 0; point < renderer.positionCount; point++)
+                            Expect(!float.IsNaN(renderer.GetPosition(point).x), "Invalid electric geometry.");
+                    }
+                    Expect(arc.GetComponentsInChildren<LineRenderer>().Length == 4, "Missing halo/branches.");
+                }
+                Expect(root.GetComponentsInChildren<SweetSugar.Scripts.Effects.Lightning>().Length == 16, "One electric arc is required per selected piece.");
+                CaptureElectricPreview(root);
+                File.WriteAllText("Logs/multicolor-electric.result", "PASS: 16 simultaneous electric arcs; 64 samples with moving endpoints; exact source/target contacts; thin cores; halo and branches; finite geometry.");
+            }
+            finally { UnityEngine.Object.DestroyImmediate(root); }
+        }
+
+        static void CaptureElectricPreview(GameObject root)
+        {
+            var material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath("a97c105638bdf8b4a8650670310a4cd3"));
+            var piece = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Pieces/bow.png");
+            foreach (Transform child in root.transform)
+            {
+                if (child.name != "Target" && child.name != "Source") continue;
+                var renderer = child.gameObject.AddComponent<SpriteRenderer>();
+                renderer.sprite = child.name == "Source"
+                    ? AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Specials/orb.png") : piece;
+                if (renderer.sprite == null) renderer.sprite = piece;
+                renderer.sharedMaterial = material;
+                renderer.sortingLayerName = RoyalAves.Effects.PowerUpEffectOrder.SortingLayer;
+                renderer.sortingOrder = 110;
+                child.localScale = Vector3.one * (.55f / Mathf.Max(renderer.sprite.bounds.size.x, renderer.sprite.bounds.size.y));
+            }
+            foreach (var renderer in root.GetComponentsInChildren<Renderer>()) renderer.gameObject.layer = 31;
+            var node = new GameObject("ArcPreviewCamera"); node.transform.SetParent(root.transform, false);
+            var camera = node.AddComponent<Camera>(); camera.enabled = false;
+            camera.transform.position = new Vector3(0f, 0f, -10f);
+            camera.orthographic = true; camera.orthographicSize = 5.2f;
+            camera.cullingMask = 1 << 31;
+            camera.clearFlags = CameraClearFlags.SolidColor; camera.backgroundColor = new Color(.12f, .20f, .30f);
+            var target = new RenderTexture(1024, 1024, 24);
+            var pixels = new Texture2D(1024, 1024, TextureFormat.RGBA32, false);
+            var previous = RenderTexture.active;
+            try
+            {
+                camera.targetTexture = target; camera.Render(); RenderTexture.active = target;
+                pixels.ReadPixels(new Rect(0, 0, 1024, 1024), 0, 0); pixels.Apply();
+                File.WriteAllBytes("Logs/multicolor-electric-preview.png", pixels.EncodeToPNG());
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                camera.targetTexture = null; target.Release();
+                UnityEngine.Object.DestroyImmediate(target); UnityEngine.Object.DestroyImmediate(pixels);
+            }
+        }
     }
 }

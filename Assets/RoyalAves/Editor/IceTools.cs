@@ -14,6 +14,7 @@ namespace RoyalAves.EditorTools
     {
         public const string PrefabPath = "Assets/SweetSugar/Resources/Blocks/IceBlock.prefab";
         public const string ThinArtPath = "Assets/RoyalAves/Art/Obstacles/ice-thin-v4.png";
+        public const string CrackedArtPath = "Assets/RoyalAves/Art/Obstacles/ice-thick-cracked-v5.png";
         public const string ThickArtPath = "Assets/RoyalAves/Art/Obstacles/ice-thick-v4.png";
 
         [InitializeOnLoadMethod]
@@ -30,7 +31,7 @@ namespace RoyalAves.EditorTools
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
                 throw new InvalidOperationException("Prepare o gelo fora do Play Mode.");
-            var thin = ImportArt(ThinArtPath);
+            var thin = ImportArt(CrackedArtPath);
             var thick = ImportArt(ThickArtPath);
             var root = new GameObject("IceBlock");
             try
@@ -65,11 +66,11 @@ namespace RoyalAves.EditorTools
 
         static Square CreateLayer(GameObject root, Sprite sprite, int level)
         {
-            var node = new GameObject(level == 1 ? "Gelo fino" : "Gelo grosso");
+            var node = new GameObject(level == 1 ? "Gelo rachado" : "Gelo intacto");
             node.transform.SetParent(root.transform, false);
             var renderer = node.AddComponent<SpriteRenderer>();
             renderer.sprite = sprite;
-            // Thin ice is a complete milky veil over the item, rather than an empty frame.
+            // The damaged state has fractures painted into the thick ice sprite.
             renderer.color = new Color(1f, 1f, 1f, IceLayer.OpacityForLevel(level));
             renderer.sortingOrder = level + 3;
             var square = node.AddComponent<Square>();

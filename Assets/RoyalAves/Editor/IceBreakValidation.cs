@@ -47,10 +47,27 @@ namespace RoyalAves.EditorTools
                 camera.nearClipPlane = .1f;
                 camera.farClipPlane = 30f;
                 var material = AssetDatabase.LoadAssetAtPath<Material>(AssetDatabase.GUIDToAssetPath("a97c105638bdf8b4a8650670310a4cd3"));
-                var thin = AssetDatabase.LoadAssetAtPath<Sprite>(IceTools.ThinArtPath);
+                var cracked = AssetDatabase.LoadAssetAtPath<Sprite>(IceTools.CrackedArtPath);
                 var thick = AssetDatabase.LoadAssetAtPath<Sprite>(IceTools.ThickArtPath);
+                foreach (float ppu in new[] { 128f, 564.3f })
+                {
+                    var cached = Sprite.Create(cracked.texture, cracked.rect, Vector2.one * .5f, ppu);
+                    try
+                    {
+                        var probe = Make(root, Vector3.zero, cached, 0, material);
+                        IceLayer.FitVisual(probe);
+                        var fitted = Vector3.Scale(cached.bounds.size, probe.transform.localScale);
+                        if (Mathf.Abs(fitted.x - 1f / .45f) > .001f || Mathf.Abs(fitted.y - 1f / .45f) > .001f)
+                            throw new Exception("Ice runtime fit failed for cached PPU " + ppu);
+                        UnityEngine.Object.DestroyImmediate(probe.gameObject);
+                    }
+                    finally { UnityEngine.Object.DestroyImmediate(cached); }
+                }
+                if (cracked == null || thick == null ||
+                    Vector3.Distance(cracked.bounds.size, thick.bounds.size) > .001f)
+                    throw new Exception("Cracked ice must occupy the same cell bounds as intact ice. Check its importer PPU.");
                 var piece = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Pieces/stamp.png");
-                var times = new[] { -1f, .04f, .12f, .24f, .42f, .68f };
+                var times = new[] { -1f, .04f, .16f, .28f, .48f, .90f };
                 int checkedEffects = 0;
                 for (int row = 0; row < 2; row++)
                 for (int col = 0; col < times.Length; col++)
@@ -60,18 +77,13 @@ namespace RoyalAves.EditorTools
                     BoardCellVisual.Apply(Make(root, position, null, 0, material));
                     var item = Make(root, position, piece, 1, material);
                     item.transform.localScale = Vector3.one * (1.4f / Mathf.Max(piece.bounds.size.x, piece.bounds.size.y));
-                    if (isThick && times[col] >= 0f)
-                    {
-                        var revealed = Make(root, position, thin, 2, material);
-                        revealed.color = new Color(1f, 1f, 1f, IceLayer.OpacityForLevel(1));
-                    }
-                    var source = Make(root, position, isThick ? thick : thin, 3, material);
-                    source.color = new Color(1f, 1f, 1f, IceLayer.OpacityForLevel(isThick ? 2 : 1));
-                    if (times[col] < 0f) continue;
-                    var effect = IceBreakEffect.Play(source, isThick, false);
+                    var source = Make(root, position, isThick && times[col] < 0f ? thick : cracked, 3, material);
+                    source.color = new Color(1f, 1f, 1f, IceLayer.OpacityForLevel(2));
+                    if (times[col] < 0f || isThick) continue;
+                    var effect = IceBreakEffect.Play(source, true, false);
                     source.enabled = false;
                     effect.Sample(times[col]);
-                    if (effect.ShardCount != (isThick ? 5 : 7)) throw new Exception("Unexpected ice shard count.");
+                    if (effect.ShardCount != 9) throw new Exception("Unexpected ice shard count.");
                     var mesh = effect.GetComponent<MeshFilter>().sharedMesh;
                     var vertices = mesh.vertices;
                     foreach (var vertex in vertices)
@@ -87,8 +99,8 @@ namespace RoyalAves.EditorTools
                 pixels.ReadPixels(new Rect(0, 0, 2400, 1000), 0, 0);
                 pixels.Apply();
                 Directory.CreateDirectory("Docs");
-                File.WriteAllBytes("Docs/Gelo_Quebra_Unity.png", pixels.EncodeToPNG());
-                File.WriteAllText("Logs/ice-break.result", $"PASS: {checkedEffects} native effect samples; 5 thick / 7 thin organic shards; finite geometry; fade at completion. Top: thick -> thin. Bottom: thin -> clear. Columns: before, .04, .12, .24, .42, .68 seconds.");
+                File.WriteAllBytes("Docs/Gelo_Rachadura_Quebra_Unity.png", pixels.EncodeToPNG());
+                File.WriteAllText("Logs/ice-break.result", $"PASS: {checkedEffects} native effect samples; 9 angular plate fragments; painted cracked sprite; finite geometry; fade at completion. Top: first hit switches to painted cracked ice. Bottom: second hit shatters. Columns: before, .04, .16, .28, .48, .90 seconds.");
             }
             finally
             {

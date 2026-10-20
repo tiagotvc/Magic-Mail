@@ -241,14 +241,17 @@ MonoBehaviour:
     height: 0
   letters:
   - {fileID: 2416351347978123123}
+  lettersPerHit: 09000000090000000900000009000000i
   doors: []
   counter: {fileID: 0}
   collectionDestination: {fileID: 0}
   emissionDuration: 0.65
+  letterStagger: 0.12
   launchDuration: 0.14
   launchDisplacement: {x: 0, y: -0.25, z: -0.03}
   launchStartYScale: 0.18
   drawOverHud: 1
+  flyingLetterScale: 1
 --- !u!114 &7912474840261431608
 MonoBehaviour:
   m_ObjectHideFlags: 0

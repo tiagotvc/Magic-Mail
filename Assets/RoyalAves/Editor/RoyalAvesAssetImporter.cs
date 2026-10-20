@@ -168,6 +168,10 @@ namespace RoyalAves.EditorTools
         }
 
         public static float PixelsPerUnit(string path) =>
+            // The blue envelope replaces bow.png; its wider transparent margins need a larger canvas.
+            path == "Assets/RoyalAves/Art/Pieces/bow.png" ? CanvasPixelsPerUnit(path, 2.42f) :
+            path == IceTools.ThinArtPath || path == IceTools.ThickArtPath || path == IceTools.CrackedArtPath
+                ? CanvasPixelsPerUnit(path, 1f / .45f) :
             path.StartsWith("Assets/RoyalAves/Art/Obstacles/FrankingMachine/") ? 660f :
             path.StartsWith("Assets/RoyalAves/Art/Obstacles/MailCubby/") ? (Path.GetFileName(path).StartsWith("CM_escaninho_carta") ? 2050f : 660f) :
             path == GrassFloorAsset || path == GrassSparseAsset ? CanvasPixelsPerUnit(path, FloorCanvasUnits) :
@@ -209,7 +213,8 @@ namespace RoyalAves.EditorTools
             if (assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV2/") ||
                 assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV3/")) return;
             var importer = (TextureImporter)assetImporter;
-            if (assetPath == IceTools.ThinArtPath || assetPath == IceTools.ThickArtPath)
+            if (assetPath == IceTools.ThinArtPath || assetPath == IceTools.ThickArtPath ||
+                assetPath == IceTools.CrackedArtPath)
             {
                 ConfigureCellSprite(importer, CanvasPixelsPerUnit(assetPath,
                     1f / .45f));

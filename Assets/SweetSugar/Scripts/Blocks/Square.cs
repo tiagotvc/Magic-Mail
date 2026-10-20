@@ -596,6 +596,8 @@ namespace SweetSugar.Scripts.Blocks
 
             itemComponent.needFall = falling;
             itemComponent.StartFallingTo(itemComponent.GenerateWaypoints(this));
+            if (!noAnim && itemComponent is ItemMulticolor multicolor) multicolor.PlayAppearance();
+            if (!noAnim && itemComponent is ItemPackage package) package.PlayAppearance();
             return itemComponent;
         }
         /// <summary>

@@ -216,7 +216,7 @@ namespace SweetSugar.Scripts.Items
             StartCoroutine(PeriodicChecks());
         }
 
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             // Unsubscribe from events when disabled
             InputHandler.OnMove -= OnMouseMove;
@@ -455,11 +455,11 @@ namespace SweetSugar.Scripts.Items
         //Switching start method
         public (Item currentItem, Item neighborItem) SwitchDirection(Vector3 delta)
         {
+            if (IsMulticolorReserved) return (null, null);
             if (square != null && square.IsItemLocked) return (null, null);
             deltaPos = delta;
             if (Vector3.Magnitude(deltaPos) > 0.1f)
             {
-                LevelManager.THIS.DragBlocked = true;
                 switchItem = null;
                 if (Mathf.Abs(deltaPos.x) > Mathf.Abs(deltaPos.y) && deltaPos.x > 0)
                     switchDirection.x = 1;
@@ -484,6 +484,8 @@ namespace SweetSugar.Scripts.Items
                     switchItem = neighborSquare.Item;
                 }
 
+                if (switchItem != null && switchItem.IsMulticolorReserved) { ResetDrag(); return (null, null); }
+                LevelManager.THIS.DragBlocked = true;
                 if (switchItem != null)
                 {
                     if (switchItem.square.GetSubSquare().CanGoOut())
@@ -792,6 +794,7 @@ namespace SweetSugar.Scripts.Items
         /// </summary>
         public void CheckSquareBelow()
         {
+            if (IsMulticolorReserved) return;
             if (!falling)
                 square.CheckFallOut();
             if (!needFall && !falling) CheckNearEmptySquares();
@@ -807,6 +810,7 @@ namespace SweetSugar.Scripts.Items
 
         public void StartFallingTo(List<Waypoint> generateWaypoints)
         {
+            if (IsMulticolorReserved) return;
             if (!falling && needFall && fallingID == 0)
             {
                 if (LevelManager.THIS.DebugSettings.FallingLog) DebugLogKeeper.Log(name + " start fall, target - " + square, DebugLogKeeper.LogType.Falling);
@@ -1165,6 +1169,7 @@ namespace SweetSugar.Scripts.Items
 
         public void ChangeType(Action<Item> callback=null, bool dontDestroyForThisCombine = true, bool destroyBlock = true)
         {
+            if (IsMulticolorReserved) return;
             if ( NextType != ItemsTypes.NONE )
             {
                 StartCoroutine(ChangeTypeCor(callback,dontDestroyForThisCombine, destroyBlock));
@@ -1242,8 +1247,24 @@ namespace SweetSugar.Scripts.Items
             DestroyItem(true, playerActivated: true);
         }
 
+        public ItemMulticolor MulticolorOwner { get; private set; }
+        public bool IsMulticolorReserved => MulticolorOwner != null;
+        public void ReserveForMulticolor(ItemMulticolor owner)
+        {
+            MulticolorOwner = owner;
+            destroying = true;
+            NextType = ItemsTypes.NONE;
+        }
+        public void ReleaseFromMulticolor(ItemMulticolor owner)
+        {
+            if (MulticolorOwner != owner) return;
+            MulticolorOwner = null;
+            destroying = false;
+        }
+
         public void DestroyItem(bool showScore = false, bool particles = true, Item explodedItem = null, bool explEffect = false, bool playerActivated = false)
         {
+            if (IsMulticolorReserved) return;
             if (!gameObject.activeSelf) return;
             if (destroying) return;
             if (square.IsItemLocked)
@@ -1280,6 +1301,9 @@ namespace SweetSugar.Scripts.Items
 
         private IEnumerator DestroyCor(bool showScore = false, bool particles = true, Item explodedItem = null, bool explEffect = false)
         {
+#if UNITY_EDITOR
+            ItemMulticolor.ObserveExplosion(this);
+#endif
             destroycoroutineStarted = true;
             if (explodedItem != null)
                 switchItem = explodedItem;
@@ -1296,9 +1320,13 @@ namespace SweetSugar.Scripts.Items
             {
                 if (currentType == ItemsTypes.NONE)
                 {
-                    foreach (var renderer in GetSpriteRenderers())
-                        if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)
-                            RoyalAves.Effects.FallingBoardDebris.Shatter(renderer);
+                    // Objective pieces leave as the collection sprite created by CheckItems below.
+                    // Other multicolor targets break locally, all in the same detonation frame.
+                    bool collectInstead = explodedItem is ItemMulticolor && HasActiveCollectionTarget();
+                    if (!collectInstead)
+                        foreach (var renderer in GetSpriteRenderers())
+                            if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)
+                                RoyalAves.Effects.FallingBoardDebris.Shatter(renderer);
                     fallingDebrisVisual = true;
                     HideSprites(true);
                 }
@@ -1331,10 +1359,20 @@ namespace SweetSugar.Scripts.Items
 
         public void StopDestroy()
         {
+            if (IsMulticolorReserved) return;
             if (LevelManager.THIS.DebugSettings.DestroyLog) DebugLogKeeper.Log("Stop destroy " + this.GetObjectId(),DebugLogKeeper.LogType.Destroying);
             destroying = false;
             destroyNext = false;
             destroycoroutineStarted = false;
+        }
+
+        public bool HasActiveCollectionTarget()
+        {
+            var renderers = GetSpriteRenderers();
+            return LevelManager.THIS.levelData.TargetCounters.Any(target => target.count > 0 &&
+                (target.collectingAction != CollectingTypes.ReachBottom || IsBottom()) &&
+                target.extraObjects != null && renderers.Any(renderer => renderer.sprite != null &&
+                    target.extraObjects.Contains(renderer.sprite)));
         }
 
         private void PlayDestroyAnimation(string anim_name)
@@ -1344,6 +1382,7 @@ namespace SweetSugar.Scripts.Items
 
         public void SmoothDestroy()
         {
+            if (IsMulticolorReserved) return;
             if(gameObject.activeSelf)
                 StartCoroutine(SmoothDestroyCor());
         }

@@ -30,6 +30,7 @@ namespace SweetSugar.Scripts.System
         {
             var item = GetComponent<Item>();
             if (item == null || !gameObject.activeSelf) return;
+            if (item.IsMulticolorReserved) return;
             StartCoroutine(DestroyDelay(item));
         }
 

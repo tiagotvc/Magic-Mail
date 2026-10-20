@@ -1,5 +1,15 @@
 # Gelo
 
+## Arte rachada v5 — 20/10/2026
+
+O estado danificado agora usa `Assets/RoyalAves/Art/Obstacles/ice-thick-cracked-v5.png`, criado com a ferramenta integrada imagegen a partir da placa espessa v4. As fissuras têm profundidade azul e reflexos brancos pintados na própria superfície. As linhas procedurais foram removidas do runtime, da quebra e da prévia do editor. Primeiro hit troca intacto por rachado; segundo hit fragmenta a arte rachada em nove polígonos angulares. O estado com uma resistência já começa com a arte rachada. Ambos mantêm opacidade 0,60.
+
+Prefab, gerador e referências da meta foram atualizados. Runtime e editor compilaram sem erros. A arte gerada foi inspecionada; conferência em Play desta revisão ainda pendente.
+
+Prompt utilizado (imagegen integrada, edição com fundo transparente):
+
+> Use case: precise-object-edit. Edit target: the provided thick ice tile sprite. Create its damaged/cracked state for a cartoon match-3 game. Keep the exact square canvas, tile silhouette, rounded corners, blue rim thickness, white milky frozen surface, lighting and placement unchanged. Integrate 4-5 large irregular branching fractures into the actual ice surface, with asymmetric sharp broken paths, blue shaded depth inside cracks and thin white beveled highlights along their lips. Cracks should look like fractures through thick ice, readable at small game size, not drawn straight lines or a regular radial star/web. Plate still whole, all pieces touching, no flying shards or holes. Retain softly painted cartoon style. Transparent background outside the tile, no text, no extra objects, no ground shadow. Preserve original outer footprint to align with intact state.
+
 Pedido: novo elemento com dois níveis visuais, um grosso e branco e outro fino e transparente.
 
 ## Arte
@@ -68,3 +78,13 @@ Validação nativa reproduzível: `Royal Aves > Elementos > Gelo > Validar e cap
 O editor usava `GetSpriteTexture`, que retorna a prancha inteira mesmo quando o sprite representa apenas um dos recortes. Isso mostrava os dois gelos juntos. `SquareUtils` agora renderiza apenas o retângulo do sprite selecionado, respeitando sua opacidade, e mostra somente o estado exposto do gelo. Um clique insere o nível fino; o segundo acrescenta a resistência que é representada pelo grosso. Em jogo, o primeiro dano no grosso revela o fino e o segundo remove o gelo. Dados antigos também respeitam `obstacleLayer` ao escolher a prévia. Runtime e editor recompilados sem erros após a correção; interação visual na Unity ainda pendente.
 
 Compilação gerenciada de runtime e editor verificada com o compilador e referências da Unity 6000.6.0f1. A execução batch da Unity encontrou outra instância com este projeto aberto e não pôde iniciar. A conferência visual em Play e os cenários reais de match, especiais, cascata, reinício e contagem de metas permanecem pendentes.
+
+## Revisão 20/10/2026 — placa espessa, rachadura e quebra
+
+A aparência do gelo fino foi substituída pela mesma placa espessa com rachaduras permanentes. O primeiro impacto no estado de duas resistências revela essa placa rachada, com sete fissuras crescendo durante 0,20 s, sem lançar fragmentos. O impacto seguinte quebra e remove o gelo. Células já salvas com uma resistência começam rachadas; células com duas começam intactas. A peça continua presa até a remoção final, e a meta continua contando uma célula liberada.
+
+Os dois estados usam `ice-thick-v4.png` e opacidade 0,60. Prefab e gerador foram atualizados. O editor de fases desenha as mesmas fissuras na prévia de uma resistência.
+
+A quebra usa nove fragmentos angulares de uma divisão Voronoi da placa, sem arredondamento ou chanfro nos vértices. Os fragmentos adjacentes conservam a textura e recebem bordas em tom ciano, dispersão, rotação, queda e desaparecimento. As rachaduras persistentes pertencem à camada e desaparecem com ela.
+
+Compilação completa dos assemblies de runtime e editor conferida com o compilador atual da Unity, sem erros. Captura nativa atualizada disponível pelo menu de validação de quebra; gera `Docs/Gelo_Rachadura_Quebra_Unity.png` (linha superior: primeiro hit; inferior: segundo hit). A captura e a conferência em Play desta revisão ainda não foram executadas.

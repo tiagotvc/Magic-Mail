@@ -1,0 +1,9 @@
+Envelope azul v3: formato mais quadrado, horizontal, detalhes suaves e aparência levemente translúcida. Arte com fundo transparente, aplicada ao jogo no lugar do laço.
+
+Ferramenta: imagegen integrada. Referência: envelope-azul-v2.png.
+
+Aplicado em 20/10/2026 a `Assets/RoyalAves/Art/Pieces/bow.png`, preservando o GUID usado pelas peças, metas e interfaces. O importador calcula o PPU para um canvas de 2,42 unidades, compensando a margem transparente da nova arte; a largura visível permanece em aproximadamente 1,907 unidade (laço anterior: 1,906). Original preservado em `Backups/bow-before-blue-envelope-2026-10-20/`. Compilação de editor sem erros; verificação visual em Play ainda pendente.
+
+Prompt:
+
+Use case: precise-object-edit. Edit target: provided blue envelope sprite for a cartoon match-3 game. Change proportions to almost SQUARE: width only 1.08 times height, rounded square envelope silhouette with softly rounded corners. Keep perfectly level horizontal top and bottom, vertical sides, absolutely no tilt or perspective. Make the envelope MUCH simpler and softer: thin shallow low-contrast fold seams, barely raised triangular flap, no thick border, no deep creases, no dramatic dark shadows. Material lightly translucent blue candy/resin, subtle light transmission with gently luminous edges and a soft inner blue glow; slight partial transparency through the body, stronger blue at overlapping folds. Smooth softly shaded cartoon piece that matches a pink glossy ribbon and red wax seal in a casual puzzle game. Restrained soft highlight, no strong white streaks, no detailed refraction, no ice cracks or crystal facets. Blue remains clearly legible and saturated enough for a small tile. One closed envelope only, no seal, stamp, writing, symbols, letters or extra objects. Center the nearly square envelope on a square transparent canvas with even 10 percent margins all around. True transparent background, no cast shadow or ground.

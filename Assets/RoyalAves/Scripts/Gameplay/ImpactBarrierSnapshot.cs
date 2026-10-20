@@ -8,20 +8,31 @@ using UnityEngine;
 
 namespace RoyalAves.Gameplay
 {
-    // Capture once per activation: breaking the first crate must not extend the same impact.
+    // All crates in range take the hit. Only crates surviving it shield ordinary pieces.
     public sealed class ImpactBarrierSnapshot
     {
         readonly HashSet<Vector2Int> crates;
+        readonly HashSet<Vector2Int> survivingCrates;
 
-        public ImpactBarrierSnapshot(IEnumerable<Vector2Int> blockedCells)
-            => crates = new HashSet<Vector2Int>(blockedCells);
+        public ImpactBarrierSnapshot(IEnumerable<Vector2Int> blockedCells, IEnumerable<Vector2Int> brokenByHit = null)
+        {
+            crates = new HashSet<Vector2Int>(blockedCells);
+            survivingCrates = new HashSet<Vector2Int>(crates);
+            if (brokenByHit != null) survivingCrates.ExceptWith(brokenByHit);
+        }
 
         public static ImpactBarrierSnapshot Capture(FieldBoard field)
-            => new ImpactBarrierSnapshot(field.squaresArray.Where(s => s != null &&
-                s.subSquares.Any(layer => layer != null && layer.GetComponent<ParcelStackLayer>() != null))
-                .Select(s => new Vector2Int(s.col, s.row)));
+        {
+            var cells = field.squaresArray.Where(s => s != null)
+                .Select(s => new { Cell = s, Crate = s.subSquares.Where(layer => layer != null)
+                    .Select(layer => layer.GetComponent<ParcelStackLayer>()).LastOrDefault(layer => layer != null) })
+                .Where(s => s.Crate != null).ToArray();
+            return new ImpactBarrierSnapshot(cells.Select(s => new Vector2Int(s.Cell.col, s.Cell.row)),
+                cells.Where(s => s.Crate.remainingLayers == 1)
+                    .Select(s => new Vector2Int(s.Cell.col, s.Cell.row)));
+        }
 
-        public bool IsBlocking(int col, int row) => crates.Contains(new Vector2Int(col, row));
+        public bool IsBlocking(int col, int row) => survivingCrates.Contains(new Vector2Int(col, row));
 
         public static List<Square> AreaAround(Square origin, int radius, ImpactBarrierSnapshot barriers = null)
         {
@@ -42,6 +53,8 @@ namespace RoyalAves.Gameplay
 
         public bool CanReach(int fromCol, int fromRow, int toCol, int toRow)
         {
+            // Obstacles receive damage through other crates; the path test protects pieces only.
+            if (crates.Contains(new Vector2Int(toCol, toRow))) return true;
             int x = fromCol, y = fromRow;
             int nx = Math.Abs(toCol - x), ny = Math.Abs(toRow - y);
             int sx = Math.Sign(toCol - x), sy = Math.Sign(toRow - y);
@@ -57,7 +70,7 @@ namespace RoyalAves.Gameplay
                 }
                 else if (decision < 0) { x += sx; ix++; }
                 else { y += sy; iy++; }
-                if (x == toCol && y == toRow) return true; // The first blocking crate itself can be hit.
+                if (x == toCol && y == toRow) return true;
                 if (IsBlocking(x, y)) return false;
             }
             return true;

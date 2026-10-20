@@ -39,6 +39,7 @@ namespace SweetSugar.Scripts.Items
 
         public void Destroy(Item item1, Item item2)
         {
+            if (GetParentItem().IsMulticolorReserved) return;
             if (GetParentItem().square?.IsItemLocked == true)
             {
                 GetParentItem().square.DestroyBlock();

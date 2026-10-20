@@ -171,3 +171,12 @@ Artes geradas com image_gen integrado em `Assets/RoyalAves/Art/Obstacles/MailCub
 `MailCubbyTools.Build` monta o prefab com posições calculadas pelos limites visíveis das artes. As cartas mantêm escala uniforme e a ordem de desenho de frente/fundo é preservada ao reiniciar. `MailCubbyCell` encaixa a composição completa, incluindo portas, no espaço 2×2 com escala uniforme e alinhamento inferior. O primeiro impacto continua arrancando as duas portas; os quatro seguintes entregam três cartas cada. Regras de estoque/meta e deduplicação de impactos preservadas.
 
 Validação: runtime e editor compilados sem erros com referências atuais do Unity; prefab reconstruído e modelo visualizado em Play no laboratório. Captura de tela em `Logs/mail-cubby-live.png`; o comando de laboratório `render` captura o tabuleiro sem a sobreposição do HUD em `Logs/mail-cubby-model-v2.png`. O ciclo completo de cinco impactos não foi repetido nesta revisão visual.
+
+## Som das portas — 19/10/2026
+
+As portas saíam com o `seal_pop` do pacote, emprestado da caixa. Agora usam um impacto de madeira quebrando, escolhido pelo usuário entre três variações geradas (seca, cheia e cartoon).
+
+- Clipe: `Assets/RoyalAves/Resources/Audio/MailCubby/cubby_doors.wav` — mono, 44,1 kHz, 16 bits, 0,85 s, pico 0,87, mesmo padrão dos outros SFX.
+- Síntese procedural, sem gravação ou banco de sons. Gerador versionado em `Tools/Audio/gen_wood_break.py`, fora de `Assets/` para a Unity não importar; a variação usada é a `cheio` (semente 23), reproduzível a qualquer momento. Camadas: estalo de ruído passa-banda no ataque, modos da tábua em senoides amortecidas, segundo arranque com a estrutura cedendo, lascas espalhadas nos primeiros 220 ms e corpo grave para dar peso.
+- `RoyalAves.Effects.MailCubbySounds.PlayDoors` toca pelo `SoundBase` do jogo, respeitando volume de efeitos e mudo, com a mesma janela de 0,06 s contra impactos simultâneos nas quatro células. Chamado de `MailCubbyAnimation.RemoveDoors`.
+- A quebra final do móvel continua com o som herdado do efeito de lascas da caixa.

@@ -252,7 +252,8 @@ namespace RoyalAves.Gameplay
 
         IEnumerator RemoveDoors()
         {
-            RoyalAves.Effects.ParcelSoundEffects.Play(4);
+            // Wood breaking, not the parcel seal pop: the doors are torn off the cabinet.
+            RoyalAves.Effects.MailCubbySounds.PlayDoors();
             for (int i = 0; i < doors.Length; i++)
             {
                 RoyalAves.Effects.FallingBoardDebris.DropDoor(doors[i], i == 0 ? -1f : 1f);

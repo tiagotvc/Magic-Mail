@@ -18,12 +18,14 @@ namespace RoyalAves.Effects
         Mesh mesh;
         Material material;
         SpriteRenderer flash;
+        Color plateColor;
         Vector3[] vertices;
         Color[] colors;
         Vector2[] uv;
         float elapsed;
         bool thick, animate;
-        public float Duration => thick ? .64f : .48f;
+        public float CrackDuration => .045f;
+        public float Duration => CrackDuration + (thick ? .64f : .48f);
         public int ShardCount => shards.Count;
 
         public static IceBreakEffect Play(SpriteRenderer source, bool thick, bool animate = true)
@@ -61,44 +63,49 @@ namespace RoyalAves.Effects
             flash.flipY = source.flipY;
             flash.sortingLayerName = renderer.sortingLayerName;
             flash.sortingOrder = renderer.sortingOrder + 1;
+            plateColor = source.color;
             Build(source);
             Sample(0f);
         }
 
-        // Scattered ice chips with softened, uneven outlines; no rectangular plate tessellation.
+        // Fracture the entire plate into adjoining angular polygons, preserving its texture.
         void Build(SpriteRenderer source)
         {
             var random = new System.Random(thick ? 6841 : 9173);
-            int count = thick ? 5 : 7;
+            int count = 9;
             var sprite = source.sprite;
             var rect = sprite.rect;
             var textureRect = sprite.textureRect;
             int totalVertices = 0;
-            float phase = (float)random.NextDouble() * Mathf.PI * 2f;
+            var seeds = new List<Vector2>();
+            for (int i = 0; i < count; i++)
+                seeds.Add(new Vector2(.18f + i % 3 * .30f + (float)random.NextDouble() * .10f,
+                    .16f + i / 3 * .29f + (float)random.NextDouble() * .12f));
             for (int shardIndex = 0; shardIndex < count; shardIndex++)
             {
-                float direction = phase + shardIndex * 2.399963f;
-                float distance = shardIndex == 0 ? .12f : .26f + (float)random.NextDouble() * .06f;
-                var center = Vector2.one * .5f + new Vector2(Mathf.Cos(direction), Mathf.Sin(direction)) * distance;
-                int sides = random.Next(5, 8);
-                float radius = thick ? .11f + (float)random.NextDouble() * .035f : .075f + (float)random.NextDouble() * .03f;
-                float aspect = .72f + (float)random.NextDouble() * .5f;
-                var corners = new List<Vector2>();
-                float rotation = (float)random.NextDouble() * Mathf.PI * 2f;
-                for (int i = 0; i < sides; i++)
+                var seed = seeds[shardIndex];
+                var polygon = new List<Vector2> { new Vector2(.06f,.06f), new Vector2(.06f,.94f),
+                    new Vector2(.94f,.94f), new Vector2(.94f,.06f) };
+                for (int other = 0; other < count; other++)
                 {
-                    float angle = rotation - i * Mathf.PI * 2f / sides;
-                    float unevenness = .7f + (float)random.NextDouble() * .3f;
-                    corners.Add(center + new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius * aspect) * unevenness);
+                    if (other == shardIndex) continue;
+                    var normal = seeds[other] - seed;
+                    var midpoint = (seeds[other] + seed) * .5f;
+                    var clipped = new List<Vector2>();
+                    for (int edge = 0; edge < polygon.Count; edge++)
+                    {
+                        var a = polygon[edge];
+                        var b = polygon[(edge + 1) % polygon.Count];
+                        float da = Vector2.Dot(a - midpoint, normal);
+                        float db = Vector2.Dot(b - midpoint, normal);
+                        if (da <= 0f) clipped.Add(a);
+                        if ((da <= 0f) != (db <= 0f)) clipped.Add(Vector2.Lerp(a, b, da / (da - db)));
+                    }
+                    polygon = clipped;
                 }
-                // Bevel each corner while retaining the uneven silhouette and different chip sizes.
-                var polygon = new List<Vector2>();
-                for (int i = 0; i < corners.Count; i++)
-                {
-                    var next = corners[(i + 1) % corners.Count];
-                    polygon.Add(Vector2.Lerp(corners[i], next, .18f));
-                    polygon.Add(Vector2.Lerp(corners[i], next, .82f));
-                }
+                var center = Vector2.zero;
+                foreach (var corner in polygon) center += corner;
+                center /= polygon.Count;
                 Vector3 Local(Vector2 point) => new Vector3(
                     ((source.flipX ? 1f - point.x : point.x) * rect.width - sprite.pivot.x) / sprite.pixelsPerUnit,
                     ((source.flipY ? 1f - point.y : point.y) * rect.height - sprite.pivot.y) / sprite.pixelsPerUnit);
@@ -143,9 +150,9 @@ namespace RoyalAves.Effects
 
         public void Sample(float time)
         {
-            float travel = Mathf.Max(0f, time - .025f);
-            float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(Duration * .4f, Duration, time));
-            float scale = Mathf.Lerp(1f, .75f, Mathf.Clamp01(time / Duration));
+            float travel = Mathf.Max(0f, time - CrackDuration);
+            float fade = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(CrackDuration + .18f, Duration, time));
+            float scale = Mathf.Lerp(1f, .75f, Mathf.Clamp01(travel / (Duration - CrackDuration)));
             int offset = 0;
             foreach (var shard in shards)
             {
@@ -155,21 +162,24 @@ namespace RoyalAves.Effects
                 {
                     vertices[offset] = shard.center + displacement + rotation * shard.shape[i] * scale;
                     // Shards are briefly more opaque than the intact ice so their silhouettes read.
-                    colors[offset] = new Color(1f, 1f, 1f, (thick ? .9f : .75f) * fade);
+                    var tint = i == 0 ? Color.white : new Color(.68f, .90f, 1f);
+                    tint.a = time < CrackDuration ? 0f : fade;
+                    colors[offset] = tint;
                     offset++;
                 }
             }
             mesh.vertices = vertices;
             mesh.colors = colors;
             mesh.RecalculateBounds();
-            flash.color = new Color(1f, 1f, 1f, .55f * (1f - Mathf.Clamp01(time / .065f)));
-            flash.enabled = time < .065f;
+            flash.color = new Color(1f, 1f, 1f, Mathf.Max(plateColor.a, .48f)
+                + .2f * (1f - Mathf.Clamp01(time / .06f)));
+            flash.enabled = time < CrackDuration;
         }
 
         void Update()
         {
             if (!animate) return;
-            elapsed += Time.deltaTime;
+            elapsed += Time.deltaTime * 1.08f;
             Sample(elapsed);
             if (elapsed >= Duration) Destroy(gameObject);
         }

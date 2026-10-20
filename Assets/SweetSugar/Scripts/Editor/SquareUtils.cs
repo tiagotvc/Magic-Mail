@@ -21,13 +21,13 @@ namespace SweetSugar.Scripts.Editor
 {
     public static class SquareUtils
     {
-        static readonly Dictionary<Sprite, Texture2D> icePreviews = new Dictionary<Sprite, Texture2D>();
+        static readonly Dictionary<SpriteRenderer, Texture2D> icePreviews = new Dictionary<SpriteRenderer, Texture2D>();
 
         static Texture2D IcePreview(SpriteRenderer renderer)
         {
             var sprite = renderer.sprite;
             if (sprite == null) return null;
-            if (icePreviews.TryGetValue(sprite, out var cached) && cached != null) return cached;
+            if (icePreviews.TryGetValue(renderer, out var cached) && cached != null) return cached;
             // GetSpriteTexture returns the whole source sheet. Render only this state's rectangle,
             // without requiring Read/Write on the imported game texture.
             var rect = sprite.rect;
@@ -47,7 +47,7 @@ namespace SweetSugar.Scripts.Editor
                 for (int i = 0; i < pixels.Length; i++) pixels[i] *= renderer.color;
                 preview.SetPixels(pixels);
                 preview.Apply(false, true);
-                icePreviews[sprite] = preview;
+                icePreviews[renderer] = preview;
                 return preview;
             }
             finally
@@ -142,7 +142,7 @@ namespace SweetSugar.Scripts.Editor
                     {
                         if (sqBlockBlock.squareType == SquareTypes.IceBlock)
                         {
-                            // A second ice layer replaces the thin preview with the thick state.
+                            // Two hits remaining shows intact ice; one shows the same plate cracked.
                             resultList.RemoveAll(t => t.Texture2D != null && icePreviews.Values.Contains(t.Texture2D));
                         }
                         resultList.Add(new Texture2DSize(PaletteTexture(sqBlockBlock.squareType, blockPrefab[typeCounter]), blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, index, sqBlockBlock.rotate));
