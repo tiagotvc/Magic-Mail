@@ -174,7 +174,7 @@ namespace RoyalAves.EditorTools
             path.StartsWith(ParcelStackFolder) ? ParcelPixelsPerUnit(path) :
             (path == RoyalAvesDinamiteBuilder.IdlePath || path == RoyalAvesDinamiteBuilder.SheetPath)
                 ? 128f / DynamiteScale :
-            CompactPieceAssets.Contains(path) ? 128f / RefreshedPieceScale :
+            CompactPieceAssets.Contains(path) ? CanvasPixelsPerUnit(path, 2f * RefreshedPieceScale) :
             path.StartsWith(FramePiecesFolder) ? FrameBand :
             path == BoardFrameAsset ? 200 : BoardArtFolders.Any(path.StartsWith) ? 128 : 100;
 
@@ -272,6 +272,22 @@ namespace RoyalAves.EditorTools
             importer.mipmapEnabled = false;
             importer.maxTextureSize = 2048;
             importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/Pieces/"))
+            {
+                // Preserve smooth color and alpha gradients, including on mobile builds.
+                importer.textureCompression = TextureImporterCompression.Uncompressed;
+                importer.filterMode = FilterMode.Bilinear;
+                foreach (var platform in new[] { "Standalone", "Android", "iPhone" })
+                {
+                    var pieceSettings = importer.GetPlatformTextureSettings(platform);
+                    pieceSettings.name = platform;
+                    pieceSettings.overridden = true;
+                    pieceSettings.maxTextureSize = 2048;
+                    pieceSettings.format = TextureImporterFormat.RGBA32;
+                    pieceSettings.textureCompression = TextureImporterCompression.Uncompressed;
+                    importer.SetPlatformTextureSettings(pieceSettings);
+                }
+            }
             if (assetPath.StartsWith(ManagerFolder)) importer.maxTextureSize = ManagerMaxSize; // 16 expressions of 1254 px
             if (assetPath.StartsWith(LevelStartFolder) &&
                 LevelStartBorders.TryGetValue(Path.GetFileNameWithoutExtension(assetPath), out var frameBorder))

@@ -69,7 +69,8 @@ namespace RoyalAves.EditorTools
                     var door = new GameObject(i == 0 ? "ClosedDoor_Left" : "ClosedDoor_Right");
                     door.transform.SetParent(root.transform, false);
                     float sign = i == 0 ? -1f : 1f;
-                    float visibleCenterX = bodyBounds.center.x + sign * (doorWidth * 0.5f + bodyBounds.width * 0.001f);
+                    // Slight overlap closes the seam between the rounded door edges.
+                    float visibleCenterX = bodyBounds.center.x + sign * (doorWidth * 0.5f - bodyBounds.width * 0.005f);
                     door.transform.localPosition = new Vector3(visibleCenterX + sign * doorBounds.center.x * doorScale,
                         bodyBounds.yMin + bodyBounds.height * 0.39f - doorBounds.center.y * doorScale, -0.02f);
                     door.transform.localScale = Vector3.one * doorScale;
