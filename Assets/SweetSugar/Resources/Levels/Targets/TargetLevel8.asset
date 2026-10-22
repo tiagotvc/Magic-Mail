@@ -38,3 +38,14 @@ MonoBehaviour:
       NotFinishUntilMoveOut: 0
       ShowTheScoreForStar:
         ShowTheScore: 0
+    - targetType:
+        type: 10
+      sprites:
+        array:
+        - icon: {fileID: 21300000, guid: 7f6edba89dc44238b0041b5c4972a0a5, type: 3}
+          uiSprite: 1
+      CountDrawer:
+        count: 0
+      NotFinishUntilMoveOut: 0
+      ShowTheScoreForStar:
+        ShowTheScore: 0

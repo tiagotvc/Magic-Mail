@@ -25,28 +25,17 @@ namespace SweetSugar.Scripts.Items
         public int GenColor(Square square, int maxColors = 6, int exceptColor = -1, bool onlyNONEType = false)
         {
         
-            List<int> exceptColors = new List<int>();
-            List<int> remainColors = new List<int>();
-            var thisColorLimit = LevelManager.THIS.levelData.colorLimit;
-            for (int i = 0; i < LevelManager.THIS.levelData.colorLimit; i++)
-            {
-                if (square.GetMatchColorAround(i) > 1)
-                {
-                    exceptColors.Add(i);
-                }
-            }
-
-            int randColor = 0;
-            do
-            {
-                randColor = Random.Range(0, thisColorLimit);
-            
-            } while (exceptColors.Contains(randColor) && exceptColors.Count < thisColorLimit-1 );
-            if (remainColors.Count > 0)
-                randColor = remainColors[Random.Range(0, remainColors.Count)];
-            if (exceptColor == randColor)
-                randColor = Mathf.Clamp( ++randColor,0 , thisColorLimit);
-            return randColor;
+            var allowed = LevelManager.THIS.levelData.GetPieceColors();
+            var candidates = new List<int>();
+            foreach (int color in allowed)
+                if (color != exceptColor && (square == null || square.GetMatchColorAround(color) <= 1))
+                    candidates.Add(color);
+            // If every choice makes a match, keep the palette and prefer a different color.
+            if (candidates.Count == 0)
+                foreach (int color in allowed)
+                    if (color != exceptColor) candidates.Add(color);
+            if (candidates.Count == 0) candidates.AddRange(allowed);
+            return candidates[Random.Range(0, candidates.Count)];
         }
     }
 }

@@ -42,7 +42,8 @@ namespace SweetSugar.Scripts.Items
         INGREDIENT = 6,
         SPIRAL = 7,
         MARMALADE = 2,
-        TimeBomb = 8
+        TimeBomb = 8,
+        FLYING_LETTER = 9
     }
 
     /// <summary>
@@ -1272,6 +1273,12 @@ namespace SweetSugar.Scripts.Items
                 square.DestroyBlock();
                 NextType = ItemsTypes.NONE;
                 StopDestroy();
+                return;
+            }
+
+            if (this is RoyalAves.Gameplay.ItemFlyingLetter flyingLetter)
+            {
+                flyingLetter.TryBreak();
                 return;
             }
 

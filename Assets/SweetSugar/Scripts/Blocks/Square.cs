@@ -568,6 +568,10 @@ namespace SweetSugar.Scripts.Blocks
             itemComponent.square = this;
             itemComponent.CheckPlusFive();
             IColorableComponent colorableComponent = item.GetComponent<IColorableComponent>();
+            // Painted starter pieces must follow the same palette as refill pieces.
+            if (color >= 0 && itemComponent.Combinable && itemType != ItemsTypes.MULTICOLOR &&
+                !LevelManager.THIS.levelData.IsPieceColorEnabled(color))
+                color = LevelManager.THIS.levelData.RandomPieceColor();
             if (color == -1)
                 itemComponent.GenColor(colorGenerator);
             else if (colorableComponent != null) colorableComponent.SetColor(color); 
@@ -722,6 +726,9 @@ namespace SweetSugar.Scripts.Blocks
                     var prefabs = GetBlockPrefab(squareTypese.squareType);
                     if (index > 0 && squareTypese.squareType == sqBlock.blocks[index - 1].squareType) typeCounter++;
                     else typeCounter = 0;
+                    // Old levels may still contain the retired fourth crate layer.
+                    if (squareTypese.squareType == SquareTypes.SolidBlock &&
+                        subSquares.Count(s => s.type == SquareTypes.SolidBlock) >= RoyalAves.Gameplay.ParcelStackLayer.MaxLayers) continue;
                     CreateSubblock(squareTypese.squareType, prefabs[Mathf.Clamp(typeCounter,0,prefabs.Length-1)], index, squareTypese);
                     if (type == SquareTypes.ChocoSpread)
                         type = SquareTypes.NONE;
@@ -734,6 +741,8 @@ namespace SweetSugar.Scripts.Blocks
             if (mainSquare == null)
                 mainSquare = this;
             var prefabs = GetBlockPrefab(_type);
+            if (_type == SquareTypes.SolidBlock)
+                sqLayer = Mathf.Min(sqLayer, RoyalAves.Gameplay.ParcelStackLayer.MaxLayers);
             if (type != _type && type != SquareTypes.SolidBlock && type != SquareTypes.WireBlock && !IsTypeExist(_type) && IsAvailable())
             {
                 for (var i = 0; i < sqLayer; i++)
@@ -785,6 +794,8 @@ namespace SweetSugar.Scripts.Blocks
                 return;
             }
             var prefabs = GetBlockPrefab(obstacleType);
+            if (obstacleType == SquareTypes.SolidBlock)
+                obLayer = Mathf.Min(obLayer, RoyalAves.Gameplay.ParcelStackLayer.MaxLayers);
             for (var i = 0; i < obLayer; i++)
             {
                 var prefab = prefabs[i];
@@ -1246,8 +1257,16 @@ namespace SweetSugar.Scripts.Blocks
         /// <summary>
         /// destroy block (obstacle or jelly)
         /// </summary>
-        public void DestroyBlock(bool destroyTarget=false)
+        public void DestroyBlock(bool destroyTarget=false, Square impactOrigin = null)
         {
+            var routeCentral = GetSubSquare().GetComponent<RoyalAves.Gameplay.RouteCentralCell>();
+            if (routeCentral != null) { routeCentral.HandleHit(impactOrigin ?? this); return; }
+            // Keep the original hit when blockers forward damage: a second hop
+            // must not turn a diagonal match into an adjacent hit on an egg.
+            if (impactOrigin != null && Item is RoyalAves.Gameplay.ItemFlyingLetter &&
+                !RoyalAves.Gameplay.ItemFlyingLetter.IsAdjacentMatch(row, col, impactOrigin.row, impactOrigin.col))
+                return;
+            if (impactOrigin == null) impactOrigin = this;
             if (iceAbsorbedImpact) return;
             if (destroyIteration == 0)
             {
@@ -1265,11 +1284,11 @@ namespace SweetSugar.Scripts.Blocks
                 foreach (var sq in sqList)
                 {
                     if (!sq.GetSubSquare().CanGoInto() || ((sq.Item?.DestroyByNeighbour??false) && !(Item?.DestroyByNeighbour ?? false)))
-                        sq.DestroyBlock();
+                        sq.DestroyBlock(impactOrigin: impactOrigin);
                 }
             }
 
-            if (Item?.DestroyByNeighbour??false)
+            if ((Item?.DestroyByNeighbour ?? false) && !IsItemLocked)
             {
                 Item.DestroyItem();
                 return;
@@ -1559,6 +1578,7 @@ namespace SweetSugar.Scripts.Blocks
             item1 = RoyalAves.Gameplay.MailCubbyLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.FrankingMachineLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.InkLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.RouteCentralLaboratory.GetPrefab(sqType) ?? item1;
 #endif
             var layeredBlock = item1?.GetComponent<LayeredBlock>();
             if (layeredBlock != null)

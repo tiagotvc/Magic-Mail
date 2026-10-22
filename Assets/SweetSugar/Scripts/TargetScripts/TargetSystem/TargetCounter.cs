@@ -62,7 +62,9 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             count = targetLevel.name == "IceBlock" && owner != null
                 ? RoyalAves.Gameplay.IceLayer.CountCells(owner)
                 : targetLevel.name == "MailCubby" && owner != null
-                ? RoyalAves.Gameplay.MailCubbyCell.CountLetters(owner) : GetCountForSquares(false);
+                ? RoyalAves.Gameplay.MailCubbyCell.CountLetters(owner)
+                : targetLevel.name == "FlyingLetters" && owner != null
+                ? RoyalAves.Gameplay.ItemFlyingLetter.CountLetters(owner) : GetCountForSquares(false);
             NotFinishUntilMoveOut = _NotFinishUntilMoveOut;
             Savecount = count;
             this.color = color;
@@ -71,6 +73,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         private int GetCountForSquares(bool subLevel)
         {
+            if (targetLevel.name == "FlyingLetters" || targetLevel.name == "RoutePotions") return count;
             // Ice and the mail cabinet start from authored cells, not scene components absent from
             // the start popup. Each delivered letter decrements the cabinet goal exactly once.
             if (targetLevel.name == "IceBlock" || targetLevel.name == "MailCubby")
@@ -150,6 +153,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         public void OnCheckTarget(GameObject obj, Sprite spr)
         {
+            if (targetLevel.name == "FlyingLetters" || targetLevel.name == "RoutePotions") return;
             var item = obj.GetComponent<ISquareItemCommon>();
             var spriteRenderers = item.GetSpriteRenderers();
             if (collectingAction == CollectingTypes.ReachBottom && !item.IsBottom()) return;

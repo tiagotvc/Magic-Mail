@@ -1,4 +1,4 @@
-﻿# Correio Mágico — plano de implementação dos elementos
+# Correio Mágico — plano de implementação dos elementos
 
 Data: 13/10/2026. Fonte: `Guia_Producao_Elementos_Correio_Magico.docx`, versão 1.0.
 
@@ -12,7 +12,7 @@ Direção visual mais recente: pacote fechado em todos os estados; retirar selo,
 
 Esta revisão inclui o Gelo: **12 elementos principais, sendo 11 originais + Gelo**. A progressão abaixo é uma proposta para playtest e substitui as estreias do roteiro histórico de 100 fases nas seções seguintes. Nenhum tabuleiro foi alterado nesta revisão.
 
-A antiga Pilha atualmente é a **Caixa de madeira**, com quatro estados, tábuas e lascas. As descrições de pacote com selo e fitas acima são históricas; consultar `Caixa_Cartoon_Sem_Carimbo.md` e `Caixa_Lascas_Madeira.md`.
+A antiga Pilha atualmente é a **Caixa de madeira**, com três estados: base, uma tábua e duas em X, conforme aprovação de 22/10/2026. As descrições de pacote com selo e fitas acima são históricas; consultar `Caixa_Cartoon_V3.md` e `Caixa_Lascas_Madeira.md`.
 
 ### Elementos: como funciona e onde aparece
 
@@ -20,13 +20,13 @@ Tabela única de consulta para os 12 elementos. **Estreia** é a fase que ensina
 
 | # | Elemento | Como funciona | Estreia | Reforço / combinações | Status |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Caixa de madeira (antiga Pilha) | Obstáculo fixo de uma célula, quatro estados. Não cai nem troca; sai por match adjacente ou especial, uma tábua por impacto, com lascas a cada dano. Bloqueia foguetes, bombas e canhão na própria célula. A meta conta a caixa destruída, só ao fim da animação. | 1 | 2–10 e barreira recorrente em toda a campanha | Implementado; falta aceite de áudio e conferência final das barreiras em Play |
+| 1 | Caixa de madeira (antiga Pilha) | Obstáculo fixo de uma célula, três estados: duas tábuas → uma → base. Não cai nem troca; sai por match adjacente ou especial, uma camada por impacto, com lascas a cada dano. Bloqueia foguetes, bombas e canhão na própria célula. A meta conta a caixa destruída, só ao fim da animação. | 1 | 2–10 e barreira recorrente em toda a campanha | Arte v3 aprovada e aplicada em 22/10/2026; falta conferência final em Play |
 | 2 | Grama | Piso de 1–2 camadas abaixo da peça. Match na própria célula ou especial remove um nível; peça ou caixa acima absorve o impacto. A meta conta a célula completamente limpa. | 4 | 5–10 junto com a Caixa | Implementado; aceite visual em Play e som pendentes |
-| 3 | Armário postal (Escaninho) | Objeto fixo de 2×2. O primeiro impacto derruba as portas sem coletar; os quatro seguintes soltam uma carta cada rumo à meta; o corpo vazio quebra e libera as quatro células. Estoque finito. | 11 | 12–20 com Caixa e Grama | Protótipo; contrato de estoque/deduplicação e aceite visual pendentes |
+| 3 | Armário postal (Escaninho) | Objeto fixo de 2×2. O primeiro impacto derruba as portas sem coletar; os quatro seguintes entregam nove cartas cada rumo à meta; o corpo vazio quebra e libera as quatro células. Estoque finito de 36 cartas, 18 por nicho. | 11 | 12–20 com Caixa e Grama | Protótipo integrado; validar ciclo completo e combinações na configuração atual |
 | 4 | Franqueadora (Máquina de Franquear) | Gerador fixo de uma célula, dentro do grid. Cada impacto adjacente ou especial aciona a alavanca e emite uma carta direto para a meta (`MachineLetters`, padrão 8); para ao completar. | 21 | 22–30, contrastando geração contínua com o estoque finito do Armário | **Aceita pelo usuário em 19/10/2026**, com meta própria no editor (quantidade digitada); resta acabamento sonoro |
 | 5 | Gelo | Overlay acima da peça: grosso → fino → removido, uma camada por impacto. Prende troca, queda e ativação de power-up. O match precisa incluir a peça congelada; especiais também quebram. A peça sobrevive ao impacto final. A meta conta a célula liberada. | 31 (fino) e 36 (grosso) | 37–45 com Caixa e Grama | Implementado; validação completa das regras em Play pendente |
-| 6 | Carta Voadora | Alvo móvel, não combinável; acompanha queda e teleporte. Um impacto adjacente ou power-up captura e a carta voa até a meta. | 46 | 47–60 | A produzir — próximo efeito recomendado |
-| 7 | Central de Rotas | Painel com compartimentos por cor/símbolo. Só aceita match da cor designada (ou power-up); cada entrega avança o compartimento até a conclusão. | 61 | 62–80 | A produzir |
+| 6 | Ovo mágico (substitui a Carta Voadora) | Obstáculo móvel de uma vida, não combinável; acompanha queda e teleporte. Match ortogonal adjacente ou especial quebra no tabuleiro; meta diminui na quebra, sem voo ao HUD. Clarão, anel de impacto e cacos até saírem da tela. Quantidade finita pintada; troca exige jogada válida. | 46 | 47–60 | **Concluído e aceito pelo usuário em 22/10/2026.** Ver `Ovo_Magico.md` |
+| 7 | Central de Rotas | Painel com compartimentos por cor/símbolo. Só aceita match da cor designada (ou power-up); cada entrega avança o compartimento até a conclusão. | 61 | 62–80 | Protótipo visual interativo de quatro poções, vidro e escoamento; regras de match, meta e editor pendentes. Ver `Central_de_Rotas.md` |
 | 8 | Malote | Alvo móvel com dois impactos: o primeiro rompe a cinta, o segundo coleta. Mantém a vida durante queda e portal. | 81 | 82–100, consolidando as cem primeiras | A produzir |
 | 9 | Encomenda Encantada | Proteção mágica: match não causa dano, só reação visual ineficaz; apenas power-up ou especial válido libera e coleta. | 101 | 102–120 | A produzir |
 | 10 | Tinteiro | Obstáculo fixo com cinco estados; ao quebrar espalha Tinta nas células elegíveis. Dependência aberta: a Tinta virou Grama, então é preciso decidir se volta a existir um piso de tinta próprio ou outro resultado. | 121, condicionada a essa decisão | 122–140 | A produzir; maior risco de retrabalho |
@@ -37,21 +37,20 @@ Sem estreias de 181 a 200: domínio do conjunto, alternando combinações, respi
 
 ### Inventário dos efeitos
 
-Cinco elementos têm implementação/protótipo e efeitos próprios. Isso não significa campanha integrada ou aceite completo em Play.
+Seis elementos têm implementação/protótipo e efeitos próprios. Isso não significa campanha integrada ou aceite completo em Play.
 
 | Elemento existente | Efeitos disponíveis | Trabalho restante |
 | --- | --- | --- |
 | Caixa | Tábuas removidas, lascas e quebra final | Conferência final de barreiras em Play e áudio |
 | Grama | Dois níveis e desfolhar | Aceite visual/sonoro e combinações |
-| Armário 2×2 | Duas portas removíveis, dois nichos e seis cartas por nicho; mantém cinco impactos. Queda das portas, entrega escalonada ao HUD e quebra vazia usam os efeitos existentes | Validar sequência completa em Play e meta automática de 12 cartas por armário |
+| Armário 2×2 | Duas portas removíveis, dois nichos e 18 cartas por nicho; mantém cinco impactos. Queda das portas, entrega escalonada ao HUD e quebra vazia usam os efeitos existentes | Validar sequência completa em Play e meta automática de 36 cartas por armário |
 | Franqueadora 1×1 | Alavanca, compressão/rebote, ejeção e voo à meta | Aceita pelo usuário em 19/10/2026, com meta própria no editor; resta acabamento sonoro |
 | Gelo | Dois níveis; quebra em cinco cacos no grosso e sete no fino | Matches, especiais, cascatas, reinício, meta e som em Play |
 
-**Sete elementos do plano original ainda precisam de regra fechada, protótipo e produção de efeitos:**
+**Ovo mágico concluído e aceito pelo usuário em 22/10/2026. Os seis elementos seguintes ainda precisam de regra fechada, protótipo e produção de efeitos:**
 
 | Elemento | Efeitos a produzir |
 | --- | --- |
-| Carta Voadora | Flutuação, movimento, reação ao impacto, captura, rastro e voo à meta |
 | Central de Rotas | Recepção por cor/símbolo, confirmação ou recusa, progresso dos compartimentos e conclusão |
 | Malote | Movimento/queda, rompimento da cinta, estado danificado e coleta final |
 | Encomenda Encantada | Proteção mágica, reação sem dano ao match, impacto válido de especial e liberação |
@@ -71,7 +70,7 @@ Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando ap
 | 11–20 | Armário na 11: portas, cartas e liberação do espaço 2×2 |
 | 21–30 | Franqueadora na 21: geração de cartas versus estoque do armário |
 | 31–45 | Gelo fino na 31; grosso a partir da 36; depois combinar com Caixa e Grama |
-| 46–60 | Carta Voadora na 46: alvo móvel e coleta |
+| 46–60 | Ovo mágico na 46: obstáculo móvel e quebra local |
 | 61–80 | Central de Rotas na 61: exigência por cor/símbolo |
 | 81–100 | Malote na 81: resistência em alvo móvel; consolidar as primeiras 100 |
 | 101–120 | Encomenda Encantada na 101: planejar especiais |
@@ -94,13 +93,13 @@ Reservar pelo menos duas fases de reforço após cada estreia antes de combinaç
 ### Ordem recomendada de produção
 
 1. Concluir aceite em Play dos cinco elementos existentes e suas fases de ensino.
-2. Carta Voadora → Central de Rotas → Malote.
+2. Ovo mágico concluído → Central de Rotas → Malote.
 3. Encomenda Encantada, incluindo feedback de impacto inválido.
 4. Fechar Tinteiro/Tinta e validar aplicação e metas antes da arte final.
 5. Fita e conteúdos compatíveis; depois Cofre, reutilizando o filtro de dano da Encantada.
 6. Integrar e balancear a campanha até 200, com metas possíveis e reinício consistente.
 
-Próximo efeito novo recomendado: **Carta Voadora**. Maior risco de retrabalho: **Tinteiro/Tinta**. Maior atenção às camadas: **Fita + Gelo**. Esta revisão documental não substitui validação em Play.
+Próxima entrega: **Central de Rotas**, começando pela ficha de regras em `Central_de_Rotas.md` e depois pelo protótipo isolado. Ovo mágico concluído por aceite do usuário em 22/10/2026; a inserção na campanha segue etapa própria. Maior risco de retrabalho: **Tinteiro/Tinta**. Maior atenção às camadas: **Fita + Gelo**.
 
 ## Escopo e situação atual (plano original de 100 fases)
 

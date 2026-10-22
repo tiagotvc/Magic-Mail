@@ -89,6 +89,8 @@ namespace SweetSugar.Scripts.Editor
         //private bool target_description_show;
         private IEnumerable<ItemForEditor>[] itemsForEditor;
         private IEnumerable<ItemForEditor> itemsForEditorFull;
+        private Sprite[] piecePaletteSprites;
+        [SerializeField] private float previewCellPixels = 50f;
         string levelPath = "Assets/SweetSugar/Resources/Levels/";
 
         private bool enableGoogleAdsProcessing;
@@ -303,7 +305,8 @@ namespace SweetSugar.Scripts.Editor
             //target_description_show = true;
             var num = 0;
             var simpleItem = Resources.Load<GameObject>("Items/Item").GetComponent<ItemSimple>();
-            var simpleitems = simpleItem.GetComponent<IColorableComponent>().GetSprites(levelNumber)
+            piecePaletteSprites = simpleItem.GetComponent<IColorableComponent>().GetSprites(levelNumber);
+            var simpleitems = piecePaletteSprites
                 .Select(i => new ItemForEditor
                 {
                     Item = simpleItem.gameObject,
@@ -1927,25 +1930,75 @@ namespace SweetSugar.Scripts.Editor
 
         private void GUIColorLimit()
         {
-            GUILayout.BeginHorizontal();
-
-            int saveInt = levelData.colorLimit;
-            GUILayout.Label("Color limit", EditorStyles.label, GUILayout.Width(100));
-            GUILayout.Space(50);
-            levelData.colorLimit = (int) GUILayout.HorizontalSlider(levelData.colorLimit, 3, maxColorLimit, GUILayout.Width(100));
-            levelData.colorLimit = EditorGUILayout.IntField("", levelData.colorLimit, GUILayout.Width(50));
-            if (levelData.colorLimit < 3)
-                levelData.colorLimit = 3;
-            if (levelData.colorLimit > maxColorLimit)
-                levelData.colorLimit = maxColorLimit;
-
-            GUILayout.EndHorizontal();
-
-            if (saveInt != levelData.colorLimit)
+            if (piecePaletteSprites == null || piecePaletteSprites.Length == 0) return;
+            var chosen = levelData.GetPieceColors(piecePaletteSprites.Length).ToList();
+            GUILayout.Label($"Peças desta fase — {chosen.Count} selecionadas", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Marque quais peças entram no tabuleiro e nas reposições. Mantenha ao menos três. Peças iniciais desmarcadas serão substituídas por uma das selecionadas.", MessageType.Info);
+            for (int row = 0; row < piecePaletteSprites.Length; row += 4)
             {
-                dirtyLevel = true;
-                // SaveLevel();
+                GUILayout.BeginHorizontal();
+                for (int i = row; i < Mathf.Min(row + 4, piecePaletteSprites.Length); i++)
+                {
+                    var sprite = piecePaletteSprites[i];
+                    bool enabled = chosen.Contains(i);
+                    GUILayout.BeginVertical(GUILayout.Width(86));
+                    using (new EditorGUI.DisabledScope(enabled && chosen.Count <= Mathf.Min(3, piecePaletteSprites.Length)))
+                    {
+                        bool next = GUILayout.Toggle(enabled, new GUIContent(sprite != null ? sprite.GetTexture() : null,
+                            sprite != null ? sprite.name : $"Peça {i + 1}"), "Button", GUILayout.Width(72), GUILayout.Height(64));
+                        if (next != enabled)
+                        {
+                            if (next) chosen.Add(i); else chosen.Remove(i);
+                            SetPiecePalette(chosen);
+                        }
+                    }
+                    GUILayout.Label(PieceDisplayName(sprite, i), EditorStyles.miniLabel, GUILayout.Width(86));
+                    GUILayout.EndVertical();
+                }
+                GUILayout.EndHorizontal();
             }
+            var goals = GetTargetLevel();
+            bool disabledGoal = goals != null && goals.targets != null && goals.targets.Any(goal =>
+                goal.CountDrawer != null && goal.CountDrawer.count > 0 && goal.sprites != null &&
+                goal.sprites.Any(s => Array.IndexOf(piecePaletteSprites, s.icon) is int index && index >= 0 && !chosen.Contains(index)));
+            if (disabledGoal) EditorGUILayout.HelpBox("Uma meta pede uma peça desmarcada. Marque essa peça ou altere a meta antes de testar a fase.", MessageType.Warning);
+        }
+
+        static string PieceDisplayName(Sprite sprite, int index)
+        {
+            switch (sprite != null ? sprite.name : "")
+            {
+                case "envelope": return "Envelope rosa";
+                case "bow": return "Envelope azul";
+                case "gift": return "Presente";
+                case "key": return "Chave";
+                case "stamp": return "Selo";
+                case "quill": return "Pena";
+                case "ink": return "Tinteiro";
+                default: return sprite != null ? sprite.name : $"Peça {index + 1}";
+            }
+        }
+
+        void SetPiecePalette(List<int> chosen)
+        {
+            levelData.pieceColors = chosen.OrderBy(c => c).ToList();
+            levelData.colorLimit = chosen.Count;
+            foreach (var field in levelData.fields)
+                foreach (var cell in field.levelSquares)
+                {
+                    var item = cell.item;
+                    if (item == null || item.ItemType != ItemsTypes.NONE || chosen.Contains(item.Color)) continue;
+                    // A default ItemForEditor with no art/prefab means random fill, not a painted piece.
+                    if (item.Texture == null && item.Item == null && item.colors == null) continue;
+                    item.Color = chosen[0];
+                    item.Texture = piecePaletteSprites[item.Color]?.GetTexture();
+                }
+            if (itemBrush != null && itemBrush.ItemType == ItemsTypes.NONE && !chosen.Contains(itemBrush.Color))
+            {
+                itemBrush = null;
+                color = chosen[0];
+            }
+            dirtyLevel = true;
         }
 
 
@@ -2156,6 +2209,11 @@ namespace SweetSugar.Scripts.Editor
             {
                 pendingCubbyTarget = false;
                 EnsureBoardTarget(targetLevel, "MailCubby", "Meta de cartas do armario postal adicionada.");
+            }
+            if (pendingFlyingTarget)
+            {
+                pendingFlyingTarget = false;
+                EnsureBoardTarget(targetLevel, "FlyingLetters", "Meta de ovos mágicos adicionada.");
             }
             edit?.Invoke();
         }
@@ -2632,6 +2690,7 @@ namespace SweetSugar.Scripts.Editor
 
         private void GUIItems()
         {
+            EditorGUILayout.HelpBox("Peças fixas são peças colocadas manualmente na fase. Use Apagar peça e clique na célula para removê-las; o chão e os obstáculos permanecem.", MessageType.Info);
             startWithoutItemBrush = GUILayout.Toggle(startWithoutItemBrush,
                 new GUIContent("Iniciar sem peça", "Clique nas células para marcar/desmarcar. Preserva grama e obstáculos; peças podem cair normalmente depois."),
                 "Button", GUILayout.Width(180));
@@ -2658,7 +2717,7 @@ namespace SweetSugar.Scripts.Editor
                     GUILayout.Label("Tip: right click to change sprite for level", EditorStyles.boldLabel);
                     GUILayout.BeginHorizontal();
                     {
-                        if (GUILayout.Button(new GUIContent("Clear", "clear all field"), GUILayout.Width(50),
+                        if (GUILayout.Button(new GUIContent("Apagar fixas", "Apagar todas as peças iniciais deste subnível; preservar obstáculos"), GUILayout.Width(95),
                             GUILayout.Height(50)))
                         {
                             ClearItems();
@@ -2675,6 +2734,7 @@ namespace SweetSugar.Scripts.Editor
                                     {
                                         GameObject item1 = item.Item;
                                         if (!item1) continue;
+                                        if (item.ItemType == ItemsTypes.NONE && !levelData.IsPieceColorEnabled(item.Color)) continue;
                                         if (item.ItemType != ItemsTypes.NONE)
                                             item.SetColor(color, levelNumber);
                                         var texture = item.Tex;
@@ -2689,7 +2749,7 @@ namespace SweetSugar.Scripts.Editor
                                                                        item.ItemType != ItemsTypes.NONE && itemBrush
                                                                            .Tex == item.Tex))
                                             UnityEngine.GUI.backgroundColor = Color.gray;
-                                        if (GUILayout.Button(new GUIContent(texture, item1.name),
+                                        if (GUILayout.Button(new GUIContent(texture, item.ItemType == ItemsTypes.FLYING_LETTER ? "Ovo mágico" : item1.name),
                                             GUILayout.Width(50), GUILayout.Height(50)))
                                         {
                                             Event current = Event.current;
@@ -2712,7 +2772,7 @@ namespace SweetSugar.Scripts.Editor
                                 }
                                 if (val == itemsForEditor.Last())
                                 {
-                                    if (GUILayout.Button(new GUIContent("X", "Clear block"), GUILayout.Width(50),
+                                    if (GUILayout.Button(new GUIContent("Apagar peça", "Apagar a peça fixa da célula, inclusive sob uma caixa"), GUILayout.Width(95),
                                         GUILayout.Height(50)))
                                     {
                                         itemBrush = null;
@@ -2745,6 +2805,12 @@ namespace SweetSugar.Scripts.Editor
 
         private void GUIBlocks()
         {
+            if (GUILayout.Button("Borracha de peças fixas", GUILayout.Width(190)))
+            {
+                section = 1;
+                itemBrush = null;
+                startWithoutItemBrush = false;
+            }
             GUILayout.BeginHorizontal();
             {
                 //GUILayout.Space(30);
@@ -2896,6 +2962,11 @@ namespace SweetSugar.Scripts.Editor
                     GUILayout.Width(100));
             }
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Zoom do tabuleiro", GUILayout.Width(125));
+            previewCellPixels = GUILayout.HorizontalSlider(previewCellPixels, 50f, 100f, GUILayout.Width(140));
+            GUILayout.Label($"{previewCellPixels / 50f:P0}", GUILayout.Width(55));
+            GUILayout.EndHorizontal();
             List<RectTexture> rects = new List<RectTexture>();
             GUILayout.BeginVertical();
             for (int row = 0; row < GetField().maxRows; row++)
@@ -2937,18 +3008,17 @@ namespace SweetSugar.Scripts.Editor
                             if (!squareBlock.startWithoutItem && squareBlock.item != null && squareBlock.item.Item != null &&
                                 squareBlock.item?.ItemType != ItemsTypes.INGREDIENT)
                             {
-                                blockTexturesArray.Add(new Texture2DSize(squareBlock.item?.Item
-                                    .GetComponent<IColorableComponent>().GetSprite(levelNumber, squareBlock.item
-                                        .Color).GetTexture(), Vector2Int.one, squareBlock.item.order, rotateBig));
+                                blockTexturesArray.Add(new Texture2DSize(StarterPieceTexture(squareBlock.item),
+                                    Vector2Int.one, squareBlock.item.order, rotateBig));
                             }
                             else
                             {
                                 var t = SquareUtils.GetSquareTexture(SquareTypes.EmptySquare);
-                                if (!blockTexturesArray.Any(i => i.Texture2D.name == t.Texture2D.name))
+                                if (!blockTexturesArray.Any(i => i.Texture2D != null && t.Texture2D != null && i.Texture2D.name == t.Texture2D.name))
                                     blockTexturesArray.Insert(0,
                                         new Texture2DSize(t.Texture2D, Vector2Int.one, t.order, rotateBig));
                                 if (!squareBlock.startWithoutItem && squareBlock.item?.Tex != null)
-                                    blockTexturesArray.Add(new Texture2DSize(squareBlock.item?.Tex, Vector2Int.one,
+                                    blockTexturesArray.Add(new Texture2DSize(StarterPieceTexture(squareBlock.item), Vector2Int.one,
                                         squareBlock.item.order, rotateBig));
                             }
 
@@ -2987,7 +3057,7 @@ namespace SweetSugar.Scripts.Editor
                     }
 
                     UnityEngine.GUI.color = squareColor;
-                    if (GUILayout.Button(imageButton as Texture, GUILayout.Width(50), GUILayout.Height(50)))
+                    if (GUILayout.Button(imageButton as Texture, GUILayout.Width(previewCellPixels), GUILayout.Height(previewCellPixels)))
                     {
                         if (section == 0)
                         {
@@ -3170,23 +3240,37 @@ namespace SweetSugar.Scripts.Editor
 
         private void DrawTexture(Texture2DSize texture2DSize, Rect lastRect)
         {
+            if (Event.current.type != EventType.Repaint) return;
             var texture2D = texture2DSize.Texture2D;
             if (texture2D != null)
             {
-                var rect = new Rect(lastRect.position.x + 4 + texture2DSize.offset.x,
-                    lastRect.position.y + 4 + texture2DSize.offset.y, texture2DSize.size.x * 40 * texture2DSize
-                        .sizeMod.x, texture2DSize.size.y * 40 * texture2DSize.sizeMod.y);
+                float zoom = previewCellPixels / 50f;
+                float bodyPixels = 40f * zoom;
+                var origin = lastRect.position + (Vector2.one * 4f + texture2DSize.offset) * zoom;
+                var rect = new Rect(origin.x, origin.y, texture2DSize.size.x * bodyPixels * texture2DSize
+                        .sizeMod.x, texture2DSize.size.y * bodyPixels * texture2DSize.sizeMod.y);
                 if (texture2DSize.size.magnitude >= 2 && texture2DSize.rotate && texture2D.width < 2048)
                 {
-                    texture2D = texture2D.rotateTexture();
-                    rect = new Rect(lastRect.position.x + 4 + texture2DSize.offset.x,
-                        lastRect.position.y + 4 + texture2DSize.offset.y, texture2DSize.size.y * 40,
-                        texture2DSize.size.x * 40);
+                    rect = new Rect(origin.x, origin.y, texture2DSize.size.y * bodyPixels,
+                        texture2DSize.size.x * bodyPixels);
                 }
-                else if (texture2DSize.rotate)
-                    texture2D = texture2D.rotateTexture();
+                if (!texture2DSize.rotate)
+                {
+                    UnityEngine.GUI.DrawTexture(rect, texture2D);
+                    return;
+                }
 
-                UnityEngine.GUI.DrawTexture(rect, texture2D);
+                // Rotate only the preview. CPU pixel reads fail for non-readable imports,
+                // and creating rotated textures on every repaint leaks native memory.
+                var previousMatrix = UnityEngine.GUI.matrix;
+                try
+                {
+                    GUIUtility.RotateAroundPivot(-90f, rect.center);
+                    var drawRect = new Rect(rect.center.x - rect.height * 0.5f,
+                        rect.center.y - rect.width * 0.5f, rect.height, rect.width);
+                    UnityEngine.GUI.DrawTexture(drawRect, texture2D);
+                }
+                finally { UnityEngine.GUI.matrix = previousMatrix; }
             }
         }
 
@@ -3221,6 +3305,13 @@ namespace SweetSugar.Scripts.Editor
         private void SetItem(int col, int row)
         {
             SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            // Erasing a painted starter piece is valid even when a crate covers the cell.
+            if (!startWithoutItemBrush && itemBrush == null)
+            {
+                squareBlock.item = null;
+                dirtyLevel = true;
+                return;
+            }
             if (startWithoutItemBrush)
             {
                 if (squareBlock.block == SquareTypes.NONE) return;
@@ -3249,6 +3340,30 @@ namespace SweetSugar.Scripts.Editor
                         .GetComponent<IColorableComponent>().GetSprites(levelNumber)[color].texture;
             
             squareBlock.item = itemTemp;
+            if (itemTemp?.ItemType == ItemsTypes.FLYING_LETTER) pendingFlyingTarget = true;
+        }
+
+        Texture2D StarterPieceTexture(ItemForEditor item)
+        {
+            // Template levels serialized the old candy/heart Texture as well as its color.
+            // Resolve normal pieces through today's palette instead of displaying that stale image.
+            if (item.ItemType == ItemsTypes.NONE && piecePaletteSprites != null && piecePaletteSprites.Length > 0)
+            {
+                int index = levelData.IsPieceColorEnabled(item.Color) ? item.Color : levelData.GetPieceColors()[0];
+                if (index >= 0 && index < piecePaletteSprites.Length)
+                    return piecePaletteSprites[index]?.GetTexture();
+            }
+            var sprite = ResolveItemPreviewSprite(item.Item, levelNumber, item.Color);
+            return sprite != null ? sprite.GetTexture() : item.Tex;
+        }
+
+        public static Sprite ResolveItemPreviewSprite(GameObject prefab, int level, int color)
+        {
+            if (prefab == null) return null;
+            var colors = prefab.GetComponent<IColorableComponent>();
+            // A movable obstacle such as the egg has one sprite and no color component.
+            return colors != null ? colors.GetSprite(level, color)
+                : prefab.GetComponentInChildren<SpriteRenderer>()?.sprite;
         }
 
         private void SetupArrows()
@@ -3828,6 +3943,7 @@ namespace SweetSugar.Scripts.Editor
 
         private bool pendingMachineTarget;
         private bool pendingCubbyTarget;
+        private bool pendingFlyingTarget;
 
         // The cabinet goal follows its cells like grass and ice do: the count comes from the board,
         // four letters per cabinet, so the designer only paints the furniture.

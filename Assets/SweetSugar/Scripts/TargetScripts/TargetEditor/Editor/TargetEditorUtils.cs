@@ -26,6 +26,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor.Editor
             if (name == "SugarSquare") return "Grama";
             if (name == "IceBlock") return "Gelo";
             if (name == "MachineLetters") return "Cartas da franqueadora";
+            if (name == "FlyingLetters") return "Ovo mágico";
             if (name == "MailCubby") return "Cartas do armário postal";
             if (name == "SolidBlock") return "Caixa (SolidBlock)";
             return name;

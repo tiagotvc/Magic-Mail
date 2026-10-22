@@ -41,18 +41,18 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
           Color: 0
-          ItemType: 0
-          Texture: {fileID: 0}
+          ItemType: 9
+          Texture: {fileID: 2800000, guid: 7f6edba89dc44238b0041b5c4972a0a5, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: a8a5351220d3407193eec3acc8760775, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-          order: 0
+          order: 100
         startWithoutItem: 0
         separatorIndexes: 00000000y
       - blocks:
@@ -75,7 +75,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -109,7 +109,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -143,7 +143,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -177,7 +177,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -211,7 +211,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -245,7 +245,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -279,7 +279,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -313,7 +313,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 661
+          y: 1028
           width: 50
           height: 50
         item:
@@ -347,7 +347,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -381,7 +381,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -415,7 +415,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -449,7 +449,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -483,7 +483,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -517,7 +517,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -551,7 +551,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -585,7 +585,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -619,7 +619,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 713
+          y: 1080
           width: 50
           height: 50
         item:
@@ -653,7 +653,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -687,7 +687,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -721,7 +721,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -755,7 +755,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -789,7 +789,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -823,7 +823,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -857,7 +857,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -891,7 +891,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -925,7 +925,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 765
+          y: 1132
           width: 50
           height: 50
         item:
@@ -969,7 +969,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1013,7 +1013,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1057,7 +1057,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1101,7 +1101,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1145,7 +1145,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1189,7 +1189,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1233,7 +1233,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1277,7 +1277,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1321,7 +1321,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 817
+          y: 1184
           width: 50
           height: 50
         item:
@@ -1365,7 +1365,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1409,7 +1409,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1458,7 +1458,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1502,7 +1502,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1546,7 +1546,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1590,7 +1590,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1634,7 +1634,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1678,7 +1678,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1727,7 +1727,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 869
+          y: 1236
           width: 50
           height: 50
         item:
@@ -1761,7 +1761,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1795,7 +1795,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1829,7 +1829,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1863,7 +1863,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1897,7 +1897,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1931,7 +1931,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1965,7 +1965,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -1999,7 +1999,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -2033,7 +2033,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 921
+          y: 1288
           width: 50
           height: 50
         item:
@@ -2067,7 +2067,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2101,7 +2101,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2135,7 +2135,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2169,7 +2169,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2203,7 +2203,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2237,7 +2237,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2271,7 +2271,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2305,7 +2305,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2339,7 +2339,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 973
+          y: 1340
           width: 50
           height: 50
         item:
@@ -2373,7 +2373,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2407,7 +2407,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2441,7 +2441,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2475,7 +2475,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2509,7 +2509,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2543,7 +2543,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2577,7 +2577,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2611,7 +2611,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2645,7 +2645,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 1025
+          y: 1392
           width: 50
           height: 50
         item:
@@ -2679,7 +2679,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 3
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2713,7 +2713,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 56
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2747,7 +2747,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 109
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2781,7 +2781,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 162
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2815,7 +2815,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 215
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2849,7 +2849,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 268
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2883,7 +2883,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 321
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2917,7 +2917,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 374
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2951,7 +2951,7 @@ MonoBehaviour:
         guiRect:
           serializedVersion: 2
           x: 427
-          y: 1077
+          y: 1444
           width: 50
           height: 50
         item:
@@ -2985,7 +2985,7 @@ MonoBehaviour:
         array:
         - sprites:
             array:
-            - icon: {fileID: 21300000, guid: 05e3182245bc4552b2207f0857cfebda, type: 3}
+            - icon: {fileID: 21300000, guid: 74ee3b5af9c047009ed9fc838dfe927b, type: 3}
               uiSprite: 0
             - icon: {fileID: 21300000, guid: dceee3f7cee048448e47c08945d078c2, type: 3}
               uiSprite: 1
@@ -2994,6 +2994,7 @@ MonoBehaviour:
     limitType: 0
     limit: 30
     colorLimit: 4
+    pieceColors: 
     star1: 500
     star2: 1000
     star3: 2200

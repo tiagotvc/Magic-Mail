@@ -10,7 +10,7 @@ namespace RoyalAves.EditorTools
     {
         static readonly Vector2Int[] Positions =
         {
-            new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4), new Vector2Int(3, 4)
+            new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4)
         };
 
         [MenuItem("Royal Aves/Elementos/Pilha de Encomendas/Painel de teste dos efeitos")]
@@ -24,7 +24,7 @@ namespace RoyalAves.EditorTools
 
         void OnGUI()
         {
-            EditorGUILayout.LabelField("Caixas de madeira — 1, 2, 3 e 4 vidas", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Caixas de madeira — 1, 2 e 3 vidas", EditorStyles.boldLabel);
             ParcelFeedbackSettings.Speed = EditorGUILayout.Slider("Velocidade do efeito", ParcelFeedbackSettings.Speed, 0.5f, 1.5f);
             ParcelFeedbackSettings.Intensity = EditorGUILayout.Slider("Intensidade", ParcelFeedbackSettings.Intensity, 0.5f, 1.25f);
             ParcelSoundEffects.Volume = EditorGUILayout.Slider("Volume dos pacotes", ParcelSoundEffects.Volume, 0f, 1f);
@@ -32,8 +32,7 @@ namespace RoyalAves.EditorTools
             using (new EditorGUI.DisabledScope(!EditorApplication.isPlaying))
             {
                 EditorGUILayout.BeginHorizontal();
-                if (GUILayout.Button("Travessa superior")) ParcelSoundEffects.Play(4);
-                if (GUILayout.Button("Travessa central")) ParcelSoundEffects.Play(3);
+                if (GUILayout.Button("Travessa superior")) ParcelSoundEffects.Play(3);
                 if (GUILayout.Button("Travessa inferior")) ParcelSoundEffects.Play(2);
                 if (GUILayout.Button("Conclusão")) ParcelSoundEffects.Play(1);
                 EditorGUILayout.EndHorizontal();

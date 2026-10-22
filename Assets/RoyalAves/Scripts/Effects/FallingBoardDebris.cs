@@ -22,15 +22,32 @@ namespace RoyalAves.Effects
         readonly List<Piece> pieces = new List<Piece>();
         readonly List<Mesh> meshes = new List<Mesh>();
         Material material;
+        Material burstMaterial;
         float bottom;
 
         public static void Shatter(SpriteRenderer source)
         {
+            Shatter(source, false);
+        }
+
+        public static void ShatterEgg(SpriteRenderer source)
+        {
+            Shatter(source, true);
+        }
+
+        public static void ShatterGlass(SpriteRenderer source)
+        {
+            Shatter(source, true, true);
+        }
+
+        static void Shatter(SpriteRenderer source, bool eggshell, bool glass = false)
+        {
             if (source == null || source.sprite == null) return;
-            var effect = Create(source, "FallingMatchShards");
+            var effect = Create(source, glass ? "FallingPotionGlass" : eggshell ? "FallingEggshellShards" : "FallingMatchShards");
             effect.material = new Material(source.sharedMaterial);
-            effect.material.SetTexture("_MainTex", source.sprite.texture);
-            const int shardCount = 8;
+            effect.material.SetTexture("_MainTex", glass ? Texture2D.whiteTexture : source.sprite.texture);
+            int shardCount = eggshell ? 14 : 8;
+            if (eggshell) effect.StartCoroutine(effect.EggBurst(source));
             float scatterAngle = Random.Range(0f, Mathf.PI * 2f);
             for (int shard = 0; shard < shardCount; shard++)
             {
@@ -44,7 +61,8 @@ namespace RoyalAves.Effects
                 for (int i = 0; i < vertices.Length; i++) vertices[i] -= origin;
                 mesh.vertices = vertices;
                 var colors = new Color[mesh.vertexCount];
-                for (int i = 0; i < colors.Length; i++) colors[i] = source.color;
+                var shardColor = glass ? new Color(.72f, .9f, 1f, .7f) : source.color;
+                for (int i = 0; i < colors.Length; i++) colors[i] = shardColor;
                 mesh.colors = colors;
                 mesh.RecalculateBounds();
                 effect.meshes.Add(mesh);
@@ -56,14 +74,82 @@ namespace RoyalAves.Effects
                 renderer.sharedMaterial = effect.material;
                 renderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
                 renderer.sortingOrder = PowerUpEffectOrder.Value + 2;
+                var velocity = eggshell
+                    ? new Vector3(Mathf.Cos(angle) * Random.Range(1.8f, 3.1f), Mathf.Sin(angle) * 2f + 2.2f)
+                    : new Vector3((center.x - 0.5f) * 1.4f + Random.Range(-0.1f, 0.1f), Random.Range(0.35f, 0.75f));
                 effect.pieces.Add(new Piece { transform = node.transform, origin = node.transform.position,
-                    velocity = new Vector3((center.x - 0.5f) * 1.4f + Random.Range(-0.1f, 0.1f),
-                        Random.Range(0.35f, 0.75f)), spin = Random.Range(-65f, 65f),
-                    mesh = mesh, colors = colors, originalAlpha = source.color.a });
+                    velocity = velocity, spin = eggshell ? Random.Range(-280f, 280f) : Random.Range(-65f, 65f),
+                    mesh = mesh, colors = colors, originalAlpha = shardColor.a });
             }
             // Scale the entire ballistic displacement by 30%, preserving its timing.
             foreach (var piece in effect.pieces) piece.velocity *= 1.3f;
-            effect.StartCoroutine(effect.Fall(13f, 0.55f, 0.18f));
+            effect.StartCoroutine(eggshell
+                ? effect.Fall(13f, float.PositiveInfinity, float.PositiveInfinity)
+                : effect.Fall(13f, 0.55f, 0.18f));
+        }
+
+        // A short local flash and expanding pressure ring sell the burst without
+        // shaking the board or delaying gravity/goal updates.
+        IEnumerator EggBurst(SpriteRenderer source)
+        {
+            burstMaterial = new Material(source.sharedMaterial);
+            burstMaterial.SetTexture("_MainTex", Texture2D.whiteTexture);
+            var flash = BurstMesh("EggFlash", false);
+            var ring = BurstMesh("EggImpactRing", true);
+            float size = Mathf.Max(source.sprite.bounds.size.x, source.sprite.bounds.size.y);
+            float elapsed = 0f;
+            while (elapsed < 0.32f)
+            {
+                float t = elapsed / 0.32f;
+                flash.transform.localScale = Vector3.one * size * Mathf.Lerp(0.25f, 0.85f, t);
+                ring.transform.localScale = Vector3.one * size * Mathf.Lerp(0.35f, 1.5f, 1f - Mathf.Pow(1f - t, 3f));
+                TintBurst(flash.GetComponent<MeshFilter>().sharedMesh,
+                    new Color(1f, 0.94f, 0.75f, Mathf.Max(0f, 1f - t * 2.4f) * 0.85f));
+                TintBurst(ring.GetComponent<MeshFilter>().sharedMesh,
+                    new Color(0.9f, 0.78f, 1f, (1f - t) * 0.8f));
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            Destroy(flash);
+            Destroy(ring);
+        }
+
+        GameObject BurstMesh(string name, bool ring)
+        {
+            const int segments = 48;
+            var vertices = new Vector3[segments * 2];
+            var triangles = new int[segments * 6];
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = i * Mathf.PI * 2f / segments;
+                var direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle));
+                vertices[i * 2] = direction * (ring ? 0.44f : 0f);
+                vertices[i * 2 + 1] = direction * 0.5f;
+                int next = ((i + 1) % segments) * 2;
+                int index = i * 6;
+                triangles[index] = i * 2; triangles[index + 1] = next; triangles[index + 2] = i * 2 + 1;
+                triangles[index + 3] = i * 2 + 1; triangles[index + 4] = next; triangles[index + 5] = next + 1;
+            }
+            var mesh = new Mesh { name = name, vertices = vertices, triangles = triangles,
+                uv = new Vector2[vertices.Length] };
+            TintBurst(mesh, Color.clear);
+            mesh.RecalculateBounds();
+            meshes.Add(mesh);
+            var node = new GameObject(name);
+            node.transform.SetParent(transform, false);
+            node.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var renderer = node.AddComponent<MeshRenderer>();
+            renderer.sharedMaterial = burstMaterial;
+            renderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
+            renderer.sortingOrder = PowerUpEffectOrder.Value + 3;
+            return node;
+        }
+
+        static void TintBurst(Mesh mesh, Color color)
+        {
+            var colors = new Color[mesh.vertexCount];
+            for (int i = 0; i < colors.Length; i++) colors[i] = color;
+            mesh.colors = colors;
         }
 
         public static void ShatterWood(SpriteRenderer source, int state)
@@ -166,8 +252,8 @@ namespace RoyalAves.Effects
             effect.meshes.Add(mesh);
             var node = new GameObject("DetachedRoundedWoodenPlank");
             node.transform.SetParent(effect.transform, false);
-            // Match the bar removed by this damage state: horizontal, rising diagonal, descending diagonal.
-            float angle = state == 4 ? 0f : state == 3 ? 45f : sourceAngle;
+            // Two reinforcements at most: rising diagonal, then descending diagonal.
+            float angle = state >= 3 ? 45f : sourceAngle;
             node.transform.localRotation = Quaternion.Euler(0f, 0f, angle - sourceAngle);
             node.AddComponent<MeshFilter>().sharedMesh = mesh;
             var renderer = node.AddComponent<MeshRenderer>();
@@ -191,13 +277,13 @@ namespace RoyalAves.Effects
             // Rounded outline follows the two nail centers of the single descending plank.
             // Pixel-relative coordinates preserve its silhouette without a rectangular PNG cutout.
             var rect = sprite.rect;
-            var a = new Vector2(rect.width * 0.25f, rect.height * 0.756f);
-            var b = new Vector2(rect.width * 0.776f, rect.height * 0.262f);
+            var a = new Vector2(rect.width * 0.24f, rect.height * 0.766f);
+            var b = new Vector2(rect.width * 0.76f, rect.height * 0.26f);
             var center = (a + b) * 0.5f;
             var axis = (b - a).normalized;
             var normal = new Vector2(-axis.y, axis.x);
             angle = Mathf.Atan2(axis.y, axis.x) * Mathf.Rad2Deg;
-            float radius = Mathf.Min(rect.width, rect.height) * 0.103f;
+            float radius = Mathf.Min(rect.width, rect.height) * 0.12f;
             const int halfSegments = 12;
             int sides = (halfSegments + 1) * 2;
             var vertices = new Vector3[sides + 1];
@@ -291,6 +377,6 @@ namespace RoyalAves.Effects
             }
             Destroy(gameObject);
         }
-        void OnDestroy() { foreach (var mesh in meshes) if (mesh != null) Destroy(mesh); if (material != null) Destroy(material); }
+        void OnDestroy() { foreach (var mesh in meshes) if (mesh != null) Destroy(mesh); if (material != null) Destroy(material); if (burstMaterial != null) Destroy(burstMaterial); }
     }
 }

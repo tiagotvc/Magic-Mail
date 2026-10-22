@@ -33,7 +33,7 @@ namespace RoyalAves.Gameplay
             data.LoadTargetObject();
             data.InitTargetObjects(true, targets);
             IsActive = true;
-            Debug.Log("[Correio Mágico] LABORATÓRIO: quatro pacotes, meta 4. Selo e fitas saem sem abrir o papel; somente a animação final contabiliza a destruição.");
+            Debug.Log("[Correio Mágico] LABORATÓRIO: três caixas, meta 3. Duas tábuas → uma → base; somente a animação final contabiliza a destruição.");
             return true;
         }
     }

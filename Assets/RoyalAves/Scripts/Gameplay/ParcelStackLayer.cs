@@ -13,7 +13,8 @@ namespace RoyalAves.Gameplay
     [RequireComponent(typeof(Square), typeof(SpriteRenderer))]
     public sealed class ParcelStackLayer : MonoBehaviour
     {
-        [Range(1, 4)] public int remainingLayers = 1;
+        public const int MaxLayers = 3;
+        [Range(1, MaxLayers)] public int remainingLayers = 1;
         [HideInInspector] public Vector2 visualScale = Vector2.one;
         [HideInInspector] public Vector2 visualOffset;
         SpriteRenderer spriteRenderer;

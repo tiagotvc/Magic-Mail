@@ -149,7 +149,7 @@ namespace SweetSugar.Scripts.Items
             if (activated || (IsMulticolorReserved && MulticolorOwner != this)) return;
             if (square == null) return;
             if (square.IsItemLocked) { square.DestroyBlock(); StopDestroy(); return; }
-            int color = explodedItem != null ? explodedItem.color : Random.Range(0, LevelManager.THIS.levelData.colorLimit);
+            int color = explodedItem != null ? explodedItem.color : LevelManager.THIS.levelData.RandomPieceColor();
             StartSelection(item2, item2 != null ? item2.color : color);
         }
 

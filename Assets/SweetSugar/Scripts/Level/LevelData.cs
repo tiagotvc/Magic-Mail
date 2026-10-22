@@ -51,6 +51,24 @@ namespace SweetSugar.Scripts.Level
         public int limit = 25;
         /// color amount
         public int colorLimit = 5;
+        // Empty keeps the legacy palette (the first colorLimit entries).
+        public List<int> pieceColors = new List<int>();
+
+        public int[] GetPieceColors(int spriteCount = 7)
+        {
+            spriteCount = Mathf.Max(1, spriteCount);
+            var selected = pieceColors?.Where(c => c >= 0 && c < spriteCount).Distinct().ToArray();
+            return selected != null && selected.Length > 0
+                ? selected : Enumerable.Range(0, Mathf.Clamp(colorLimit, 1, spriteCount)).ToArray();
+        }
+
+        public int RandomPieceColor()
+        {
+            var colors = GetPieceColors();
+            return colors[UnityEngine.Random.Range(0, colors.Length)];
+        }
+
+        public bool IsPieceColorEnabled(int color) => GetPieceColors().Contains(color);
         /// score amount for reach 1 star
         public int star1 = 100;
         /// score amount for reach 2 stars
@@ -289,6 +307,7 @@ namespace SweetSugar.Scripts.Level
         {
             LoadTargetObject();
             var other = (LevelData)MemberwiseClone();
+            other.pieceColors = pieceColors != null ? new List<int>(pieceColors) : new List<int>();
             other.levelNum = level;
             other.fields = new List<FieldData>();
             for (var i = 0; i < fields.Count; i++)

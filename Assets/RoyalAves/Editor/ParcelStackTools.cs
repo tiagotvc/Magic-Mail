@@ -41,6 +41,17 @@ namespace RoyalAves.EditorTools
             StartRequestedPreview();
             if (!File.Exists(RequestPath)) return;
             var request = File.ReadAllText(RequestPath).Trim();
+            if (request == "validate")
+            {
+                File.Delete(RequestPath);
+                try { ValidateArt(); }
+                catch (Exception exception)
+                {
+                    File.WriteAllText("Logs/parcel-stack-validation.result", exception.ToString());
+                    Debug.LogException(exception);
+                }
+                return;
+            }
             if (request == "preview")
             {
                 if (EditorApplication.isPlaying) { EditorApplication.isPlaying = false; return; }
@@ -55,7 +66,7 @@ namespace RoyalAves.EditorTools
                     SessionState.SetBool(PreviewKey, true);
                     previewReadyAt = EditorApplication.timeSinceStartup + 1d;
                     File.Delete(RequestPath);
-                    File.WriteAllText("Logs/parcel-stack-prepare.result", "OK: quatro caixas de madeira preparadas; carregando teste.");
+                    File.WriteAllText("Logs/parcel-stack-prepare.result", "OK: três caixas de madeira preparadas; carregando teste.");
                     EditorApplication.isPlaying = true;
                 }
                 catch (Exception exception)
@@ -82,7 +93,7 @@ namespace RoyalAves.EditorTools
             {
                 if (!EditorApplication.isPlaying || !ParcelStackLaboratory.IsActive || LevelManager.THIS?.field == null) return;
                 var manager = LevelManager.THIS;
-                var positions = new[] { new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4), new Vector2Int(3, 4) };
+                var positions = new[] { new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4) };
                 var states = positions.Select(position => manager.field.GetSquare(position.x, position.y)?.GetSubSquare()?.GetComponent<ParcelStackLayer>()?.remainingLayers ?? 0);
                 int effects = UnityEngine.Object.FindObjectsByType<RoyalAves.Effects.ParcelTearEffect>(FindObjectsSortMode.None).Length;
                 File.Delete(RequestPath);
@@ -105,7 +116,7 @@ namespace RoyalAves.EditorTools
             {
                 Prepare();
                 File.WriteAllText("Logs/parcel-stack-prepare.result", request == "activate"
-                    ? "OK: laboratório ATIVO com pacotes de 1, 2, 3 e 4 vidas; meta 4."
+                    ? "OK: laboratório ATIVO com caixas de 1, 2 e 3 vidas; meta 3."
                     : "OK: prefab, ícones e laboratório atualizados.");
             }
             catch (Exception exception)
@@ -115,7 +126,7 @@ namespace RoyalAves.EditorTools
             }
         }
 
-        [MenuItem(Menu + "Teste das quatro caixas de madeira")]
+        [MenuItem(Menu + "Teste das três caixas de madeira")]
         public static void Preview()
         {
             Directory.CreateDirectory("Logs");
@@ -132,7 +143,33 @@ namespace RoyalAves.EditorTools
             Application.runInBackground = true;
             manager.gameStatus = GameState.PrepareGame;
             ParcelStackTestWindow.Open();
-            File.WriteAllText("Logs/parcel-stack-prepare.result", "OK: teste de madeira carregado; quatro caixas com resistências 1, 2, 3 e 4, meta 4.");
+            File.WriteAllText("Logs/parcel-stack-prepare.result", "OK: teste de madeira carregado; três caixas com resistências 1, 2 e 3, meta 3.");
+        }
+
+        [MenuItem(Menu + "Validar arte e regras das caixas")]
+        public static void ValidateArt()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            var layers = prefab.GetComponent<LayeredBlock>().layers;
+            if (layers.Length != ParcelStackLayer.MaxLayers) throw new Exception("A caixa deve possuir três estados.");
+            for (int i = 0; i < layers.Length; i++)
+            {
+                string path = ArtRoot + $"CM_pilha_estado0{i + 1}_00.png";
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+                var marker = layers[i].GetComponent<ParcelStackLayer>();
+                if (sprite == null || layers[i].GetComponent<SpriteRenderer>().sprite != sprite || marker.remainingLayers != i + 1)
+                    throw new Exception("Sprite ou resistência incorreta: " + path);
+                RoyalAvesAssetImporter.GetParcelFit(path, out var scale, out var offset);
+                if ((scale - marker.visualScale).sqrMagnitude > 0.000001f || (offset - marker.visualOffset).sqrMagnitude > 0.000001f)
+                    throw new Exception("Escala ou alinhamento incorreto: " + path);
+                var importer = (TextureImporter)AssetImporter.GetAtPath(path);
+                if (!importer.alphaIsTransparency || importer.mipmapEnabled || importer.spriteImportMode != SpriteImportMode.Single)
+                    throw new Exception("Importação incorreta: " + path);
+            }
+            BoardGoalTools.Validate();
+            ImpactBarrierRulesValidation.Validate();
+            Directory.CreateDirectory("Logs");
+            File.WriteAllText("Logs/parcel-stack-validation.result", "PASS: três sprites, referências, resistências, transparência, escala e alinhamento; ícone da meta sem reforços; barreiras de impacto e resistência final.");
         }
 
         [MenuItem(Menu + "Preparar protótipo e laboratório")]
@@ -144,14 +181,8 @@ namespace RoyalAves.EditorTools
             try
             {
                 var layers = root.GetComponent<LayeredBlock>();
-                if (layers.layers.Length < 3 || layers.layers.Length > 4)
-                    throw new InvalidOperationException("SolidBlock deve possuir três ou quatro camadas.");
-                if (layers.layers.Length == 3)
-                {
-                    var fourth = UnityEngine.Object.Instantiate(layers.layers[2].gameObject, root.transform);
-                    fourth.name = "SolidBlock (3)";
-                    layers.layers = layers.layers.Concat(new[] { fourth.GetComponent<Square>() }).ToArray();
-                }
+                if (layers.layers.Length != ParcelStackLayer.MaxLayers)
+                    throw new InvalidOperationException("SolidBlock deve possuir três camadas: base, uma tábua e duas tábuas.");
                 for (int i = 0; i < layers.layers.Length; i++)
                 {
                     var layer = layers.layers[i];
@@ -200,16 +231,16 @@ namespace RoyalAves.EditorTools
                 cell.spawners.Clear();
                 cell.item = new ItemForEditor();
             }
-            var positions = new[] { new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4), new Vector2Int(3, 4) };
+            var positions = new[] { new Vector2Int(1, 2), new Vector2Int(3, 2), new Vector2Int(1, 4) };
             if (field.maxRows < 5) throw new InvalidOperationException("Laboratório requer ao menos cinco linhas.");
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < ParcelStackLayer.MaxLayers; i++)
             {
                 var cell = field.levelSquares[positions[i].y * field.maxCols + positions[i].x];
                 cell.block = SquareTypes.SolidBlock;
                 cell.blockLayer = i + 1;
                 for (int j = 0; j <= i; j++) cell.blocks.Add(new SquareTypeLayer { squareType = SquareTypes.SolidBlock });
             }
-            field.layers = 5;
+            field.layers = 4;
             lab.levelData.LoadTargetObject();
             lab.levelData.SetTarget(lab.levelData.GetTargetIndex("SolidBlock"));
 
@@ -225,19 +256,19 @@ namespace RoyalAves.EditorTools
             targets.targets.Add(new TargetObject
             {
                 targetType = new TargetType { type = lab.levelData.GetTargetIndex("SolidBlock") },
-                sprites = sprites, CountDrawer = new Count { count = 4 },
+                sprites = sprites, CountDrawer = new Count { count = ParcelStackLayer.MaxLayers },
                 ShowTheScoreForStar = new BoolScoreShow()
             });
             EditorUtility.SetDirty(lab);
             EditorUtility.SetDirty(targets);
             AssetDatabase.SaveAssets();
-            Debug.Log("[Correio Mágico] Laboratório: quatro caixas de madeira com resistências 1, 2, 3 e 4. Três travessas → duas → uma → sem travessas. A meta só diminui após a quebra final.");
+            Debug.Log("[Correio Mágico] Laboratório: três caixas com resistências 1, 2 e 3. Duas tábuas → uma → base. A meta só diminui após a quebra final.");
             Selection.activeObject = lab;
         }
 
         static Sprite[] ImportArt()
         {
-            var paths = Enumerable.Range(1, 4).Select(i => ArtRoot + $"CM_pilha_estado0{i}_00.png").ToArray();
+            var paths = Enumerable.Range(1, ParcelStackLayer.MaxLayers).Select(i => ArtRoot + $"CM_pilha_estado0{i}_00.png").ToArray();
             if (paths.Any(path => !File.Exists(path))) return null;
             foreach (var path in paths)
             {

@@ -213,6 +213,11 @@ namespace RoyalAves.EditorTools
             if (assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV2/") ||
                 assetPath.StartsWith("Assets/RoyalAves/Art/MapKitV3/")) return;
             var importer = (TextureImporter)assetImporter;
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/Obstacles/RouteCentral/"))
+            {
+                ConfigureCellSprite(importer, CanvasPixelsPerUnit(assetPath, 4f));
+                return;
+            }
             if (assetPath == IceTools.ThinArtPath || assetPath == IceTools.ThickArtPath ||
                 assetPath == IceTools.CrackedArtPath)
             {
@@ -255,6 +260,12 @@ namespace RoyalAves.EditorTools
             if (assetPath.StartsWith(ParcelStackFolder))
             {
                 ConfigureParcelStack(importer);
+                return;
+            }
+            if (assetPath.StartsWith("Assets/RoyalAves/Art/Obstacles/FlyingLetter/"))
+            {
+                // Same 1.9-unit canvas as a board piece; preserve prototype art on reimport.
+                ConfigureCellSprite(importer, CanvasPixelsPerUnit(assetPath, ParcelCanvasUnits));
                 return;
             }
             importer.textureType = TextureImporterType.Sprite;
