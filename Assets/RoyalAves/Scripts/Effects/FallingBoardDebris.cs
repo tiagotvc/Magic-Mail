@@ -154,59 +154,23 @@ namespace RoyalAves.Effects
 
         public static void ShatterWood(SpriteRenderer source, int state)
         {
-            if (source == null || source.sprite == null) return;
-            var effect = Create(source, "FallingWoodSplinters");
-            effect.material = new Material(source.sharedMaterial);
-            effect.material.SetTexture("_MainTex", source.sprite.texture);
-            bool plank = state > 1;
-            float angle = state == 4 ? 0f : state == 3 ? 45f : -45f;
-            var axis = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-            var normal = new Vector2(-axis.y, axis.x);
-            int count = plank ? 6 : 12;
-            for (int i = 0; i < count; i++)
-            {
-                var center = plank
-                    ? Vector2.one * 0.5f + axis * Mathf.Lerp(-0.34f, 0.34f, (i + 0.5f) / count)
-                        + normal * Random.Range(-0.045f, 0.045f)
-                    : new Vector2(Random.Range(0.17f, 0.83f), Random.Range(0.17f, 0.83f));
-                var mesh = BuildChip(source.sprite, center, true, plank ? angle : Random.Range(65f, 115f));
-                var origin = mesh.bounds.center;
-                var vertices = mesh.vertices;
-                for (int j = 0; j < vertices.Length; j++) vertices[j] -= origin;
-                mesh.vertices = vertices;
-                mesh.RecalculateBounds();
-                effect.meshes.Add(mesh);
-                var node = new GameObject("JaggedWoodSplinter");
-                node.transform.SetParent(effect.transform, false);
-                node.transform.localPosition = origin;
-                node.AddComponent<MeshFilter>().sharedMesh = mesh;
-                var renderer = node.AddComponent<MeshRenderer>();
-                renderer.sharedMaterial = effect.material;
-                renderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
-                renderer.sortingOrder = PowerUpEffectOrder.Value + 2;
-                var colors = new Color[mesh.vertexCount];
-                for (int j = 0; j < colors.Length; j++) colors[j] = source.color;
-                mesh.colors = colors;
-                effect.pieces.Add(new Piece { transform = node.transform, origin = node.transform.position,
-                    velocity = new Vector3(Random.Range(-1.1f, 1.1f), Random.Range(0.65f, 1.8f)) * ParcelFeedbackSettings.Intensity,
-                    spin = Random.Range(-260f, 260f), mesh = mesh, colors = colors, originalAlpha = source.color.a });
-            }
-            // No fade or fixed timeout: wood survives until every splinter leaves the screen.
-            effect.StartCoroutine(effect.Fall(9.5f, float.PositiveInfinity, float.PositiveInfinity,
-                ParcelFeedbackSettings.Speed * 1.4f));
+            MaterialBurstEffect.ExplodeWood(source, state);
         }
 
-        static Mesh BuildChip(Sprite sprite, Vector2 center, bool wood = false, float angleDegrees = 0f)
+        public static void ShatterCabinet(SpriteRenderer source)
         {
-            int sides = wood ? Random.Range(12, 17) : Random.Range(5, 8);
+            MaterialBurstEffect.ExplodeWood(source, 1, true);
+        }
+
+
+        static Mesh BuildChip(Sprite sprite, Vector2 center)
+        {
+            int sides = Random.Range(5, 8);
             var vertices = new Vector3[sides + 1];
             var uv = new Vector2[sides + 1];
             var triangles = new int[sides * 3];
-            float rotation = wood ? 0f : Random.Range(0f, Mathf.PI * 2f);
-            float woodRadius = wood ? Random.Range(0.075f, 0.11f) : 0f;
-            var size = wood
-                ? new Vector2(woodRadius, woodRadius * Random.Range(0.85f, 1.1f))
-                : new Vector2(Random.Range(0.07f, 0.11f), Random.Range(0.06f, 0.1f));
+            float rotation = Random.Range(0f, Mathf.PI * 2f);
+            var size = new Vector2(Random.Range(0.07f, 0.11f), Random.Range(0.06f, 0.1f));
             var rect = sprite.rect;
             var textureRect = sprite.textureRect;
             for (int i = 0; i <= sides; i++)
@@ -215,11 +179,9 @@ namespace RoyalAves.Effects
                 if (i > 0)
                 {
                     float angle = rotation - (i - 1) * Mathf.PI * 2f / sides;
-                    float unevenness = Random.Range(wood ? 0.86f : 0.65f, 1f);
+                    float unevenness = Random.Range(0.65f, 1f);
                     var delta = new Vector2(Mathf.Cos(angle) * size.x, Mathf.Sin(angle) * size.y) * unevenness;
-                    float radians = angleDegrees * Mathf.Deg2Rad;
-                    point += new Vector2(delta.x * Mathf.Cos(radians) - delta.y * Mathf.Sin(radians),
-                        delta.x * Mathf.Sin(radians) + delta.y * Mathf.Cos(radians));
+                    point += delta;
                     int triangle = (i - 1) * 3;
                     triangles[triangle] = 0;
                     triangles[triangle + 1] = i;
@@ -230,7 +192,7 @@ namespace RoyalAves.Effects
                 uv[i] = new Vector2((textureRect.x + point.x * textureRect.width) / sprite.texture.width,
                     (textureRect.y + point.y * textureRect.height) / sprite.texture.height);
             }
-            var mesh = new Mesh { name = wood ? "JaggedWoodSplinter" : "IrregularMatchChip", vertices = vertices, uv = uv, triangles = triangles };
+            var mesh = new Mesh { name = "IrregularMatchChip", vertices = vertices, uv = uv, triangles = triangles };
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
             return mesh;

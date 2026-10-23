@@ -1,0 +1,18 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bolsa do carteiro — abertura</title>
+<style>body{background:#202436;color:#eee;font:16px system-ui;margin:30px auto;max-width:560px;padding:0 16px}canvas{width:100%;background:repeating-conic-gradient(#30364b 0 25%,#262c40 0 50%) 0/32px 32px;border-radius:16px}button{padding:12px 18px;margin:12px 8px 12px 0;border:0;border-radius:8px;cursor:pointer}input{width:100%}small{color:#bdc6dd}</style>
+<h2>Bolsa do carteiro — abertura</h2><canvas width="560" height="560"></canvas><button id="open">Abrir</button><button id="close">Fechar</button><button id="play">Pausar</button><input id="frame" type="range" min="0" max="15" step="1" value="0"><p id="label"></p><small>16 quadros • 4×4 • 20 fps. Prévia com compensação de posição pela base do corpo; a arte original está preservada.</small>
+<script>
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),image=new Image();
+image.src='../Assets/RoyalAves/Art/Obstacles/Mailbag/CM_bolsa_carteiro_abrir_sem_alca_v2.png';
+let anchors=[],index=0,direction=1,playing=true,last=0;
+const slider=document.querySelector('#frame'),play=document.querySelector('#play');
+function draw(){if(!image.complete||!image.naturalWidth)return;const a=frames[index],w=a.width,h=a.height;const scale=1.5;
+ctx.clearRect(0,0,560,560);ctx.drawImage(image,a.x,a.y,w,h,280-a.anchorX*scale,510-a.anchorY*scale,w*scale,h*scale);slider.value=index;document.querySelector('#label').textContent='Quadro '+(index+1)+' de 16';}
+const frames=[{"x": 29, "y": 65, "width": 282, "height": 241, "anchorX": 140.5, "anchorY": 237}, {"x": 336, "y": 82, "width": 289, "height": 224, "anchorX": 143.5, "anchorY": 220}, {"x": 638, "y": 72, "width": 292, "height": 234, "anchorX": 145.0, "anchorY": 230}, {"x": 949, "y": 65, "width": 285, "height": 240, "anchorX": 141.5, "anchorY": 237}, {"x": 24, "y": 378, "width": 290, "height": 234, "anchorX": 145.0, "anchorY": 231}, {"x": 344, "y": 379, "width": 283, "height": 233, "anchorX": 142.5, "anchorY": 230}, {"x": 653, "y": 373, "width": 277, "height": 239, "anchorX": 136.5, "anchorY": 235}, {"x": 969, "y": 352, "width": 267, "height": 258, "anchorX": 132.0, "anchorY": 254}, {"x": 35, "y": 644, "width": 269, "height": 259, "anchorX": 135.0, "anchorY": 256}, {"x": 348, "y": 643, "width": 269, "height": 259, "anchorX": 135.0, "anchorY": 256}, {"x": 652, "y": 644, "width": 268, "height": 258, "anchorX": 132.5, "anchorY": 254}, {"x": 960, "y": 644, "width": 268, "height": 258, "anchorX": 133.5, "anchorY": 254}, {"x": 32, "y": 940, "width": 272, "height": 250, "anchorX": 135.5, "anchorY": 247}, {"x": 345, "y": 940, "width": 271, "height": 250, "anchorX": 135.0, "anchorY": 247}, {"x": 653, "y": 940, "width": 268, "height": 250, "anchorX": 133.5, "anchorY": 246}, {"x": 963, "y": 940, "width": 265, "height": 250, "anchorX": 132.5, "anchorY": 247}];
+image.onload=draw;
+document.querySelector('#open').onclick=()=>{index=0;direction=1;playing=true;play.textContent='Pausar';last=0;draw()};
+document.querySelector('#close').onclick=()=>{index=15;direction=-1;playing=true;play.textContent='Pausar';last=0;draw()};
+play.onclick=()=>{playing=!playing;play.textContent=playing?'Pausar':'Reproduzir'};
+slider.oninput=()=>{index=+slider.value;playing=false;play.textContent='Reproduzir';draw()};
+function tick(now){if(playing&&now-last>=50){last=now;draw();if(index+direction<0||index+direction>15){playing=false;play.textContent='Reproduzir'}else index+=direction;}requestAnimationFrame(tick)}requestAnimationFrame(tick);
+</script></html>

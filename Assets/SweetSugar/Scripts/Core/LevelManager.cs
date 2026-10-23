@@ -869,7 +869,7 @@ namespace SweetSugar.Scripts.Core
             }
 
 #if UNITY_EDITOR
-            if ((win || lose) && (RoyalAves.Gameplay.RouteCentralLaboratory.IsActive || RoyalAves.Gameplay.FlyingLetterLaboratory.IsActive || RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
+            if ((win || lose) && (RoyalAves.Gameplay.MailbagLaboratory.IsActive || RoyalAves.Gameplay.RouteCentralLaboratory.IsActive || RoyalAves.Gameplay.FlyingLetterLaboratory.IsActive || RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
             {
                 Debug.Log(win ? "[Correio Mágico] Laboratório concluído: todas as camadas removidas." : "[Correio Mágico] Laboratório encerrado: jogadas esgotadas.");
                 UnityEditor.EditorApplication.isPlaying = false;

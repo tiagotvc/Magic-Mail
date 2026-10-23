@@ -276,3 +276,41 @@ MonoBehaviour:
             uiSprite: 1
     prefabs:
     - {fileID: 1000, guid: a7adb69fa6a7448c8d24375a03392567, type: 3}
+  - name: Mailbags
+    localization:
+      description:
+        text: Colete os malotes
+        index: -1
+      failed:
+        text: Faltaram malotes
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 2bb1742c555714d44b50a173d5007412, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 1381270832015010715, guid: 1e17f4516c8c50340a6be4a813690495, type: 3}
+  - name: BagOpenings
+    localization:
+      description:
+        text: Colete os pergaminhos
+        index: -1
+      failed:
+        text: Ainda faltam pergaminhos
+        index: -1
+    collectAction: 0
+    setCount: 0
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 295beb72ef32ab348abef86b9d284c25, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 8698862786519117807, guid: 4ff979b7eb5efec43b184371edcab355, type: 3}

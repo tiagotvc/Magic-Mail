@@ -314,6 +314,7 @@ namespace SweetSugar.Scripts.GUI
             {
                 CloseMenu();
                 LevelManager.THIS.gameStatus = GameState.Tutorial;
+                RoyalAves.Meta.ElementIntroPrototype.ShowAfterGoals();
                 if(LevelManager.THIS.levelData.limitType == LIMIT.TIME) SoundBase.Instance.PlayOneShot(SoundBase.Instance.timeOut);
 
             }

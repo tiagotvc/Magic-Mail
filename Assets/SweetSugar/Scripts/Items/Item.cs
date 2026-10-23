@@ -43,7 +43,8 @@ namespace SweetSugar.Scripts.Items
         SPIRAL = 7,
         MARMALADE = 2,
         TimeBomb = 8,
-        FLYING_LETTER = 9
+        FLYING_LETTER = 9,
+        MAILBAG = 10
     }
 
     /// <summary>
@@ -1279,6 +1280,11 @@ namespace SweetSugar.Scripts.Items
             if (this is RoyalAves.Gameplay.ItemFlyingLetter flyingLetter)
             {
                 flyingLetter.TryBreak();
+                return;
+            }
+            if (this is RoyalAves.Gameplay.ItemMailbag mailbag)
+            {
+                mailbag.TryHit();
                 return;
             }
 

@@ -1,5 +1,9 @@
 ﻿# Escaninho — início da criação
 
+## Quebra da madeira revisada — 23/10/2026
+
+A quebra final agora dispara pedaços angulares de tábuas com veios, faces claras/escuras, impulso radial e rotação própria, mais resíduos pequenos e breves. São 28 pedaços e 10 resíduos; não usa mais os recortes arredondados do PNG. Mantidos portas inteiras no primeiro impacto, entrega de cartas e callback final de liberação. Detalhes e validação em [Madeira_Explosao.md](Madeira_Explosao.md).
+
 ## Direção definida em 14/10/2026
 
 Um único recipiente fixo ocupa quatro células em um quadrado 2×2. Os quatro nichos pertencem ao mesmo objeto; não são quatro obstáculos independentes. A dimensão anteriormente estava pendente no plano e passa a seguir a indicação do usuário.

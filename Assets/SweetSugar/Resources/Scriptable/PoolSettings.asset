@@ -18,80 +18,67 @@ MonoBehaviour:
     amountToPool: 50
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1119664270634208, guid: e608a2b3a1dad4f5e841b391b6ae27a1,
-      type: 3}
+  - objectToPool: {fileID: 1119664270634208, guid: e608a2b3a1dad4f5e841b391b6ae27a1, type: 3}
     poolName: StripedH
     amountToPool: 10
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1119664270634208, guid: 44e5a071907d049f68644eff5934ff27,
-      type: 3}
+  - objectToPool: {fileID: 1119664270634208, guid: 44e5a071907d049f68644eff5934ff27, type: 3}
     poolName: StripedV
     amountToPool: 10
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1525697283171518, guid: 71af36595ee7043e3b9d218165b8206c,
-      type: 3}
+  - objectToPool: {fileID: 1525697283171518, guid: 71af36595ee7043e3b9d218165b8206c, type: 3}
     poolName: Marmalades
     amountToPool: 10
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1180192816848442, guid: 4c2a7be602e2641e99930469f25c1e8b,
-      type: 3}
+  - objectToPool: {fileID: 1180192816848442, guid: 4c2a7be602e2641e99930469f25c1e8b, type: 3}
     poolName: MarmaladeAnimations
     amountToPool: 0
     shouldExpand: 0
     inEditor: 0
-  - objectToPool: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6,
-      type: 3}
+  - objectToPool: {fileID: 1119664270634208, guid: 925b3d7e6178642d081ff1c6b4a35ce6, type: 3}
     poolName: Packages
     amountToPool: 10
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f,
-      type: 3}
+  - objectToPool: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f, type: 3}
     poolName: Multicolors
     amountToPool: 3
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1258960060683140, guid: 48e79583038de4d07a085ff94b52d4d0,
-      type: 3}
+  - objectToPool: {fileID: 1258960060683140, guid: 48e79583038de4d07a085ff94b52d4d0, type: 3}
     poolName: Ingredients
     amountToPool: 3
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1258960060683140, guid: 9d3445b7824334729ba4794139f94b7d,
-      type: 3}
+  - objectToPool: {fileID: 1258960060683140, guid: 9d3445b7824334729ba4794139f94b7d, type: 3}
     poolName: Ingredients
     amountToPool: 3
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1445774073842394, guid: c048a3ea260cd49acbfd310f8bd1aa21,
-      type: 3}
+  - objectToPool: {fileID: 1445774073842394, guid: c048a3ea260cd49acbfd310f8bd1aa21, type: 3}
     poolName: Spirals
     amountToPool: 3
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 2530845016066800690, guid: 215781d8ca26d43628205950f9cc4384,
-      type: 3}
+  - objectToPool: {fileID: 2530845016066800690, guid: 215781d8ca26d43628205950f9cc4384, type: 3}
     poolName: Effects
     amountToPool: 3
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1987957617991102, guid: 5de682c6be87d4881b08bb93f5525b08,
-      type: 3}
+  - objectToPool: {fileID: 1987957617991102, guid: 5de682c6be87d4881b08bb93f5525b08, type: 3}
     poolName: Effects
     amountToPool: 80
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1119664270634208, guid: 9861943d371424f378773ee93434ec9c,
-      type: 3}
+  - objectToPool: {fileID: 1119664270634208, guid: 9861943d371424f378773ee93434ec9c, type: 3}
     poolName: TimeBombs
     amountToPool: 5
     shouldExpand: 1
     inEditor: 0
-  - objectToPool: {fileID: 1987957617991102, guid: a3b1ce12ff0b8d5498093602066ecd5c,
-      type: 3}
+  - objectToPool: {fileID: 1987957617991102, guid: a3b1ce12ff0b8d5498093602066ecd5c, type: 3}
     poolName: Effects
     amountToPool: 5
     shouldExpand: 1
@@ -99,5 +86,10 @@ MonoBehaviour:
   - objectToPool: {fileID: 190504, guid: a8a5351220d3407193eec3acc8760775, type: 3}
     poolName: FlyingLetters
     amountToPool: 8
+    shouldExpand: 1
+    inEditor: 1
+  - objectToPool: {fileID: 1381270832015010715, guid: 1e17f4516c8c50340a6be4a813690495, type: 3}
+    poolName: MAILBAG
+    amountToPool: 6
     shouldExpand: 1
     inEditor: 1

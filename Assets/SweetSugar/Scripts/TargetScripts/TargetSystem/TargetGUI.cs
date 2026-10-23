@@ -1,4 +1,4 @@
-// // ©2015 - Present Candy Smith
+﻿// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -28,10 +28,43 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
         public GameObject check;
         public GameObject uncheck;
         public TargetCounter subTargetContainer;
+        bool savedIconLayout;
+        Vector2 iconPosition, iconSize, countPosition;
+        bool iconPreserveAspect;
+        Image.Type iconType;
 
         public void SetSprite(Sprite spr)
         {
+            if (!savedIconLayout)
+            {
+                iconPosition = image.rectTransform.anchoredPosition;
+                iconSize = image.rectTransform.sizeDelta;
+                countPosition = text.rectTransform.anchoredPosition;
+                iconPreserveAspect = image.preserveAspect;
+                iconType = image.type;
+                savedIconLayout = true;
+            }
+            image.rectTransform.anchoredPosition = iconPosition;
+            image.rectTransform.sizeDelta = iconSize;
+            text.rectTransform.anchoredPosition = countPosition;
+            image.preserveAspect = iconPreserveAspect;
+            image.type = iconType;
             image.sprite = spr;
+            if (spr != null && spr.texture.name == "CM_pergaminho_abrir_sheet_v1")
+            {
+                image.type = Image.Type.Simple;
+                image.preserveAspect = true;
+                for (var parent = transform.parent; parent != null; parent = parent.parent)
+                {
+                    if (parent.name != "TopPanel") continue;
+                    // Separate the open paper from its number within the cream panel.
+                    // Always derive from the authored layout so rebinding cannot drift.
+                    image.rectTransform.sizeDelta = iconSize * .78f;
+                    image.rectTransform.anchoredPosition = new Vector2(0, iconPosition.y + iconSize.y * .13f);
+                    text.rectTransform.anchoredPosition = new Vector2(0, countPosition.y - iconSize.y * .18f);
+                    break;
+                }
+            }
         }
 
         void OnEnable()

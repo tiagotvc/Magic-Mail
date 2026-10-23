@@ -29,7 +29,7 @@ namespace RoyalAves.EditorTools
             if (!File.Exists(ScenePath)) Build();
         }
 
-        [MenuItem("Royal Aves/Elementos/Central de Rotas/Testar visual e tinta")]
+        [MenuItem("Royal Aves/Elementos/Poções/Testar visual e tinta")]
         public static void Preview()
         {
             if (EditorApplication.isPlaying) return;
@@ -39,7 +39,7 @@ namespace RoyalAves.EditorTools
             EditorApplication.isPlaying = true;
         }
 
-        [MenuItem("Royal Aves/Elementos/Central de Rotas/Gerar prefab visual")]
+        [MenuItem("Royal Aves/Elementos/Poções/Gerar prefab visual")]
         public static void Build()
         {
             AssetDatabase.ImportAsset(Art);
@@ -84,7 +84,7 @@ namespace RoyalAves.EditorTools
                 Directory.CreateDirectory("Assets/RoyalAves/Laboratory");
                 EditorSceneManager.SaveScene(scene, ScenePath);
                 AssetDatabase.SaveAssets();
-                Debug.Log("Central de Rotas: prefab e tela visual gerados. No teste, clique em cada poção para quebrar e escorrer a tinta.");
+                Debug.Log("Poções: prefab e tela visual gerados. No teste, clique em cada poção para quebrar e escorrer a tinta.");
             }
             finally
             {

@@ -17,9 +17,11 @@ namespace RoyalAves.EditorTools
 {
     public sealed class RouteCentralLaboratoryTools : EditorWindow
     {
-        const string Menu = "Royal Aves/Elementos/Central de Rotas/";
+        const string Menu = "Royal Aves/Elementos/Poções/";
         const string PreviewKey = "MagicMail.RouteCentralPreview";
         const string Request = "Logs/route-central-lab.request";
+        public const string MetaballsKey = "MagicMail.RouteCentralLab.Metaballs";
+        public const string DrawnKey = "MagicMail.RouteCentralLab.DrawnLiquid";
         static double nextPoll;
 
         [MenuItem(Menu + "Laboratório no jogo")]
@@ -27,6 +29,23 @@ namespace RoyalAves.EditorTools
         {
             Directory.CreateDirectory("Logs");
             File.WriteAllText(Request, "preview");
+        }
+
+        [MenuItem(Menu + "Laboratório estouro e respingos no jogo")]
+        public static void PreviewSplash() => Preview();
+
+        [MenuItem(Menu + "Laboratório metaballs no jogo")]
+        public static void PreviewMetaballs()
+        {
+            Directory.CreateDirectory("Logs");
+            File.WriteAllText(Request, "metaballs");
+        }
+
+        [MenuItem(Menu + "Laboratório poção desenhada no jogo")]
+        public static void PreviewDrawn()
+        {
+            Directory.CreateDirectory("Logs");
+            File.WriteAllText(Request, "drawn");
         }
 
         [MenuItem(Menu + "Preparar laboratório no jogo")]
@@ -186,18 +205,22 @@ namespace RoyalAves.EditorTools
             }
             if (EditorApplication.isPlaying) { EditorApplication.isPlaying = false; return; }
             if (EditorApplication.isPlayingOrWillChangePlaymode) return;
+            bool metaballs = File.ReadAllText(Request).Trim() == "metaballs";
+            bool drawn = File.ReadAllText(Request).Trim() == "drawn";
             File.Delete(Request);
             try
             {
                 if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
                 Prepare();
+                SessionState.SetBool(MetaballsKey, metaballs);
+                SessionState.SetBool(DrawnKey, drawn);
                 foreach (var key in new[] { FlyingLetterLaboratory.EnabledKey, FrankingMachineLaboratory.EnabledKey,
                     MailCubbyLaboratory.EnabledKey, InkLaboratory.EnabledKey, ParcelStackLaboratory.EnabledKey }) SessionState.SetBool(key, false);
                 SessionState.SetBool(RouteCentralLaboratory.EnabledKey, true);
                 SessionState.SetBool(PreviewKey, true);
                 EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/main.unity");
-                GetWindow<RouteCentralLaboratoryTools>("Central de Rotas");
-                File.WriteAllText("Logs/route-central-lab.result", "OK: laboratório real preparado; central 2x2, quatro poções, 35 jogadas.");
+                GetWindow<RouteCentralLaboratoryTools>("Poções");
+                File.WriteAllText("Logs/route-central-lab.result", "OK: laboratório real preparado; central 2x2, quatro poções, 35 jogadas; metaballs=" + metaballs);
                 EditorApplication.isPlaying = true;
             }
             catch (Exception error) { File.WriteAllText("Logs/route-central-lab.result", error.ToString()); Debug.LogException(error); }
@@ -208,15 +231,20 @@ namespace RoyalAves.EditorTools
         {
             SessionState.SetBool(RouteCentralLaboratory.EnabledKey, false);
             SessionState.SetBool(PreviewKey, false);
+            SessionState.SetBool(MetaballsKey, false);
+            SessionState.SetBool(DrawnKey, false);
             if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;
         }
 
         void OnGUI()
         {
-            GUILayout.Label("Central de Rotas — laboratório no jogo", EditorStyles.boldLabel);
+            GUILayout.Label("Poções — laboratório no jogo", EditorStyles.boldLabel);
             GUILayout.Label("35 jogadas • meta: quatro poções\nMatch adjacente da cor da poção; especiais quebram uma restante.");
             GUILayout.Label("Primeiro teste: troque (1,2) com (2,2).\nCoordenadas a partir de zero: forma uma trinca roxa à esquerda.");
             if (GUILayout.Button("Abrir / reiniciar laboratório")) Preview();
+            if (GUILayout.Button("Testar estouro e respingos (referência)")) PreviewSplash();
+            if (GUILayout.Button("Abrir / reiniciar laboratório metaballs")) PreviewMetaballs();
+            if (GUILayout.Button("Abrir / reiniciar laboratório poção desenhada")) PreviewDrawn();
             if (GUILayout.Button("Desativar laboratório")) Disable();
         }
     }

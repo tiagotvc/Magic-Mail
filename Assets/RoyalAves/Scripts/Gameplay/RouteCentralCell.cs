@@ -24,7 +24,6 @@ namespace RoyalAves.Gameplay
         public static readonly int[] RequestedColors = { 1, 0, 2, 6 };
         // Asset identities in flask order: green clover, lilac feather, red seal, blue envelope.
         public static readonly string[] RequestedPieces = { "gift", "envelope", "stamp", "bow" };
-        float nextSpecialImpact;
         public int BrokenCount => owner != null && owner != this ? owner.BrokenCount : broken.Count(b => b);
 
         IEnumerator Start()
@@ -50,44 +49,72 @@ namespace RoyalAves.Gameplay
             visual.standArtwork = standArtwork;
             visual.flaskArtwork = flaskArtwork;
             visual.breakSheet = breakSheet;
+#if UNITY_EDITOR
+            if (UnityEditor.SessionState.GetBool("MagicMail.RouteCentralLab.DrawnLiquid", false)
+                && RouteCentralLaboratory.IsActive)
+            {
+                visual.drawnLiquidSheet = Resources.Load<Texture2D>("RouteCentral/CM_pocao_escoamento_desenhado_v1");
+                visual.drawnLiquidPreview = visual.drawnLiquidSheet != null;
+                if (!visual.drawnLiquidPreview) Debug.LogError("Poção desenhada: spritesheet ausente.", visual);
+            }
+            // Configure each new central before it can receive its first hit.
+            // The normal game and ordinary laboratory keep the existing effect.
+            if (UnityEditor.SessionState.GetBool("MagicMail.RouteCentralLab.Metaballs", false)
+                && RouteCentralLaboratory.IsActive)
+            {
+                visual.metaballsShader = UnityEditor.AssetDatabase.LoadAssetAtPath<Shader>(
+                    "Assets/RoyalAves/Shaders/PotionMetaballsPreview.shader");
+                visual.metaballsPreview = visual.metaballsShader != null;
+            }
+#endif
         }
 
         public static int SelectPotion(bool[] done, int color, bool special)
         {
+            if (special) return -1; // Direct hits require board coordinates.
             for (int i = 0; i < 4; i++)
-                if (!done[i] && (special || RequestedColors[i] == color)) return i;
+                if (!done[i] && RequestedColors[i] == color) return i;
             return -1;
         }
 
         public static int SelectPotionForPiece(bool[] done, string piece, bool special)
         {
+            if (special) return -1;
             for (int i = 0; i < 4; i++)
-                if (!done[i] && (special || RequestedPieces[i] == piece)) return i;
+                if (!done[i] && RequestedPieces[i] == piece) return i;
             return -1;
+        }
+
+        public static int SelectPotionAtCell(bool[] done, int columnOffset, int rowOffset)
+        {
+            if (done == null || done.Length < 4 || columnOffset < 0 || columnOffset > 1
+                || rowOffset < 0 || rowOffset > 1) return -1;
+            int index = rowOffset * 2 + columnOffset;
+            return done[index] ? -1 : index;
         }
 
         public void HandleHit(Square origin)
         {
-            if (owner != null) owner.Accept(origin);
+            if (owner != null) owner.Accept(origin, cell);
         }
 
-        void Accept(Square origin)
+        void Accept(Square origin, Square hitCell)
         {
-            if (visual == null || origin == null || BrokenCount == 4) return;
+            if (visual == null || origin == null || hitCell == null || BrokenCount == 4) return;
             bool direct = cells.Contains(origin);
             Item item = origin.Item;
             if (!direct && (item == null || item.explodedItem != null || !cells.Any(s =>
                 ItemFlyingLetter.IsAdjacentMatch(s.row, s.col, origin.row, origin.col)))) return;
-            bool special = direct;
-            if (special && Time.time < nextSpecialImpact) return;
             long key = item != null && item.combinationID != -1 ? (long)item.combinationID << 1
                 : ((long)LevelManager.THIS.destLoopIterations << 32) | (uint)Time.frameCount;
-            if (special) key |= 1;
             var matchedSprite = item != null ? item.GetSprite() : null;
-            int index = SelectPotionForPiece(broken, matchedSprite != null ? matchedSprite.texture.name : null, special);
-            if (index < 0 || impacts.Contains(key) || !visual.BreakFlask(index)) return;
-            impacts.Add(key);
-            if (special) nextSpecialImpact = Time.time + .25f;
+            // A line/area special calls DestroyBlock on each affected board cell.
+            // Preserve that footprint: no central-wide cooldown or first-intact
+            // fallback. Per-flask state makes repeated hits idempotent.
+            int index = direct ? SelectPotionAtCell(broken, hitCell.col - cells[0].col, hitCell.row - cells[0].row)
+                : SelectPotionForPiece(broken, matchedSprite != null ? matchedSprite.texture.name : null, false);
+            if (index < 0 || (!direct && impacts.Contains(key)) || !visual.BreakFlask(index)) return;
+            if (!direct) impacts.Add(key);
             broken[index] = true;
             var manager = LevelManager.THIS;
             var barrier = visual.gameObject.AddComponent<SweetSugar.Scripts.System.AnimateItems>();

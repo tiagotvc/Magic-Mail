@@ -1,6 +1,8 @@
 # Lascas de madeira e percurso de matches — 15/10/2026
 
-Revisão de quantidade e formato: 6 pedaços por tábua (antes 12) e 12 na quebra final (antes 22). Fragmentos mais curtos e encorpados, próximos de círculos levemente irregulares: raio de 7,5% a 11% da textura, proporção entre eixos de 0,85 a 1,1 e 12 a 16 vértices. Variação do contorno reduzida para evitar pontas longas. Mantidas tábua inteira desprendendo, velocidade e distância de queda. Fragmentos de matches preservados. Runtime compilado sem erros.
+Revisão atual — 23/10/2026: madeira com pedaços angulares de tábuas, veios e faces claras/escuras; explosão radial antes da queda. São 10 pedaços nos impactos das tábuas e 18 na quebra final, mais 10 resíduos pequenos em ambos. A tábua inteira continua se desprendendo. Substitui o formato quase circular abaixo. Detalhes em [Madeira_Explosao.md](Madeira_Explosao.md).
+
+Histórico substituído: 6 pedaços por tábua e 12 na quebra final; fragmentos curtos e encorpados, próximos de círculos levemente irregulares, com proporção entre eixos de 0,85 a 1,1 e 12 a 16 vértices.
 
 Revisão de desprendimento: ao remover uma proteção, a tábua inteira também se solta junto das lascas. Usa malha com extremidades arredondadas, amostrada do estado de uma única diagonal para evitar trazer o fundo da caixa ou outras tábuas no recorte. A orientação corresponde à proteção removida (horizontal, diagonal ascendente e descendente). Impulso lateral e para cima, giro de 280 a 380 graus por segundo de simulação e queda com a mesma aceleração de tempo 1,4× das lascas. Sem fade; some após sair da tela. Animações de outros detritos preservam sua rotação inicial. Runtime compilado sem erros; conferência visual no jogo pendente.
 

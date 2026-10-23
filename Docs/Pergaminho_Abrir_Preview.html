@@ -1,0 +1,15 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pergaminho — abertura</title>
+<style>body{background:#202436;color:#eee;font:16px system-ui;margin:30px auto;max-width:540px;padding:0 16px}canvas{width:100%;background:repeating-conic-gradient(#30364b 0 25%,#262c40 0 50%) 0/32px 32px;border-radius:16px}button{padding:12px 18px;margin:12px 8px 12px 0;border:0;border-radius:8px;cursor:pointer}input{width:100%}</style>
+<h2>Pergaminho fechado → aberto</h2><canvas width="540" height="540"></canvas><button id="open">Abrir</button><button id="close">Enrolar</button><button id="pause">Pausar</button><input id="frame" type="range" min="0" max="15" step="1" value="0"><p id="label"></p>
+<script>
+const image=new Image(),canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),slider=document.querySelector('#frame'),pause=document.querySelector('#pause');
+const frames=[{"x": 25, "y": 102, "width": 276, "height": 95}, {"x": 334, "y": 97, "width": 278, "height": 102}, {"x": 648, "y": 80, "width": 272, "height": 140}, {"x": 960, "y": 65, "width": 269, "height": 177}, {"x": 29, "y": 353, "width": 270, "height": 188}, {"x": 340, "y": 333, "width": 268, "height": 215}, {"x": 649, "y": 319, "width": 269, "height": 238}, {"x": 961, "y": 314, "width": 267, "height": 252}, {"x": 30, "y": 634, "width": 266, "height": 249}, {"x": 342, "y": 627, "width": 269, "height": 268}, {"x": 654, "y": 627, "width": 266, "height": 269}, {"x": 961, "y": 627, "width": 262, "height": 269}, {"x": 30, "y": 940, "width": 267, "height": 273}, {"x": 341, "y": 940, "width": 266, "height": 273}, {"x": 652, "y": 940, "width": 267, "height": 273}, {"x": 959, "y": 940, "width": 266, "height": 273}];
+let frame=0,direction=1,playing=true,last=0;
+function draw(){if(!image.complete||!image.naturalWidth)return;const r=frames[frame],s=1.5;ctx.clearRect(0,0,540,540);ctx.drawImage(image,r.x,r.y,r.width,r.height,270-r.width*s/2,270-r.height*s/2,r.width*s,r.height*s);slider.value=frame;document.querySelector('#label').textContent='Quadro '+(frame+1)+' de 16 • 20 fps';}
+image.onload=draw;image.src='../Assets/RoyalAves/Art/Obstacles/Mailbag/CM_pergaminho_abrir_sheet_v1.png';
+document.querySelector('#open').onclick=()=>{frame=0;direction=1;playing=true;pause.textContent='Pausar';last=0;draw()};
+document.querySelector('#close').onclick=()=>{frame=15;direction=-1;playing=true;pause.textContent='Pausar';last=0;draw()};
+pause.onclick=()=>{playing=!playing;pause.textContent=playing?'Pausar':'Reproduzir'};
+slider.oninput=()=>{frame=+slider.value;playing=false;pause.textContent='Reproduzir';draw()};
+function tick(now){if(playing&&now-last>=50){last=now;draw();if(frame+direction<0||frame+direction>15){playing=false;pause.textContent='Reproduzir'}else frame+=direction;}requestAnimationFrame(tick)}requestAnimationFrame(tick);
+</script></html>

@@ -1,4 +1,4 @@
-# Memória do projeto — Magic Mail
+﻿# Memória do projeto — Magic Mail
 
 ## Sessão 14/10/2026
 
@@ -113,6 +113,13 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - **Queda diagonal**: a regra de 15/10 exigia os dois cantos livres e travava a queda ao lado de qualquer obstáculo. Por decisão do usuário, basta uma das duas rotas em L estar aberta; só paredes, obstáculos nos dois lados ou a borda do tabuleiro proíbem. Teste do menu de validação reescrito. Detalhes em `Queda_Paredes_Buracos.md`.
 - Pendências conhecidas naquela etapa: a meta própria do armário foi implementada depois, conforme o fechamento abaixo. A prévia do criador de fases ainda precisa ser conferida para evitar repetir o móvel nas quatro células. A etapa da manhã não teve compilação batch; runtime e editor foram compilados via Roslyn nas revisões visuais seguintes.
 
+## Poções concluídas — 23/10/2026
+
+- Usuário marcou o elemento como **feito** e escolheu o nome **Poções**, substituindo Central de Rotas. Usar o nome novo nos menus, documentação e criação de elementos; não duplicar o antigo.
+- Ficha atual: `Pocoes.md`. Plano principal atualizado: elemento 7 concluído; próximo elemento a produzir é Malote. Campanha e balanceamento continuam em etapa própria.
+- Estado aprovado: quatro poções em 2×2, match adjacente por cor, especiais por célula/linha/coluna com múltiplos frascos possíveis, gotas independentes 1,38×, quebra do vidro em 0,17 s e suporte explodindo em madeira após o último frasco.
+- Nomes técnicos e IDs serializados `RouteCentral*`/`RoutePotions` preservados. Menus e títulos exibidos agora usam **Poções**.
+
 ## Fechamento 19/10/2026 — foguete e armário aprovados
 
 - **Foguete aprovado:** conservar exatamente `capsule-half-left/right.png`, com a altura visível do foguete ativado. Acrescentar somente o bocal metálico independente `rocket-engine-nozzle-v1.png`, largo (78% da altura do casco), em grande parte embutido. Não voltar às artes completas `capsule-propelled-half-v1` a `v4`, nem comprimir uma metade horizontalmente ou fazê-la menor que o foguete original. Chama e rastros nascem no bocal, atrás da peça, inclusive no vertical. Partículas paradas antes da configuração para evitar o aviso de duração. Detalhes em `Foguete_Propulsor.md`.
@@ -123,3 +130,21 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - Runtime e editor compilados sem erros usando Roslyn e referências atuais da Unity. Conferências em Play: foguete horizontal/vertical e saída da chama; armário com 36 sprites, meta inicial 36 e entrega de nove reduzindo para 27; portas fechadas e encaixe final capturados. O ciclo completo de cinco impactos não foi repetido após a última revisão visual. Erros de GUI preexistentes em `PopupWords.Update` e `CanvasHelper.Update` observados na sessão.
 - Capturas finais preservadas no Git em `Docs/Foguete_Propulsor_Unity.png`, `Docs/Armario_Pilhas_36_Unity.png` e `Docs/Armario_Fechado_Grid_Unity.png`. Logs, requests, caches e binários de compilação continuam ignorados.
 - Usuário aprovou o estado final e pediu salvar o progresso do dia e comitar. Incluir o trabalho local do dia em assets, scripts, fases, prefabs, fontes, metadados e documentação, com as variantes de arte preservadas. Nenhum push solicitado.
+
+## Bolsa do carteiro concluída — 23/10/2026
+
+- Usuário aprovou e encerrou a Bolsa do carteiro (antigo Malote). Estado atual documentado no topo de `Malote.md`; propostas de alvo móvel com dois impactos são históricas e foram substituídas.
+- Bolsa fixa gera pergaminhos por impactos válidos: abre/fecha em 0,9 s, brilho discreto, pergaminho fechado abrindo, pirueta e voo em arco em 0,72 s sem encolher. Meta manual Pergaminhos (`BagOpenings`) contabilizada na chegada; ícone aberto e proporcional no HUD.
+- Plano principal atualizado: oito elementos com implementação/protótipo, quatro a produzir (Encomenda Encantada, Tinteiro, Fita, Cofre). Pendências anteriores de validação, áudio e campanha não foram declaradas concluídas por esse aceite.
+- Próximo elemento: **Encomenda Encantada**. Tinteiro depende de definir o piso gerado, pois Tinta foi substituída pela Grama.
+
+## Fechamento do dia — 23/10/2026
+
+- Usuário solicitou salvar na memória e **comitar todo o trabalho pendente de hoje**, incluindo suas edições locais em fases, cena, lobby, fontes, assets e recuperação de cena. Branch `sincronizar-remoto`. Nenhum push solicitado.
+- **Poções aprovadas:** quebra alinhada de 0,17 s, gotas maiores e independentes, especiais atingem os frascos nas células correspondentes e o suporte quebra em madeira ao esvaziar. Estudos de metaballs e escoamento desenhado preservados como histórico, sem substituir a solução final aprovada.
+- **Madeira:** revisão de quebra de caixas, escaninho e suporte dos frascos com lascas e fragmentos, seguindo a direção de madeira explodindo da referência.
+- **Bolsa do carteiro aprovada:** bolsa frontal fixa sem alça, animação de 0,9 s, brilho dourado discreto e pergaminho saindo fechado, abrindo e voando com pirueta em arco até a meta em 0,72 s. Largura preservada durante o voo. Meta manual Pergaminhos (`BagOpenings`), contada na chegada, ícone aberto e proporcional no HUD. Laboratório em U com 19 bolsas. Não voltar ao malote móvel de dois impactos.
+- **Introdução de elementos:** protótipo atual usa Caixas nas fases 1 a 3, que o usuário considera bem preparadas. As estreias dos demais elementos ainda precisam de revisão; Ovo na fase 21 era apenas exemplo, não progressão aprovada.
+- Ordem da introdução: terminar o aviso flutuante de metas (`PrePlay.OnFinished`), escurecer a tela e mostrar a orientação. Último protótipo segue a imagem enviada: título Caixas! com contorno cereja/dourado, subtítulo de novidade, caixa grande iluminada ao centro e placa creme de borda cereja com explicação. Sem botão; leitura por 5 s e fade, liberando a partida ao terminar. Visual ainda em revisão; não tratar como aceite final. Referência e instruções em `Introducao_Elementos.md`.
+- Validação mais recente: runtime/editor compilados sem erros em `Logs/crate-intro-reference-build.log`; conferência visual final do novo aviso ainda pendente. Logs, requests e binários temporários permanecem ignorados.
+- Lista atual: oito elementos implementados/prototipados, quatro a produzir. Próximo: **Encomenda Encantada**; depois Tinteiro (resolver piso gerado), Fita e Cofre. Integração e balanceamento da campanha continuam separados dos aceites dos laboratórios.

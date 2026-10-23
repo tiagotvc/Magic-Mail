@@ -1,4 +1,30 @@
-# Central de Rotas — ficha inicial
+# Poções — histórico técnico
+
+**Feito e aceito pelo usuário em 23/10/2026.** Nome atual: **Poções**; nome anterior: Central de Rotas. Ficha de referência atual em [Pocoes.md](Pocoes.md). As seções abaixo preservam o histórico das revisões; descrições antigas de protótipo ou pendências não substituem esse aceite.
+
+## Referência Royal Match — estouro local e fragmentos independentes (23/10/2026)
+
+Acertos de especiais revisados: cada célula da central corresponde ao frasco naquela posição (superior esquerda verde, superior direita roxo, inferior esquerda vermelho, inferior direita azul). O foguete horizontal pode quebrar os dois frascos da linha atravessada; o vertical, os dois da coluna. Explosões usam igualmente as células efetivamente atingidas. Removidas a seleção do primeiro frasco intacto e a proteção global de 0,25 s, que descartava o segundo acerto. Acertar uma célula cujo frasco já quebrou não desvia o dano para outro. Guardas individuais evitam duplicar quebra/meta. Matches adjacentes mantêm a seleção pela identidade/cor e a deduplicação da combinação. A última quebra continua acionando a madeira do suporte.
+
+Validação desta regra: runtime/editor compilados sem erros; `Tools/RouteCentralHitChecks.cs` executado com Mono da Unity contra o assembly compilado passou 1290 verificações (16 estados de frascos quebrados, duas linhas/duas colunas em ambas as ordens, repetição, limites e identidades de match). As 53 verificações existentes de central/ovo também passaram; o runner fora do editor emite aviso de chamada nativa de Random durante a parte do ovo. O percurso visual do foguete e a integração de especiais ainda precisam de conferência em Play.
+
+Suporte final: por nova orientação do usuário, a estante agora quebra quando todos os quatro frascos terminam a ruptura. Usa a mesma explosão de madeira da quebra final das caixas, com som e brilho correspondentes. Uma guarda impede duplicação por impactos simultâneos. Antes do último frasco, permanece intacta; **Repetir teste** restaura o suporte e limpa seus efeitos. Isso substitui a orientação anterior de manter a estante após a última poção. Liberação das células e contagem da meta mantidas. Runtime compilado sem erros; aparência em Play pendente.
+
+Analisado o GIF enviado pelo usuário (`Potion_Bottle_Tutorial_Final.gif`, 170 quadros, 10 fps). Na quebra da poção, o respingo abre junto ao frasco e se fragmenta rapidamente; gotas e cacos percorrem trajetórias distintas. Não há um corpo contínuo de líquido atravessando toda a tela. A observação descreve o movimento; não identifica a implementação interna do Royal Match.
+
+Efeito padrão revisado: mantém o alinhamento por frasco e os oito primeiros quadros da ruptura (0,32 s). No quinto quadro, dispara 22 gotas afuniladas e oito fragmentos angulares de vidro com impulsos diferentes. O sprite da ruptura fica no local e desaparece ao concluir a abertura; não é arrastado para baixo. As gotas giram de acordo com sua velocidade e se alongam sem reduzir sua área bidimensional; os cacos giram independentemente. Fragmentos saem pela borda inferior, com limite defensivo de cinco segundos. Um mesh/material por impacto, sem dependências externas nem novas imagens.
+
+Teste: **Royal Aves → Elementos → Poções → Laboratório estouro e respingos no jogo**. Usa a fase jogável existente, HUD, matches e especiais. Variantes metaballs e desenhada continuam disponíveis para comparação. O novo efeito é também o padrão fora dessas variantes. Reset da prévia limpa respingos e libera os recursos próprios.
+
+Runtime/editor compilados sem erros. Verificadas geometrias dos fragmentos e trajetórias em diferentes escalas; resultado visual ainda requer conferência no Play. Os efeitos da madeira foram revisados na mesma direção, conforme `Madeira_Explosao.md`.
+
+## Revisão 23/10/2026 — conservar o volume durante a queda
+
+A ruptura agora termina no oitavo quadro, que ainda contém o respingo volumoso e os cacos. A queda transporta esse mesmo sprite inteiro, preservando pivô, escala, material, cor e ordem de desenho, sem reproduzir os quadros seguintes que eliminavam líquido. Todo o conjunto acelera para baixo por 0,72 s e só é removido após ultrapassar a borda inferior, com margem baseada na altura do sprite. Não há redução de escala nem fade. O tempo informado ao controlador acompanha os 0,32 s de ruptura mais 0,72 s de queda. Limitação: gotas e cacos caem como um conjunto, sem trajetórias independentes. Runtime compilado sem erros; conferência visual em Play pendente. Esta revisão substitui o uso dos quatro quadros finais descrito abaixo.
+
+## Revisão 23/10/2026 — alinhamento da quebra
+
+Corrigido o deslocamento do frasco entre os quadros da spritesheet: os pivôs agora compensam a posição do aro do gargalo, medida nos 12 quadros de ruptura, em vez de usar o centro de cada célula. Os quatro quadros de líquido herdam a compensação do último quadro de vidro para preservar a continuidade da transição. A arte original foi preservada. A correção remove a translação causada pelo desalinhamento; variações de desenho e inclinação presentes na arte permanecem. Conferência visual em Play pendente.
 
 ## Usar a própria tinta da sequência de quebra
 
@@ -46,11 +72,11 @@ A tinta não forma mais uma poça na célula. Cinco fios com gotas avançam para
 
 Camadas PNG transparentes produzidas com imagegen integrado e salvas em `Assets/RoyalAves/Art/Obstacles/RouteCentral/`: `CM_central_estante.png` e `CM_central_frascos.png`. A arte anterior permanece como referência. Prompt da estante: remover todos os frascos e reconstruir apenas o suporte lilás e as duas prateleiras douradas, mantendo alinhamento, proporção, canvas e transparência. Prompt dos frascos: remover todo o suporte e preservar apenas os quatro erlenmeyers verde/roxo/vermelho/azul no layout 2×2, reconstruindo suas bases de vidro, sem símbolos, bolhas ou fundo.
 
-Para reconstruir e repetir na tela real: **Royal Aves → Elementos → Central de Rotas → Laboratório no jogo**. As descrições de poça local e desaparecimento do suporte nas seções históricas abaixo foram substituídas por esta revisão.
+Para reconstruir e repetir na tela real: **Royal Aves → Elementos → Poções → Laboratório no jogo**. As descrições de poça local e desaparecimento do suporte nas seções históricas abaixo foram substituídas por esta revisão.
 
 ## Laboratório na tela real do jogo
 
-Menu **Royal Aves → Elementos → Central de Rotas → Laboratório no jogo**. Esse é o teste jogável, distinto de **Testar visual e tinta**, que continua sendo uma prévia isolada. O novo menu para o Play anterior, prepara os assets, abre a cena principal e carrega o laboratório com a interface normal do jogo. Há painel para reiniciar e desativar. A campanha não é sobrescrita.
+Menu **Royal Aves → Elementos → Poções → Laboratório no jogo**. Esse é o teste jogável, distinto de **Testar visual e tinta**, que continua sendo uma prévia isolada. O novo menu para o Play anterior, prepara os assets, abre a cena principal e carrega o laboratório com a interface normal do jogo. Há painel para reiniciar e desativar. A campanha não é sobrescrita.
 
 Tabuleiro 7×7, 35 jogadas, uma central fixa 2×2 nas colunas 3–4 e linhas 2–3 (coordenadas a partir de zero). Meta própria `RoutePotions`: quatro frascos quebrados, não uma central. Match ortogonal adjacente usa o tipo real da peça: trevo verde (ID 1), pena roxa (0), selo vermelho (2), envelope azul (6). Só quebra o frasco correspondente ainda intacto. Uma combinação é deduplicada por seu identificador, mesmo encostando em várias células.
 
@@ -87,7 +113,7 @@ Direção revisada pelo usuário: quatro erlenmeyers de poção verde, roxa, ver
 
 Prefab visual: `Assets/RoyalAves/Prefabs/Elements/RouteCentralVisual.prefab`. Script: `RouteCentralPrototype`; entrada pública `BreakFlask(0..3)`, protegida contra acionamento repetido. A geração pela Unity também inclui uma prévia estática para posicionamento no editor.
 
-Após a Unity recompilar, usar **Royal Aves → Elementos → Central de Rotas → Testar visual e tinta**. O menu gera uma cena isolada, abre e inicia o Play. Clicar em cada poção dispara estilhaços claros de vidro, pulso de impacto, cinco fios de líquido na cor correspondente e uma poça que se espalha e encolhe. O escoamento dura cerca de 2,3 s; os cacos seguem até sair pela parte inferior da câmera. Não aplica piso, dano nem bloqueio de tinta ao tabuleiro. Para repetir, parar e iniciar o Play.
+Após a Unity recompilar, usar **Royal Aves → Elementos → Poções → Testar visual e tinta**. O menu gera uma cena isolada, abre e inicia o Play. Clicar em cada poção dispara estilhaços claros de vidro, pulso de impacto, cinco fios de líquido na cor correspondente e uma poça que se espalha e encolhe. O escoamento dura cerca de 2,3 s; os cacos seguem até sair pela parte inferior da câmera. Não aplica piso, dano nem bloqueio de tinta ao tabuleiro. Para repetir, parar e iniciar o Play.
 
 Esta entrega é um protótipo visual interativo, sem filtro de matches por cor, meta ou pintura no Level Editor. A arte provisória é dividida em quadrantes: ao quebrar um frasco, também desaparece a parte do suporte naquele quadrante. Separar o suporte e os frascos na produção final. A campanha não foi alterada. Compilação runtime/editor verificada em `Logs/route-central-build.log`; o efeito ainda precisa de conferência visual em Play.
 

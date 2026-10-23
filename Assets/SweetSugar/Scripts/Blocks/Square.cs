@@ -1259,8 +1259,16 @@ namespace SweetSugar.Scripts.Blocks
         /// </summary>
         public void DestroyBlock(bool destroyTarget=false, Square impactOrigin = null)
         {
+            var openingBag = GetSubSquare().GetComponent<RoyalAves.Gameplay.BagOpeningStation>();
+            if (openingBag != null) {openingBag.HandleHit(impactOrigin ?? this);return;}
             var routeCentral = GetSubSquare().GetComponent<RoyalAves.Gameplay.RouteCentralCell>();
             if (routeCentral != null) { routeCentral.HandleHit(impactOrigin ?? this); return; }
+            var mailbag = Item as RoyalAves.Gameplay.ItemMailbag;
+            if (mailbag != null)
+            {
+                mailbag.HandleHit(impactOrigin ?? this);
+                return;
+            }
             // Keep the original hit when blockers forward damage: a second hop
             // must not turn a diagonal match into an adjacent hit on an egg.
             if (impactOrigin != null && Item is RoyalAves.Gameplay.ItemFlyingLetter &&
@@ -1579,6 +1587,7 @@ namespace SweetSugar.Scripts.Blocks
             item1 = RoyalAves.Gameplay.FrankingMachineLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.InkLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.RouteCentralLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.MailbagLaboratory.GetPrefab(sqType) ?? item1;
 #endif
             var layeredBlock = item1?.GetComponent<LayeredBlock>();
             if (layeredBlock != null)

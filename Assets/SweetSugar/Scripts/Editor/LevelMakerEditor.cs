@@ -1,4 +1,4 @@
-// // ©2015 - Present Candy Smith
+﻿// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -2168,7 +2168,7 @@ namespace SweetSugar.Scripts.Editor
                         EditorGUILayout.BeginHorizontal();
                         var icon = entry.sprites.FirstOrDefault(s => s.uiSprite)?.icon ?? entry.sprites.FirstOrDefault()?.icon;
                         if (icon != null) GUILayout.Label(icon.texture, GUILayout.Width(24), GUILayout.Height(24));
-                        EditorGUILayout.LabelField(definition.name == "MachineLetters" ? "Cartas" : "Quantidade", GUILayout.Width(90));
+                        EditorGUILayout.LabelField(definition.name == "BagOpenings" ? "Pergaminhos" : definition.name == "MachineLetters" ? "Cartas" : "Quantidade", GUILayout.Width(90));
                         EditorGUI.BeginChangeCheck();
                         int count = Mathf.Max(0, EditorGUILayout.IntField(entry.CountDrawer.count, GUILayout.Width(60)));
                         if (EditorGUI.EndChangeCheck())

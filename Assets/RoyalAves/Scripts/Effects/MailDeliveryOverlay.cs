@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SweetSugar.Scripts.TargetScripts.TargetSystem;
 using UnityEngine;
@@ -18,9 +18,9 @@ namespace RoyalAves.Effects
         readonly List<Image> wake = new List<Image>();
         readonly List<float> born = new List<float>();
 
-        public static MailDeliveryOverlay Create(SpriteRenderer source)
+        public static MailDeliveryOverlay Create(SpriteRenderer source, TargetGUI destination = null)
         {
-            var target = FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(t => t.image != null && t.image.sprite == source.sprite);
+            var target = destination ?? FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(t => t.image != null && t.image.sprite == source.sprite);
             var hud = target != null ? target.GetComponentInParent<Canvas>()?.rootCanvas : null;
             if (hud == null || Camera.main == null) return null;
             var root = new GameObject("LetterDeliveryAboveHUD", typeof(RectTransform), typeof(Canvas));
@@ -51,6 +51,8 @@ namespace RoyalAves.Effects
             Vector2 screen = camera.WorldToScreenPoint(source.transform.position);
             RectTransformUtility.ScreenPointToLocalPointInRectangle(area, screen,
                 hud.renderMode == RenderMode.ScreenSpaceOverlay ? null : hud.worldCamera, out var point);
+            letter.sprite = source.sprite;
+            letter.color = source.color;
             var rect = letter.rectTransform;
             rect.anchoredPosition = point;
             rect.localRotation = Quaternion.Euler(0, 0, source.transform.eulerAngles.z);

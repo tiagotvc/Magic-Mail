@@ -1,4 +1,4 @@
-# Correio Mágico — plano de implementação dos elementos
+﻿# Correio Mágico — plano de implementação dos elementos
 
 Data: 13/10/2026. Fonte: `Guia_Producao_Elementos_Correio_Magico.docx`, versão 1.0.
 
@@ -26,8 +26,8 @@ Tabela única de consulta para os 12 elementos. **Estreia** é a fase que ensina
 | 4 | Franqueadora (Máquina de Franquear) | Gerador fixo de uma célula, dentro do grid. Cada impacto adjacente ou especial aciona a alavanca e emite uma carta direto para a meta (`MachineLetters`, padrão 8); para ao completar. | 21 | 22–30, contrastando geração contínua com o estoque finito do Armário | **Aceita pelo usuário em 19/10/2026**, com meta própria no editor (quantidade digitada); resta acabamento sonoro |
 | 5 | Gelo | Overlay acima da peça: grosso → fino → removido, uma camada por impacto. Prende troca, queda e ativação de power-up. O match precisa incluir a peça congelada; especiais também quebram. A peça sobrevive ao impacto final. A meta conta a célula liberada. | 31 (fino) e 36 (grosso) | 37–45 com Caixa e Grama | Implementado; validação completa das regras em Play pendente |
 | 6 | Ovo mágico (substitui a Carta Voadora) | Obstáculo móvel de uma vida, não combinável; acompanha queda e teleporte. Match ortogonal adjacente ou especial quebra no tabuleiro; meta diminui na quebra, sem voo ao HUD. Clarão, anel de impacto e cacos até saírem da tela. Quantidade finita pintada; troca exige jogada válida. | 46 | 47–60 | **Concluído e aceito pelo usuário em 22/10/2026.** Ver `Ovo_Magico.md` |
-| 7 | Central de Rotas | Painel com compartimentos por cor/símbolo. Só aceita match da cor designada (ou power-up); cada entrega avança o compartimento até a conclusão. | 61 | 62–80 | Protótipo visual interativo de quatro poções, vidro e escoamento; regras de match, meta e editor pendentes. Ver `Central_de_Rotas.md` |
-| 8 | Malote | Alvo móvel com dois impactos: o primeiro rompe a cinta, o segundo coleta. Mantém a vida durante queda e portal. | 81 | 82–100, consolidando as cem primeiras | A produzir |
+| 7 | Poções | Obstáculo fixo 2×2 com quatro frascos. Match adjacente quebra o frasco da cor correspondente; especiais quebram os frascos nas células atingidas, podendo atingir mais de um. O último frasco destrói o suporte em lascas. Meta: quatro poções. | 61 | 62–80 | **Feito e aceito pelo usuário em 23/10/2026.** Ver `Pocoes.md`. Inserção na campanha em etapa própria |
+| 8 | Bolsa do carteiro (antigo Malote) | Bolsa fixa: match ortogonal adjacente ou especial abre a bolsa e emite um pergaminho. Ele sai fechado, abre, faz uma pirueta e voa em arco até a meta, que conta na chegada. Quantidade manual no Level Editor. | 81 | 82–100, consolidando as cem primeiras | **Feita e aceita pelo usuário em 23/10/2026.** Ver `Malote.md`. Campanha em etapa própria |
 | 9 | Encomenda Encantada | Proteção mágica: match não causa dano, só reação visual ineficaz; apenas power-up ou especial válido libera e coleta. | 101 | 102–120 | A produzir |
 | 10 | Tinteiro | Obstáculo fixo com cinco estados; ao quebrar espalha Tinta nas células elegíveis. Dependência aberta: a Tinta virou Grama, então é preciso decidir se volta a existir um piso de tinta próprio ou outro resultado. | 121, condicionada a essa decisão | 122–140 | A produzir; maior risco de retrabalho |
 | 11 | Fita | Overlay superior sobre peça ou obstáculo compatível; bloqueia troca, queda e ativação, e absorve o impacto que a remove. | 141 | 142–160 | A produzir; Fita + Gelo exige regra explícita de prioridade de camadas |
@@ -37,7 +37,7 @@ Sem estreias de 181 a 200: domínio do conjunto, alternando combinações, respi
 
 ### Inventário dos efeitos
 
-Seis elementos têm implementação/protótipo e efeitos próprios. Isso não significa campanha integrada ou aceite completo em Play.
+Oito elementos têm implementação/protótipo e efeitos próprios. O aceite da Bolsa do carteiro foi concluído em 23/10/2026. A integração na campanha e os acabamentos pendentes dos demais continuam separados do aceite de cada laboratório.
 
 | Elemento existente | Efeitos disponíveis | Trabalho restante |
 | --- | --- | --- |
@@ -46,13 +46,15 @@ Seis elementos têm implementação/protótipo e efeitos próprios. Isso não si
 | Armário 2×2 | Duas portas removíveis, dois nichos e 18 cartas por nicho; mantém cinco impactos. Queda das portas, entrega escalonada ao HUD e quebra vazia usam os efeitos existentes | Validar sequência completa em Play e meta automática de 36 cartas por armário |
 | Franqueadora 1×1 | Alavanca, compressão/rebote, ejeção e voo à meta | Aceita pelo usuário em 19/10/2026, com meta própria no editor; resta acabamento sonoro |
 | Gelo | Dois níveis; quebra em cinco cacos no grosso e sete no fino | Matches, especiais, cascatas, reinício, meta e som em Play |
+| Ovo mágico | Quebra local e cacos | Feito e aceito em 22/10/2026; campanha em etapa própria |
+| Poções | Quebra do vidro em 0,17 s, estouro local, gotas e cacos independentes; suporte explode após o último frasco | **Feito e aceito em 23/10/2026**; campanha em etapa própria |
+| Bolsa do carteiro | Abertura/fechamento em 0,9 s, brilho dourado discreto, pergaminho fechado abrindo, pirueta e voo em arco em 0,72 s; largura constante, ícone aberto na meta | **Feita e aceita em 23/10/2026**; campanha em etapa própria |
 
-**Ovo mágico concluído e aceito pelo usuário em 22/10/2026. Os seis elementos seguintes ainda precisam de regra fechada, protótipo e produção de efeitos:**
+**Ovo mágico, Poções e Bolsa do carteiro concluídos e aceitos pelo usuário. Restam quatro elementos a produzir:**
 
 | Elemento | Efeitos a produzir |
 | --- | --- |
-| Central de Rotas | Recepção por cor/símbolo, confirmação ou recusa, progresso dos compartimentos e conclusão |
-| Malote | Movimento/queda, rompimento da cinta, estado danificado e coleta final |
+
 | Encomenda Encantada | Proteção mágica, reação sem dano ao match, impacto válido de especial e liberação |
 | Tinteiro | Estados de dano, rachaduras, ruptura, respingos e aplicação no grid |
 | Fita | Fixação sobre conteúdo, tensão, dano, rasgo/descolamento e liberação |
@@ -60,7 +62,7 @@ Seis elementos têm implementação/protótipo e efeitos próprios. Isso não si
 
 Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando aplicável e integração com editor/objetivos. Reaproveitar o voo de cartas e a fragmentação existentes quando adequados; efeito compartilhado não comprova mecânica pronta.
 
-**Dependência adicional do Tinteiro:** a antiga Tinta Mágica foi substituída pela Grama (`Tinta_Magica.md`); `InkFloorLayer` usa atualmente o desfolhar da grama. Antes de produzir a ruptura, decidir se o Tinteiro volta a criar um piso próprio de Tinta ou terá outro resultado. Mantendo tinta, faltam também estados do piso, aplicação, limpeza, partículas, áudio e regra da meta. Esse é um pacote adicional aos sete elementos pendentes. A proposta original espalha tinta ao quebrar o Tinteiro; não prevê automaticamente propagação por jogada.
+**Dependência adicional do Tinteiro:** a antiga Tinta Mágica foi substituída pela Grama (`Tinta_Magica.md`); `InkFloorLayer` usa atualmente o desfolhar da grama. Antes de produzir a ruptura, decidir se o Tinteiro volta a criar um piso próprio de Tinta ou terá outro resultado. Mantendo tinta, faltam também estados do piso, aplicação, limpeza, partículas, áudio e regra da meta. Esse é um pacote adicional aos quatro elementos a produzir. A proposta original espalha tinta ao quebrar o Tinteiro; não prevê automaticamente propagação por jogada.
 
 ### Progressão proposta
 
@@ -71,8 +73,8 @@ Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando ap
 | 21–30 | Franqueadora na 21: geração de cartas versus estoque do armário |
 | 31–45 | Gelo fino na 31; grosso a partir da 36; depois combinar com Caixa e Grama |
 | 46–60 | Ovo mágico na 46: obstáculo móvel e quebra local |
-| 61–80 | Central de Rotas na 61: exigência por cor/símbolo |
-| 81–100 | Malote na 81: resistência em alvo móvel; consolidar as primeiras 100 |
+| 61–80 | Poções na 61: matches por cor e especiais pela linha/coluna atingida |
+| 81–100 | Bolsa do carteiro na 81: gerador fixo de pergaminhos; consolidar as primeiras 100 |
 | 101–120 | Encomenda Encantada na 101: planejar especiais |
 | 121–140 | Tinteiro na 121, condicionado à definição do piso gerado |
 | 141–160 | Fita na 141: bloqueio e liberação de conteúdos compatíveis |
@@ -93,13 +95,13 @@ Reservar pelo menos duas fases de reforço após cada estreia antes de combinaç
 ### Ordem recomendada de produção
 
 1. Concluir aceite em Play dos cinco elementos existentes e suas fases de ensino.
-2. Ovo mágico concluído → Central de Rotas → Malote.
+2. Ovo mágico, Poções e Bolsa do carteiro concluídos e aceitos.
 3. Encomenda Encantada, incluindo feedback de impacto inválido.
 4. Fechar Tinteiro/Tinta e validar aplicação e metas antes da arte final.
 5. Fita e conteúdos compatíveis; depois Cofre, reutilizando o filtro de dano da Encantada.
 6. Integrar e balancear a campanha até 200, com metas possíveis e reinício consistente.
 
-Próxima entrega: **Central de Rotas**, começando pela ficha de regras em `Central_de_Rotas.md` e depois pelo protótipo isolado. Ovo mágico concluído por aceite do usuário em 22/10/2026; a inserção na campanha segue etapa própria. Maior risco de retrabalho: **Tinteiro/Tinta**. Maior atenção às camadas: **Fita + Gelo**.
+Próxima entrega: **Encomenda Encantada**. Bolsa do carteiro concluída por aceite do usuário em 23/10/2026. A inserção na campanha segue etapa própria. Maior risco de retrabalho: **Tinteiro/Tinta**.
 
 ## Escopo e situação atual (plano original de 100 fases)
 
@@ -167,7 +169,7 @@ Primeiro implementar a Pilha por inteiro; depois o piso. Por decisão do usuári
 
 **Entrega:** fluxo de emissão/coleta integrado à interface, contador consistente durante animações e fases com recipientes múltiplos. A proposta de emissão direta precisa ser decidida antes de definir como a Máquina se relaciona com a Carta Voadora.
 
-## Etapa 3 — Carta Voadora, Central de Rotas e Malote
+## Etapa 3 — Carta Voadora, Poções e Malote
 
 Implementar nesta ordem para respeitar as estreias. Reutilizar o aprendizado de movimento da Carta no Malote.
 

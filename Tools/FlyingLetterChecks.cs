@@ -10,11 +10,11 @@ class FlyingLetterChecks
     static int Main()
     {
         string engine = @"C:\Program Files\Unity\Hub\Editor\6000.6.0f1\Editor\Data\Managed\UnityEngine";
-        string build = "Temp/FlyingLetterBuild";
+        string build = "Temp/bin/Debug";
         AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
         {
             string name = new AssemblyName(args.Name).Name + ".dll";
-            foreach (string folder in new[] { engine, Path.GetDirectoryName(engine), build })
+            foreach (string folder in new[] { engine, Path.GetDirectoryName(engine), build, "Library/ScriptAssemblies" })
             {
                 string path = Path.Combine(folder, name);
                 if (File.Exists(path)) return Assembly.LoadFrom(path);
@@ -58,8 +58,8 @@ class FlyingLetterChecks
         if ((int)select.Invoke(null, new object[] { done, 1, false }) != -1)
             throw new Exception("Broken potion accepted again.");
         checks++;
-        if ((int)select.Invoke(null, new object[] { done, -1, true }) != 1)
-            throw new Exception("Special must select first unbroken potion.");
+        if ((int)select.Invoke(null, new object[] { done, -1, true }) != -1)
+            throw new Exception("Special without coordinates selected an unrelated potion.");
         checks++;
         for (int i = 0; i < 4; i++) done[i] = true;
         if ((int)select.Invoke(null, new object[] { done, -1, true }) != -1)
@@ -127,7 +127,7 @@ class FlyingLetterChecks
         if (letterType.GetMethod("LateUpdate", BindingFlags.Instance | BindingFlags.NonPublic) != null)
             throw new Exception("Retired floating behavior still exists.");
         checks++;
-        string result = "PASS: " + checks + " compiled checks: 15 Route Central cases (four sprite identities accepted; yellow/ink/blue quill rejected; four color mappings; wrong color; broken potion; special selection; completed central); 38 Magic Egg checks including 25 adjacency positions, finite authored count, idempotent break, special hits, stable IDs and retired behavior. Native movement/break need Play Mode.";
+        string result = "PASS: " + checks + " compiled checks: 15 Route Central cases (four sprite identities accepted; yellow/ink/blue quill rejected; four color mappings; wrong color; broken potion; specials without coordinates rejected; completed central); 38 Magic Egg checks including 25 adjacency positions, finite authored count, idempotent break, special hits, stable IDs and retired behavior. Native movement/break need Play Mode.";
         File.WriteAllText("Logs/flying-letter-managed-tests.result", result);
         Console.WriteLine(result);
         return 0;

@@ -1,4 +1,4 @@
-// // ©2015 - Present Candy Smith
+﻿// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -27,6 +27,9 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor.Editor
             if (name == "IceBlock") return "Gelo";
             if (name == "MachineLetters") return "Cartas da franqueadora";
             if (name == "FlyingLetters") return "Ovo mágico";
+            if (name == "RoutePotions") return "Poções";
+            if (name == "Mailbags") return "Malotes";
+            if (name == "BagOpenings") return "Pergaminhos";
             if (name == "MailCubby") return "Cartas do armário postal";
             if (name == "SolidBlock") return "Caixa (SolidBlock)";
             return name;
