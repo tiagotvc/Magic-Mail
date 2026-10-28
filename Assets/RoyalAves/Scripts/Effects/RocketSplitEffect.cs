@@ -9,6 +9,17 @@ namespace RoyalAves.Effects
     // metade sai voando pra um lado da linha/coluna soltando um rastro de chama, no lugar de simplesmente sumir.
     public static class RocketSplitEffect
     {
+        static readonly HashSet<GameObject> activeFlights = new HashSet<GameObject>();
+        public static bool HasActiveFlights
+        {
+            get
+            {
+                activeFlights.RemoveWhere(root => root == null);
+                return activeFlights.Count > 0;
+            }
+        }
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetFlights() => activeFlights.Clear();
         const float ExitOvershoot = 0.8f;
         const float TrailTail = 0.5f; // keeps the effect object alive long enough for the last particle to fade
         // Multiplies the flame particles' size. Their Flame object is scaled by RestScale, which shrinks them a lot.
@@ -56,6 +67,7 @@ namespace RoyalAves.Effects
             if (spriteToHide != null) spriteToHide.enabled = false;
 
             var root = new GameObject("RocketSplitFX");
+            activeFlights.Add(root);
             root.transform.position = origin;
 
             var overshootA = stopAtA ? 0f : ExitOvershoot;

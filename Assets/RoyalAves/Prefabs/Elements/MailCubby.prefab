@@ -1790,8 +1790,9 @@ MonoBehaviour:
   - {fileID: 5122570072748041291}
   counter: {fileID: 7234404667975824219}
   collectionDestination: {fileID: 0}
-  emissionDuration: 0.95
-  letterStagger: 0.12
+  emissionDuration: 0.22
+  letterStagger: 0.01
+  playbackSpeed: 1
   launchDuration: 0
   launchDisplacement: {x: 0, y: 0, z: 0}
   launchStartYScale: 1

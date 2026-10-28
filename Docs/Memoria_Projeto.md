@@ -1,4 +1,15 @@
-﻿# Memória do projeto — Magic Mail
+# Memória do projeto — Magic Mail
+
+Regra vigente de franqueadoras: sempre nas extremidades do grid, em grupos fechando fileiras, colunas ou U. Fases 21-30 atualizadas; ver Maquina_Franquear.md e Campanha_Fases_11_a_30.md. Nao posicionar unidades soltas no centro.
+
+Campanha ampliada: fases 11-30 aplicadas. Fontes atuais e verificacoes em [Campanha_Fases_11_a_30.md](Campanha_Fases_11_a_30.md). Armario estreia na 11; franqueadora na 21; ambos com apresentacao. Desafios 15/20/25/30. Bloco aprovado 1-10 preservado; estrelas 11-30 iniciais, pendentes de playtest. Os registros abaixo de fases 11-100 ainda legadas sao historicos.
+
+REGRA VIGENTE (28/10/2026): desafios a cada cinco fases. Parametros atuais de 1-10 em [Campanha_Ciclos_de_Cinco.md](Campanha_Ciclos_de_Cinco.md); essa revisao substitui os movimentos, alvos, camadas e papeis historicos abaixo.
+
+## REGRA VIGENTE: estrelas por pontos (28/10/2026)
+
+Usar 1, 2 ou 3 estrelas por nivel, conforme star1/star2/star3 e a pontuacao final incluindo bonus de movimentos. Substitui qualquer registro anterior de uma estrela fixa. Repeticoes melhores creditam apenas a diferenca; preservar o melhor resultado. Ver Estrelas_Por_Pontuacao.md.
+
 
 ## Sessão 14/10/2026
 
@@ -148,3 +159,12 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - Ordem da introdução: terminar o aviso flutuante de metas (`PrePlay.OnFinished`), escurecer a tela e mostrar a orientação. Último protótipo segue a imagem enviada: título Caixas! com contorno cereja/dourado, subtítulo de novidade, caixa grande iluminada ao centro e placa creme de borda cereja com explicação. Sem botão; leitura por 5 s e fade, liberando a partida ao terminar. Visual ainda em revisão; não tratar como aceite final. Referência e instruções em `Introducao_Elementos.md`.
 - Validação mais recente: runtime/editor compilados sem erros em `Logs/crate-intro-reference-build.log`; conferência visual final do novo aviso ainda pendente. Logs, requests e binários temporários permanecem ignorados.
 - Lista atual: oito elementos implementados/prototipados, quatro a produzir. Próximo: **Encomenda Encantada**; depois Tinteiro (resolver piso gerado), Fita e Cofre. Integração e balanceamento da campanha continuam separados dos aceites dos laboratórios.
+
+## Regra permanente de campanha ? 23/10/2026
+
+Sempre mostrar a tela de apresenta??o combinada quando um elemento novo estreia. Nome, arte e instru??o pr?prios; ap?s as metas iniciais, com escurecimento, bloqueio da partida, cinco segundos e fade, sem bot?o. A estreia e a apresenta??o fazem parte da mesma entrega. Grama ligada ? fase 4. Ver Introducao_Elementos.md.
+
+
+## Variedade de formas ? 28/10/2026
+
+Feedback do usu?rio: n?o repetir quadrados perfeitos em todos os n?veis. Planejar silhuetas distintas (recortes, faixas, leque, cruz, H e ampulheta), al?m de alvos e movimentos. Fases 4?10 revisadas com c?lulas ausentes reais e entradas de reposi??o nos segmentos verticais. Ver Campanha_Fases_4_a_10.md e Campanha_Formas_4_a_10.svg. Manter apresenta??o aprovada nas estreias de elementos.

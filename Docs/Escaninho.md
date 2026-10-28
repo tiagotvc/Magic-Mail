@@ -2,6 +2,23 @@
 
 ## Quebra da madeira revisada — 23/10/2026
 
+## Ritmo acelerado do armário
+
+**Preferência final do usuário:** manter somente a entrega das cartas acelerada. Abertura, queda das portas, reação do móvel e quebra/liberação final voltam à velocidade original. Configuração atual do prefab e do gerador: `playbackSpeed = 1`, `emissionDuration = 0,22` e `letterStagger = 0,01`. Isso preserva exatamente o voo de 0,22 s e o intervalo nominal de 0,01 s da entrega aprovada, sem o multiplicador 2× nos demais movimentos. Meta e quantidade de cartas permanecem iguais. As revisões abaixo são históricas.
+
+Revisão focada na entrega, por feedback do usuário: `emissionDuration = 0,44` e `letterStagger = 0,02`, mantendo velocidade 2×. Voo efetivo de 0,22 s e intervalo nominal de 0,01 s; lote de nove cartas em aproximadamente 0,4–0,5 s, dependendo dos frames. Abertura e quebra mantêm o ajuste anterior. A meta continua contando na chegada real de cada carta; não é antecipada para encurtar o fluxo. Prefab e gerador atualizados juntos. Os tempos listados abaixo descrevem a primeira revisão de velocidade e foram substituídos para a entrega.
+
+Velocidade do armário ajustada para **2×** no prefab visual e no gerador `MailCubbyTools`. O componente compartilhado `MailCubbyAnimation` mantém velocidade padrão 1×; a franqueadora conserva seu ritmo.
+
+- Reação à retirada de cartas: 0,13 → 0,065 s.
+- Intervalo entre as nove cartas: 0,12 → 0,06 s.
+- Voo de cada carta: 0,95 → 0,475 s.
+- Um lote de nove cartas: aproximadamente 2,04 → 1,02 s, incluindo reação, espaçamento e último voo (antes da quantização por frames).
+- Reação da abertura: 0,18 → 0,09 s; queda das portas acompanha a mesma aceleração.
+- Sequência de quebra/liberação final: velocidade dobrada, mantendo o multiplicador global de feedback existente. Lascas decorativas mantêm seu comportamento e não seguram a liberação.
+
+A meta continua sendo decrementada na chegada de cada carta; continuam sendo 36 cartas por armário. O estoque, os cinco impactos e as barreiras de conclusão foram preservados. Runtime/editor compilados via MSBuild; conferência visual no Unity pendente. Backup do prefab anterior em `Backups/MailCubby-before-speed-2x`.
+
 A quebra final agora dispara pedaços angulares de tábuas com veios, faces claras/escuras, impulso radial e rotação própria, mais resíduos pequenos e breves. São 28 pedaços e 10 resíduos; não usa mais os recortes arredondados do PNG. Mantidos portas inteiras no primeiro impacto, entrega de cartas e callback final de liberação. Detalhes e validação em [Madeira_Explosao.md](Madeira_Explosao.md).
 
 ## Direção definida em 14/10/2026

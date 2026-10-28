@@ -1,5 +1,5 @@
 // Level complete screen of Correio Mágico, as in the web prototype: the envelope drops in, wobbles, opens frame by
-// frame and a star flies out of it. Every win shows it; only the first win of a level adds the star to the lobby.
+// frame and a star flies out of it. Every win shows it; the rating follows the final score and improved replays credit only newly earned stars.
 // Timeline in seconds after the card appears, from royal-aves Data/animations.json (envelopeOpen).
 using System;
 using System.Collections;
@@ -52,21 +52,28 @@ namespace RoyalAves.Meta
             rewardLine.enableAutoSizing = true;
             rewardLine.fontSizeMax = rewardLine.fontSize;
             rewardLine.fontSizeMin = rewardLine.fontSize * 0.6f;
+            levelTag.enableAutoSizing = true;
+            levelTag.fontSizeMax = levelTag.fontSize;
+            levelTag.fontSizeMin = levelTag.fontSize * .6f;
+            rewardTotal.enableAutoSizing = true;
+            rewardTotal.fontSizeMax = rewardTotal.fontSize;
+            rewardTotal.fontSizeMin = rewardTotal.fontSize * .6f;
             continueButton.onClick.AddListener(() => Choose(onContinue));
             replayButton.onClick.AddListener(() => Choose(onReplay));
         }
 
-        public void Show(int level, bool firstWin, int coins, int starsAvailable, bool wonTense, Action continueAction, Action replayAction)
+        public void Show(int level, int earnedStars, int addedStars, int score, int coins, int starsAvailable, bool wonTense, Action continueAction, Action replayAction)
         {
             onContinue = continueAction;
             onReplay = replayAction;
             if (manager != null) manager.Mood = wonTense ? ManagerMood.Relieved : ManagerMood.Victory;
-            levelTag.text = $"NÍVEL {level}";
+            levelTag.text = $"NÍVEL {level} · {earnedStars}/3 estrelas";
             var coinText = CoinFormat.Short(coins) + " moedas";
-            rewardLine.text = firstWin
-                ? (coins > 0 ? "+1 estrela e " + coinText : "+1 estrela")
-                : (coins > 0 ? "+" + coinText : "Estrela já conquistada");
-            rewardTotal.text = $"{starsAvailable} disponíveis para restauração";
+            var starText = addedStars == 1 ? "+1 estrela" : $"+{addedStars} estrelas";
+            rewardLine.text = addedStars > 0
+                ? starText + (coins > 0 ? " e " + coinText : "")
+                : (coins > 0 ? "+" + coinText : "Melhor avaliação já conquistada");
+            rewardTotal.text = $"{score:N0} pontos · {starsAvailable} estrelas disponíveis";
             gameObject.SetActive(true);
             StopAllCoroutines();
             StartCoroutine(Animate());

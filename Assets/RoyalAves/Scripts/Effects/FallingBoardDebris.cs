@@ -275,7 +275,7 @@ namespace RoyalAves.Effects
             return mesh;
         }
 
-        public static void DropDoor(SpriteRenderer source, float direction)
+        public static void DropDoor(SpriteRenderer source, float direction, float playbackSpeed = 1f)
         {
             if (source == null) return;
             var effect = Create(source, "DetachedFallingCabinetDoor");
@@ -288,7 +288,7 @@ namespace RoyalAves.Effects
             renderer.sortingOrder = PowerUpEffectOrder.Value + 4;
             effect.pieces.Add(new Piece { transform = node.transform, origin = source.transform.position,
                 velocity = new Vector3(direction * 0.65f, 1.45f), spin = direction * 125f });
-            effect.StartCoroutine(effect.Fall(9.5f));
+            effect.StartCoroutine(effect.Fall(9.5f, speed: Mathf.Max(0.1f, playbackSpeed)));
         }
 
         static FallingBoardDebris Create(SpriteRenderer source, string name)

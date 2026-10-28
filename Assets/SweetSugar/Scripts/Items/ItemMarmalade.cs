@@ -52,7 +52,7 @@ namespace SweetSugar.Scripts.Items
             if(!noMarmaladeLaunch && !destroyStarted)
             {
                 destroyStarted = true;
-                SoundBase.Instance?.PlayOneShot(SoundBase.Instance.helixLaunch);
+                // Each flying propeller owns its sound, so it stops at that propeller's arrival.
                 CreateMarmaladeWithType(switchItemType);
             }
             if (switchItemType == ItemsTypes.MARMALADE)

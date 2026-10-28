@@ -64,9 +64,19 @@ namespace SweetSugar.Scripts.Items
         Coroutine spinRoutine;
         Vector2 launchDirection;
         int flightTweenId = -1;
+        AudioSource flightAudio;
+        float flightAudioVolume;
+        Coroutine flightAudioFade;
+        const float TargetSearchTimeout = 2f;
+        const float MaxFlightLifetime = 6f;
+        float flightDeadline;
+        bool reacquiringTarget;
 
         public void StartFly()
         {
+            flightDeadline = Time.time + MaxFlightLifetime;
+            reacquiringTarget = false;
+            StartFlightAudio();
             particles.SetActive(true);
             // Correio Mágico: "Item mask" (a camada real cadastrada no projeto tem espaço no nome - "ItemMask" não
             // existia, então a hélice nunca saía da camada "Default" e ficava empatada com os efeitos de match
@@ -80,10 +90,12 @@ namespace SweetSugar.Scripts.Items
             {
                 foreach (var target in targets)
                 {
-                    var item = LevelManager.THIS.field.GetSquare(target.x, target.y).Item;
-                    if (item.marmaladeTarget == null && TargetItem == null)
+                    var square = LevelManager.THIS.field.GetSquare(target.x, target.y);
+                    IMarmaladeTargetable requested = square != null ? square.Item : null;
+                    if (requested == null) requested = square;
+                    if (IsValidTarget(requested) && requested.GetMarmaladeTarget == null && TargetItem == null)
                     {
-                        TargetItem = item;
+                        TargetItem = requested;
                         TargetItem.GetMarmaladeTarget = gameObject;
                     }
                 }
@@ -110,10 +122,13 @@ namespace SweetSugar.Scripts.Items
 
         private void OnDisable()
         {
+            StopFlightAudio();
+            canBeStarted = false;
+            reacquiringTarget = false;
             reachedTarget = false;
             LeanTween.Framework.LeanTween.cancel(gameObject);
-            if (TargetItem != null) TargetItem.GetMarmaladeTarget = null;
-            TargetItem = null;
+            flightTweenId = -1;
+            ReleaseTarget();
         
             StopAllCoroutines();
             spinRoutine = null;
@@ -127,9 +142,12 @@ namespace SweetSugar.Scripts.Items
 
         private void ReachItem()
         {
-            if (TargetItem != null && TargetItem.GetGameObject.activeSelf)
+            if (!canBeStarted || !isActiveAndEnabled) return;
+            if (!IsValidTarget(TargetItem)) { ReacquireTarget(); return; }
+            StopFlightAudio();
+            try
             {
-                if (TargetItem.GetType().BaseType==typeof(Item))
+                if (TargetItem is Item)
                 {
                     if (setJelly)
                         TargetItem.GetItem.square.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
@@ -155,22 +173,56 @@ namespace SweetSugar.Scripts.Items
                 else
                 {
                     var square = TargetItem.GetGameObject.GetComponent<Square>();
-                    square.DestroyBlock();
+                    var machine = square.GetSubSquare().GetComponent<RoyalAves.Gameplay.FrankingMachineCell>();
+                    if (machine != null) machine.AcceptImpact(manual: true);
+                    else square.DestroyBlock();
                     if (setJelly)
                         square.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
                     reachedTarget = true;
                     callback?.Invoke();
                 }
             }
-
-            DestroyMarmalade();
+            finally { DestroyMarmalade(); }
         }
 
         private void DestroyMarmalade()
         {
-            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
-            LevelManager.THIS.FindMatches();
+            if (explosionPrefab != null) Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            if (LevelManager.THIS != null) LevelManager.THIS.FindMatches();
             gameObject.SetActive(false);
+        }
+
+        void Update()
+        {
+            if (canBeStarted && Time.time >= flightDeadline) DestroyMarmalade();
+        }
+
+        void ReleaseTarget()
+        {
+            if (TargetItem is UnityEngine.Object owner && owner != null && TargetItem.GetMarmaladeTarget == gameObject)
+                TargetItem.GetMarmaladeTarget = null;
+            TargetItem = null;
+        }
+
+        static bool IsValidTarget(IMarmaladeTargetable target)
+        {
+            if (!(target is UnityEngine.Object owner) || owner == null) return false;
+            var obj = target.GetGameObject;
+            if (obj == null || !obj.activeInHierarchy) return false;
+            if (target is Item item) return !item.destroying && !item.IsMulticolorReserved;
+            if (target is Square square)
+            {
+                if (square.IsNone()) return false;
+                var top = square.GetSubSquare();
+                var machine = top.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>();
+                if (machine != null) return machine.CanAcceptPowerUpHit;
+                var cabinet = top.GetComponent<RoyalAves.Gameplay.MailCubbyCell>();
+                if (cabinet != null) return cabinet.Owner != null && !cabinet.Owner.IsBreaking &&
+                    !cabinet.Owner.IsCleared && cabinet.Owner.Animation.CanAcceptHit;
+                var crate = top.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
+                return crate == null || !crate.IsFinishing;
+            }
+            return true;
         }
 
         internal void SetDirection(Vector2 v)
@@ -188,12 +240,7 @@ namespace SweetSugar.Scripts.Items
         IEnumerator WindUpThenFindTarget()
         {
             yield return new WaitForSeconds(WindUpTime);
-            while (TargetItem == null)
-            {
-                FindTarget();
-                yield return new WaitForSeconds(.01f);
-            }
-            FlyToTarget();
+            yield return AcquireTargetAndFly();
         }
 
         // One direct arc from here to the piece it's going to destroy, instead of flying to a vague point first and
@@ -208,6 +255,9 @@ namespace SweetSugar.Scripts.Items
             // instead of overlapping, even when they end up going for the same general area.
             var apex = Vector3.Lerp(start, end, 0.5f) + Vector3.up * lift + (Vector3)(launchDirection * 0.6f);
             var flightTime = Mathf.Clamp(distance / FlightSpeed, MinFlightTime, MaxFlightTime);
+            HoldFlightAudio();
+            if (flightAudio != null && flightAudio.isPlaying)
+                flightAudioFade = StartCoroutine(FadeFlightAudio(flightTime));
             // The spline ignores the first and last points as actual path (they only set the tangent), so start and
             // end are each doubled to make sure the piece truly begins and ends exactly there.
             flightTweenId = LeanTween.Framework.LeanTween.moveSpline(gameObject, new[] { start, start, apex, end, end }, flightTime)
@@ -232,23 +282,100 @@ namespace SweetSugar.Scripts.Items
         // (the rock and the propeller blur keep going) and head for a new one once found, from wherever it is now.
         void CheckTargetUpdate(float f)
         {
-            if ((TargetItem.GetItem?.destroying ?? false) || TargetItem == null || !TargetItem.GetGameObject.activeSelf)
+            if (!IsValidTarget(TargetItem)) ReacquireTarget();
+        }
+
+        void ReacquireTarget()
+        {
+            if (reacquiringTarget || !canBeStarted || !isActiveAndEnabled) return;
+            reacquiringTarget = true;
+            ReleaseTarget();
+            HoldFlightAudio();
+            if (flightAudio != null && flightAudio.clip != null && !flightAudio.isPlaying)
+                flightAudio.Play();
+            if (flightTweenId >= 0) LeanTween.Framework.LeanTween.pause(flightTweenId);
+            StartCoroutine(ReacquireTargetThenFly());
+        }
+
+        IEnumerator AcquireTargetAndFly()
+        {
+            float deadline = Mathf.Min(Time.time + TargetSearchTimeout, flightDeadline);
+            while (Time.time < deadline)
             {
-                LeanTween.Framework.LeanTween.pause(flightTweenId);
-                TargetItem = null;
-                StartCoroutine(ReacquireTargetThenFly());
+                if (!IsValidTarget(TargetItem))
+                {
+                    ReleaseTarget();
+                    FindTarget();
+                }
+                if (IsValidTarget(TargetItem))
+                {
+                    reacquiringTarget = false;
+                    FlyToTarget();
+                    yield break;
+                }
+                yield return null;
             }
+            reacquiringTarget = false;
+#if UNITY_EDITOR
+            Debug.LogWarning($"[Helix target] level={LevelManager.THIS.currentLevel} search expired without a valid unreserved target; state={LevelManager.THIS.gameStatus}", this);
+#endif
+            DestroyMarmalade();
         }
 
         IEnumerator ReacquireTargetThenFly()
         {
-            while (TargetItem == null)
+            if (flightTweenId >= 0) LeanTween.Framework.LeanTween.cancel(flightTweenId);
+            yield return AcquireTargetAndFly();
+        }
+
+        void StartFlightAudio()
+        {
+            StopFlightAudio();
+            var sound = SoundBase.Instance;
+            if (sound == null || sound.helixLaunch == null) return;
+            var sharedSource = sound.GetComponent<AudioSource>();
+            if (sharedSource == null) return;
+            if (flightAudio == null) flightAudio = gameObject.AddComponent<AudioSource>();
+            flightAudio.playOnAwake = false;
+            flightAudio.clip = sound.helixLaunch;
+            flightAudio.outputAudioMixerGroup = sharedSource.outputAudioMixerGroup;
+            flightAudioVolume = sharedSource.volume;
+            flightAudio.volume = flightAudioVolume;
+            flightAudio.mute = sharedSource.mute;
+            flightAudio.priority = sharedSource.priority;
+            flightAudio.spatialBlend = 0f;
+            flightAudio.pitch = 1f;
+            // Keep the original timbre, including when a target changes and the flight takes longer.
+            flightAudio.loop = true;
+            flightAudio.Play();
+        }
+
+        void HoldFlightAudio()
+        {
+            if (flightAudioFade != null) StopCoroutine(flightAudioFade);
+            flightAudioFade = null;
+            if (flightAudio != null) flightAudio.volume = flightAudioVolume;
+        }
+
+        IEnumerator FadeFlightAudio(float flightTime)
+        {
+            const float fadeDuration = .08f;
+            float elapsed = 0f;
+            while (elapsed < flightTime)
             {
-                FindTarget();
-                yield return new WaitForSeconds(.01f);
+                elapsed += Time.deltaTime;
+                if (flightAudio != null)
+                    flightAudio.volume = flightAudioVolume * Mathf.Clamp01((flightTime - elapsed) / fadeDuration);
+                yield return null;
             }
-            LeanTween.Framework.LeanTween.cancel(flightTweenId);
-            FlyToTarget();
+            if (flightAudio != null) flightAudio.Stop();
+            flightAudioFade = null;
+        }
+
+        void StopFlightAudio()
+        {
+            HoldFlightAudio();
+            if (flightAudio != null) flightAudio.Stop();
         }
 
         // Candies on the board that still count toward one of the level's "collect/match" goals.
@@ -265,8 +392,49 @@ namespace SweetSugar.Scripts.Items
                 .MarmaladeCondition(gameObject, thisItem);
         }
 
+        // Goal names do not necessarily name a SquareTypes value (e.g. MachineLetters).
+        public static bool TryGetGoalSquareType(string goalName, out SquareTypes type)
+        {
+            if (goalName == "MachineLetters") { type = SquareTypes.FrankingMachine; return true; }
+            return Enum.TryParse(goalName, out type) && Enum.IsDefined(typeof(SquareTypes), type);
+        }
+
+        IEnumerable<IMarmaladeTargetable> FindGoalSquares()
+        {
+            foreach (var goal in LevelManager.THIS.levelData.TargetCounters)
+            {
+                if (goal.IsTargetStars() || goal.GetCount() <= 0 ||
+                    !TryGetGoalSquareType(goal.targetLevel.name, out var type)) continue;
+                foreach (var square in LevelManager.THIS.field.squaresArray)
+                {
+                    if (square == null || square.IsNone()) continue;
+                    var top = square.GetSubSquare();
+                    // Campaign furniture uses the blocking flags of the old solid-block prefab.
+                    // Its gameplay component, not that prefab's serialized type, identifies the goal.
+                    bool matches = type == SquareTypes.FrankingMachine
+                        ? top.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>() != null
+                        : type == SquareTypes.MailCubby
+                            ? top.GetComponent<RoyalAves.Gameplay.MailCubbyCell>() != null
+                            : square.type == type || square.subSquares.Any(layer => layer != null && layer.type == type);
+                    if (matches && IsValidTarget(square)) yield return square;
+                }
+            }
+        }
+
         private void FindTarget()
         {
+            var goalSquares = FindGoalSquares().Distinct().MarmaladeCondition(gameObject, thisItem)
+                .Where(IsValidTarget)
+                .OrderByDescending(target => target.GetGameObject.GetComponent<Square>()?.GetSubSquare()
+                    .GetComponent<RoyalAves.Gameplay.FrankingMachineCell>() != null)
+                .ThenByDescending(target => Vector3.Distance(transform.position, target.GetGameObject.transform.position))
+                .ToArray();
+            if (goalSquares.Length > 0)
+            {
+                TargetItem = goalSquares[0];
+                TargetItem.GetMarmaladeTarget = gameObject;
+                return;
+            }
             // The piece it destroys is always one of the level's current objectives, when there's one left on the
             // board. Prefers a farther one, so the flight is actually visible, instead of grabbing whatever's
             // closest. Falls back to the old priority chain (obstacles, ingredients, lonely items...) only when the
@@ -281,24 +449,6 @@ namespace SweetSugar.Scripts.Items
             }
 
             IEnumerable<IMarmaladeTargetable> items = Enumerable.Empty<IMarmaladeTargetable>();
-            //Check square targets
-            if (!items.Any())
-            {
-                //looking for another item which is target of the current level 
-                var targetContainer = LevelManager.THIS.levelData.GetFirstTarget(true);
-                if (targetContainer != null)
-                {
-                    if (targetContainer.prefabs.FirstOrDefault()?.GetComponent<Square>() != null ||
-                        targetContainer.prefabs.FirstOrDefault()?.GetComponent<LayeredBlock>() != null)
-                        items = LevelManager.THIS.field.squaresArray.Where(i => i.type == (SquareTypes) Enum.Parse(typeof(SquareTypes), targetContainer.name))
-                            .Select(i => i.Item).Where(i => !(i is null) && ArgItems(i)).MarmaladeCondition(gameObject, thisItem);
-
-                    if (targetContainer.name == "Marshmello")
-                    {
-                        items = LevelManager.THIS.field.squaresArray.Where(i => i.Item != null && i.subSquares.Count > 1 && i.subSquares.Any(i => i.type == SquareTypes.BigBlock)).Select(i=>i.Item);
-                    }
-                }
-            }         
             if (!items.Any())
                 items = LevelManager.THIS.field.GetLonelyItemsOrCage()
                 .Where(i => ArgItems(i));
@@ -306,6 +456,7 @@ namespace SweetSugar.Scripts.Items
             if (setJelly)
                 items = LevelManager.THIS.field.squaresArray.Where(i => i.type != SquareTypes.NONE && i.type != SquareTypes.JellyBlock).Select(i => i.Item).Where(i =>
                     i != null && i.Explodable).MarmaladeCondition(gameObject, thisItem);
+            items = EligibleTargets(items);
             //trying to find ingredients
             if (!items.Any())
             {
@@ -314,6 +465,7 @@ namespace SweetSugar.Scripts.Items
                 if (list.Any())
                     items = list.Where(i=>i.square.nextSquare != null && i.square.nextSquare.Item && i.square.nextSquare.Item.Explodable).Select(i => i.square.nextSquare?.Item).MarmaladeCondition(gameObject, thisItem);
             }
+            items = EligibleTargets(items);
 
  
             
@@ -322,17 +474,25 @@ namespace SweetSugar.Scripts.Items
             {
                 items = LevelManager.THIS.field.squaresArray.Where(i => i.IsObstacle() && i.IsHaveDestroybleObstacle() && i.GetSubSquare().type != SquareTypes.ChocoSpread);
             }
+            // Unavailable machines and targets reserved by another propeller must not prevent
+            // the fallback to ordinary pieces, especially after the final objective is complete.
+            items = EligibleTargets(items);
             //Looking through all items
             if (items == null || !items.Any())
             {
                 items = LevelManager.THIS.field.GetItems().Where(i => i.Explodable).MarmaladeCondition(gameObject, thisItem);
             }
 
-            TargetItem = items.MarmaladeCondition(gameObject, thisItem).OrderBy(i => Vector3.Distance(transform.position, i.GetGameObject.transform.position) - (float)(i.GetItem?.currentType??0)).FirstOrDefault();
+            TargetItem = items.Where(IsValidTarget).MarmaladeCondition(gameObject, thisItem).OrderBy(i => Vector3.Distance(transform.position, i.GetGameObject.transform.position) - (float)(i.GetItem?.currentType??0)).FirstOrDefault();
             if (TargetItem != null && (Object)TargetItem != thisItem && (TargetItem.GetMarmaladeTarget == null || TargetItem.GetMarmaladeTarget == gameObject))
             {
                 TargetItem.GetMarmaladeTarget = gameObject;
             }
+        }
+
+        IEnumerable<IMarmaladeTargetable> EligibleTargets(IEnumerable<IMarmaladeTargetable> candidates)
+        {
+            return candidates.Where(IsValidTarget).MarmaladeCondition(gameObject, thisItem);
         }
 
         private static bool ArgItems(Item i)
@@ -345,7 +505,8 @@ namespace SweetSugar.Scripts.Items
     {
         public static IEnumerable<IMarmaladeTargetable> MarmaladeCondition(this IEnumerable<IMarmaladeTargetable> seq, GameObject gameObject, Item item)
         {
-            return seq.WhereNotNull().Where(i => (i.GetMarmaladeTarget == null || i.GetMarmaladeTarget == gameObject)&& (Object)i != item && (!i.GetItem?.destroying ?? true));
+            return seq.WhereNotNull().Where(i => (i.GetMarmaladeTarget == null || i.GetMarmaladeTarget == gameObject)&& (Object)i != item &&
+                (!(i is Item targetItem) || !targetItem.destroying));
         }  
     }
 }

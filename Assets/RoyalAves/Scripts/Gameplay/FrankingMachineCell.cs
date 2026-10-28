@@ -24,6 +24,20 @@ namespace RoyalAves.Gameplay
         AnimateItems barrier;
         float nextImpact;
         FieldBoard field;
+        static AudioClip activationSound;
+        public bool CanAcceptPowerUpHit
+        {
+            get
+            {
+                if (Animation == null || Animation.IsAnimating || barrier != null || manager == null ||
+                    manager.levelData != data || manager.field != field) return false;
+                int remaining = data.TargetCounters.Where(t => t.targetLevel.name == "MachineLetters").Sum(t => t.count);
+                if (remaining <= 0) return false;
+                int pending = manager.fieldBoards.SelectMany(b => b.GetComponentsInChildren<FrankingMachineCell>())
+                    .Count(m => m.barrier != null);
+                return pending < remaining;
+            }
+        }
         // Compatibility only: restore positions saved during the external-placement revision.
         public static bool RestoreGridPlacements(FieldData data)
         {
@@ -62,6 +76,7 @@ namespace RoyalAves.Gameplay
             var root = Instantiate(visualPrefab, cell.transform, false);
             root.transform.localPosition = new Vector3(0, 0, -0.6f);
             Animation = root.GetComponent<MailCubbyAnimation>();
+            Animation.SuppressSounds = true;
             Animation.flyingLetterScale = 1.8f;
             Animation.letters[0].enabled = false;
             Animation.LetterCollected += Collect;
@@ -73,8 +88,7 @@ namespace RoyalAves.Gameplay
         public void HandleHit() => AcceptImpact();
         public bool AcceptImpact(bool manual = false)
         {
-            if (Animation == null || Animation.IsAnimating || barrier != null || manager.levelData != data ||
-                manager.field != field || !data.TargetCounters.Any(t => t.targetLevel.name == "MachineLetters" && t.count > 0)) return false;
+            if (!CanAcceptPowerUpHit) return false;
             int remaining = data.TargetCounters.Where(t => t.targetLevel.name == "MachineLetters").Sum(t => t.count);
             int pending = manager.fieldBoards.SelectMany(b => b.GetComponentsInChildren<FrankingMachineCell>()).Count(m => m.barrier != null);
             if (pending >= remaining) return false;
@@ -102,6 +116,10 @@ namespace RoyalAves.Gameplay
 
         IEnumerator Activate()
         {
+            if (activationSound == null)
+                activationSound = Resources.Load<AudioClip>("Audio/som-franqueadora");
+            if (SweetSugar.Scripts.SoundBase.Instance != null)
+                SweetSugar.Scripts.SoundBase.Instance.PlayOneShot(activationSound);
             StartCoroutine(Blob());
             var mechanism = Animation.GetComponent<FrankingMachineLever>();
             if (mechanism != null) yield return mechanism.Pull();

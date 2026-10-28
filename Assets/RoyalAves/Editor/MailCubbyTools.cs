@@ -25,6 +25,9 @@ namespace RoyalAves.EditorTools
             try
             {
                 var animation = root.AddComponent<MailCubbyAnimation>();
+                animation.playbackSpeed = 1f;
+                animation.emissionDuration = .22f;
+                animation.letterStagger = .01f;
                 var cabinet = new GameObject("Cabinet");
                 cabinet.transform.SetParent(root.transform, false);
                 animation.cabinet = cabinet.AddComponent<SpriteRenderer>();

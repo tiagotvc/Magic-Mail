@@ -8,6 +8,7 @@ namespace RoyalAves.Effects
         static readonly string[] Names = { "parcel_complete", "tape_horizontal", "tape_vertical", "seal_pop" };
         static readonly float[] Volumes = { 0.55f, 0.42f, 0.42f, 0.50f };
         static readonly AudioClip[] Clips = new AudioClip[4];
+        static AudioClip woodHitClip;
         static readonly float[] LastPlayed = { float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity };
         public static float Volume { get; set; } = 1f;
 
@@ -16,6 +17,18 @@ namespace RoyalAves.Effects
         {
             Volume = 1f;
             for (int i = 0; i < LastPlayed.Length; i++) LastPlayed[i] = float.NegativeInfinity;
+        }
+
+        public static void PlayWoodHit()
+        {
+            var sound = SoundBase.Instance;
+            if (sound == null) return;
+            if (woodHitClip == null) woodHitClip = Resources.Load<AudioClip>("Audio/Parcels/madeira-quebrando");
+            if (woodHitClip == null) return;
+            var source = sound.GetComponent<AudioSource>();
+            if (source == null) return;
+            // One cue per damaged crate, including simultaneous hits. Do not use the shared-cue debounce.
+            source.PlayOneShot(woodHitClip, .65f * Mathf.Clamp01(Volume));
         }
 
         public static void Play(int state)

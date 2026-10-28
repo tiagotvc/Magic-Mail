@@ -245,8 +245,12 @@ namespace SweetSugar.Scripts.Items
                     CheckSquareBelow();
                 }
                 
-                // Wait a short time before next check
-                yield return new WaitForSeconds(0.1f);
+                // During resolution, react to newly emptied cells on the next frame.
+                // Keep the cheaper polling interval while the board is idle.
+                if (LevelManager.THIS.findMatchesStarted)
+                    yield return null;
+                else
+                    yield return new WaitForSeconds(0.1f);
             }
         }
         
@@ -1000,7 +1004,7 @@ namespace SweetSugar.Scripts.Items
             {
                 ResetAnimTransform();
 
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.06f);
                 if(!square.GetAllNeghborsCross().Any(i => (i.Item && i.Item.falling && i.Item.color == color)))
                 {
                     var combines2 = GetMatchesAround();
@@ -1320,7 +1324,9 @@ namespace SweetSugar.Scripts.Items
             destroycoroutineStarted = true;
             if (explodedItem != null)
                 switchItem = explodedItem;
-            SoundBase.Instance?.PlayOneShot(SoundBase.Instance?.destroy[Random.Range(0, SoundBase.Instance.destroy.Length)]);
+            // Rockets play their own launch cue in ItemStriped; do not add a match-break cue on activation.
+            if (currentType != ItemsTypes.HORIZONTAL_STRIPED && currentType != ItemsTypes.VERTICAL_STRIPED)
+                SoundBase.Instance?.PlayOneShot(SoundBase.Instance?.destroy[Random.Range(0, SoundBase.Instance.destroy.Length)]);
             if (explEffect || globalExplEffect)
             {
                 var partcl1 =

@@ -1,0 +1,852 @@
+[
+  {
+    "level": 11,
+    "shape": "cut7",
+    "role": "ensino",
+    "moves": 22,
+    "palette": 4,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        2,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "#.....#",
+      ".......",
+      "..AA...",
+      "..AA...",
+      ".......",
+      ".......",
+      "#.....#"
+    ]
+  },
+  {
+    "level": 12,
+    "shape": "wide8",
+    "role": "combinacao",
+    "moves": 22,
+    "palette": 5,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        1,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "#......#",
+      "........",
+      ".AA.....",
+      ".AA.....",
+      "...gg...",
+      "#gggggg#"
+    ]
+  },
+  {
+    "level": 13,
+    "shape": "fan8",
+    "role": "combinacao",
+    "moves": 23,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        2,
+        3
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "##...##",
+      "#.....#",
+      ".......",
+      "C.AA..C",
+      "C.AA..C",
+      "C.....C",
+      "..ggg..",
+      "#ggggg#"
+    ]
+  },
+  {
+    "level": 14,
+    "shape": "steps8",
+    "role": "preparacao",
+    "moves": 22,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "##......",
+      "##.....C",
+      "C......C",
+      "C......C",
+      "C..g...C",
+      "Cggggg##",
+      "gggggg##"
+    ]
+  },
+  {
+    "level": 15,
+    "shape": "oct8",
+    "role": "desafio",
+    "moves": 22,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "##....##",
+      "#......#",
+      "CAA..AAC",
+      "CAA..AAC",
+      "C......C",
+      "CCggggCC",
+      "#gggggg#",
+      "##gggg##"
+    ]
+  },
+  {
+    "level": 16,
+    "shape": "wide9",
+    "role": "respiro",
+    "moves": 24,
+    "palette": 4,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        3,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "#.......#",
+      ".........",
+      "C..AA...C",
+      "C..AA...C",
+      ".........",
+      "#gggggg.#"
+    ]
+  },
+  {
+    "level": 17,
+    "shape": "cross7",
+    "role": "combinacao",
+    "moves": 22,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        2,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "##...##",
+      "##...##",
+      "C.AA..C",
+      "C.AA..C",
+      "Cgggg.C",
+      "##ggg##",
+      "##ggg##"
+    ]
+  },
+  {
+    "level": 18,
+    "shape": "hour8",
+    "role": "combinacao",
+    "moves": 24,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        2,
+        4
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "C.....C",
+      "C.....C",
+      "#.....#",
+      "##...##",
+      "##AA.##",
+      "#.AA..#",
+      "C.ggg.C",
+      "CgggggC"
+    ]
+  },
+  {
+    "level": 19,
+    "shape": "notch8",
+    "role": "preparacao",
+    "moves": 23,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        3,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "........",
+      "........",
+      "##.AA..C",
+      "##.AA..C",
+      "C......C",
+      "C.....##",
+      "C.gggg##",
+      "gggggggg"
+    ]
+  },
+  {
+    "level": 20,
+    "shape": "h9",
+    "role": "desafio",
+    "moves": 24,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        1,
+        2
+      ],
+      [
+        6,
+        2
+      ]
+    ],
+    "machines": [],
+    "machineLetters": 0,
+    "layout": [
+      "...###...",
+      "...###...",
+      "CAA###AAC",
+      "CAA...AAC",
+      "C.......C",
+      "C..gg...C",
+      "Cgg###ggC",
+      "Cgg###ggC",
+      "ggg###ggg"
+    ]
+  },
+  {
+    "level": 21,
+    "shape": "fan7",
+    "role": "ensino",
+    "moves": 22,
+    "palette": 4,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [],
+    "machines": [
+      [
+        1,
+        6
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        3,
+        6
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "machineLetters": 8,
+    "layout": [
+      "##...##",
+      "#.....#",
+      ".......",
+      ".......",
+      ".......",
+      ".......",
+      "#MMMMM#"
+    ],
+    "machineFormation": "bottom_row"
+  },
+  {
+    "level": 22,
+    "shape": "wide9",
+    "role": "combinacao",
+    "moves": 22,
+    "palette": 5,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [],
+    "machines": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "machineLetters": 10,
+    "layout": [
+      "#.......#",
+      "M.......C",
+      "M......CC",
+      "M......CC",
+      "M...g...C",
+      "#ggggggg#"
+    ],
+    "machineFormation": "left_column"
+  },
+  {
+    "level": 23,
+    "shape": "cross9",
+    "role": "combinacao",
+    "moves": 24,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 1,
+    "cabinets": [],
+    "machines": [
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        5,
+        8
+      ]
+    ],
+    "machineLetters": 12,
+    "layout": [
+      "###...###",
+      "###...###",
+      ".........",
+      "C.......C",
+      "C.......C",
+      "C.......C",
+      "C.ggggg.C",
+      "###ggg###",
+      "###MMM###"
+    ],
+    "machineFormation": "bottom_row"
+  },
+  {
+    "level": 24,
+    "shape": "wide7x9",
+    "role": "preparacao",
+    "moves": 24,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [],
+    "machines": [
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        4
+      ]
+    ],
+    "machineLetters": 12,
+    "layout": [
+      "##.....##",
+      "#.......#",
+      "CC......M",
+      "CC......M",
+      "CC......M",
+      "#ggggggg#",
+      "##ggggg##"
+    ],
+    "machineFormation": "right_column"
+  },
+  {
+    "level": 25,
+    "shape": "open_u_8",
+    "role": "desafio",
+    "moves": 25,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        3,
+        3
+      ]
+    ],
+    "machines": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        5
+      ],
+      [
+        8,
+        6
+      ],
+      [
+        8,
+        7
+      ],
+      [
+        1,
+        7
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        7
+      ]
+    ],
+    "machineLetters": 16,
+    "layout": [
+      "##.....##",
+      "#C.....C#",
+      ".C.....C.",
+      "M.CAA.C.M",
+      "M.CAA.C.M",
+      "M.ggggg.M",
+      "MgggggggM",
+      "MMMMMMMMM"
+    ],
+    "machineFormation": "u"
+  },
+  {
+    "level": 26,
+    "shape": "wide8",
+    "role": "respiro",
+    "moves": 24,
+    "palette": 4,
+    "boxLayers": 1,
+    "grassLayers": 1,
+    "cabinets": [],
+    "machines": [
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        5
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "machineLetters": 8,
+    "layout": [
+      "#......#",
+      "........",
+      "C......C",
+      "C......C",
+      ".gggggg.",
+      "#MMMMMM#"
+    ],
+    "machineFormation": "bottom_row"
+  },
+  {
+    "level": 27,
+    "shape": "notched_left_column",
+    "role": "combinacao",
+    "moves": 24,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 1,
+    "cabinets": [
+      [
+        3,
+        3
+      ]
+    ],
+    "machines": [
+      [
+        8,
+        0
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        5
+      ],
+      [
+        8,
+        6
+      ],
+      [
+        8,
+        7
+      ]
+    ],
+    "machineLetters": 12,
+    "layout": [
+      "##......M",
+      "#.......M",
+      "CC......M",
+      "##.AA...M",
+      "##.AA...M",
+      "#C......M",
+      "CC.ggg..M",
+      "CgggggggM"
+    ],
+    "machineFormation": "right_column"
+  },
+  {
+    "level": 28,
+    "shape": "bridge9",
+    "role": "combinacao",
+    "moves": 25,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [],
+    "machines": [
+      [
+        0,
+        7
+      ],
+      [
+        1,
+        7
+      ],
+      [
+        2,
+        7
+      ],
+      [
+        3,
+        7
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        7
+      ],
+      [
+        8,
+        7
+      ]
+    ],
+    "machineLetters": 14,
+    "layout": [
+      "...###...",
+      ".........",
+      "C.......C",
+      "C.......C",
+      "C..###..C",
+      "Cgg###g.C",
+      "ggggggggg",
+      "MMMMMMMMM"
+    ],
+    "machineFormation": "bottom_row"
+  },
+  {
+    "level": 29,
+    "shape": "steps8",
+    "role": "preparacao",
+    "moves": 25,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        3,
+        2
+      ]
+    ],
+    "machines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ]
+    ],
+    "machineLetters": 12,
+    "layout": [
+      "##....CC",
+      "##....CC",
+      "M..AA.CC",
+      "M..AA.CC",
+      "M..gg.CC",
+      "Mggggg##",
+      "Mggggg##"
+    ],
+    "machineFormation": "left_column"
+  },
+  {
+    "level": 30,
+    "shape": "open_u_9",
+    "role": "desafio",
+    "moves": 28,
+    "palette": 5,
+    "boxLayers": 2,
+    "grassLayers": 2,
+    "cabinets": [
+      [
+        2,
+        2
+      ],
+      [
+        5,
+        2
+      ]
+    ],
+    "machines": [
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        8
+      ],
+      [
+        8,
+        2
+      ],
+      [
+        8,
+        3
+      ],
+      [
+        8,
+        4
+      ],
+      [
+        8,
+        5
+      ],
+      [
+        8,
+        6
+      ],
+      [
+        8,
+        7
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        1,
+        8
+      ],
+      [
+        2,
+        8
+      ],
+      [
+        3,
+        8
+      ],
+      [
+        4,
+        8
+      ],
+      [
+        5,
+        8
+      ],
+      [
+        6,
+        8
+      ],
+      [
+        7,
+        8
+      ]
+    ],
+    "machineLetters": 18,
+    "layout": [
+      "##C...C##",
+      "#C.....C#",
+      "M.AA.AA.M",
+      "M.AA.AA.M",
+      "M..ggg..M",
+      "MgCCgCCgM",
+      "MgCCgCCgM",
+      "MgggggggM",
+      "MMMMMMMMM"
+    ],
+    "machineFormation": "u"
+  }
+]

@@ -392,16 +392,16 @@ namespace RoyalAves.Meta
                 Debug.LogWarning("Royal Aves: falha ao fechar as telas do menu inferior (" + e.Message + ").", this);
             }
             ShowRoomBehindLevel();
-            HideScoreUi();
+            ShowScoreUi();
         }
 
-        // Correio Mágico levels are worth one star, not a 1-3 star score: the in-game score and its star bar are hidden.
-        static void HideScoreUi()
+        // Show the score and the level-specific 1–3 star thresholds.
+        static void ShowScoreUi()
         {
             if (LevelManager.THIS == null || LevelManager.THIS.Level == null) return;
             foreach (var t in LevelManager.THIS.Level.GetComponentsInChildren<Transform>(true))
                 if (t.name == "ProgressBar" || t.name == "Score")
-                    t.gameObject.SetActive(false);
+                    t.gameObject.SetActive(true);
         }
 
         // The level's background is this room, blurred (AreaBackdrop): drawn once as the level starts.
@@ -512,11 +512,13 @@ namespace RoyalAves.Meta
         [SerializeField] VictoryScreen victory;
         int victoryLevel;
 
-        /// Called by LevelManager when a level is won: gives the star (first win only) and shows the envelope screen.
+        /// Credits score-based stars and shows the envelope screen.
         public void ShowVictory(int level)
         {
             victoryLevel = level;
-            var firstWin = config != null && MetaProgress.RecordWin(level, config) > 0;
+            var firstWin = level > MetaProgress.LevelsWon;
+            var earnedStars = Mathf.Clamp(LevelManager.THIS.stars, 1, 3);
+            var addedStars = MetaProgress.RecordWin(level, config);
             // Coins follow the level's points (RoyalAvesProgression > Moedas); a replay can give a smaller share.
             var coins = config == null ? 0
                 : Mathf.RoundToInt(LevelManager.Score * config.coinsPerPoint * (firstWin ? 1f : config.replayCoinShare));
@@ -532,7 +534,7 @@ namespace RoyalAves.Meta
             canvas.overrideSorting = true;
             canvas.sortingLayerName = "UI";
             canvas.sortingOrder = 10;
-            victory.Show(level, firstWin, coins, MetaProgress.Stars, ManagerFace.LastWinWasTense, ContinueToLobby, ReplayLevel);
+            victory.Show(level, earnedStars, addedStars, LevelManager.Score, coins, MetaProgress.Stars, ManagerFace.LastWinWasTense, ContinueToLobby, ReplayLevel);
         }
 
         // Same as Sweet Sugar's "Next" on its complete popup: reload the game scene, which opens in the lobby.

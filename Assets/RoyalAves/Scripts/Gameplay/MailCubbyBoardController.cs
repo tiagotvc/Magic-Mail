@@ -126,7 +126,7 @@ namespace RoyalAves.Gameplay
 #if UNITY_EDITOR
                 System.IO.File.WriteAllText("Logs/mail-cubby-completion.result", $"OK: cartas={Collected}; meta={data.TargetCounters.Sum(t => t.count)}; células livres={Cells.Count(cell => cell != null && cell.IsFree())}; quebra concluída.");
 #endif
-            }, cabinet: true);
+            }, cabinet: true, playbackSpeed: Animation.PlaybackSpeed);
             Animation.cabinet.enabled = false;
         }
 

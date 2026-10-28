@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace RoyalAves.Meta
 {
-    // Crate introduction prototype, shown after the pre-play goals on levels 1-3.
+    // Shared introduction screen, shown after the pre-play goals.
     public sealed class ElementIntroPrototype : MonoBehaviour
     {
         CanvasGroup opacity;
@@ -21,6 +21,40 @@ namespace RoyalAves.Meta
             var manager = LevelManager.THIS;
             if (manager == null || manager.levelData == null || manager.field == null) return;
             int level = manager.levelData.levelNum;
+            if (level == 11 || level == 21)
+            {
+                // Use the artwork referenced by the campaign prefab; its cell renderer is a hidden letter.
+                GameObject visual = null;
+                if (level == 11)
+                {
+                    var cabinet = manager.field.GetComponentInChildren<RoyalAves.Gameplay.MailCubbyCell>();
+                    if (cabinet != null) visual = cabinet.visualPrefab;
+                }
+                else
+                {
+                    var machine = manager.field.GetComponentInChildren<RoyalAves.Gameplay.FrankingMachineCell>();
+                    if (machine != null) visual = machine.visualPrefab;
+                }
+                var artwork = visual != null ? visual.GetComponent<RoyalAves.Gameplay.MailCubbyAnimation>() : null;
+                if (artwork != null && artwork.cabinet != null && artwork.cabinet.sprite != null)
+                    Show(artwork.cabinet.sprite,
+                        level == 11 ? "Armário postal!" : "Franqueadora!",
+                        level == 11
+                            ? "Faça combinações ao lado do <color=#AE193F>ARMÁRIO</color>\npara abrir as portas e liberar as <color=#AE193F>CARTAS</color>!"
+                            : "Faça combinações ao lado da <color=#AE193F>MÁQUINA</color>\nou use especiais para produzir <color=#AE193F>CARTAS</color>!");
+                return;
+            }
+            if (level == 4)
+            {
+                var grass = manager.field.GetComponentInChildren<RoyalAves.Gameplay.InkFloorLayer>();
+                if (grass == null) return;
+                var grassRenderer = grass.GetComponent<SpriteRenderer>();
+                if (grassRenderer != null && grassRenderer.sprite != null)
+                    Show(grassRenderer.sprite, "Grama!",
+                        "Faça combinações <color=#AE193F>sobre a GRAMA</color>\n" +
+                        "ou use <color=#AE193F>especiais</color> para removê-la!");
+                return;
+            }
             if (level < 1 || level > 3) return;
             var crate = manager.field.GetComponentInChildren<RoyalAves.Gameplay.ParcelStackLayer>();
             if (crate == null) return;
@@ -30,8 +64,14 @@ namespace RoyalAves.Meta
 
         public static void Show(Sprite crate)
         {
+            Show(crate, "Caixas!", "Faça combinações ao lado das <color=#AE193F>CAIXAS</color>\n" +
+                "ou use <color=#AE193F>especiais</color> para quebrá-las!");
+        }
+
+        public static void Show(Sprite element, string heading, string instruction)
+        {
             if (FindFirstObjectByType<ElementIntroPrototype>() != null) return;
-            var root = new GameObject("Apresentacao das caixas - referencia", typeof(RectTransform), typeof(Canvas),
+            var root = new GameObject("Apresentação de elemento - " + heading, typeof(RectTransform), typeof(Canvas),
                 typeof(CanvasScaler), typeof(CanvasGroup), typeof(GraphicRaycaster), typeof(ElementIntroPrototype));
             var view = root.GetComponent<ElementIntroPrototype>();
             var canvas = root.GetComponent<Canvas>();
@@ -61,9 +101,15 @@ namespace RoyalAves.Meta
             content.localScale = Vector3.one*fit;
             view.CreatePanelSprite();
 
-            var goldTitle = Label(content,"Caixas!",140,new Color(1,.98f,.84f),new Vector2(1000,200),new Vector2(0,590),art);
+            var goldTitle = Label(content,heading,140,new Color(1,.98f,.84f),new Vector2(1000,200),new Vector2(0,590),art);
+            goldTitle.enableAutoSizing = true;
+            goldTitle.fontSizeMin = 90;
+            goldTitle.fontSizeMax = 140;
             view.Outline(goldTitle,new Color(1,.75f,.06f),.38f);
-            var title = Label(content,"Caixas!",140,new Color(1,.98f,.84f),new Vector2(1000,200),new Vector2(0,590),art);
+            var title = Label(content,heading,140,new Color(1,.98f,.84f),new Vector2(1000,200),new Vector2(0,590),art);
+            title.enableAutoSizing = true;
+            title.fontSizeMin = 90;
+            title.fontSizeMax = 140;
             view.Outline(title,new Color(.65f,.05f,.13f),.19f);
             var subtitle = Label(content,"Novo elemento desbloqueado!",58,new Color(1,.97f,.84f),new Vector2(1040,110),new Vector2(0,405),art);
             view.Outline(subtitle,new Color(.35f,.055f,.10f),.18f);
@@ -75,7 +121,7 @@ namespace RoyalAves.Meta
                 var halo=Picture(content,"Luz atrás da caixa",view.haloSprite,new Vector2(680,680),new Vector2(0,10));
                 halo.color=new Color(1,.87f,.55f,.55f);
             }
-            var icon=Picture(content,"Caixa em destaque",crate,new Vector2(500,500),new Vector2(0,10));
+            var icon=Picture(content,"Elemento em destaque",element,new Vector2(500,500),new Vector2(0,10));
             icon.preserveAspect=true;
             var shadow=Picture(content,"Sombra da placa",view.panelSprite,new Vector2(940,286),new Vector2(0,-548));
             shadow.type=Image.Type.Sliced;shadow.color=new Color(.23f,.01f,.07f,.8f);
@@ -85,8 +131,11 @@ namespace RoyalAves.Meta
             rim.type=Image.Type.Sliced;rim.color=new Color(1,.79f,.40f);
             var paper=Picture(border.transform,"Fundo creme",view.panelSprite,new Vector2(884,224),Vector2.zero);
             paper.type=Image.Type.Sliced;paper.color=new Color(1,.95f,.84f);
-            Label(border.transform,"Faça combinações ao lado das <color=#AE193F>CAIXAS</color>\nou use <color=#AE193F>especiais</color> para quebrá-las!",51,
+            var instructions = Label(border.transform,instruction,51,
                 new Color(.15f,.13f,.34f),new Vector2(820,185),Vector2.zero,art);
+            instructions.enableAutoSizing = true;
+            instructions.fontSizeMin = 38;
+            instructions.fontSizeMax = 51;
             view.manager = LevelManager.THIS;
             view.data = view.manager != null ? view.manager.levelData : null;
             if (view.manager != null && (view.manager.gameStatus == GameState.Playing || view.manager.gameStatus == GameState.Tutorial))

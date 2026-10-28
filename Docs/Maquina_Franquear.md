@@ -2,6 +2,14 @@
 
 ## Correção de posicionamento — 15/10/2026
 
+## Regra vigente: formações nas extremidades
+
+Por orientação do usuário, a franqueadora continua **dentro do grid**, mas sempre na extremidade da área jogável. Usar várias máquinas formando uma linha completa, uma coluna lateral ou um U; evitar unidades soltas no centro. Os cantos de um U podem receber especiais de área, enquanto as outras máquinas recebem combinações na faixa interna. Todas compartilham a meta de cartas da fase.
+
+Fases 21–30 revisadas em `campaign-11-30-recipes.json`: fileiras inferiores em 21/23/26/28; colunas laterais em 22/24/27/29; U em 25/30. O gerador verifica múltiplas unidades, contato com a borda, continuidade da formação, acesso por combinações/especiais e caminhos potenciais de reposição. Não gerar peças nas próprias máquinas. Movimentos, metas e paletas foram mantidos; a dificuldade precisa de playtest com as novas posições. Backup em `Backups/Franking-machines-before-edge-formations`.
+
+As seções seguintes registram as decisões anteriores. A orientação de ocupar uma célula interna continua válida; não significa liberdade para posicionar a máquina no centro da campanha.
+
 Usuário corrigiu a orientação: a franqueadora permanece **dentro do grid**, ocupando uma célula 1x1. Pincel FrankingMachine restaurado, painel lateral removido e câmera voltou ao enquadramento normal. Acionamento original por match adjacente ou impacto de especial na máquina.
 
 Mantidos meta própria “Cartas da franqueadora”, quantidade manual, separação das metas do armário, limite de entregas simultâneas e envelope 80% maior. Laboratório restaurado para uma máquina dentro do grid com oito cartas.

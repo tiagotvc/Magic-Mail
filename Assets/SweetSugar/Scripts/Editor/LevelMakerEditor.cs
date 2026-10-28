@@ -270,7 +270,7 @@ namespace SweetSugar.Scripts.Editor
 
         private void OnLostFocus()
         {
-            dirtyLevel = true;
+            // Losing focus is not an edit. Saving an unchanged cached level can restore an old generated asset.
             SaveLevel(levelNumber);
             //gotFocus = false;
         }
@@ -625,6 +625,8 @@ namespace SweetSugar.Scripts.Editor
 
 
             EditorGUILayout.EndScrollView();
+            if (UnityEngine.GUI.changed && selected == 0 && !EditorApplication.isPlaying)
+                dirtyLevel = true;
             if (UnityEngine.GUI.changed && !EditorApplication.isPlaying)
                 EditorSceneManager.MarkAllScenesDirty();
 
@@ -3425,12 +3427,29 @@ namespace SweetSugar.Scripts.Editor
             squareBlockSelected = null;
             if (dirtyLevel)
             {
+                var currentRevision = LevelRevision(_levelNumber);
+                if (loadedRevisionLevel == _levelNumber && !string.IsNullOrEmpty(loadedLevelRevision) &&
+                    currentRevision != loadedLevelRevision)
+                {
+                    // Preserve the editor draft, but never overwrite a newer file with a stale window copy.
+                    var drafts = "Logs/level-editor-conflicts";
+                    Directory.CreateDirectory(drafts);
+                    var draft = Path.Combine(drafts, $"Level_{_levelNumber}_{DateTime.UtcNow.Ticks}.json");
+                    File.WriteAllText(draft, JsonUtility.ToJson(levelData, true));
+                    dirtyLevel = false;
+                    LoadLevel(_levelNumber);
+                    Debug.LogWarning($"[Level editor] A fase {_levelNumber} mudou no disco e foi recarregada. " +
+                        $"A cópia anterior da janela foi preservada em {draft}.");
+                    return;
+                }
                 ValidateMailCubbyGroups();
                 ValidateMailCubbyTarget();
                 ValidateFrankingMachineTargets();
                 if (!FileName.Contains(".txt"))
                     FileName += ".txt";
                 SaveToScriptable(_levelNumber);
+                loadedRevisionLevel = _levelNumber;
+                loadedLevelRevision = LevelRevision(_levelNumber);
                 // SaveCommonValues();
                 // SaveField();
                 dirtyLevel = false;
@@ -3546,6 +3565,16 @@ namespace SweetSugar.Scripts.Editor
         }
 
         private bool dirtyLevel;
+        [SerializeField] private string loadedLevelRevision;
+        [SerializeField] private int loadedRevisionLevel;
+
+        private static string LevelRevision(int number)
+        {
+            var path = $"Assets/SweetSugar/Resources/Levels/Level_{number}.asset";
+            if (!File.Exists(path)) return null;
+            using (var hash = global::System.Security.Cryptography.SHA256.Create())
+                return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
+        }
         private int section;
         //private bool gotFocus;
         private static Material mat;
@@ -4402,7 +4431,13 @@ namespace SweetSugar.Scripts.Editor
 
         private bool LoadLevel(int currentLevel)
         {
+            var revision = LevelRevision(currentLevel);
+            if (revision != null && (loadedRevisionLevel != currentLevel || revision != loadedLevelRevision))
+                AssetDatabase.ImportAsset($"Assets/SweetSugar/Resources/Levels/Level_{currentLevel}.asset",
+                    ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
             levelData = LoadingManager.LoadlLevel(currentLevel, "Levels/Level_");
+            loadedRevisionLevel = currentLevel;
+            loadedLevelRevision = LevelRevision(currentLevel);
             squareBlockSelected = null;
             layer = layers - 1;
 

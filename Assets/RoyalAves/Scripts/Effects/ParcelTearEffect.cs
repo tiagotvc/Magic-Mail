@@ -16,8 +16,9 @@ namespace RoyalAves.Effects
         SpriteRenderer visual;
         Quaternion restRotation;
         bool cabinet;
+        float playbackSpeed = 1f;
 
-        public static void Play(SpriteRenderer source, LevelManager manager, Action onComplete, bool cabinet = false)
+        public static void Play(SpriteRenderer source, LevelManager manager, Action onComplete, bool cabinet = false, float playbackSpeed = 1f)
         {
             var root = new GameObject("ParcelCompletionFX");
             root.transform.SetParent(source.transform.parent, false);
@@ -26,6 +27,7 @@ namespace RoyalAves.Effects
             root.transform.localScale = source.transform.localScale;
             var effect = root.AddComponent<ParcelTearEffect>();
             effect.cabinet = cabinet;
+            effect.playbackSpeed = Mathf.Max(0.1f, playbackSpeed);
             effect.Initialize(source, manager, onComplete);
         }
 
@@ -56,7 +58,7 @@ namespace RoyalAves.Effects
             bool burstStarted = false;
             while (elapsed < Duration)
             {
-                elapsed += Time.deltaTime * ParcelFeedbackSettings.Speed;
+                elapsed += Time.deltaTime * ParcelFeedbackSettings.Speed * playbackSpeed;
                 if (elapsed < TensionDuration)
                 {
                     float shake = Mathf.Sin(elapsed / TensionDuration * Mathf.PI * 4f);
@@ -69,7 +71,7 @@ namespace RoyalAves.Effects
                     transform.localRotation = restRotation;
                     if (cabinet) FallingBoardDebris.ShatterCabinet(visual);
                     else FallingBoardDebris.ShatterWood(visual, 1);
-                    ParcelSoundEffects.Play(1);
+                    if (cabinet) ParcelSoundEffects.Play(1);
                     ParcelSparkEffect.Play(visual, true);
                     visual.enabled = false;
                 }

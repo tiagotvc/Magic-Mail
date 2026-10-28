@@ -919,33 +919,33 @@ namespace SweetSugar.Scripts.Core
         //Animations after win
           private IEnumerator PreWinAnimationsCor()
           {
-            // Correio Mágico (lobby in the scene): every win is worth one star, so the score bonus round (remaining moves
-            // turned into bonuses, "tap to skip") and the "Complete" banner are not played: the level goes straight to the
-            // envelope screen.
-            var oneStarWin = LobbyController.Instance != null;
-            if (!oneStarWin)
+            // Resolve the campaign bonus before calculating score-based stars and showing the envelope.
+            var campaignWin = LobbyController.Instance != null;
+            if (!campaignWin)
                 tapToSkip = Instantiate((GameObject) Resources.Load("Prefabs/TapToSkip"),MenuReference.THIS.transform);
             if (!InitScript.Instance.losingLifeEveryGame && InitScript.lifes < InitScript.Instance.CapOfLife)
                 InitScript.Instance.AddLife(1);
 
-            if (!oneStarWin)
+            if (!campaignWin)
                 CompleteWord.SetActive(true);
 
             var limit = Mathf.Clamp(levelData.limit, 0, 5);
 
-            if (oneStarWin)
+            if (campaignWin)
             {
-                stars = 1;
                 skipWin = false;
-                // One frame, so gameStatus = Win is not set from inside the PreWinAnimations setter call.
                 yield return null;
+                yield return CampaignWinBonus();
+                stars = 0;
+                CheckStars();
+                stars = Mathf.Clamp(stars, 1, 3);
             }
             else if(!skipWin)
             {
                 var c1 = StartCoroutine(PreWinLoop(limit));
                 yield return c1;
             }
-            if(skipWin && !oneStarWin)
+            if(skipWin && !campaignWin)
             {
                 Score += limit * Random.Range(500, 3000) / levelData.colorLimit;
                 CheckStars();
@@ -973,6 +973,118 @@ namespace SweetSugar.Scripts.Core
 #endif
               
             gameStatus = GameState.Win;
+        }
+
+        private IEnumerator CampaignWinBonus()
+        {
+            var scoreBeforeBonus = Score;
+            var remainingMoves = levelData.limitType == LIMIT.MOVES ? levelData.limit : 0;
+            var pendingPlacements = 0;
+            ItemMonoBehaviour.finishBonusCounter = 0;
+            FindMatches();
+            yield return new WaitWhile(() => findMatchesStarted);
+            // Timed levels do not convert seconds to moves, but still fire existing specials.
+            while (levelData.limitType == LIMIT.MOVES && levelData.limit > 0)
+            {
+                var candidates = field.GetItems(true)
+                    .Where(item => item != null && item.gameObject.activeInHierarchy && !item.falling &&
+                        !item.IsMulticolorReserved && item.square != null && !item.square.IsItemLocked)
+                    .ToList();
+                if (candidates.Count == 0)
+                {
+                    // A small board may run out of normal pieces before it runs out of moves.
+                    // Detonate this batch and refill before placing the next batch.
+                    yield return new WaitUntil(() => pendingPlacements == 0);
+                    yield return new WaitWhile(() => field.GetComponentInChildren<PowerUpBirthGlow>() != null);
+                    yield return new WaitForSeconds(.18f);
+                    yield return FireCampaignWinSpecials();
+                    candidates = field.GetItems(true)
+                        .Where(item => item != null && item.gameObject.activeInHierarchy && !item.falling &&
+                            !item.IsMulticolorReserved && item.square != null && !item.square.IsItemLocked)
+                        .ToList();
+                    if (candidates.Count == 0)
+                    {
+                        // Degenerate authored boards with no convertible cells still bank every move.
+                        Score += levelData.limit * 100;
+                        levelData.limit = 0;
+                        break;
+                    }
+                }
+
+                var target = candidates[Random.Range(0, candidates.Count)];
+                target.NextType = Random.value < .5f ? ItemsTypes.HORIZONTAL_STRIPED : ItemsTypes.VERTICAL_STRIPED;
+                pendingPlacements++;
+                target.ChangeType(created =>
+                {
+                    PowerUpFormation.Born(created);
+                    pendingPlacements--;
+                }, false, false);
+                levelData.limit--;
+                yield return new WaitForSeconds(.08f);
+            }
+            // Finish placing the whole batch before launching it. Wait for actual placement/glow,
+            // rather than a guessed pause between explosions.
+            yield return new WaitUntil(() => pendingPlacements == 0);
+            yield return new WaitWhile(() => field.GetComponentInChildren<PowerUpBirthGlow>() != null);
+            yield return new WaitForSeconds(.18f);
+            yield return FireCampaignWinSpecials();
+            if (Application.isEditor)
+                Debug.Log($"[Campaign bonus] level={currentLevel} remainingMoves={remainingMoves} " +
+                    $"scoreBefore={scoreBeforeBonus} bonusScore={Score - scoreBeforeBonus} scoreAfter={Score} " +
+                    $"starThresholds={levelData.star1}/{levelData.star2}/{levelData.star3}");
+        }
+
+        private IEnumerator FireCampaignWinSpecials()
+        {
+            float quietSince = -1f;
+            while (gameStatus == GameState.PreWinAnimations)
+            {
+                var item = field.GetAllExtaItems().FirstOrDefault(candidate => candidate != null &&
+                    !candidate.destroying && !candidate.falling && !candidate.IsMulticolorReserved &&
+                    candidate.square != null && !candidate.square.IsItemLocked &&
+                    (candidate.currentType == ItemsTypes.HORIZONTAL_STRIPED ||
+                     candidate.currentType == ItemsTypes.VERTICAL_STRIPED || candidate.currentType == ItemsTypes.PACKAGE ||
+                     candidate.currentType == ItemsTypes.SPIRAL || candidate.currentType == ItemsTypes.MULTICOLOR ||
+                     candidate.currentType == ItemsTypes.MARMALADE));
+                if (item == null)
+                {
+                    // Wait only when active effects/settling may reveal another special.
+                    // Do not wait for an entire cascade between individual launches.
+                    if (findMatchesStarted || StopFall || animateItems.Any(animation => animation != null) ||
+                        RocketSplitEffect.HasActiveFlights ||
+                        FindObjectsByType<MarmaladeFly>(FindObjectsSortMode.None).Any(fly => fly.isActiveAndEnabled) ||
+                        field.GetComponentInChildren<PowerUpBirthGlow>() != null ||
+                        field.GetItems(nonDestroying: false).Any(candidate => candidate != null &&
+                            (candidate.falling || candidate.destroying || candidate.IsMulticolorReserved ||
+                             candidate.NextType != ItemsTypes.NONE)))
+                    {
+                        quietSince = -1f;
+                        yield return null;
+                        continue;
+                    }
+                    // FallingCor checks for new matches after a 0.2s pause. Require a quiet
+                    // interval longer than that pause so the result cannot overtake a cascade.
+                    if (quietSince < 0f) quietSince = Time.time;
+                    if (Time.time - quietSince < .4f)
+                    {
+                        yield return null;
+                        continue;
+                    }
+                    yield break;
+                }
+
+                quietSince = -1f;
+                item.dontDestroyForThisCombine = false;
+                item.dontDestroyOnThisMove = false;
+                var partner = item.currentType == ItemsTypes.MULTICOLOR
+                    ? field.GetItems(true).FirstOrDefault(candidate => candidate != null && !candidate.falling &&
+                        !candidate.IsMulticolorReserved && candidate.square != null && !candidate.square.IsItemLocked)
+                    : null;
+                if (partner != null) item.Check(item, partner);
+                else item.DestroyItem(showScore: true, playerActivated: true);
+                // One launch per frame: ordered activation with overlapping effects and no timed gap.
+                yield return null;
+            }
         }
 
         private IEnumerator PreWinLoop(int limit)
@@ -1094,7 +1206,7 @@ namespace SweetSugar.Scripts.Core
 
         void MouseDown(Vector2 pos)
         {
-            if (gameStatus == GameState.PreWinAnimations)
+            if (gameStatus == GameState.PreWinAnimations && LobbyController.Instance == null)
             {
                 skipWin = true;
             }

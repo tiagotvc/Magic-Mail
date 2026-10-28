@@ -1,6 +1,6 @@
 // Saved progress of the agency: stars to spend, the last level won, the current area, its upgrades done and its chest.
 // Levels are won in order, so the lobby always offers the level after the last one won. The first win of a level gives
-// AreaProgressionConfig.starsPerFirstWin stars; replays give none.
+// Score awards 1?3 stars; improved replays award only the difference from the previous best.
 using System;
 using System.Collections.Generic;
 using SweetSugar.Scripts.Core;
@@ -36,6 +36,7 @@ namespace RoyalAves.Meta
             public int level;
             public int score;
             public int wins;
+            public int awardedStars;
         }
 
         [Serializable]
@@ -72,14 +73,22 @@ namespace RoyalAves.Meta
 
         public static bool HasNextArea(AreaProgressionConfig config) => Data.areaIndex + 1 < config.areas.Count;
 
-        /// Returns the stars given: only the first win of a level counts.
+        /// Credits only newly earned stars, including improvements on replays.
         public static int RecordWin(int level, AreaProgressionConfig config)
         {
-            if (level <= Data.highestLevelWon) return 0;
-            Data.highestLevelWon = level;
-            Data.stars += config.starsPerFirstWin;
+            var earned = LevelManager.THIS != null ? LevelManager.THIS.stars : 1;
+            var record = Data.records.Find(r => r.level == level);
+            // Old saves awarded a fixed reward and have no per-level credited-star field.
+            var previous = record != null && record.awardedStars > 0 ? record.awardedStars
+                : level <= Data.highestLevelWon ? (config != null ? config.starsPerFirstWin : 1) : 0;
+            earned = Mathf.Clamp(earned, 1, 3);
+            int added = Mathf.Max(0, earned - previous);
+            if (record == null) Data.records.Add(record = new LevelRecord { level = level });
+            record.awardedStars = Mathf.Max(previous, earned);
+            Data.highestLevelWon = Mathf.Max(Data.highestLevelWon, level);
+            Data.stars += added;
             Save();
-            return config.starsPerFirstWin;
+            return added;
         }
 
         /// Testing aid (menu Royal Aves > Teste: +10 estrelas): stars to spend on upgrades, without winning a level.

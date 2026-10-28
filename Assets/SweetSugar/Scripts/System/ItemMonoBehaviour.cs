@@ -43,12 +43,14 @@ namespace SweetSugar.Scripts.System
             {
                 if(item.currentType != ItemsTypes.PACKAGE)
                     yield return new WaitWhile(() => item.falling);
-                if(LevelManager.THIS.gameStatus == GameState.PreWinAnimations)
+                bool limitLegacyBonus = LevelManager.THIS.gameStatus == GameState.PreWinAnimations &&
+                    RoyalAves.Meta.LobbyController.Instance == null;
+                if(limitLegacyBonus)
                 {
                     finishBonusCounter++;
                     if (finishBonusCounter >= 5) item.NextType = ItemsTypes.NONE;
                 }
-                if(LevelManager.THIS.gameStatus != GameState.PreWinAnimations || (LevelManager.THIS.gameStatus == GameState.PreWinAnimations && finishBonusCounter <5))
+                if(!limitLegacyBonus || finishBonusCounter < 5)
                 {
                     item.ChangeType((x) => { changeTypeFinished = true; });
                     yield return new WaitUntil(() => changeTypeFinished);

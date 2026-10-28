@@ -13,7 +13,7 @@ namespace RoyalAves.Meta
     {
         public const string ResourcePath = "RoyalAvesProgression";
 
-        [Tooltip("Estrelas ganhas na primeira vitória de cada nível. Rejogar um nível não dá estrela.")]
+        [Tooltip("Recompensa antiga, usada apenas para compatibilidade com saves anteriores. Novas vitórias usam 1–3 estrelas por pontos.")]
         [Min(0)] public int starsPerFirstWin = 1;
 
         [Header("Moedas por nível vencido")]

@@ -9,7 +9,6 @@ namespace RoyalAves.Effects
         {
             FallingBoardDebris.ShatterWood(source, oldState);
             FallingBoardDebris.DropCratePlank(source, oldState);
-            ParcelSoundEffects.Play(oldState);
             ParcelSparkEffect.Play(source, false);
         }
     }

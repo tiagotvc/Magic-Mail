@@ -18,10 +18,13 @@ namespace RoyalAves.Gameplay
         public Transform collectionDestination;
         [Min(0.1f)] public float emissionDuration = 0.95f;
         [Min(0f)] public float letterStagger = 0.12f;
+        [Min(0.1f)] public float playbackSpeed = 1f;
+        public float PlaybackSpeed => Mathf.Max(0.1f, playbackSpeed);
         public float launchDuration;
         public Vector3 launchDisplacement;
         public float launchStartYScale = 1f;
         public bool drawOverHud;
+        public bool SuppressSounds { get; set; }
         [Min(1f)] public float flyingLetterScale = 1f;
         readonly List<RoyalAves.Effects.MailDeliveryOverlay> activeOverlays = new List<RoyalAves.Effects.MailDeliveryOverlay>();
         readonly List<RoyalAves.Effects.MailDeliveryTrail> activeTrails = new List<RoyalAves.Effects.MailDeliveryTrail>();
@@ -168,7 +171,7 @@ namespace RoyalAves.Gameplay
                 for (int i = 0; i < count; i++)
                 {
                     StartCoroutine(FlyLetter(letters[firstLetter + i], i));
-                    if (i + 1 < count && letterStagger > 0f) yield return new WaitForSeconds(letterStagger);
+                    if (i + 1 < count && letterStagger > 0f) yield return new WaitForSeconds(letterStagger / PlaybackSpeed);
                 }
                 while (activeFlights > 0) yield return null;
                 if (completedHits == lettersPerHit.Length) Emptied?.Invoke();
@@ -178,12 +181,12 @@ namespace RoyalAves.Gameplay
 
         IEnumerator ReactToNicheHit()
         {
-            RoyalAves.Effects.ParcelSoundEffects.Play(1);
+            if (!SuppressSounds) RoyalAves.Effects.ParcelSoundEffects.Play(1);
             float elapsed = 0f;
             const float duration = 0.13f;
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime * PlaybackSpeed;
                 float t = Mathf.Clamp01(elapsed / duration);
                 float pulse = Mathf.Sin(t * Mathf.PI) * 0.055f;
                 cabinet.transform.localScale = Vector3.Scale(restScale, new Vector3(1f + pulse, 1f - pulse * 0.65f, 1f));
@@ -221,7 +224,7 @@ namespace RoyalAves.Gameplay
             float elapsed = 0f;
             while (elapsed < emissionDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime * PlaybackSpeed;
                 float t = Mathf.Clamp01(elapsed / emissionDuration);
                 float u = launchDuration > 0f ? Mathf.SmoothStep(0f, 1f, t) : t * t;
                 float v = 1f - u;
@@ -253,17 +256,17 @@ namespace RoyalAves.Gameplay
         IEnumerator RemoveDoors()
         {
             // Wood breaking, not the parcel seal pop: the doors are torn off the cabinet.
-            RoyalAves.Effects.MailCubbySounds.PlayDoors();
+            if (!SuppressSounds) RoyalAves.Effects.MailCubbySounds.PlayDoors();
             for (int i = 0; i < doors.Length; i++)
             {
-                RoyalAves.Effects.FallingBoardDebris.DropDoor(doors[i], i == 0 ? -1f : 1f);
+                RoyalAves.Effects.FallingBoardDebris.DropDoor(doors[i], i == 0 ? -1f : 1f, PlaybackSpeed);
                 doors[i].enabled = false;
             }
             float elapsed = 0f;
             const float duration = 0.18f;
             while (elapsed < duration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime * PlaybackSpeed;
                 float t = Mathf.Clamp01(elapsed / duration);
                 float pulse = Mathf.Sin(t * Mathf.PI * 2f) * (1f - t) * 0.025f;
                 cabinet.transform.localScale = Vector3.Scale(restScale, new Vector3(1f + pulse, 1f - pulse, 1f));
@@ -280,7 +283,7 @@ namespace RoyalAves.Gameplay
             float elapsed = 0f;
             while (elapsed < launchDuration)
             {
-                elapsed += Time.deltaTime;
+                elapsed += Time.deltaTime * PlaybackSpeed;
                 float t = Mathf.Clamp01(elapsed / launchDuration);
                 float slide = Mathf.SmoothStep(0f, 1f, t);
                 letter.transform.localPosition = origin + launchDisplacement * slide;

@@ -57,7 +57,10 @@ namespace RoyalAves.Gameplay
         public void PlayAccessoryRemoval()
         {
             if (!CountsAsObjective)
+            {
+                ParcelSoundEffects.PlayWoodHit();
                 ParcelAccessoryEffect.Play(GetComponent<SpriteRenderer>(), remainingLayers);
+            }
         }
 
         public bool TryHandleFinalHit(Square boardCell)
@@ -65,6 +68,7 @@ namespace RoyalAves.Gameplay
             if (!CountsAsObjective) return false;
             if (IsFinishing) return true;
             IsFinishing = true;
+            ParcelSoundEffects.PlayWoodHit();
             if (hitReaction != null) StopCoroutine(hitReaction);
             if (initialized)
             {
