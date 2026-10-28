@@ -1,0 +1,24 @@
+{
+  "version": 127,
+  "date": "2026-10-26",
+  "tool": "built-in image_gen",
+  "scope": "Wine palette correction on approved standalone header only; no Unity/prefab/runtime changes.",
+  "reference": "Tools/royal-postman/assets/modal-header-v126/header-marfim-sem-texto.png",
+  "output": "header-marfim-vinho-sem-texto.png",
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-7b0f02ff-d4db-486a-9933-16d8b8a6dfa1.png",
+  "requestedPalette": {
+    "light": "#9E0426",
+    "dark": "#7E000A",
+    "highlight": "#D44962"
+  },
+  "transparent_background": true,
+  "prompt": "Use case: precise-object-edit / color correction of a finished transparent UI sprite.\nEdit target: the supplied standalone blank ivory header with a wine/red outer backing and two gold side clamps.\nMake ONE LOCALIZED COLOR CORRECTION ONLY to the RED/WINE BACKING AND ITS BEVELED BORDER. The user provided the actual UI palette, which the current bright scarlet rim does not match.\nUse these exact sRGB palette anchors for that backing:\n- Light/main wine body: #9E0426 (RGB 158,4,38).\n- Darkest wine shadow: #7E000A (RGB 126,0,10).\n- Specular/highlight wine tone: #D44962 (RGB 212,73,98).\nRe-shade the existing outer backing using smooth interpolation between these three anchors, preserving the positions of all bevel ridges, reflections, underside shading and existing sculpted volume. The resulting rim is deep restrained BURGUNDY/WINE with muted rosy specular accents, not bright red, scarlet, fluorescent red or glossy white. The highlight strips on this wine material must be the supplied muted rose #D44962, not white/pale yellow/neon pink. Do not brighten or saturate the main wine surface beyond the provided anchors. Keep shadows anchored at #7E000A.\nSTRICT INVARIANTS: same exact silhouette and aspect ratio, same width/height balance, same ivory face and its original cream gradients, same two GOLD clamps and their original gold highlights/shadows, same geometry, edge shape, bevel thickness, composition and front-on lighting. Do not recolor any part of the ivory face or gold clamps. Do not add, remove or redesign any component. No text, symbols, new decoration, buttons, body panel or watermark.\nOutput one actual transparent RGBA PNG. Retain clean antialiased alpha edges and the transparent canvas margins from source. All surrounding pixels remain fully transparent; no solid background, no shadow rectangle, no baked checkerboard. Preserve the high-quality painted UI sprite finish.",
+  "sha256": "aa594ac818503953573bb64ace38f403cf1020c076b54a77179794c3df302689",
+  "alphaCheck": {
+    "width": 2172,
+    "height": 724,
+    "pixelFormat": "Format32bppArgb",
+    "alphaMin": 0,
+    "alphaMax": 255
+  }
+}

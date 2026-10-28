@@ -57,6 +57,8 @@ namespace RoyalAves.Meta
         RectTransform list;
         TextMeshProUGUI heading;
         ScrollRect scroll;
+        RectTransform legacyHeader;
+        LobbyEventsScreen eventsScreen;
         Route route;
 
         string teamTab = "join";
@@ -88,6 +90,7 @@ namespace RoyalAves.Meta
             menus.changed = changed;
 
             var header = Node("Cabecalho", screen);
+            menus.legacyHeader = header;
             header.anchorMin = new Vector2(0, 1);
             header.anchorMax = Vector2.one;
             header.pivot = new Vector2(0.5f, 1);
@@ -156,6 +159,19 @@ namespace RoyalAves.Meta
 
         void Render()
         {
+            bool events = route == Route.Events;
+            legacyHeader.gameObject.SetActive(!events);
+            scroll.gameObject.SetActive(!events);
+            ((RectTransform)transform).offsetMax = Vector2.zero;
+            if(events)
+            {
+                if(eventsScreen == null) eventsScreen = LobbyEventsScreen.Create((RectTransform)transform, art, playLevel, Close, changed);
+                bool visible = eventsScreen.gameObject.activeSelf;
+                eventsScreen.gameObject.SetActive(true);
+                if(visible) eventsScreen.Refresh();
+                return;
+            }
+            if(eventsScreen != null) eventsScreen.gameObject.SetActive(false);
             for (var i = list.childCount - 1; i >= 0; i--)
             {
                 var child = list.GetChild(i).gameObject;
@@ -164,7 +180,6 @@ namespace RoyalAves.Meta
             }
             switch (route)
             {
-                case Route.Events: RenderEvents(); break;
                 case Route.Records: RenderRecords(); break;
                 case Route.Collection: RenderCollection(); break;
                 case Route.Teams: RenderTeams(); break;
@@ -181,34 +196,6 @@ namespace RoyalAves.Meta
         }
 
         // ---------- screens ----------
-
-        void RenderEvents()
-        {
-            heading.text = "Eventos";
-            Caption("Complete entregas e recolha suas recompensas.");
-            var won = MetaProgress.LevelsWon;
-            foreach (var mission in art.missions)
-            {
-                var claimed = MetaProgress.IsMissionClaimed(mission.id);
-                var done = Mathf.Min(mission.goal, won);
-                var (row, column) = Card(art.iconEvents);
-                Title(column, mission.title);
-                Progress(column, done / (float)Mathf.Max(1, mission.goal));
-                Line(column, $"{done}/{mission.goal} fases · {CoinFormat.Short(mission.coins)} moedas");
-                ActionButton(row, claimed ? "Recebido" : "Recolher", !claimed && done >= mission.goal, () =>
-                {
-                    if (MetaProgress.ClaimMission(mission)) Done();
-                });
-            }
-            Section("Entrega de moedas");
-            foreach (var after in art.bonusRoutesAfter)
-            {
-                var (row, column) = Card(art.coin);
-                Title(column, $"Rota bônus {after}");
-                Line(column, $"{art.bonusRouteMoves} movimentos para coletar moedas.");
-                ActionButton(row, won < after ? $"Após {after} fases" : "Em breve", false, null);
-            }
-        }
 
         void RenderRecords()
         {

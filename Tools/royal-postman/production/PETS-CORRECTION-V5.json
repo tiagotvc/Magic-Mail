@@ -1,0 +1,36 @@
+{
+  "created": "2026-10-20",
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "id": "pets-workshop-v5",
+      "group": "Menu",
+      "prompt": "Use case: precise-object-edit. EDIT the most recent square wizard-workshop BACKGROUND painting (last reference image, no UI). The earlier cropped room with three incubators is the composition/contact reference ONLY. Keep the same workshop identity: warm amber wooden shelves left, purple paw banner, hanging lantern, ivy, round starry blue window high right, same cartoon fantasy RPG painting and camera. Critical correction: RAISE the TABLETOP BACK EDGE to 50% of image height (currently about 68%). Expand the visible tabletop so the LOWER HALF of the square is the broad purple-red embroidered tabletop/rug, seen from the same slightly downward camera. It must provide a real continuous horizontal support plane for three separate incubators to be placed at x20%,50%,80%, foot contact at y66% of the square. These foot positions must be comfortably INSIDE the tabletop, with visible rug behind and around them, not on its far edge. Preserve upper room elements as far as possible; shorten/hide lower shelves behind the raised tabletop rather than stretch/distort the room. Table front lip near very bottom; no tall hanging fabric/cabinet front occupying lower half. Move stacks of books and small brass jar to far right edge so the three center landing spots are empty. Warm contact lighting on the rug, clean broad perspective, no new platforms/pedestals. Background only: NO incubators, NO eggs, NO cards, NO interface, NO scrollbar, NO text, NO gold divider, NO shadows shaped like hovering incubators. Full square background, opaque, highest supported native resolution. Exact intent is a sturdy table under the objects with the UI cards subsequently drawn in FRONT of the table and their feet.",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-workshop-v5.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-117997ff-d4ea-4091-9696-c70f737b8b26.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "9465aad237cdaf677922eeb6224781f0021822cdbe4f14ff0c52444dabb1bc6c"
+    },
+    {
+      "id": "pets-scroll-track-v5",
+      "group": "Menu",
+      "prompt": "Use case: stylized-concept, UI component extraction. Create ONE isolated EMPTY scrollbar TRACK sprite matching the user's close-up reference that shows a thin cyan-blue scrollbar with a periwinkle paw thumb. Ignore the other room/ornament reference images. Only the empty track shell: long slim horizontal capsule with semicircular ends, width:height about 18:1, dark midnight navy recessed center, a narrow rounded slate/periwinkle BLUE raised rim, a fine pale-blue upper-left edge highlight and a short deep navy outer sidewall. Premium clean cartoon mobile fantasy RPG painting, broad subtle smooth shading, not flat SVG. All center must be EMPTY dark navy; NO cyan filled progress, NO paw thumb, NO icons or text. Track has crisp clean alpha outline, no external glow, no grain, no texture. Need full capsule centered across a wide image, highest native supported resolution (wide approximately 2400 pixels). Transparent outside capsule. Single complete reusable track body only, NOT a sprite sheet. Preserve exactly the delicate rim and quiet navy inset of the user's reference. It will be rotated vertical and nine-sliced in Unity; ends must be perfectly rounded and symmetrical.",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-scroll-track-v5.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-8eea1605-d7e4-4bb0-a555-a8ab40613a50.png",
+      "width": 2172,
+      "height": 724,
+      "sha256": "1b503f226437c65a810c466d7854ffbcd77891f73cc7c05437cededb72f98275"
+    },
+    {
+      "id": "pets-scroll-thumb-v5",
+      "group": "Button",
+      "prompt": "Use case: stylized-concept. ONE isolated draggable SCROLLBAR THUMB badge for polished cartoon mobile RPG. Reference 1 navy square paw tab supplies the BLUE-LAVENDER PAW identity/material ONLY, NOT its square shape. Reference 2 long navy scrollbar supplies the blue edge finish. Deliver just a SMALL WIDE PERIWINKLE CAPSULE button, width:height 2.25:1, fully rounded ends and substantial raised volume, exactly like a horizontal light-blue/purple paw badge on a cyan scrollbar. Face is soft medium periwinkle (#5968b1) with broad blue/lavender top highlight, slightly darker indigo underside. Narrow slate-blue sidewall, tiny pale-lavender edge highlight, short navy contact shadow tight to the silhouette. In the exact center ONE small simple PALE ICE-LILAC paw icon, four rounded toes + plump lower pad, clean readable broad forms, subtle blue lower shading; paw height 53% capsule height. No text, no letters/numbers, no gold, no gems, no square frame. No track/no progress fill, JUST this one paw capsule thumb. Premium clean rounded painted volume matching the supplied UI, smooth polished highlights, no grain/texture, no realistic materials, no glow. True transparent background outside full badge, clean alpha. Highest native supported resolution, centered with modest transparent margin.",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Pets/pets-scroll-thumb-v5.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-16e205b7-ab91-4c9c-bfe4-acee40f12308.png",
+      "width": 1881,
+      "height": 836,
+      "sha256": "315504ec23b8d4739e7977d4b1b7901dac7ca84098d6633f1705fc7b4fb35441"
+    }
+  ]
+}

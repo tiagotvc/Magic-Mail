@@ -1,0 +1,19 @@
+{
+  "tool": "built-in ImageGen",
+  "date": "2026-10-18",
+  "intent": "New narrative menu illustration, followed by material-finish refinement",
+  "initialPrompt": "events-backstage-v88-prompt.txt",
+  "refinementPrompt": "events-backstage-v88-refinement-prompt.txt",
+  "identityReferences": [
+    "Assets/RoyalAves/Art/MapKitV3/Library/Personagens/courier-wizard-v50.png",
+    "Assets/RoyalAves/Art/MapKitV3/Library/Personagens/organizer-owl-v51.png"
+  ],
+  "draft": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-0e70ff0d-d541-45b3-99be-7eb0bbe71e0d.png",
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-0c815ea4-78f6-4f78-b8ab-f4434dca118b.png",
+  "output": "Assets/RoyalAves/Resources/EventsV88/backstage.png",
+  "resource": "EventsV88/backstage",
+  "supersededSource": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-81ec078d-8264-4234-971f-881c57e8a8b0.png",
+  "castConfiguration": "Assets/RoyalAves/Resources/RoyalAvesMission100.asset",
+  "castCorrectionPrompt": "events-backstage-v88-owl-correction-prompt.txt",
+  "correction": "Replaced the rejected human manager with the current Organizer owl (GUID aac497d37460686ef635454417c73131)."
+}

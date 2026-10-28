@@ -1,0 +1,18 @@
+{
+  "status": "Installed after native checks",
+  "source_sprite": "Assets/RoyalAves/Art/UI/UI assets/Btn_squared_blue_g.png",
+  "source_sha256": "82601b03396379726cac166d62d8c3b800cb085982c5efc88c2ad4f533403889",
+  "selected": "SelectedRed.mat; AllIn1SpriteShaderUiMask, HSV_ON, hue210",
+  "unselected": "UnselectedBlue.mat; same shader, hue0",
+  "native_result": "PASS: native compile/render and pixel colors; actual user sprite retained, AllIn1 UI HSV red selected/blue inactive, white tint, both buttons enabled; repeated tab clicks reuse the two material assets; profile/workshop navigation and PT/EN labels/title preserved.",
+  "audit": {
+    "changed": [
+      "Pets/Hatchery#114:20821e4f2412446582a7595aa420b84c",
+      "Pets/HatcheryTabs/Incubadora_PLACEHOLDER#114:fe87c0e1cc204ed48ad3b37840f39efc",
+      "Pets/HatcheryTabs/Mascotes_PLACEHOLDER#114:fe87c0e1cc204ed48ad3b37840f39efc"
+    ],
+    "added": [],
+    "preservedComponents": 2033,
+    "preservedCurrentProfile": 486
+  }
+}

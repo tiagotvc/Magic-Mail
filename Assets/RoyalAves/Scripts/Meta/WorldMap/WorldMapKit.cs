@@ -45,10 +45,23 @@ namespace RoyalAves.Meta.WorldMap
         [Range(2, 20)] public float cameraBack = 4.4f;
         [Range(0, 40)] public float pitch = 32;
         [Range(20, 60)] public float fov = 48;
+        public float GroundCurveStrength=>26f/Mathf.Max(1,radius);
+        public void SetGroundCurveStrength(float strength)
+        {
+            // Preserve the near ground and crest in the frame while making the roll stronger.
+            float angle=pitch*Mathf.Deg2Rad;
+            float rise=radius*(1-Mathf.Cos(angle));
+            float near=-cameraHeight*Mathf.Cos(angle)+cameraBack*Mathf.Sin(angle);
+            float nextRadius=26f/Mathf.Clamp(strength,.8f,1.4f);
+            float nextAngle=Mathf.Acos(Mathf.Clamp(1-rise/nextRadius,-.999f,.999f));
+            cameraHeight=(cameraBack*Mathf.Sin(nextAngle)-near)/Mathf.Max(.1f,Mathf.Cos(nextAngle));
+            radius=nextRadius;pitch=nextAngle*Mathf.Rad2Deg;
+        }
         [Tooltip("Metros a frente do cursor onde o medalhao da fase atual fica.")]
         [Range(-4, 6)] public float focusAhead = -2.55f;
         [Range(0.5f, 2)] public float renderScale = 1;
         [Range(0.3f, 2.5f)] public float tokenScale = 0.62f;
+        public TMPro.TMP_FontAsset levelNumberFont;
         [Header("Dia e noite")]
         [Range(0, 1), Tooltip("0 = dia, 1 = noite. Escurece o mundo, troca sol por lua e acende luzes.")] public float night;
         public bool dayNightCycle=true;
@@ -107,6 +120,7 @@ namespace RoyalAves.Meta.WorldMap
         public Sprite lavaTree,lavaShrub,lavaFlower,lavaLamp,lavaMailbox,lavaMailboxOpen,lavaForge,lavaOffice,lavaObservatory,lavaCrystal,lavaBoulder;
         public Sprite[] navIcons=new Sprite[0];
         public Sprite hardBadge,expressBadge,levelStar;
+        public Sprite rewardStarGold,rewardStarEmpty;
         public Sprite shrubCoral,shrubGold,shrubMint,detailTulips,detailBells,detailRocks;
         public Sprite[] gardenFamily=new Sprite[0],forestFamily=new Sprite[0],coastFamily=new Sprite[0],auroraFamily=new Sprite[0],geyserFrames=new Sprite[0];
         public Sprite[] desertFamily=new Sprite[0],orchardFamily=new Sprite[0],marshFamily=new Sprite[0],cloudFamily=new Sprite[0],crystalFamily=new Sprite[0];

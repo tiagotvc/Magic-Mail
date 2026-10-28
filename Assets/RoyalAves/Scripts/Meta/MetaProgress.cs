@@ -79,6 +79,7 @@ namespace RoyalAves.Meta
             Data.highestLevelWon = level;
             Data.stars += config.starsPerFirstWin;
             Save();
+            PostalEvents.RecordFirstWin(level);
             return config.starsPerFirstWin;
         }
 
@@ -149,15 +150,19 @@ namespace RoyalAves.Meta
             record.score = Mathf.Max(record.score, score);
             record.wins++;
             Save();
+            PostalEvents.RecordLevelWin(level);
         }
 
         public static bool IsMissionClaimed(string id) => Data.claimedMissions.Contains(id);
 
         public static bool ClaimMission(LobbyFeaturesConfig.Mission mission)
         {
-            if (mission == null || LevelsWon < mission.goal || IsMissionClaimed(mission.id)) return false;
+            if (mission == null || string.IsNullOrWhiteSpace(mission.id) || LevelsWon < Mathf.Max(1, mission.goal) || IsMissionClaimed(mission.id)) return false;
+            // Never consume a reward if the game wallet has not initialized yet.
+            if (mission.coins > 0 && InitScript.Instance == null) return false;
             Data.claimedMissions.Add(mission.id);
-            if (mission.coins > 0 && InitScript.Instance != null) InitScript.Instance.AddGems(mission.coins);
+            try { if (mission.coins > 0) InitScript.Instance.AddGems(mission.coins); }
+            catch { Data.claimedMissions.Remove(mission.id); throw; }
             Save();
             return true;
         }
@@ -235,6 +240,7 @@ namespace RoyalAves.Meta
         public static void ResetAll()
         {
             data = new SaveData();
+            PostalEvents.ResetProgress();
             Save();
         }
 

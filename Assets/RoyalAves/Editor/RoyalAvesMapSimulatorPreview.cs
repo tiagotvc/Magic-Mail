@@ -6,6 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using RoyalAves.UI.RoyalPostman2026;
 
 namespace RoyalAves.EditorTools
 {
@@ -16,7 +17,9 @@ namespace RoyalAves.EditorTools
     {
         static GameObject overlay;
         static Canvas lobby;
+        static readonly List<(Canvas canvas,bool enabled)> coveredCanvases=new List<(Canvas,bool)>();
         static RoyalAvesLevelMapPreview renderer;
+        static RoyalPostmanSimulatorRenderer postman;
         static double nextFrame;
         static bool failed;
         static Vector2Int size;
@@ -55,6 +58,23 @@ namespace RoyalAves.EditorTools
                 foreach(var texture in textures)if(texture!=null){texture.Release();UnityEngine.Object.DestroyImmediate(texture);}
             }
         }
+
+        const string AnimationKey="RoyalAves.MapPreview.Animate";
+        const string AnimationMenu="Royal Aves/Mapa de n\u00edveis/Animate editor preview";
+        internal static bool AnimatePreview
+        {
+            get=>SessionState.GetBool(AnimationKey,false);
+            set
+            {
+                if(value==AnimatePreview)return;
+                SessionState.SetBool(AnimationKey,value);
+                dirty=true;nextFrame=0;
+            }
+        }
+        [MenuItem(AnimationMenu)]
+        static void ToggleAnimation()=>AnimatePreview=!AnimatePreview;
+        [MenuItem(AnimationMenu,true)]
+        static bool ValidateAnimation(){Menu.SetChecked(AnimationMenu,AnimatePreview);return true;}
 
         static void Invalidate(){Cleanup();failed=false;}
 
@@ -98,7 +118,8 @@ namespace RoyalAves.EditorTools
                 if(overlay==null||current!=lobby||dimensions!=size)
                 {
                     Cleanup();lobby=current;size=dimensions;
-                    renderer=RoyalAvesLevelMapPreview.CreateScenePreview(size.x,size.y);
+                    if(RoyalPostmanRuntimeKit.Load()!=null)postman=RoyalPostmanSimulatorRenderer.Create(size.x,size.y);
+                    else renderer=RoyalAvesLevelMapPreview.CreateScenePreview(size.x,size.y);
                     RoyalAvesMapPreviewInput.Handler=HandleInput;
                     overlay=new GameObject("Preview temporário do mapa",typeof(RectTransform),typeof(Canvas),typeof(RoyalAvesMapPreviewInput));
                     overlay.hideFlags=HideFlags.HideAndDontSave;
@@ -111,14 +132,20 @@ namespace RoyalAves.EditorTools
                     picture.transform.SetParent(overlay.transform,false);
                     var rect=(RectTransform)picture.transform;
                     rect.anchorMin=Vector2.zero;rect.anchorMax=Vector2.one;rect.offsetMin=rect.offsetMax=Vector2.zero;
-                    var image=picture.GetComponent<RawImage>();image.texture=renderer.SceneTexture;image.raycastTarget=false;
+                    var image=picture.GetComponent<RawImage>();image.texture=postman!=null?postman.SceneTexture:renderer.SceneTexture;image.raycastTarget=false;
+                    // The preview replaces the lobby image. Covered canvases otherwise still render.
+                    foreach(var original in lobby.GetComponentsInChildren<Canvas>(true))
+                    {
+                        coveredCanvases.Add((original,original.enabled));original.enabled=false;
+                    }
                     lastFrame=now;
                     EditorApplication.QueuePlayerLoopUpdate();
                 }
-                if(renderer.NeedsSceneAnimation)dirty=true;
+                if(postman!=null)return;
+                if(AnimatePreview&&renderer.NeedsSceneAnimation)dirty=true;
                 if(dirty||moving)
                 {
-                    moving=renderer.RenderScenePreview((float)(now-lastFrame));
+                    moving=renderer.RenderScenePreview((float)(now-lastFrame),AnimatePreview);
                     dirty=false;lastFrame=now;
                     nextFrame=now+1d/30;
                     EditorApplication.QueuePlayerLoopUpdate();
@@ -133,6 +160,7 @@ namespace RoyalAves.EditorTools
 
         internal static bool HandleInput(EventType type,int button,Vector2 position,Vector2 delta,float height,float width=0)
         {
+            if(postman!=null&&!EditorApplication.isPlayingOrWillChangePlaymode)return postman.Input(type,button,position,width,height);
             if(renderer==null||EditorApplication.isPlayingOrWillChangePlaymode||height<1)return false;
             var inMap=position.y>height*.13f&&position.y<height*.90f;
             var now=EditorApplication.timeSinceStartup;
@@ -163,9 +191,12 @@ namespace RoyalAves.EditorTools
 
         static void Cleanup()
         {
+            foreach(var original in coveredCanvases)if(original.canvas!=null)original.canvas.enabled=original.enabled;
+            coveredCanvases.Clear();
             if(overlay!=null)UnityEngine.Object.DestroyImmediate(overlay);
             if(renderer!=null)UnityEngine.Object.DestroyImmediate(renderer);
-            overlay=null;renderer=null;lobby=null;
+            if(postman!=null)UnityEngine.Object.DestroyImmediate(postman);
+            overlay=null;renderer=null;postman=null;lobby=null;
             dirty=moving=dragging=false;
         }
     }

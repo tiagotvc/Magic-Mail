@@ -23,6 +23,7 @@ namespace RoyalAves.Meta.WorldMap
             public Sprite sprite, alternate;
             public PropKind kind;
             public int seed;
+            public int supportedLevel;
             public bool shadow = true, bottomPivot;
             public bool flipX;
             public WorldMapObjectTheme theme;
@@ -35,6 +36,7 @@ namespace RoyalAves.Meta.WorldMap
             [Range(-80,80)] public float rotation=50;     // LightShaft
             [Range(.05f,1)] public float intensity=.45f;  // LightShaft
             [Range(.2f,4)] public float thickness=1;      // LightShaft: espessura (largura) do raio
+            [Range(0,1)] public float raySpacing=.5f;
             public Sprite EffectiveSprite(WorldMapKit kit)
             {
                 var art=WorldMapScenery.UpgradeStyle(sprite==kit.legacyPostOffice&&kit.postOffice!=null?kit.postOffice:sprite,kit);
@@ -50,12 +52,12 @@ namespace RoyalAves.Meta.WorldMap
             public PropPlacement Placement(WorldMapRoute route, WorldMapKit kit) => new PropPlacement
             {
                 id=id,caption=caption,workMotion=workMotion,s=route.MetersAt(level),offset=lateral,height=EffectiveHeight(kit),sprite=EffectiveSprite(kit),alt=alternate,
-                kind=kind,seed=seed,shadow=shadow,bottomPivot=bottomPivot,flipX=flipX,theme=theme,snowEffect=snowEffect,lightsEffect=lightsEffect,iceEffect=iceEffect,effectPieces=effectPieces==null?null:(WorldMapPiecePose[])effectPieces.Clone(),customAdornments=customAdornments,adornments=WorldMapAdornment.Copy(adornments),groundPinned=groundPinned,groundDepth=groundDepth,rotation=rotation,intensity=intensity,thickness=thickness,fixedPlacement=customSize||keepSprite
+                kind=kind,seed=seed,supportedLevel=supportedLevel,shadow=shadow,bottomPivot=bottomPivot,flipX=flipX,theme=theme,snowEffect=snowEffect,lightsEffect=lightsEffect,iceEffect=iceEffect,effectPieces=effectPieces==null?null:(WorldMapPiecePose[])effectPieces.Clone(),customAdornments=customAdornments,adornments=WorldMapAdornment.Copy(adornments),groundPinned=groundPinned,groundDepth=groundDepth,rotation=rotation,intensity=intensity,thickness=thickness,raySpacing=raySpacing,fixedPlacement=customSize||keepSprite
             };
             public static Entry From(PropPlacement p, WorldMapRoute route) => new Entry
             {
                 id=Guid.NewGuid().ToString("N"),caption=p.caption,workMotion=p.workMotion,sourceId=IsExtra(p.id)?p.id:null,level=route.LevelAt(p.s),lateral=p.offset,height=p.height,
-                customSize=true,keepSprite=true,sprite=p.sprite,alternate=p.alt,kind=p.kind,seed=p.seed,shadow=p.shadow,bottomPivot=p.bottomPivot,flipX=p.flipX,theme=p.theme,snowEffect=p.snowEffect,lightsEffect=p.lightsEffect,iceEffect=p.iceEffect,effectPieces=p.effectPieces==null?null:(WorldMapPiecePose[])p.effectPieces.Clone(),customAdornments=p.customAdornments,adornments=WorldMapAdornment.Copy(p.adornments),groundPinned=p.groundPinned,groundDepth=p.groundDepth,rotation=p.rotation>0||p.rotation<0?p.rotation:50,intensity=p.intensity>0?p.intensity:.35f,thickness=p.thickness>0?p.thickness:1
+                customSize=true,keepSprite=true,sprite=p.sprite,alternate=p.alt,kind=p.kind,seed=p.seed,supportedLevel=p.supportedLevel,shadow=p.shadow,bottomPivot=p.bottomPivot,flipX=p.flipX,theme=p.theme,snowEffect=p.snowEffect,lightsEffect=p.lightsEffect,iceEffect=p.iceEffect,effectPieces=p.effectPieces==null?null:(WorldMapPiecePose[])p.effectPieces.Clone(),customAdornments=p.customAdornments,adornments=WorldMapAdornment.Copy(p.adornments),groundPinned=p.groundPinned,groundDepth=p.groundDepth,rotation=p.rotation>0||p.rotation<0?p.rotation:50,intensity=p.intensity>0?p.intensity:.35f,thickness=p.thickness>0?p.thickness:1,raySpacing=p.raySpacing
             };
         }
         [Serializable] public sealed class Chapter
@@ -75,7 +77,7 @@ namespace RoyalAves.Meta.WorldMap
             foreach (var chapter in chapters)
                 if (chapter.manual)
                     foreach (var entry in chapter.entries)
-                        if (entry.sprite != null && (entry.height > .01f||!entry.customSize)) placements.Add(entry.Placement(route,kitAt?.Invoke(route.MetersAt(entry.level))??kit));
+                        if (entry.level<=route.LevelSlots&&entry.sprite != null && (entry.height > .01f||!entry.customSize)) placements.Add(entry.Placement(route,kitAt?.Invoke(route.MetersAt(entry.level))??kit));
             placements.Sort((a,b)=>a.s.CompareTo(b.s));
         }
     }

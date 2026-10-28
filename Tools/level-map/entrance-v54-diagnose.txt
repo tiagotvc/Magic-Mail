@@ -1,0 +1,27 @@
+Layout Assets/RoyalAves/Resources/RoyalAvesMission100Layout.asset
+mission100-welcome-sign 0,8 postal-wayfinding-v50
+mission100-signature-mailbox 2 mailbox-glossy-v44
+magic53-envelope-tree 3,9 green-rounded-tree-v27
+mission100-meet-courier 5,3 courier-wizard-v50
+entrance54-separate-garden-shrub 7 shrub-green-glossy-v29
+mission100-lamp-3 8,4 lamp-straight-glossy-v46
+mission100-entry-gate 10,5 postal-archway-glossy-v51
+work52-garden-planter 12,2 flower-planter-v52
+magic53-ribbon-arch 13,8 ribbon-arch-frame-v53
+work52-enchanted-watering-can 15,2 watering-can-v52
+magic53-seal-flowers 16,6 seal-flower-v53
+mission100-entry-bench 18,2 green_garden_props_envelope_bench
+mission100-headquarters 19,8 central-headquarters-glossy-v51
+mission100-mailbox-21 20,6 mailbox-glossy-v44
+mission100-tree-21 21,2 pine-classic-glossy-v29
+mission100-yard-sign 22 postal-wayfinding-v50
+magic53-source-stream 23,07 ink-stream-v53
+magic53-ink-spring 23,4 ink-spring-structure-v53
+False mat=MapSurface shader=RoyalAves/WorldMap/Surface tint=RGBA(1.000, 1.000, 1.000, 1.000) supported=True
+False mat=MapTokens shader=RoyalAves/WorldMap/Surface tint=RGBA(1.000, 1.000, 1.000, 1.000) supported=True
+True mat=MapSurface shader=RoyalAves/WorldMap/Surface tint=RGBA(1.000, 1.000, 1.000, 1.000) supported=True
+True mat=MapTokens shader=RoyalAves/WorldMap/Surface tint=RGBA(1.000, 1.000, 1.000, 1.000) supported=True
+TextMeshPro/Mobile/Distance Field: Warning #pragma enable_d3d11_debug_symbols has been deprecated, instead please use #pragma enable_debug_symbols
+Hidden/ProbeVolume/VoxelizeScene: Warning array reference cannot be used as an l-value; not natively addressable, forcing loop to unroll
+Hidden/ProbeVolume/VoxelizeScene: Warning use of potentially uninitialized variable (rayOrigin) use of potentially uninitialized variable (rayDir)
+Hidden/Universal Render Pipeline/FallbackLoading: Warning Ignoring duplicate keyword line 'multi_compile _ DOTS_INSTANCING_ON'

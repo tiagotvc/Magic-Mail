@@ -1,0 +1,36 @@
+{
+  "generator": "built-in image_gen",
+  "assets": {
+    "backdrop": {
+      "referenced_image_paths": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/SeasonalSky/christmas-postal-sky-v66.png"
+      ],
+      "transparent_background": false,
+      "prompt": "Use case: precise-object-edit. Production SKY panorama for Magic Mail puzzle world map. Edit the referenced panorama, preserving its wide 3:1 canvas and the beautiful deep petrol-blue to turquoise to luminous mint sky gradient. Make ALL distant scenery pure simple SHADOW SILHOUETTES. Increase the three whimsical postal houses and crooked postal tower to roughly THREE TIMES current apparent height, tall chunky roofs occupying bottom 30–38% of image; arrange a large cropped house group at far left and another at far right, smaller tower on right center, leave center 35% of horizon open for the map road. Enlarge the rounded mountains/hills behind them into two broad layered shadow masses occupying bottom 35–45%. Houses, trees, mountains: only solid muted dark petrol / blue-teal silhouette shapes, NO windows, NO illuminated openings, NO snow highlights, NO roof tiles, NO colored roofs, NO outlines, NO dimensional gloss. Clear large iconic shapes, clean smooth contours, stylized playful cartoon, very few shapes, no tiny details. Existing big Christmas star stays at x78% y57% from TOP but becomes a SOLID muted dark petrol eight-point SHADOW, no golden color, no light, no glow, no halo, no rim, no shiny center. Remove all small bright stars and sparkles. Quiet background bands can stay but much softer; no luminous streak highlights, no sunbeams. No character in panorama (character is separate sprite), no text, no UI. Fully opaque art, pristine large readable graphic silhouettes; keep the cheerful teal/mint atmosphere.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-388b99d5-e764-480a-a2b8-e5a590fb6f52.png",
+      "file": "Assets/RoyalAves/Art/MapKitV3/RibbonRookV71/christmas-shadow-sky-v72.png",
+      "guid": "bf7a9200e08301895eaa835b4903bf47",
+      "finalRefinement": {
+        "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-388b99d5-e764-480a-a2b8-e5a590fb6f52.png",
+        "prompt": "Precise compositional edit of the attached finished shadow sky panorama. Preserve EVERYTHING exactly: identical 3:1 image size, teal-blue mint gradient, broad quiet arcs, all shadow houses, all mountain and tree silhouettes, all colors and silhouette shapes. Change ONLY the dark petrol eight-point star: move its center from x78% y57% to x64% y53% measured from TOP LEFT. Keep its exact size, silhouette, solid shadow color and shape, absolutely no glow. Completely erase the star at the old location and restore that patch of gradient/arc seamlessly. Exactly ONE shadow star in final image. No other changes, no new details, no character, no lights, no textures, no UI."
+      }
+    },
+    "character": {
+      "referenced_image_paths": [
+        "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Assets/RoyalAves/Art/MapKitV3/SeasonalSky/ribbon-rook-leap-silhouette-v66.png"
+      ],
+      "transparent_background": true,
+      "prompt": "Use case: identity-preserve / stylized-concept. Create the definitive FULL COLOR production 2D character sprite of the ORIGINAL Magic Mail Christmas villain RIBBON ROOK, using the attached approved shadow character as the identity and shape-language reference. Preserve his unmistakable HUGE hooked crow beak, three swept-back spiky ribbon crest tufts, short split-tail postal coat, impossibly long thin greedy hands, stubby bent legs, enormous curled parcel boots and oversized stolen-gifts sack. This is a memorable mischievous avian gremlin, not a human and not an existing franchise character. NEW POSE: a sneaky crouching gift thief caught in the act, both large boots on a single horizontal baseline, hunched shoulders, head in readable three-quarter toward viewer/right, grin and raised expressive eyebrow, vivid cunning chartreuse eyes, one long hand clutching a beautiful red wrapped present with gold ribbon into his bulging sack while other arm grips sack strap. Make sack and gift clearly separate and readable. Rich aubergine / midnight violet feathers, warm ivory golden hooked beak, teal collar and cuffs, deep plum tailored coat, antique gold envelope clasp, burgundy-coral stolen gift sack with two parcel corners peeking out, warm caramel curled boots with golden buckles. Distinctive SIMPLE iconic silhouette, big facial features, 4-5 main broad shapes, smooth saturated glossy painted shading and clean cream reflections like premium playful mobile puzzle game characters. Lovable theatrical villain, confident cheeky charisma, not scary or monstrous. Grounded frontal body for use beside map path, no isometric stage, no jumping, no flying. Entire character AND sack and present fully visible with comfortable transparent margins. Truly transparent background. NO ground patch, NO cast shadow, no scene, no text, no watermark, no white sticker outline, no particles, no glow fog. Keep polished cartoon proportion, not gritty or photorealistic, no hairlike feather texture.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ccd5b05b-5186-40fa-89b8-79666a0688c8.png",
+      "file": "Assets/RoyalAves/Art/MapKitV3/RibbonRookV71/ribbon-rook-gift-thief-color-v71.png",
+      "guid": "d873173379dc5d112077ca7bbae986b6"
+    },
+    "silhouette": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a2ae164e-eca1-44f0-b17f-512c15ab1372.png",
+      "prompt": "Use case: precise-object-edit. Edit target: the attached FULL-COLOR Ribbon Rook thief sprite. Produce its EXACT matching FLAT SHADOW SILHOUETTE for a distant game sky. Preserve the complete outer contour, same pose, same proportions, crest ribbons, hooked beak, enormous sack, boots, hands and held present. Change ALL visible opaque interior pixels of character AND sack AND gifts into ONE UNIFORM SOLID DARK PETROL BLUE, color approximately #155568. No facial features, NO eyes, NO mouth lines, NO internal lines, NO highlights, NO shaded rim, NO gradients within silhouette, no texture, no outer stroke, no glow. Preserve the transparent outer background and the existing transparent negative spaces between arms, legs and boot curls. Absolutely identical stationary crouching thief contour holding stolen gift, no jumping, no new objects, no ground or cast shadow. Entire silhouette centered with transparent margins, same square composition. Genuine transparent alpha background. One solid colored shadow only.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/RibbonRookV71/ribbon-rook-gift-thief-shadow-v71.png",
+      "guid": "8dc78a066fa5158a0c2626f2330ab080"
+    }
+  },
+  "integration": "Static shadow-only Christmas skyline; no sky clouds, meteors, weather particles or animated star/moon. Larger stationary villain shadow. Full-color original character automatically placed on Christmas islands with an unhidden full body; editable from map library and shared recipes. Authored island 1 terrain and placement data retained."
+}

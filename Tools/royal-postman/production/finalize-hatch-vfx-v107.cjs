@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../../..'),review=path.join(__dirname,'review/hatch-vfx-v107');
+const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+const prefab=path.join(root,'Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Pets.prefab');
+if(hash(prefab)!==hash(path.join(review,'before.prefab')))throw Error('Production prefab changed during VFX update');
+const result=path.join(root,'Library/MapValidation/hatch-flow-v105/vfx-v107.txt');if(!fs.readFileSync(result,'utf8').startsWith('PASS:'))throw Error('Native VFX validation did not pass');
+fs.copyFileSync(result,path.join(review,'native-check.txt'));
+const files=['RoyalPostmanHatchReveal','RoyalPostmanRevealLight','RoyalPostmanRadialSparkles','RoyalPostmanIncubatorParticles'].flatMap(n=>['Assets/RoyalAves/Scripts/UI/RoyalPostman2026/'+n+'.cs','Assets/RoyalAves/Scripts/UI/RoyalPostman2026/'+n+'.cs.meta']);
+files.push('Tools/royal-postman/production/HatchVfxV107Check.cs','Tools/royal-postman/HATCH-VFX-V107.md');
+fs.writeFileSync(path.join(review,'audit.json'),JSON.stringify({version:107,prefabUnchanged:true,prefabSHA256:hash(prefab),nativeResult:'native-check.txt',sourceHashes:Object.fromEntries(files.map(p=>[p,hash(path.join(root,p))]))},null,2)+'\n');
+console.log('V107 native checks PASS; actual prefab byte-preserved; sources and results archived.');

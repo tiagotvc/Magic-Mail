@@ -22,7 +22,7 @@ namespace RoyalAves.Meta.WorldMap
                 }
                 if(kit.simplePostal.Length==6)
                 {
-                    if(sprite==kit.simplePostal[0]||sprite==kit.simplePostal[1])return 1.42f;
+                    if(sprite==kit.simplePostal[0]||sprite==kit.simplePostal[1])return 1.136f;
                     if(sprite==kit.simplePostal[2])return 1.06f;
                     if(sprite==kit.simplePostal[3]||sprite==kit.simplePostal[4])return .84f;
                     if(sprite==kit.simplePostal[5])return .67f;
@@ -30,7 +30,7 @@ namespace RoyalAves.Meta.WorldMap
                 if(sprite==kit.tree||sprite==kit.pine)return 1.7f;
                 if(sprite==kit.lamp)return 1.5f;
                 if(sprite==kit.mailboxClosed||sprite==kit.mailboxOpen)return .9f;
-                if(sprite==kit.postOffice||sprite==kit.hut||sprite==kit.agency)return 1.8f;
+                if(sprite==kit.postOffice||sprite==kit.hut||sprite==kit.agency||sprite==kit.expressivePostOffice||sprite==kit.expressiveWorkshop)return 1.44f;
                 if(sprite==kit.shrubCoral||sprite==kit.shrubGold||sprite==kit.shrubMint)return .52f;
                 if(sprite==kit.detailTulips||sprite==kit.detailBells)return .45f;
                 if(sprite==kit.detailRocks)return .36f;
@@ -54,6 +54,7 @@ namespace RoyalAves.Meta.WorldMap
                 case PropKind.Dog:return .56f;
                 case PropKind.FloatingMail:return .26f;
                 case PropKind.GroundDetail:return .72f;
+                case PropKind.Mist:return .65f;
                 default:return .65f;
             }
         }

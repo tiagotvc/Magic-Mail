@@ -118,6 +118,7 @@ namespace RoyalAves.Meta.WorldMap
             beamBlock.SetColor("_LightColor", new Color(c.r, c.g, c.b, 1));
             beamBlock.SetFloat("_Alpha", s.intensity * strength);
             beamBlock.SetFloat("_Bands", s.bands);
+            beamBlock.SetFloat("_RaySpacing", s.raySpacing);
             beamBlock.SetFloat("_FxTime", time);
             beamBlock.SetFloat("_Seed", s.seed * .37f);
             beamRenderer.SetPropertyBlock(beamBlock);

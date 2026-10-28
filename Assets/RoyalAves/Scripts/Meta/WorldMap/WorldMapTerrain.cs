@@ -15,7 +15,9 @@ namespace RoyalAves.Meta.WorldMap
         public const float BankH = .039f;
         public const float RimW = 0.025f;
         public const float OuterHalf = 18f;
-        public const float Step = 0.10f;
+        // Broad painted surfaces need far fewer rows than the small rounded road caps.
+        // Keep the cap independently refined instead of tessellating the entire lawn at that density.
+        public const float Step = 0.60f;
         public const float WaterY = -0.23f;
         public const float Floor = -0.29f;
         public const float BridgeHalf = 0.66f;
@@ -26,6 +28,7 @@ namespace RoyalAves.Meta.WorldMap
         {
             public float x0, h0, x1, h1;
             public int kind; // 0 outer, 1 rim, 2 face, 3 path, 4 path edge
+            public float u0,u1;
         }
 
         static readonly Seg[] Profile = BuildProfile();
@@ -49,14 +52,17 @@ namespace RoyalAves.Meta.WorldMap
         readonly List<float> shoreColumns=new List<float>();
         readonly Color[] rowArtTints = new Color[5];
         readonly List<(float s,int level)> shores=new List<(float,int)>();
-        float rowInset0,rowInset1,rowEnd0,rowEnd1;
+        float rowInset0,rowInset1,rowEnd0,rowEnd1,rowCap0,rowCap1;
 
         WorldMapRoute route;
-        float radius, cursor;
+        float radius, cursor, curvature;
         public bool IllustratedBridge, Lava;
         public IReadOnlyList<PropPlacement> Scenery;
         MapPalette PaletteAt(float s) => Lava?WorldMapRoute.LavaPalette:route.PaletteAt(s);
         readonly List<List<int>> islandTriangles=new List<List<int>>();
+        float basisS0=float.NaN,basisS1=float.NaN;
+        Vector2 basis0,basis1;
+        float lateralRadius;
 
         static Seg[] BuildProfile()
         {
@@ -90,7 +96,15 @@ namespace RoyalAves.Meta.WorldMap
                     for(var x=-PathHalf+EdgeStrip;x<PathHalf-EdgeStrip;x+=.16f)
                         list.Add(new Seg {x0=x,h0=0,x1=Mathf.Min(x+.16f,PathHalf-EdgeStrip),h1=0,kind=3});
             }
+            for(int i=0;i<list.Count;i++)
+            {var segment=list[i];segment.u0=GroundU(segment.x0);segment.u1=GroundU(segment.x1);list[i]=segment;}
             return list.ToArray();
+        }
+        static float GroundU(float x)
+        {
+            var a=Mathf.Abs(x);
+            var u=a<=PathHalf?.18f*a/PathHalf:a<=PathHalf+SlopeW?Mathf.Lerp(.18f,.205f,(a-PathHalf)/SlopeW):Mathf.Lerp(.205f,.498f,Mathf.InverseLerp(PathHalf+SlopeW,3f,a));
+            return .5f+Mathf.Sign(x)*u;
         }
 
         public static float FootHeight(float lateralOffset)
@@ -125,6 +139,9 @@ namespace RoyalAves.Meta.WorldMap
         {
             this.route = route;
             this.radius = radius;
+            curvature = route.Curvature;
+            lateralRadius=radius/Mathf.Max(.1f,curvature);
+            basisS0=basisS1=float.NaN;
             cursor = cursorMeters;
             gv.Clear(); gn.Clear(); gc.Clear(); gt.Clear(); gu.Clear();
             laneCoordinates.Clear();
@@ -168,7 +185,7 @@ namespace RoyalAves.Meta.WorldMap
             // Each island owns its material, even while two different grounds share the viewport.
             if(route.Islands!=null)
             {
-                var count=route.Islands.islands.Count;
+                var count=route.Islands.ActiveIslandCount;
                 while(islandTriangles.Count<count)islandTriangles.Add(new List<int>());
                 foreach(var indices in islandTriangles)indices.Clear();
                 for(var i=0;i<gt.Count;i+=3)
@@ -199,7 +216,28 @@ namespace RoyalAves.Meta.WorldMap
 
         // ---- coordenadas ----------------------------------------------------------------------------
 
-        Vector3 P(float s, float cx, float x, float h) => MapCurve.Point(ShoreMeters(s,x) - cursor, cx + Lateral(x, s - cursor), h, radius,route.Curvature);
+        Vector2 Basis(float s)
+        {
+            if(s==basisS0)return basis0;
+            if(s==basisS1)return basis1;
+            var angle=(s-cursor)/radius;
+            basisS0=basisS1;basis0=basis1;basisS1=s;
+            basis1=new Vector2(Mathf.Cos(angle),Mathf.Sin(angle));return basis1;
+        }
+        Vector3 P(float s, float cx, float x, float h)
+        {
+            var basis=Basis(ShoreMeters(s,x));
+            var lateral=(cx+Lateral(x,s-cursor))/lateralRadius;
+            var ring=radius-lateralRadius+(lateralRadius+h)*Mathf.Cos(lateral);
+            return new Vector3((lateralRadius+h)*Mathf.Sin(lateral),ring*basis.x-radius,ring*basis.y);
+        }
+        Vector3 SurfaceNormal(float s,Vector3 point)
+        {
+            // sin(asin(x)) is x: avoid recomputing three angles for every corner of every quad.
+            var sin=Mathf.Clamp(point.x/(lateralRadius+BankH),-1,1);
+            var cos=Mathf.Sqrt(Mathf.Max(0,1-sin*sin));var basis=Basis(s);
+            return new Vector3(sin,cos*basis.x,cos*basis.y);
+        }
         float ShoreMeters(float s,float x)
         {
             foreach(var edge in shores)
@@ -238,8 +276,13 @@ namespace RoyalAves.Meta.WorldMap
             for(var row=0;row+1<rows.Count;row++)
             {
                 var s0=rows[row];var s1=rows[row+1];refinedRows.Add(s0);
-                if(route.InsetAmount(s0)<.999f||route.InsetAmount(s1)<.999f)
-                    for(var j=1;j<5;j++)refinedRows.Add(Mathf.Lerp(s0,s1,j/5f));
+                var inset0=route.InsetAmount(s0);var inset1=route.InsetAmount(s1);
+                // Refine the rounded transition, not the entire lawn before the road starts.
+                if(inset0!=inset1||inset0>0&&inset0<.999f||inset1>0&&inset1<.999f)
+                {
+                    int divisions=Mathf.CeilToInt((s1-s0)/.04f);
+                    for(var j=1;j<divisions;j++)refinedRows.Add(Mathf.Lerp(s0,s1,j/(float)divisions));
+                }
             }
             refinedRows.Add(b);rows.Clear();rows.AddRange(refinedRows);
             var cxPrev = route.CenterX(rows[0]);
@@ -252,6 +295,7 @@ namespace RoyalAves.Meta.WorldMap
                 var pal = PaletteAt(mid);
                 var inset = route.InsetAmount(mid);
                 rowInset0=route.InsetAmount(s0);rowInset1=route.InsetAmount(s1);
+                rowCap0=Mathf.Sqrt(rowInset0);rowCap1=Mathf.Sqrt(rowInset1);
                 rowEnd0=route.DistanceFromLaneEnd(s0);rowEnd1=route.DistanceFromLaneEnd(s1);
                 for (var kind = 0; kind < rowArtTints.Length; kind++)
                 {
@@ -304,21 +348,18 @@ namespace RoyalAves.Meta.WorldMap
 
         void AddSegment(Seg sg, float s0, float s1, float cx0, float cx1, Color color)
         {
-            float Edge(float x,float inset)
+            float Edge(float x,float cap)
             {
-                var cap = Mathf.Sqrt(inset);
                 return Mathf.Abs(x) <= PathHalf ? x * cap : x - Mathf.Sign(x) * PathHalf * (1 - cap);
             }
-            var x00=Edge(sg.x0,rowInset0);var x01=Edge(sg.x0,rowInset1);
-            var x11=Edge(sg.x1,rowInset1);var x10=Edge(sg.x1,rowInset0);
+            var x00=Edge(sg.x0,rowCap0);var x01=Edge(sg.x0,rowCap1);
+            var x11=Edge(sg.x1,rowCap1);var x10=Edge(sg.x1,rowCap0);
             var p00 = P(s0, cx0, x00, LaneHeight(x00,rowEnd0));
             var p01 = P(s1, cx1, x01, LaneHeight(x01,rowEnd1));
             var p11 = P(s1, cx1, x11, LaneHeight(x11,rowEnd1));
             var p10 = P(s0, cx0, x10, LaneHeight(x10,rowEnd0));
-            Vector3 SurfaceNormal(float s,Vector3 p) => MapCurve.Normal(s-cursor,radius,
-                Mathf.Asin(Mathf.Clamp(p.x/(radius/route.Curvature+BankH),-1,1))*(radius/route.Curvature),route.Curvature);
             Quad(gv, gn, gc, gt, p00, p01, p11, p10,SurfaceNormal(s0,p00),SurfaceNormal(s1,p01),
-                SurfaceNormal(s1,p11),SurfaceNormal(s0,p10),color);
+                SurfaceNormal(s1,p11),SurfaceNormal(s0,p10),color,true);
             // The cap's grass has the grass palette even when it crosses a former lane column.
             Color GroundTint(float x,float end)
             {
@@ -332,24 +373,16 @@ namespace RoyalAves.Meta.WorldMap
             var lawn=rowArtTints[0];var path=rowArtTints[3];
             for(var k=0;k<4;k++){lawnPalette.Add(new Vector3(lawn.r,lawn.g,lawn.b));pathPalette.Add(new Vector3(path.r,path.g,path.b));}
             while (gu.Count < gv.Count - 4) gu.Add(Vector2.zero);
-            float U(float x)
-            {
-                var a = Mathf.Abs(x);
-                var u = a <= PathHalf ? .18f * a / PathHalf
-                    : a <= PathHalf + SlopeW ? Mathf.Lerp(.18f, .205f, (a - PathHalf) / SlopeW)
-                    : Mathf.Lerp(.205f, .498f, Mathf.InverseLerp(PathHalf + SlopeW, 3f, a));
-                return .5f + Mathf.Sign(x) * u;
-            }
-            gu.Add(new Vector2(U(sg.x0), s0 / 14f));
-            gu.Add(new Vector2(U(sg.x0), s1 / 14f));
-            gu.Add(new Vector2(U(sg.x1), s1 / 14f));
-            gu.Add(new Vector2(U(sg.x1), s0 / 14f));
+            gu.Add(new Vector2(sg.u0, s0 / 14f));
+            gu.Add(new Vector2(sg.u0, s1 / 14f));
+            gu.Add(new Vector2(sg.u1, s1 / 14f));
+            gu.Add(new Vector2(sg.u1, s0 / 14f));
             // Physical lane coordinates keep the painted bevel the same width on curves and caps.
             while(laneCoordinates.Count<gv.Count-4)laneCoordinates.Add(Vector2.zero);
-            laneCoordinates.Add(new Vector2(Edge(sg.x0,rowInset0),rowEnd0));
-            laneCoordinates.Add(new Vector2(Edge(sg.x0,rowInset1),rowEnd1));
-            laneCoordinates.Add(new Vector2(Edge(sg.x1,rowInset1),rowEnd1));
-            laneCoordinates.Add(new Vector2(Edge(sg.x1,rowInset0),rowEnd0));
+            laneCoordinates.Add(new Vector2(x00,rowEnd0));
+            laneCoordinates.Add(new Vector2(x01,rowEnd1));
+            laneCoordinates.Add(new Vector2(x11,rowEnd1));
+            laneCoordinates.Add(new Vector2(x10,rowEnd0));
         }
 
         // Parede vertical na ponta da terra (face de borda mais escura que o topo).
@@ -569,6 +602,11 @@ namespace RoyalAves.Meta.WorldMap
         {
             var settings=route.CrossingAt(g);
             var pal = PaletteAt(g.start-.01f);
+            if(settings!=null&&!settings.customChannelColor)
+            {
+                var colors=new[]{new Color32(28,184,229,255),new Color32(143,68,213,255),new Color32(229,89,185,255),new Color32(255,104,28,255),new Color32(58,206,184,255)};
+                pal.water=colors[(int)settings.liquid];
+            }
             var waterHeight=route.WaterHeight((g.start+g.end)*.5f);
             // Agua: ausencia de terra com uma superficie propria abaixo das margens.
             rows.Clear();
@@ -600,12 +638,14 @@ namespace RoyalAves.Meta.WorldMap
                     wc.Add(base0); wc.Add(base1); wc.Add(base1); wc.Add(base0);
                     wu.Add(new Vector2(x0,s0)); wu.Add(new Vector2(x0,s1));
                     wu.Add(new Vector2(x1,s1)); wu.Add(new Vector2(x1,s0));
-                    for(int i=0;i<4;i++)waterMotionCoordinates.Add(new Vector2((int)(settings?.waterMotion??WorldMapWaterMotion.Wakes),0));
+                    var winterRule=route.Islands?.Managed(settings)==true?(route.Islands.Recipe(settings).christmas?.2f:.1f):0;
+                    for(int i=0;i<4;i++)waterMotionCoordinates.Add(new Vector2((int)(settings?.waterMotion??WorldMapWaterMotion.Ripples)+winterRule,(int)(settings?.liquid??WorldMapLiquid.Clear)+(settings?.waterGloss??.85f)*.1f));
                     wt.Add(baseIndex); wt.Add(baseIndex + 1); wt.Add(baseIndex + 2);
                     wt.Add(baseIndex); wt.Add(baseIndex + 2); wt.Add(baseIndex + 3);
                 }
             }
             Bridge(g, pal);
+
         }
 
         static float WaterShade(float s, WorldMapRoute.Gap g)
@@ -616,31 +656,37 @@ namespace RoyalAves.Meta.WorldMap
 
         void Bridge(WorldMapRoute.Gap g, MapPalette pal)
         {
-            var crossing=route.CrossingAt(g)?.crossing??WorldMapCrossing.Logs;
+            var settings=route.CrossingAt(g);
+            var crossing=settings?.crossing??WorldMapCrossing.Logs;
             if(crossing==WorldMapCrossing.OpenWater||crossing==WorldMapCrossing.Stones)return;
             var plankA = Vc(new Color32(139, 215, 155, 255));
             var plankB = Vc(new Color32(154, 223, 165, 255));
             var beam = Vc(new Color32(100, 170, 120, 255));
-            var from = g.start - 0.3f;
-            var to = g.end + 0.3f;
-            Vector3 BridgeP(float s,float x)=>MapCurve.Point(s-cursor,route.CenterX(s)+Lateral(x,s-cursor),BankH+.028f,radius,route.Curvature);
-            // A thin illustrated cream edge keeps the simple planks readable against the water.
+            // Cross straight between the banks. End sleepers overlap the full shoreline warp,
+            // including transparent art margins, so neither end floats above open water.
+            var overlap=Mathf.Max(.4f,settings?.bridgeBankOverlap??.6f);
+            var from = g.start - overlap;
+            var to = g.end + overlap;
+            bool newDeck=route.Islands?.bridgeDeck!=null;
+            var half=newDeck?(settings?.bridgeWidth??1.45f)/1.44f:BridgeHalf;
+            Vector3 BridgeP(float s,float x)
+            {
+                var arch=.035f*Mathf.Sin(Mathf.PI*Mathf.InverseLerp(from,to,s));
+                return MapCurve.Point(s-cursor,route.CenterX(s)+Lateral(x,s-cursor),BankH+.028f+arch,radius,route.Curvature);
+            }
             if(IllustratedBridge)
             {
                 for(var s=from;s<to-.001f;s+=Step)
-                for(var x=-BridgeHalf;x<BridgeHalf-.001f;x+=.16f)
+                for(var x=-half;x<half-.001f;x+=.16f)
                 {
-                    var e=Mathf.Min(s+Step,to);var x1=Mathf.Min(x+.16f,BridgeHalf);
-                    var middle=(from+to)*.5f;
-                    var slant=(g.afterLevel%2==0?-1:1)*(route.Islands?.unifiedBase==true?.30f:.16f);
-                    var sx=(s-middle)*slant;var ex=(e-middle)*slant;
-                    var style=route.Islands?.unifiedBase==true?(crossing==WorldMapCrossing.Planks?3:2):route.LavaAt(g.end+.01f,Lava)?3:2+(g.afterLevel/9+2)%3;
-                    Quad(gv,gn,gc,gt,BridgeP(s,x+sx),BridgeP(e,x+ex),BridgeP(e,x1+ex),BridgeP(s,x1+sx),N(s),N(e),N(e),N(s),new Color(1,1,1,style));
+                    var e=Mathf.Min(s+Step,to);var x1=Mathf.Min(x+.16f,half);
+                    var style=newDeck?2:route.Islands?.unifiedBase==true?(crossing==WorldMapCrossing.Planks?3:2):route.LavaAt(g.end+.01f,Lava)?3:2+(g.afterLevel/9+2)%3;
+                    Quad(gv,gn,gc,gt,BridgeP(s,x),BridgeP(e,x),BridgeP(e,x1),BridgeP(s,x1),N(s),N(e),N(e),N(s),new Color(1,1,1,style));
                     while(gu.Count<gv.Count-4)gu.Add(Vector2.zero);
-                    gu.Add(new Vector2(Mathf.InverseLerp(-BridgeHalf,BridgeHalf,x),Mathf.InverseLerp(from,to,s)));
-                    gu.Add(new Vector2(Mathf.InverseLerp(-BridgeHalf,BridgeHalf,x),Mathf.InverseLerp(from,to,e)));
-                    gu.Add(new Vector2(Mathf.InverseLerp(-BridgeHalf,BridgeHalf,x1),Mathf.InverseLerp(from,to,e)));
-                    gu.Add(new Vector2(Mathf.InverseLerp(-BridgeHalf,BridgeHalf,x1),Mathf.InverseLerp(from,to,s)));
+                    gu.Add(new Vector2(Mathf.InverseLerp(-half,half,x),Mathf.InverseLerp(from,to,s)));
+                    gu.Add(new Vector2(Mathf.InverseLerp(-half,half,x),Mathf.InverseLerp(from,to,e)));
+                    gu.Add(new Vector2(Mathf.InverseLerp(-half,half,x1),Mathf.InverseLerp(from,to,e)));
+                    gu.Add(new Vector2(Mathf.InverseLerp(-half,half,x1),Mathf.InverseLerp(from,to,s)));
                 }
                 return;
             }
@@ -689,11 +735,11 @@ namespace RoyalAves.Meta.WorldMap
 
         // Quad de 4 vertices proprios (cor chapada por face). Enrola para que a face aponte para a normal.
         static void Quad(List<Vector3> v, List<Vector3> n, List<Color> c, List<int> t,
-            Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 n0, Vector3 n1, Vector3 n2, Vector3 n3, Color color)
+            Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 n0, Vector3 n1, Vector3 n2, Vector3 n3, Color color,bool unitNormals=false)
         {
             var i = v.Count;
             v.Add(p0); v.Add(p1); v.Add(p2); v.Add(p3);
-            n.Add(n0.normalized); n.Add(n1.normalized); n.Add(n2.normalized); n.Add(n3.normalized);
+            n.Add(unitNormals?n0:n0.normalized); n.Add(unitNormals?n1:n1.normalized); n.Add(unitNormals?n2:n2.normalized); n.Add(unitNormals?n3:n3.normalized);
             c.Add(color); c.Add(color); c.Add(color); c.Add(color);
             var facing = Vector3.Dot(Vector3.Cross(p1 - p0, p2 - p0), n0 + n1 + n2 + n3);
             if (facing >= 0) { t.Add(i); t.Add(i + 1); t.Add(i + 2); t.Add(i); t.Add(i + 2); t.Add(i + 3); }

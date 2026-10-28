@@ -1,0 +1,28 @@
+{
+  "version": 9,
+  "tool": "built-in image_gen",
+  "prompt": "Use case: stylized-concept.\nAsset type: ONE transparent game UI gold divider left finial with an attached straight tail.\nReference image is the approved central ornament: use its EXACT gold color palette and sculpted face treatment. Do not reproduce its jewel or its central ornament.\nCreate one LEFT endpoint curl, connected seamlessly to a perfectly horizontal straight gold ribbon tail extending to the RIGHT. This is a matching extension of the reference ornament. Broad sunny-yellow front faces, pale cream narrow upper bevel and crisp reflected edge, orange sidewalls, small dark orange underside. Clearly defined smooth planar bevels, clean large reflections, saturated polished cartoon gold as in the reference, not photorealism.\nShape: compact open C/S-shaped curl at the left, graceful broad band, same flowing shape language as reference outer curls. Tail continues from lower right of curl and runs straight to image right, with uniform thickness and constant vertical color/bevel profile, square cut at right end. Curl occupies left 55%, straight tail occupies right 45%. Tail is around one quarter of overall curl height. Front orthographic view, very slight visible lower bevel, long horizontal composition around 2.5:1, tightly framed with full silhouette visible and modest transparent margins.\nNative high detail, sharp clean silhouette and alpha. Absolutely no background, no text, no jewel, no sparkles, no glow, no drop shadow, no texture noise, no blurry bulb/torus, no tiny wispy lines. One component only. Preserve genuine transparent background.",
+  "reference": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-ornament-center-v3.png",
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-57f72338-b639-457e-8428-651201846e61.png",
+  "asset": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-divider-finial-v9.png",
+  "nativeDimensions": [
+    1983,
+    793
+  ],
+  "finialRect": [
+    20,
+    84,
+    980,
+    618
+  ],
+  "straightRect": [
+    1200,
+    218,
+    64,
+    166
+  ],
+  "logicalBarHeight": 12,
+  "uniformScale": 0.07228915662650602,
+  "notes": "Source PNG unchanged; native Sprite rectangles. Right finial mirrored; straight tail tiles at same uniform scale. Approved center source and geometry preserved.",
+  "sha256": "4d72ef0a2a6d90c24a94d7017f392e9f43e7c35f2b26adb1bb7511a5fd5ab095"
+}

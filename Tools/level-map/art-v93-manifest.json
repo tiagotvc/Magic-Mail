@@ -1,0 +1,21 @@
+{
+  "tool": "built-in ImageGen",
+  "date": "2026-10-18",
+  "prompts": "art-v93-prompts.json",
+  "assets": [
+    {
+      "id": "pig",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-4da2de5a-c808-4b73-8212-b23cf80af690.png",
+      "output": "Assets/RoyalAves/Resources/MapEventsV93/postal-pig.png"
+    },
+    {
+      "id": "character",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a50acc7a-03f9-40f1-b257-22dcf3862239.png",
+      "output": "Assets/RoyalAves/Art/MapKitV3/Library/Personagens/postal-apprentice-v93.png"
+    }
+  ],
+  "characterLibrary": "Assets/RoyalAves/Resources/MapLibrary/Personagens/postal-apprentice-v93.asset",
+  "characterDefaultSize": 0.82,
+  "characterScope": "Available in character library; no authored placements or active cast changed.",
+  "pigResource": "MapEventsV93/postal-pig"
+}

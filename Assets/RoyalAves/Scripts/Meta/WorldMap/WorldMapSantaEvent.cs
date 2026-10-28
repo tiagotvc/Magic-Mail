@@ -23,7 +23,7 @@ namespace RoyalAves.Meta.WorldMap
         int host=-1,lastHost=-1;
         Sprite sprite;
         Rect exposed;
-        public bool Enabled=>kit.santaEventEnabled&&(kit.santaFriendly!=null||kit.santaVillain!=null);
+        public bool Enabled=>world.SeasonEventsAllowed&&kit.santaEventEnabled&&(kit.santaFriendly!=null||kit.santaVillain!=null);
         public bool NeedsFrames(float now)=>Enabled&&(active||!initialized||now>=next);
         public int HostIndex=>host;
         public bool Evil=>evil;
@@ -54,6 +54,7 @@ namespace RoyalAves.Meta.WorldMap
             var renderer=cover.GetComponent<MeshRenderer>();
             if(renderer==null||!renderer.enabled||renderer.sharedMaterial==null)return false;
             var p=world.Props[index];
+            if(world.Route.Islands?.automaticSequence==true&&world.Route.Islands.Recipe(world.Route.IslandAt(p.s))?.christmas!=true)return false;
             // Small also includes signs, parcels and benches: identify actual shrubs by their art.
             var art=renderer.sharedMaterial.mainTexture;
             var name=((art!=null?art.name:"")+" "+(p.sprite!=null?p.sprite.name:"")).ToLowerInvariant();

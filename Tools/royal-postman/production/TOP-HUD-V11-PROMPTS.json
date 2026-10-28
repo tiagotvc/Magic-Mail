@@ -1,0 +1,17 @@
+{
+  "tool": "built-in image_gen",
+  "materialReference": "Assets/RoyalAves/Art/RoyalPostmanUI2026/level-base-v6.png",
+  "assets": [
+    {
+      "id": "top-plus-base-v11",
+      "prompt": "Edit the attached LEVEL BUTTON asset into ONE CIRCULAR teal button body. The exact teal material and finish of this level button are the authority. Change ONLY silhouette from rounded rectangle to perfect circle, and remove the gold outer frame. Preserve the SAME two-level relief: a LARGE front-facing raised central face (a circle now), surrounded by the same broad softly sloping teal shoulder. Copy the level button's broad upper turquoise shoulder highlight, soft same-color bevel into the center, and dark teal lower slope. The raised central face is a subtly shaded flat plateau, NOT a spherical dome. It occupies 78% of the circular body's diameter. This is the SAME level button rendered round, not a new button design. NO circular trench, NO inner outline or fine glowing ring, NO donut rim, NO separate shiny dome, NO gold, NO text or symbol. Clean smooth painted finish exactly like the source; no texture, speckles, stains or artifacts. Front view, perfect circular silhouette, centered large, transparent background with small even margins. Only one standalone circular body.",
+      "source": "exec-f1bf6253-f1e1-4b6d-8797-f3db7ddc6605.png"
+    },
+    {
+      "id": "top-settings-base-v11",
+      "prompt": "Edit this exact circular level-style button body: change ONLY teal color to plum-purple (matching a purple postman's cap: midtone #792596, lower shade #48115B, upper light #B66AC9). Keep the silhouette, every highlight placement, broad shoulder, raised flat central circular plateau, all bevel geometry, edge thickness and proportions IDENTICAL to this input. Preserve its same clean illustrated level-button finish. This is a color variant of the SAME asset, not a redesign or a different material. No extra ring, no metallic rim, no circular groove, no glossy dome, no icon or text. Keep genuine transparent background. One purple circular button body only.",
+      "reference": "top-plus-base-v11.png",
+      "source": "exec-c413e773-c6f3-4006-8303-cf2711c33090.png"
+    }
+  ]
+}

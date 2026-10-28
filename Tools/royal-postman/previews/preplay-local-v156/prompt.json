@@ -1,0 +1,14 @@
+{
+  "version": 156,
+  "date": "2026-10-27",
+  "method": "Built-in ImageGen minimal local edit",
+  "status": "Mock only; awaiting review",
+  "prompt": "MINIMAL LOCAL EDIT. Image 1 is the ONLY BASE. Preserve its exact crop, geometry, silhouette, scene, fonts, icons, spacing and colors outside the specified edits. Image 2 is ONLY a reference for the GOLD MATERIAL and CRYSTAL MATERIAL, never its layout or button.\n\nOnly 3 changes to Image 1:\n1. Existing gold border: use Image 2's bright smooth gold bevel material, within Image 1's existing rim. Same thickness and exact contour.\n2. Inside the 3 round booster sockets only: replace smooth dark glass with Image 2's clearly faceted BLUE/VIOLET crystal. Same gold icons, counts4/2/1, rings, positions and sizes.\n3. On the Jogar button only: remove both copied pointed gold end ornaments. Reconnect the narrow gold rim into a smooth continuous pill outline, leaving NO SIDE ORNAMENT AT ALL. No ovals, diamonds, crystals, tabs, brackets, wings, chevrons or other replacements. Retain exact blue face, gold rim quality, text and button size. Restore the tiny exposed parchment areas after removing ornaments.\n\nLOCKED: Image 1's scalloped/curved lower scene cutout, lower modal frame's cutout around button, cropped top header, red X, realistic bridge with moon and foreground stone path, objective well and icons20/12/8, labels and background. DO NOT fill/straighten either cutout. Do not extend the canvas or show more of header. No global restyling. No changes to composition or relative sizes. Return the same Image 1, with only these material swaps and two ornament removals.",
+  "references": {
+    "onlyBase": "Tools/royal-postman/previews/preplay-reference-v155/mock.png",
+    "materialsOnly": "Tools/royal-postman/previews/preplay-gold-crystal-v154/mock.png"
+  },
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a17ecd-29bc-7273-8663-93134d65678a/exec-a0e36a59-db2d-4b7b-9c5d-c2086a664020.png",
+  "sha256": "982C6684044BE3835E0FA2FDCFB66A446C60EF9C68C5089D90EFEE3EF99F9D22",
+  "review": "V155 crop/composition, curved scene cutout and button overlap retained visually. Gold finish brightened, booster glass now faceted blue/violet; copied pointed CTA end ornaments removed with no substitute appendages. No pixel identity guarantee from generative edit. No Unity/prefab/runtime/production changes."
+}

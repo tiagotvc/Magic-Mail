@@ -1,0 +1,33 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../../..'),review=path.join(__dirname,'review/menu-v162'),out=path.join(root,'Library/MapValidation/menu-v162'),iso=path.join(root,'Library/MapValidation/SettingsV161Validation');
+const hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),normal=s=>s.replace(/\r\n/g,'\n');
+const checks=fs.readFileSync(path.join(out,'checks.txt'),'utf8');if(!checks.startsWith('PASS:'))throw Error('Native validation has not passed');
+const compile=JSON.parse(fs.readFileSync(path.join(review,'compile-comparison.json'),'utf8'));if(compile.candidateErrors.length||compile.baselineErrors.length)throw Error('Runtime C# compilation failed');
+const baseline=JSON.parse(fs.readFileSync(path.join(review,'baseline.json'),'utf8'));
+for(const entry of baseline.filter(e=>e.path.endsWith('.prefab')))if(hash(path.join(root,entry.path))!==entry.sha256)throw Error('Previously authored prefab changed: '+entry.path);
+const controllerPath='Assets/RoyalAves/Scripts/Meta/LobbyController.cs',controller=fs.readFileSync(path.join(root,controllerPath),'utf8');
+let restored=normal(controller).replace('        RoyalPostmanMenuWindow royalMainMenu;\n','').replaceAll('            royalMainMenu?.Dismiss();\n','').replace('OpenProfile,ToggleMainMenu,OpenPets,OpenTab','OpenProfile,ToggleSettings,OpenPets,OpenTab').replace('||(royalMainMenu!=null&&royalMainMenu.IsOpen)','');
+let start=restored.indexOf('\n        void ToggleMainMenu()'),end=restored.indexOf('\n        void OpenSweetSugarMenu(',start);if(start<0||end<0)throw Error('Integration methods missing');restored=restored.slice(0,start)+restored.slice(end);
+if(restored!==normal(fs.readFileSync(path.join(review,'LobbyController.cs.before'),'utf8')))throw Error('Unrelated authored lobby code changed');
+const viewportPath='Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanViewport.cs',viewport=normal(fs.readFileSync(path.join(root,viewportPath),'utf8'));
+const guard='            // Shared painted windows own their proportional panel and full-screen input shield.\n            // The RuntimeKit/editor must use the same fitter as the live lobby.\n            var window=GetComponent<RoyalPostmanSettingsFit>();\n            if(window!=null){window.SafeAreaOverride=SafeAreaOverride;window.Fit();return;}\n';
+if(viewport.replace(guard,'')!==normal(fs.readFileSync(path.join(review,'RoyalPostmanViewport.cs.before'),'utf8')))throw Error('Unrelated viewport logic changed');
+const policyPath='Assets/RoyalAves/Editor/RoyalPostmanTextureImportPolicy.cs',policy=normal(fs.readFileSync(path.join(root,policyPath),'utf8'));
+if(policy.replace(/^            bool menuIcon=.*\n/m,'').replaceAll('||menuIcon','')!==normal(fs.readFileSync(path.join(review,'RoyalPostmanTextureImportPolicy.cs.before'),'utf8')))throw Error('Unrelated import policy changed');
+const reuse=JSON.parse(fs.readFileSync(path.join(out,'reuse.json'),'utf8'));for(const entry of reuse)if(hash(path.join(root,entry.path))!==entry.sha256)throw Error('Reused source art/font changed: '+entry.path);
+const info=JSON.parse(fs.readFileSync(path.join(out,'import.json'),'utf8'));
+const prefab='Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/MenuWindowV162.prefab',art='Assets/RoyalAves/Art/UI/Menu/RoyalPostman/MenuV162/Sprites/';
+const kitPath='Assets/RoyalAves/Resources/RoyalPostmanUI2026/RuntimeKit.asset',kitFile=path.join(root,kitPath),before=fs.readFileSync(kitFile,'utf8');
+if(hash(kitFile)!==baseline.find(e=>e.path===kitPath).sha256)throw Error('RuntimeKit edited concurrently');
+if(/- id: menu\b/.test(before))throw Error('Menu already registered; preserve user edits');
+const addition='  - id: menu\n    title: Menu\n    prefab: {fileID: '+info.rootFileId+', guid: '+info.prefabGuid+', type: 3}\n    hideNavigation: 1\n';
+if(!/^  rocket:/m.test(before))throw Error('RuntimeKit anchor missing');const next=before.replace(/^  rocket:/m,addition+'  rocket:');
+const iconTextures=reuse.filter(e=>e.path.endsWith('.png')&&!/[\\/]SettingsV161[\\/]/.test(e.path));if(iconTextures.length!==8)throw Error('Unexpected icon import scope: '+iconTextures.length);
+for(const rel of [prefab,art+'postal-header.asset',art+'postal-body.asset']){const from=path.join(iso,rel),to=path.join(root,rel);if(fs.existsSync(to)){if(!fs.readFileSync(to).equals(fs.readFileSync(from))||!fs.readFileSync(to+'.meta').equals(fs.readFileSync(from+'.meta')))throw Error('Existing authored menu asset differs '+rel);}else{fs.mkdirSync(path.dirname(to),{recursive:true});fs.copyFileSync(from,to);fs.copyFileSync(from+'.meta',to+'.meta');}}
+const importAudit=[];for(const entry of iconTextures){const rel=entry.path+'.meta',target=path.join(root,rel),saved=path.join(review,'icon-imports',rel);fs.mkdirSync(path.dirname(saved),{recursive:true});fs.copyFileSync(target,saved);const old=hash(target);fs.copyFileSync(path.join(iso,rel),target);importAudit.push({path:rel,before:old,after:hash(target),pngUnchanged:true});}
+if(fs.readFileSync(kitFile,'utf8')!==before)throw Error('Concurrent RuntimeKit write');fs.writeFileSync(kitFile,next);
+for(const name of ['build.txt','checks.txt','import.json','menu-360x640.png','menu-390x844.png','menu-720x1280.png','menu-640x360.png','menu-final.png','menu-to-settings.png','menu-via-runtime-kit.png'])fs.copyFileSync(path.join(out,name),path.join(review,name));
+const manifest={version:162,status:'Installed real Menu window',prefab,entry:'Existing upper lobby SettingsButton now calls ToggleMainMenu; Configurações remains reachable in the Menu',newPngCount:0,sourceWindow:'Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/SettingsWindowV161.prefab',reuse,importAudit,info,nativeChecks:checks.trim(),runtimeCompilation:'PASS: full cached Unity Assembly-CSharp response plus current RoyalAves runtime sources, candidate and previous authored controller both compile with zero errors; outputs only in review folder',audit:{existingPrefabsUnchanged:baseline.filter(e=>e.path.endsWith('.prefab')),unrelatedLobbyCodePreserved:true,unrelatedViewportLogicPreserved:true,unrelatedImportRulesPreserved:true,existingRuntimeKitEntriesPreserved:normal(next).replace(addition,'')===normal(before)},sources:Object.fromEntries([controllerPath,viewportPath,policyPath,'Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanMenuWindow.cs',kitPath,prefab].map(p=>[p,hash(path.join(root,p))]))};
+if(!manifest.audit.existingRuntimeKitEntriesPreserved)throw Error('RuntimeKit existing entries changed');
+fs.writeFileSync(path.join(__dirname,'MENU-V162.json'),JSON.stringify(manifest,null,2)+'\n');
+console.log('Installed Menu with zero new PNGs; eight existing routes; previous prefabs/art unchanged; authored lobby edits preserved.');

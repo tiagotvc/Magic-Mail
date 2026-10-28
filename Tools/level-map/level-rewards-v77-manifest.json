@@ -1,0 +1,31 @@
+{
+  "generator": "built-in image_gen",
+  "assets": [
+    {
+      "key": "crown",
+      "name": "level-crown-glossy-v77",
+      "prompt": "Use case: stylized-concept. Production transparent 2D reward CROWN sprite for a premium cheerful mobile puzzle world map. A simple iconic squat golden crown with three BROAD primary upward points and two smaller rear tips, all five tips topped with big round polished gold balls. The middle ball/tip is tallest, outer tips flare gently outward; deep softly rounded U-shaped valleys. Wide rounded bowl-like golden front body tapers toward a shallow curved bottom edge, one single subtle base band. Width about 1.45 times height. The visual language is an inflated glossy toy crown, bright lemon yellow and warm orange gold, broad simple clean surfaces, strong white elongated reflection on upper left and golden lower right reflected edge, full sculpted rounded volume, high saturation, low detail. Front elevation with only a VERY shallow visible inner opening at top, symmetrically balanced. It sits atop a round orange level button. NO gems, no pearls, no fleur-de-lis, no fleur ornaments, no cross, no delicate spikes, no engraved pattern, no letters, no number, no button attached. NOT realistic metal, not tiny intricate royal jewelry. No heavy outline or black stroke, only warm gold shaded bevels as volume. NO floating sparkles, no glowing aura, no backdrop, no ground or cast shadow, no white sticker border. Entire crown visible, comfortable transparent margin. True transparent alpha background. Keep every shape big and legible at only 40 pixels wide, pristine polished candy-like glossy finish matching cream and purple gold game HUD.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-e60f41aa-c55e-47c0-af24-aa20dcfc0644.png",
+      "file": "Assets/RoyalAves/Art/MapKitV3/LevelRewardsV77/level-crown-glossy-v77.png",
+      "guid": "1208aaf01f375bc634eeb11d63a34261"
+    },
+    {
+      "key": "star",
+      "name": "level-star-gold-cream-v77",
+      "prompt": "Use case: stylized-concept. Production transparent 2D SINGLE reward STAR sprite for a cheerful glossy mobile puzzle level map. One PLUMP five-pointed golden star pointing UP, soft rounded tips and generous fat center, simple friendly proportions and smooth inflated glossy volume. Star is vivid lemon yellow on upper left, rich warm amber gold at lower right, one broad short clean white cream highlight patch at upper-left surface, subtly lighter broad raised center and softly curved shaded gold bevels. NO sharp triangular facets, NO black or thick orange outline, no tiny decorations. Behind this star is one SMALL soft warm-cream rounded cushion, shaped like a gently scalloped near-circular pale biscuit bubble, protruding only about 10 percent around the five-point star. It is a low cream backing with pale peach subtly shaded underside, smooth rounded glossy edges. This is not a medal ring, no ornamental gold rim; just the small cream support seen behind stars on polished mobile map buttons. Golden star occupies 82 percent of the cream backing diameter. FRONT elevation, perfectly upright centered, no tilt, no perspective. EXACTLY ONE STAR and ONE cream backing, no row, no other objects, no button, no crown. Entire shape visible with 12 percent transparent empty margin, square composition. True transparent alpha background. No text, no number, no ground, no cast shadow outside the cushion, no exterior glow, no floating sparkles, no glitter, no grain or roughness. Large smooth shiny toy-like shapes, clear and beautifully legible when rendered at 22 pixels wide, rich glossy finish consistent with a cream purple and gold HUD.",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a4cb65b5-39f3-4a27-8964-62e8d4bfa6c6.png",
+      "file": "Assets/RoyalAves/Art/MapKitV3/LevelRewardsV77/level-star-gold-cream-v77.png",
+      "guid": "ad29b4803592408da4eaf4bf15184e0f"
+    },
+    {
+      "key": "empty",
+      "name": "level-star-silver-cream-v77",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-29125a37-e75e-49b0-b612-560ede838d93.png",
+      "prompt": "Use case: precise-object-edit. Edit this single glossy gold star on cream cushion into its matching UNEARNED star state for the same game. Keep EXACT canvas size, star contour, proportions, rounded tips, all highlight positions, cream backing silhouette, size, cream colors and alpha margins absolutely unchanged. Change ONLY the gold/yellow/orange STAR material to glossy muted cool SILVER / soft blue-lavender platinum: light pearly silver at upper left, medium desaturated slate lavender shaded lower right. Preserve sculpted fat rounded volume and the broad white upper-left reflection. Clear value separation between the cooler silver star and its WARM cream backing. No gold left in star interior, no added stroke, no facets, no text, no other objects, no dark backdrop, no outer glow. True transparent background remains unchanged. The two sprites must swap without moving or resizing the cushion.",
+      "reference": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a4cb65b5-39f3-4a27-8964-62e8d4bfa6c6.png",
+      "file": "Assets/RoyalAves/Art/MapKitV3/LevelRewardsV77/level-star-silver-cream-v77.png",
+      "guid": "163711894e2eb39cb8ea518eae601600"
+    }
+  ],
+  "integration": "Rounded glossy gold crown, padded gold/platinum reward stars. Shared map kit references; score and crown eligibility behavior retained. Stars and crown face the camera without token thickness distortion."
+}

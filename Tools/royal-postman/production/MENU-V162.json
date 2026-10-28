@@ -1,0 +1,225 @@
+{
+  "version": 162,
+  "status": "Installed Menu; native UI/registration and runtime C# compilation PASS",
+  "prefab": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/MenuWindowV162.prefab",
+  "entry": "Existing upper lobby SettingsButton now calls ToggleMainMenu; Configurações remains reachable in the Menu",
+  "newPngCount": 0,
+  "sourceWindow": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/SettingsWindowV161.prefab",
+  "reuse": [
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\Sprites\\button.asset",
+      "sha256": "af31c2cd42bd0cc3b9e8a9b0a7cc35400d3d95fc96b0ee63e190b5d148a29613"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\button.png",
+      "sha256": "c861b69ce9b8f09696486f70cf9d6b55c47e8208ab548d47ca0135583fc2a5c3"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\Sprites\\music.asset",
+      "sha256": "28644f474d8b87507b8ff0efb10d810b91ef805db97faae3e2b1685a1077e5c7"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\music.png",
+      "sha256": "e3b92db7e5ba0f69839fc7ac4dfd61ddca0cda5994e7051cb2494bff67c577b0"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\Sprites\\sound.asset",
+      "sha256": "9aedf2befe99cda5cba1609a1a767c99b94239708453ab99d8f5a85a28541c2f"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\sound.png",
+      "sha256": "98fc6ff761d0447d501d2c3c139b1050dddbe0dad1a57d5a891628bce7025c9e"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Fonts\\BreeSerif SDF.asset",
+      "sha256": "5f6ff8df30e604102c269cf48860256a5f9db23346d9cb459d19fb6d84fe5535"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Fonts\\Calistoga SDF.asset",
+      "sha256": "8e59716f2cdaca97da0cfe5010680c052946f13fb4baa1b2b0e1e47b4814892b"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\Sprites\\frame.asset",
+      "sha256": "89c8aa8b58268be6921941d47dc154e470a1fc79a91e7fad7243934fed86fa9c"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\frame.png",
+      "sha256": "297ff85d1d7a0fa6bf841c41ecf25625b46aca16caf60b6fa2570ccffebab783"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\Sprites\\close.asset",
+      "sha256": "c2ee0b7a68fd2c94252ae55050edeafabec3ddaf69bb5b0f587d49f636f66d9e"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Menu\\RoyalPostman\\SettingsV161\\close.png",
+      "sha256": "171a3ec745451384a692e3f9b021f9ecce8a19a6a25a188d21f5799aea07ab00"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Sprites/nav-ranking-v22.asset",
+      "sha256": "76eebaa2112d0f106ca6ad8e08568f65a97e9306a4ec306a0d04c7b27bd63eca"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\nav-ranking-v22.png",
+      "sha256": "e73665dddfa321dfe123a389d894a23e2ec9b7786fa7c0a89d040822c1db7c78"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Sprites/navigation-teams-individual-v3.asset",
+      "sha256": "a804cfddfe812ea0ccb7d1c1d3445aa2c1bdfaae5455598a87d99842528497c3"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-teams-individual-v3.png",
+      "sha256": "887a3b4b781c89a0f3ade5c694ff31ab8d128cc9a7be2a2b7ca40f9500cc8ea4"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Sprites/navigation-album-individual-v3.asset",
+      "sha256": "aa0141c8957b319f8eb9c893540dceb54f1a7725fdf010b50e8a48ab381d5444"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-album-individual-v3.png",
+      "sha256": "edc1f79682a0414c3bba55723a8fc5583e3174f9ce214b592ced4f813aa2ac3f"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Sprites/navigation-clipboard-individual-v3.asset",
+      "sha256": "8063c1ac5e4d40bbaaa29e01290596f09a8424c7083d6dcd7bfae71adaa6a4ee"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-clipboard-individual-v3.png",
+      "sha256": "a103a9d892b909d62856f3afe61d7d6d94c69da4cbab01f8d0a981c5630ee7f7"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Sprites/courier-portrait.asset",
+      "sha256": "715749377d0978a42e535428d1bf506dcc1a08bc2389fbd948ff4ae3bcd1cebd"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\courier-portrait.png",
+      "sha256": "dc2e11166269b7d0ac59a9e2ca25493ebf7d03304403f8b9a892e1aecd41a78f"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Sprites/booster-bomb.asset",
+      "sha256": "f2caeb09bba30ee70c74b47e8994faabf7915989033bc6d59ffab2a5ba918901"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\booster-bomb.png",
+      "sha256": "3732fd6e41578b4616e60d850a84c145a9faf3ffedbb0b82cdfcff5faed4b8ba"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Sprites/coin-envelope.asset",
+      "sha256": "bc28824cc47d7d9ee24d23a3fbd3990250a5523ae90a04c8f3dfbdeadce15754"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\coin-envelope.png",
+      "sha256": "850b0f733d065c5ac842b65f1a5fb75e3c480a15686f837f57d7d7b59261f1ec"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Sprites/gear-cream.asset",
+      "sha256": "ed07945b6494aa7679ad6fe203d1275b88cc50383b2127086512e6ffc31a5dba"
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\gear-cream.png",
+      "sha256": "67edf74b74fb9e2016d526e343ce4903d18e01a7d3b0fa71357c55de82a1b21b"
+    }
+  ],
+  "importAudit": [
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\nav-ranking-v22.png.meta",
+      "before": "6edf7d67a350e67abfad17138c680b04fb8488b36493ac2af124a0b6dc5fd7ce",
+      "after": "3d6638218ea8d227f46c0a2e71e50000ed8499e62a754937d80053f499c8b05c",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-teams-individual-v3.png.meta",
+      "before": "fa397d96f5eaab64daeffb41eb8bebeb21a36acce575a765e7367562364d0b4c",
+      "after": "517b89e7b455900a51f55ed61a9703bd41f7aaa945f60e69fddf0f9a795ae469",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-album-individual-v3.png.meta",
+      "before": "6ffb32117387e121e13b65a46d1c58785a45e4616382583121827032f230c0b9",
+      "after": "b10429b42a5b5691b8e95f63257b1f877ab6007bbead296e25e6072e4f42eea9",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Tab\\RoyalPostman\\navigation-clipboard-individual-v3.png.meta",
+      "before": "7d80bb4fd55357c0823fba5c38d03a05a38a2a356506884e1b1978f3aa2bccff",
+      "after": "4119d4386efc6b03cd90382b1cd01ac18c5a50e4178850f7537a40503606bd19",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\courier-portrait.png.meta",
+      "before": "33267eecf0cab08eca8f52da50ee64a9fef2b597c27bb0283934404dc59692b4",
+      "after": "526559b045ca2cef46b7381042a9c8f1b835ee3a031b4e0c601bb81dc7be8000",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\booster-bomb.png.meta",
+      "before": "d7bf1ec6cb4390e3d92e567cb463b09ac7bace796b79b8dbab7f768605923f13",
+      "after": "451bc46854244c3fc082a83b99947ef3fc9fda2f71fe69e23883dd945714e64f",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\coin-envelope.png.meta",
+      "before": "53348f4206ced2aa818265b93c973b07076c0564cb24353e12b8f9925d226315",
+      "after": "e8e8af5a78b0f1560d700dd4e7d91cdb44ea8ee7996c00b13a0c7f0fd5658be1",
+      "pngUnchanged": true
+    },
+    {
+      "path": "Assets\\RoyalAves\\Art\\UI\\Icon\\RoyalPostman\\gear-cream.png.meta",
+      "before": "bcf719c3d8ec812a1994aec8e1884a37ea1d8d393868e4c755fb1a767e1ddc88",
+      "after": "b6c8f29600e5fa0c07d9fc7b83ef99bda3a866ff6b6f562982687ba778671e71",
+      "pngUnchanged": true
+    }
+  ],
+  "info": {
+    "prefabGuid": "4a4d47d6175b0344ab48ea1043f8a918",
+    "rootFileId": "7226726943978087289",
+    "frameTextureGuid": "0efa7532850a47abbd7bdaccec3dc0b0",
+    "headerGuid": "d7259f97a4ff3394985c65435de84961",
+    "bodyGuid": "13c990140e549e7418c16de88bc8b7e4",
+    "newPngCount": 0
+  },
+  "nativeChecks": "PASS: actual menu component and exact extracted LobbyController destination switch compile; eight real pointer/raycast routes exactly once; repeated Bind/open/close/dismiss and double-tap guard; menu closes before destination; existing Settings prefab opens/closes; fullscreen lobby input shield; reused title material, close sprite, capsule sprite/9-slice/press targets and original frame texture; 360x640/390x844/720x1280/640x360 bounds; portrait44px targets; no overlapping controls or text overflow; notch safe-area. Existing route handlers beyond the switch are observed test boundaries, not full-game/audio/device tests. No new PNGs.",
+  "runtimeCompilation": "PASS: full cached Unity Assembly-CSharp response plus current RoyalAves runtime sources, candidate and previous authored controller both compile with zero errors; outputs only in review folder",
+  "audit": {
+    "existingPrefabsUnchanged": [
+      {
+        "path": "Assets/RoyalAves/Prefabs/RoyalAvesLobby.prefab",
+        "sha256": "6bb1a84401d1fb2266968d0279152e40efb47c43f6b27ea9c842dda4a0d0dcc3"
+      },
+      {
+        "path": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/SettingsWindowV161.prefab",
+        "sha256": "aeb9b14b20a9584f360a85de92bb75afa4bf7ebcefcc3b9b37ea479c5394b5bf"
+      },
+      {
+        "path": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Pets.prefab",
+        "sha256": "be116ce21f6db8d8e81c33b7dbaa8cda519063e75c93ec74242904dba3f0073f"
+      },
+      {
+        "path": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Home.prefab",
+        "sha256": "46d32050cd89e7f7f490ff3c617bf32867cedf2e5b4b9562f78f3759add52f5a"
+      },
+      {
+        "path": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Navigation.prefab",
+        "sha256": "ff7a1703c95c4cd87d3a6da0f2e3b0e29dfb36110da23388b9002488f7469dd6"
+      }
+    ],
+    "unrelatedLobbyCodePreserved": true,
+    "unrelatedViewportLogicPreserved": true,
+    "unrelatedImportRulesPreserved": true,
+    "existingRuntimeKitEntriesPreserved": true
+  },
+  "sources": {
+    "Assets/RoyalAves/Scripts/Meta/LobbyController.cs": "c23bd095aa9f0d2897d6396ca15e351906fd7f34f9b30c7b9847a586fb2df7b5",
+    "Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanViewport.cs": "d89e8f4f6f0cc7e74267b0b9f00496df6650b6b0edcde3a820ebe6d71cea7514",
+    "Assets/RoyalAves/Editor/RoyalPostmanTextureImportPolicy.cs": "230f469a86ba040a0d76d485b797a8eda497020a0f91f8bad47d6ff469b194eb",
+    "Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanMenuWindow.cs": "5f3bcc1cebf573dd0f7c402a25d71c1eb0ece261558f28fdfceb12ae3fb018d8",
+    "Assets/RoyalAves/Resources/RoyalPostmanUI2026/RuntimeKit.asset": "16eb4a8fe545fc8f51165d313626aa493ba2d9f1da82dca12d49c8cd1f3f86e1",
+    "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/MenuWindowV162.prefab": "f99d72fdb4d09a848575cb1d63f5d636a2fed708dbc3adf41186a632b742f9ff"
+  },
+  "installedRegistration": "PASS: installed real RuntimeKit asset resolves the exact Menu prefab, hides legacy navigation, starts closed and contains the real controller/shared fitter with no missing scripts.",
+  "sourceHashes": {
+    "Tools/royal-postman/production/MenuV162Build.cs": "a78b0a6439c952482ed3d905ae536bed1bdb63fcf85cf84103142d42a7f08472",
+    "Tools/royal-postman/production/MenuV162Check.cs": "b8ac16256caa591977274476c8ba593fd967100201313038b7ca24e5f1dc545a",
+    "Tools/royal-postman/production/stage-menu-v162.cjs": "b523f08992ef13e50f6547f4bc6033ff405b075f598cba16b40800607318a7a4",
+    "Tools/royal-postman/production/install-menu-v162.cjs": "7f2e7f2ae2aaf4a0ec64988a4d2005a8e5d639a8d202202fdc239df24f4fafef"
+  }
+}

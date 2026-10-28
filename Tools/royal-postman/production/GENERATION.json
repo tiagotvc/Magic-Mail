@@ -1,0 +1,255 @@
+{
+  "common": "Production isolated raster UI component for Royal Postman, matching the approved screenshots. TRUE transparent background, clean alpha, centered front view, no perspective. Smooth clean cartoon painting with subtle intrinsic colored bevel shading ONLY; NO cast/drop shadows, dark smears, grain, noise, stains, faceted texture, glitter, glow, stars, or surrounding backdrop. No words, digits, icons or labels unless explicitly requested. Preserve the approved broad simple forms. This is a SEPARATE reusable component, not a whole UI mockup. Leave about 6% clear transparent padding around the component and do not crop edges. ",
+  "references": [
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/royal-postman/approved/play-modal-tight-inset.png",
+    "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/royal-postman/approved/home.png"
+  ],
+  "jobs": [
+    {
+      "id": "button-face-master",
+      "prompt": "One SQUARE rounded-corner BUTTON CENTER ONLY, identical stepped/raised central tablet, side-wall thickness, broad bevel and quiet reflection to Jogar and the accepted booster buttons in reference 1. NO gold/silver border or external frame, no socket. Perfect width=height, softly bowed broad sides, large rounded corners. The face has the SAME distinct inner raised rounded-square central panel relief as Jogar, with a thicker lower side wall; not a bubble, flat card or glossy gem. Render the ENTIRE component in NEUTRAL LIGHT GRAYSCALE (pearl-gray upper lip, light-gray main face, medium-gray lower side), with smooth colorless luminance gradients, so the game can tint this ONE painting to approved teal/yellow/gray/red/plum states. No black, no charcoal, no bright white specular streaks. Keep the calm center broad enough for an icon/text. 1024x1024 concept, one isolated master face, no border."
+    },
+    {
+      "id": "button-frame-gold",
+      "prompt": "One hollow SQUARE frame of the existing Jogar/Grátis button in reference 1. Exact sunny yellow cartoon-gold upper face, orange lower bevel, restrained pale-yellow upper lip, broad rounded corners and straight softly bowed sides. It must be a RING with a fully TRANSPARENT large rounded-square HOLE where the separate button center will sit; NO teal/color/gray filling inside. Outer square 88% of image, frame band about 7% of outer width, same contour inside/outside and large roundness as approved Jogar. No text, no button center, no extra plate or shadow. Only the precise GOLD BUTTON BORDER, reusable with 9-slicing."
+    },
+    {
+      "id": "circle-face-master",
+      "prompt": "One perfectly CIRCULAR button CENTER ONLY from the approved round plus/gear/quantity controls. Render in NEUTRAL LIGHT GRAYSCALE for palette tinting in the game. A subtly elevated broad center, clean soft rounded bevel, thicker lower side, calm broad light reflection, not wet glass. NO rim/frame/ring, no symbol, no number. Circle width=height, centered occupying 88% of image. No black shadow. This matches the material of the rounded-square face, adapted to a circular control."
+    },
+    {
+      "id": "button-frame-gold",
+      "refs": [
+        "C:/Users/Tiago Carvalho/.codex/generated_images/01a153d9-6a7a-7490-b117-92b367dcb7bd/exec-3d8ecb90-0583-49d4-b07e-72e9015dd343.png"
+      ],
+      "prompt": "EDIT this isolated gold frame: REMOVE ALL GLOW, HAZE, HALO, SHADOW, background and inner brown glow. Every pixel OUTSIDE the hard physical frame and INSIDE its large central hole must be fully transparent alpha zero. Preserve the exact hard gold frame silhouette and clean yellow/orange cartoon bevel. No translucent fog anywhere. A crisp cutout RING ONLY with a completely empty transparent hole. Do not fill the hole. Do not redraw the frame's shape or add anything. This must be a production transparent UI border, never a luminous object. No glow even one pixel away from the physical boundary."
+    },
+    {
+      "id": "modal-body-red",
+      "prompt": "One blank WARM RED rounded-rectangle main MODAL BODY from approved reference 1. No gold border/frame, no header, no text, no cream inset, no button, no decoration. A clean calm red painted board with rounded corners, broad red face and modest intrinsic darker red lower side/bevel, entirely smooth and clean. Vertical portrait shape 4:5. This is the BACKGROUND RED FILL ONLY; a separate frame/header/panel will be layered on it. No cast shadow or dark patches."
+    },
+    {
+      "id": "panel-cream",
+      "prompt": "One blank warm-IVORY CREAM rounded-rectangle PANEL matching the large interior cream panel of reference 1 and the cream account counter material of reference 2. No colored border, no gold rim, no text, no icons or holes. One broad clean ivory face, subtle warm cream bevel/lip on edges, extremely restrained beige lower side and continuous large rounded corners. Near-square 1:1 master for 9-slicing, ample calm center. Avoid gray shadows/dirty texture. This one component is reusable for the large modal inset and account capsules, via 9-slicing."
+    },
+    {
+      "id": "coin-envelope",
+      "prompt": "Gold currency COIN from home reference. One round thick simple sunny cartoon gold coin front view, engraved/embossed ENVELOPE pictogram at center, NEVER a crown. Yellow face orange intrinsic lower wall, simple circular raised rim. No glow, no background, no external shadow or realistic metal."
+    },
+    {
+      "id": "heart-red",
+      "prompt": "One RED HEART life icon matching home reference. Broad friendly asymmetrical cartoon heart, smooth red clean face, modest integrated red lower thickness and one broad soft highlight. No numbers, no badge, no rim, no border, no cast shadow, no glow or texture."
+    },
+    {
+      "id": "gear-cream",
+      "prompt": "One warm CREAM GEAR glyph matching settings icon in home reference. Simple chunky 8 teeth, circular central transparent hole, cream glove palette, subtle warm ivory face and tiny beige lower thickness. No surrounding circular button or frame, no background, no shadow."
+    },
+    {
+      "id": "paw-cream",
+      "prompt": "One warm CREAM PAW PRINT glyph matching Pet icon in home reference. Large soft four toe pads and broad central heart-like pad, rounded cartoon volumes, cream glove palette with subtle intrinsic beige lower thickness. NO backing button, no frame or lettering or cast shadow."
+    },
+    {
+      "id": "lock-gray",
+      "prompt": "One small compact bluish GRAY PADLOCK matching locked booster in modal reference. Rounded square body, thick curved shackle, dark simple keyhole, smooth clean pastel bluegray relief, modest intrinsic shading. NO booster background, no frame, no badge, no glow or projected shadow."
+    },
+    {
+      "id": "courier-portrait",
+      "prompt": "Only the COURIER AVATAR PORTRAIT from home reference 2. Isolate his head and shoulders facing slightly right, exact young male identity, big green eyes, sweeping redorange hair, purple postal cap with gold ENVELOPE badge, confident friendly smile, red coat teal scarf cream collar. Exactly one face, preserve identity. No avatar frame or plaque or background. Clean broad cartoon painting, NO dirty dark texture or stains. Square headshot with full cap/hair within canvas."
+    },
+    {
+      "id": "booster-rocket",
+      "prompt": "ONE isolated diagonal cartoon postal ROCKET booster icon from modal reference. Compact teal blue fuselage, sunny gold cone pointing upper-right, two red curved fins, little gold/red exhaust assembly but NO flame or particles. Clean chunky simple painted volumes, broad colors, no grit, stains, mirror glare or cast shadows. No button/socket/frame/background."
+    },
+    {
+      "id": "booster-bomb",
+      "prompt": "ONE isolated cartoon round PLUM BOMB booster icon from modal reference. Deep purple spherical body, sunny gold broad equatorial belt with simple large gold fivepoint star at front, short bent gold fuse neck on top. No sparks, flame, glow, particles, shadow or background. Clean simple broad smooth painting, readable compact silhouette. No button/container/frame."
+    },
+    {
+      "id": "booster-orb",
+      "prompt": "ONE isolated cartoon TEAL ORB booster icon from modal reference. Smooth turquoise spherical body held by two chunky sunny gold harness bands, small red central jewel front. Clean simple few broad shapes, no glitter or dark mottling or faceted dirt. No lock (independent layer), no button, container, frame, glow, background or cast shadow."
+    },
+    {
+      "id": "hero-courier-owl",
+      "prompt": "Repaint ONLY the two approved characters from HOME reference 2, fullbody clean isolated pair on transparent background. Courier to left, owl to right, exactly the same recognizable identities/outfits/proportions/expression. Young greeneyed redhaired courier in plum postal cap gold envelope emblem, redcoat creamgloves teal scarf plumwaistcoat navytrousers big brown boots and brown satchel. EXACTLY TWO connected arms one from each shoulder: viewer-left hand offers letter; viewer-right hand grips crossbody strap near chest. Owl cream feathers ambereyes gold spectacles plumcape tealbow holds clipboard. Smooth immaculate broad cartoon paint, remove stains/faceting/grain and all cast shadows. No ground or scenery, no UI or lettering or props unrelated to characters. Full figures uncropped with narrow transparent margin. Do not mirror or add hands."
+    },
+    {
+      "id": "home-background",
+      "prompt": "Background ONLY for HOME reference 2: sunny bright blue sky with broad white clouds, soft green garden trees at sides, warm cream path below, distant smooth greenery and simple low cream garden walls. Keep center open behind the courier/owl, no characters, NO buildings or castles, no UI/events/buttons/text. Portrait mobile composition same perspective and colors. Smooth clean cheerful cartoon paint with broad color masses, no noise, artifacts, dark overlays, stains, tiny foliage speckles, or cast shadows. Opaque full canvas background."
+    },
+    {
+      "id": "button-frame-gold",
+      "prompt": "A physical hollow cartoon gold UI frame, rounded square, around an EMPTY TRANSPARENT hole. Yellow gold with orange lower thickness, broad soft corners. Like gold edging of Jogar in reference, but squared for 9 slicing. Only the hard solid narrow ring. NOT neon, NOT luminous, NO bloom or haze or glow. Hole and exterior must be exactly transparent with crisp clean alpha. No text. Frame occupies center 85% of canvas."
+    },
+    {
+      "id": "circle-frame-gold",
+      "prompt": "A physical hollow circular cartoon GOLD RING, narrow and thick rounded gold lip matching gold edge of action buttons in reference. Center is empty transparent. NO light emission, halo, haze, glow, background or shadow. Sunny yellow face and orange lower edge. Ring only. Crisp alpha."
+    },
+    {
+      "id": "modal-header-red",
+      "prompt": "Extract/repaint ONLY blank curved RED title banner from modal reference 1, NO text or gold edge. Wide red upper arch, lower edge shallow downward hanging curve. Same red as modal, not purple. Small curled over left tip as reference, but no ornamental extras. Smooth clean painted face with subtle intrinsic red bevel, no gloss spots or shadows. Transparent outside. No gold: gold lower lip separate."
+    },
+    {
+      "id": "modal-header-lip-gold",
+      "prompt": "ONLY the narrow curved GOLD LOWER LIP of the red title header from modal reference 1. A wide shallow smile-curved golden ribbon trim, small upward tip left, smooth clean sunny gold and orange lower thickness. Blank transparent area above and below. No red banner, no text, no glow, no shadow or background. Narrow trim only, matching reference curve and proportions."
+    },
+    {
+      "id": "socket-cream-tight",
+      "prompt": "A rounded SQUARE shallow inset SOCKET to sit immediately behind a booster button in the cream interior of modal reference. Warm cream neutral, NOT gold or silver. Very narrow beige recessed edge, outer warm cream lip just 3% of square width, NO broad border and no extended padding. Blank interior cream, smoothly rounded corners. Clean simple soft intrinsic relief no cast shadow. Isolated transparent square master."
+    },
+    {
+      "id": "navigation-red",
+      "prompt": "One plain wide continuous WARM RED bottom navigation BAR from home reference 2. No icons, no text, no partitions, no gold rail (separate). Top/bottom straight, low height 6:1 ratio. Red coat palette, subtle smooth vertical paint gradient and minimal intrinsic lower bevel. No shadow, no glow, no ornaments, no texture. Fully opaque red center, exterior transparent."
+    },
+    {
+      "id": "navigation-gold-rail",
+      "prompt": "One perfectly horizontal narrow GOLD cartoon trim RAIL for top edge of red bottom navigation, from home reference 2. Ratio 12:1. Continuous straight trim with tiny rounded tips, sunny yellow broad face and orange lower thickness. No icons, no text, no backdrop, no shadow, no glow, clean crisp cutout."
+    },
+    {
+      "id": "hero-courier",
+      "prompt": "Edit target image: approved isolated courier/owl pair. Output ONLY the COURIER, remove the owl completely and keep transparent background. Preserve EXACT courier silhouette, pose, costume, face, hair, anatomy, envelope, boots, satchel and flowing scarf. Exactly two hands/arms already correct: retain them. Do not redesign. Repaint any blotchy/faceted dirty areas into clean smooth cartoon colors with broad intrinsic relief. No cast/drop shadow, no halo, no ground or marks. Full figure uncropped. Separate production character cutout."
+    },
+    {
+      "id": "hero-owl",
+      "prompt": "Edit target image: approved isolated courier/owl pair. Output ONLY the OWL, remove courier and scarf completely and keep transparent background. Preserve EXACT owl identity, silhouette, pose, face, spectacles, cream plumage, plum cape, teal bow, clipboard and orange feet. Do not redesign. Repaint dirty patchy faceting into clean broad smooth cartoon colors, no stains, grain or texture overlays. No cast/drop shadow, no ground, no halo. Full owl uncropped. Separate production character cutout."
+    },
+    {
+      "id": "home-background",
+      "edit": true,
+      "prompt": "Edit ONLY the background painting's floor and surface finish. Preserve the exact composition, garden, sky, clouds, plants, cream walls, perspective and colors. REMOVE ALL projected leaf/branch shadows and dark patches on the paving. The entire ground should be clean evenly lit warm cream/gold paving with thin soft warm joints, no dark cast silhouettes anywhere. Smooth clean cartoon painting throughout; no smudges, gray overlays, grain, noisy speckles or facets. No characters, no HUD, no new details, no buildings. Keep a full opaque portrait background with precisely the same framing. Retain natural intrinsic form shading in walls/plants but no projected shadows on the floor."
+    }
+  ],
+  "saved": [
+    {
+      "id": "button-face-master",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-ecba5409-368e-48c2-824d-c99b8eef04dc.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/button-face-master.png"
+    },
+    {
+      "id": "button-frame-gold",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-8cf1a78d-b2c7-4131-b7e9-5eade1f3aeb8.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/button-frame-gold.png"
+    },
+    {
+      "id": "circle-face-master",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-4e43a7be-b551-42ea-92f7-7544796bbc6e.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/circle-face-master.png"
+    },
+    {
+      "id": "modal-body-red",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-054a3af8-99ee-493a-8efa-b465f7c0b335.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/modal-body-red.png"
+    },
+    {
+      "id": "panel-cream",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-efd925be-efc5-4b0c-bfaf-d91138bdc25a.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/panel-cream.png"
+    },
+    {
+      "id": "coin-envelope",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-08510d66-bb32-4c6b-9b62-7371fa3282ca.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/coin-envelope.png"
+    },
+    {
+      "id": "heart-red",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-294800c1-f9db-436a-8f29-1ee66f27c3a3.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/heart-red.png"
+    },
+    {
+      "id": "gear-cream",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-0f9a33f9-6660-49f7-85a6-f5252b6dc447.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/gear-cream.png"
+    },
+    {
+      "id": "paw-cream",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-e4688ad6-312f-4d1d-ad89-7248c8dac5c0.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/paw-cream.png"
+    },
+    {
+      "id": "lock-gray",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-b31a1874-4b2d-4156-b639-f05e185f0189.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/lock-gray.png"
+    },
+    {
+      "id": "courier-portrait",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-cf649557-4f0b-488d-b611-58869722a78d.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/courier-portrait.png"
+    },
+    {
+      "id": "booster-rocket",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-e519059f-9d1e-4bc6-aeb9-958edb0c014d.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/booster-rocket.png"
+    },
+    {
+      "id": "booster-bomb",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-085e3812-e4f4-44ac-90c3-dcb8fb30aba7.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/booster-bomb.png"
+    },
+    {
+      "id": "booster-orb",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-54385a2c-6f62-41ec-9f1d-2f156295fa7c.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/booster-orb.png"
+    },
+    {
+      "id": "hero-courier-owl",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-89731b43-05c0-4ced-878a-148ce02475f5.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/hero-courier-owl.png"
+    },
+    {
+      "id": "home-background",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-883025ad-0424-41a6-b0e3-f79545b5ce60.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/home-background.png"
+    },
+    {
+      "id": "circle-frame-gold",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-47248627-a1f1-4901-94e0-8d3c3fa02876.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/circle-frame-gold.png"
+    },
+    {
+      "id": "modal-header-red",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-29a48b2c-00e7-4ead-9ed5-b2c8c3129b36.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/modal-header-red.png"
+    },
+    {
+      "id": "modal-header-lip-gold",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-cf028256-f451-4be2-80aa-e37ffe336742.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/modal-header-lip-gold.png"
+    },
+    {
+      "id": "socket-cream-tight",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-113e455d-254c-4d01-9ad5-062016533326.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/socket-cream-tight.png"
+    },
+    {
+      "id": "navigation-red",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-3eef9d32-8420-4ca7-aab6-0ed957432686.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/navigation-red.png"
+    },
+    {
+      "id": "navigation-gold-rail",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-0c10c55e-efb8-45f6-956c-f369cc486891.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/navigation-gold-rail.png"
+    },
+    {
+      "id": "hero-courier",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-f1b8f8fa-ae04-442b-97cf-4e566bb85630.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/hero-courier.png"
+    },
+    {
+      "id": "hero-owl",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a153d9-6a7a-7490-b117-92b367dcb7bd\\exec-cb6a0095-6a91-44db-87e7-c2b5f5a032a6.png",
+      "destination": "Assets/RoyalAves/Art/RoyalPostmanUI2026/hero-owl.png"
+    }
+  ],
+  "reused": {
+    "nav-events-v22": "Art/MapKitV3/MapUI/nav-events-v22.png",
+    "nav-ranking-v22": "Art/MapKitV3/MapUI/nav-ranking-v22.png",
+    "nav-map-v22": "Art/MapKitV3/MapUI/nav-map-v22.png",
+    "nav-teams-v22": "Art/MapKitV3/MapUI/nav-teams-v22.png",
+    "nav-collection-v22": "Art/MapKitV3/MapUI/nav-collection-v22.png",
+    "goal-postal-cap": "Art/Pieces/key.png",
+    "goal-wax-seal": "Art/Pieces/stamp.png",
+    "goal-potion": "Art/Pieces/ink.png"
+  },
+  "note": "hero-courier-owl is the source illustration for the two independent characters; prefabs use hero-courier and hero-owl. The gold rectangular frame is reused for modal and button dimensions via sprite slicing. Rejected luminous gold frame outputs were not imported.",
+  "backgroundCleanup": "BACKGROUND-CLEANUP.json"
+}

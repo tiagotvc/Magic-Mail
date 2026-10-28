@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using RoyalAves.Characters;
+using RoyalAves.UI.RoyalPostman2026;
 using SweetSugar.Scripts;
 using SweetSugar.Scripts.Core;
 using SweetSugar.Scripts.Level;
@@ -128,6 +129,10 @@ namespace RoyalAves.Meta
 
         LobbyMenus menus;
         CurvedLevelMap levelMap;
+        RoyalPostmanLiveHome royalHome;
+        RoyalPostmanPetsScreen royalPets;
+        RoyalPostmanMenuWindow royalMainMenu;
+        GameObject skinnedMenuPlay;
         StarsInfoPopup starsPopup;
         SettingsScreen settingsScreen;
         LobbyFeaturesConfig features;
@@ -214,7 +219,8 @@ namespace RoyalAves.Meta
             settingsScreen = content.GetComponentInChildren<SettingsScreen>(true);
             if (settingsScreen != null) settingsScreen.OnTap = PlayClick;
 
-            SetupLevelMap();
+            if (!SetupRoyalPostmanHome()) Debug.LogError("Royal Postman: RuntimeKit/home ausente; a home antiga não será usada como fallback.",this);
+            if(menus != null) menus.Opened += OnMenuRouteChanged;
 
             modal.SetActive(false);
             restoreEffect.SetActive(false);
@@ -271,6 +277,11 @@ namespace RoyalAves.Meta
 
         void Update()
         {
+            var preplay=MenuReference.THIS!=null?MenuReference.THIS.MenuPlay:null;
+            if(preplay!=null&&preplay!=skinnedMenuPlay&&RoyalPostmanRuntimeKit.Load()!=null)
+            {
+                RoyalPostmanLivePlayModal.Install(preplay);skinnedMenuPlay=preplay;
+            }
             if (content.activeSelf) RefreshLives();
             if (!logDiagnostics) return;
             GameState? status = LevelManager.THIS != null ? LevelManager.THIS.gameStatus : (GameState?)null;
@@ -337,7 +348,7 @@ namespace RoyalAves.Meta
         void Show()
         {
             PlaceBehindSweetSugarPopups();
-            if (config == null || config.areas.Count == 0)
+            if (royalHome == null && (config == null || config.areas.Count == 0))
             {
                 Debug.LogError($"Royal Aves: falta Resources/{AreaProgressionConfig.ResourcePath} com pelo menos uma área " +
                                "(menu Royal Aves > Criar lobby da agência).");
@@ -362,18 +373,20 @@ namespace RoyalAves.Meta
             if (levelMap != null) OpenLevelMap();
             if (pendingCoins > 0)
             {
-                StartCoroutine(FlyCoins(pendingCoins));
+                if(royalHome == null) StartCoroutine(FlyCoins(pendingCoins));
                 pendingCoins = 0;
                 if (playCelebration != null) playCelebration.Play();
             }
             var module = EventSystem.current != null && EventSystem.current.currentInputModule != null
                 ? EventSystem.current.currentInputModule.GetType().Name : "nenhum";
             Log($"lobby aberto; próximo nível {MetaProgress.NextLevel}, vidas {InitScript.lifes}, módulo de entrada {module}");
-            if (MetaProgress.IsAreaComplete(config) && !MetaProgress.ChestClaimed) OpenAreaComplete();
+            if (royalHome == null && MetaProgress.IsAreaComplete(config) && !MetaProgress.ChestClaimed) OpenAreaComplete();
         }
 
         void Hide()
         {
+            royalMainMenu?.Dismiss();
+            royalPets?.Close();
             if (levelMap != null) levelMap.Close();
             // The lobby canvas sits on the UI sorting layer, in front of the board: it is switched off FIRST, so that a
             // failure in anything below can no longer leave it covering the level. RenderRoom turns the room back on by
@@ -557,6 +570,7 @@ namespace RoyalAves.Meta
         void Refresh()
         {
             if (!content.activeSelf) return;
+            if (royalHome != null) { royalHome.Refresh(); return; }
             var area = MetaProgress.CurrentArea(config);
             if (builtAreaIndex != MetaProgress.AreaIndex) BuildArea(area);
             var done = Mathf.Min(MetaProgress.TasksDone, area.tasks.Count);
@@ -576,7 +590,12 @@ namespace RoyalAves.Meta
                 ? (MetaProgress.ChestClaimed ? "Restaurada" : "Concluída!")
                 : $"Área {MetaProgress.AreaIndex + 1}";
             areaProgress.text = $"{done}/{area.tasks.Count}";
-            if (levelMap != null && levelMap.Visible) levelMap.Open(false);
+            if (levelMap != null && levelMap.Visible)
+            {
+                levelMap.Open(false);
+                levelMap.SetCovered(menus != null && menus.Current != LobbyMenus.Route.Home);
+                levelMap.SetAccountHeaderVisible(menus == null || menus.Current != LobbyMenus.Route.Events);
+            }
             // The pill fills with green as the area's upgrades are restored.
             if (AreaFill() is RectTransform fill)
             {
@@ -835,6 +854,7 @@ namespace RoyalAves.Meta
                 return;
             }
             PlaceBehindSweetSugarPopups(); // CanvasGlobal may have come up after the lobby was first shown
+            RoyalPostmanLivePlayModal.Install(MenuReference.THIS.MenuPlay);
             try
             {
                 InitScript.OpenMenuPlay(level);
@@ -850,6 +870,7 @@ namespace RoyalAves.Meta
                 Debug.LogError("Royal Aves: MenuReference está na cena, mas o campo MenuPlay está vazio.", MenuReference.THIS);
                 return;
             }
+            menuPlay.GetComponent<RoyalPostmanLivePlayModal>()?.Opened();
             Log($"MenuPlay '{PathOf(menuPlay.transform)}': ligado {menuPlay.activeSelf}, visível {menuPlay.activeInHierarchy}" +
                 (menuPlay.activeInHierarchy ? "" : $"; desligado por '{FirstInactiveAncestor(menuPlay.transform)}'"));
             if (!logDiagnostics) return;
@@ -1089,8 +1110,8 @@ namespace RoyalAves.Meta
         // modal closes, however it closes ("Fechar" or the X) — both just set modal inactive.
         void SetLobbyChromeVisible(bool visible)
         {
-            if (content.transform.Find("HUD") is Transform hud) hud.gameObject.SetActive(visible&&levelMap==null);
-            if (content.transform.Find("Nav") is Transform nav) nav.gameObject.SetActive(visible&&levelMap==null);
+            if (content.transform.Find("HUD") is Transform hud) hud.gameObject.SetActive(visible&&levelMap==null&&royalHome==null);
+            if (content.transform.Find("Nav") is Transform nav) nav.gameObject.SetActive(visible&&levelMap==null&&royalHome==null);
             levelMap?.SetChromeVisible(visible);
         }
 
@@ -1242,10 +1263,25 @@ namespace RoyalAves.Meta
             musicText.text = "Música: " + (IsOn("Music") ? "ligada" : "desligada");
         }
 
+        void OnMenuRouteChanged(LobbyMenus.Route route)
+        {
+            royalHome?.SelectTab(Array.IndexOf(TabRoutes,route));
+            if(royalHome!=null&&menus!=null)((RectTransform)menus.transform).offsetMin=new Vector2(0,242*((RectTransform)content.transform).rect.width/1080f);
+            levelMap?.SetCovered(route != LobbyMenus.Route.Home);
+            levelMap?.SetAccountHeaderVisible(route != LobbyMenus.Route.Events);
+            if(route == LobbyMenus.Route.Home) levelMap?.SelectNavigationTab(HomeTab);
+        }
+
         void OpenTab(int tab)
         {
+            royalMainMenu?.Dismiss();
             PlayClick();
             modal.SetActive(false);
+            royalHome?.SelectTab(tab);
+            if(tab == HomeTab && royalHome != null)
+            {
+                menus?.Close();royalHome.Refresh();return;
+            }
             levelMap?.SelectNavigationTab(tab);
             if (tab == HomeTab && levelMap != null)
             {
@@ -1258,6 +1294,43 @@ namespace RoyalAves.Meta
                 return;
             }
             if (tab != HomeTab) ComingSoon(tab < NavTitles.Length ? NavTitles[tab] : "Menu");
+        }
+
+        bool SetupRoyalPostmanHome()
+        {
+            RoyalAves.Meta.WorldMap.WorldMapLevelCatalog.Refresh();
+            royalHome=RoyalPostmanLiveHome.Create((RectTransform)content.transform,Play,OpenCoinShop,
+                ()=>{if(InitScript.Instance!=null&&InitScript.lifes<InitScript.Instance.CapOfLife)OpenSweetSugarMenu(MenuReference.THIS?.LiveShop);},
+                OpenProfile,ToggleMainMenu,OpenPets,OpenTab,
+                ()=>(menus!=null&&menus.Current!=LobbyMenus.Route.Home)||(settingsScreen!=null&&settingsScreen.IsOpen)||(royalPets!=null&&royalPets.IsOpen)||(royalMainMenu!=null&&royalMainMenu.IsOpen));
+            if(royalHome==null)return false;
+            foreach(string name in new[]{"HUD","Nav","areas"})if(content.transform.Find(name) is Transform old)old.gameObject.SetActive(false);
+            background.transform.parent.gameObject.SetActive(false);playButton.gameObject.SetActive(false);areaButton.gameObject.SetActive(false);
+            if(settingsButton!=null)settingsButton.gameObject.SetActive(false);
+            royalHome.transform.Find("Background").GetComponent<Image>().raycastTarget=true;
+            return true;
+        }
+
+        void OpenPets()
+        {
+            PlayClick();
+            modal.SetActive(false);
+            if (royalPets == null)
+                royalPets = RoyalPostmanPetsScreen.Create((RectTransform)content.transform, ClosePets,
+                    tab => { ClosePets(); OpenTab(tab); });
+            if (royalPets == null) { Debug.LogError("Royal Postman: falta o prefab da tela de mascotes.", this); return; }
+            royalPets.BindInventory(PetsProgress.State,PetsProgress.Save,
+                cost=>{if(cost<=0||InitScript.Instance==null||InitScript.Gems<cost)return false;InitScript.Instance.SpendGems(cost);royalHome?.Refresh();return true;},
+                ()=>InitScript.Gems);
+            menus?.Close();
+            royalPets.Open();
+            royalHome?.Refresh();
+        }
+
+        void ClosePets()
+        {
+            royalPets?.Close();
+            royalHome?.Refresh();
         }
 
         void SetupLevelMap()
@@ -1362,6 +1435,7 @@ namespace RoyalAves.Meta
         // what the lobby must not do.
         void ToggleSettings()
         {
+            royalMainMenu?.Dismiss();
             if (settingsScreen != null)
             {
                 if (settingsScreen.IsOpen) settingsScreen.Close();
@@ -1377,6 +1451,40 @@ namespace RoyalAves.Meta
                 return;
             }
             OpenSweetSugarMenu(menu);
+        }
+
+        void ToggleMainMenu()
+        {
+            if (royalMainMenu == null)
+            {
+                var source = RoyalPostmanRuntimeKit.Load()?.ScreenPrefab("menu");
+                if (source == null)
+                {
+                    Debug.LogError("Royal Postman: falta o prefab do Menu.", this);
+                    return;
+                }
+                var root = Instantiate(source, content.transform, false);
+                root.name = "RoyalPostmanMenu";
+                royalMainMenu = root.GetComponent<RoyalPostmanMenuWindow>();
+                royalMainMenu.Bind(OpenMainMenuDestination, PlayClick, () => royalHome?.Refresh());
+            }
+            if (royalMainMenu.IsOpen) royalMainMenu.Close();
+            else royalMainMenu.Open();
+        }
+
+        void OpenMainMenuDestination(RoyalPostmanMenuWindow.Destination destination)
+        {
+            switch (destination)
+            {
+                case RoyalPostmanMenuWindow.Destination.Records: OpenTab(1); break;
+                case RoyalPostmanMenuWindow.Destination.Teams: OpenTab(3); break;
+                case RoyalPostmanMenuWindow.Destination.Collection: OpenTab(4); break;
+                case RoyalPostmanMenuWindow.Destination.Events: OpenTab(0); break;
+                case RoyalPostmanMenuWindow.Destination.Profile: OpenProfile(); break;
+                case RoyalPostmanMenuWindow.Destination.Inventory: OpenInventory(); break;
+                case RoyalPostmanMenuWindow.Destination.Shop: OpenCoinShop(); break;
+                case RoyalPostmanMenuWindow.Destination.Settings: ToggleSettings(); break;
+            }
         }
 
         void OpenSweetSugarMenu(GameObject menu)
@@ -1402,6 +1510,7 @@ namespace RoyalAves.Meta
             modalSecondaryText.text = secondary ?? "";
             secondaryAction = onSecondary;
             modal.SetActive(true);
+            modal.transform.SetAsLastSibling();
             LayoutRebuilder.ForceRebuildLayoutImmediate(modalWindow);
         }
 

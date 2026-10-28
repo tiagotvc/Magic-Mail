@@ -1,0 +1,95 @@
+{
+  "created": "2026-10-20",
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "key": "background",
+      "group": "Menu",
+      "id": "pets-workshop-v2",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-workshop-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-bfaf1792-197d-4f18-817e-cd1d0b97df95.png",
+      "prompt": "Use case: precise-object-edit/background extraction. The user supplied TWO images: Image 1 is REJECTED implementation, Image 2 is the APPROVED target mock titled Mascotes with inventory along the bottom. Use ONLY IMAGE 2 as the source of truth, ignore Image 1 entirely. Extract/reconstruct ONLY the illustrated workshop environment behind the incubators from Image 2. Square painting to cover the room area above the bottom inventory. Preserve the EXACT reference architecture, camera, lighting and colors: softly blurred amber stone-and-wood wizard workshop, shelves and hanging purple paw banner to left, warm lantern between wooden posts in middle, blue starry round window high right, ivy on top edges; table with a purple-red rug and a few stacks of books on right. Camera is the same front view with a slight view down onto the tabletop. Keep back room intentionally softly focused and moderately dark, like the reference, so foreground gold incubators will stand out. DO NOT use the tall stretched staircase/cabinet scene of rejected Image 1. Room-only square 2048x2048 if possible, no interface, NO incubators, no eggs, no panels, no characters, no text or buttons, no border, no inventory. The lower quarter shows tabletop/rug, not the front of a tall cupboard or the floor. Do not invent new architectural composition, keep the view in Image 2. Clean glossy fantasy mobile RPG painting.",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "faa34da39e0d57f57e4146c7c5118ba46909591c9d87e0e0282e14f34af6fd67"
+    },
+    {
+      "key": "green",
+      "group": "Button",
+      "id": "pets-accelerate-v2",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Pets/pets-accelerate-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-de6bc401-712d-4a44-8370-7ab639a97848.png",
+      "prompt": "Use case: precise-object-edit, UI asset extraction. The second image in the user's latest pair, the compact Mascotes target mock with bottom inventory, is the exact authority; the first tall UI is rejected. Reproduce ONE of its green 'Acelerar' button BODIES, but without any letters/numbers or hourglass icon (they will be separate Unity labels). Match the button precisely: wide horizontal proportion 3:1; bright emerald/lime glossy gradient center; rounded softly scalloped rectangle; THIN sculpted yellow-gold/orange edge, small gold curled corners, a small purple diamond gemstone held in gold at EACH far left and right midpoint, little pale specular highlights and shallow orange underside. No fat oval pill, no layered concentric borders, no turquoise center. It must look like the green action button in the target mock, not a Home button. Just one single complete button body with its frame and center aligned, all visible, generous transparent margin, crisp symmetrical UI geometry; not a sheet. Native high resolution about 2048x680 if supported, TRUE transparent background, no background glow, no text, no extra objects.",
+      "width": 2172,
+      "height": 724,
+      "sha256": "6776c27dc672e4cd2219bb7e64152b763ff71c3bfe07f50db329fb7b0fc5da20"
+    },
+    {
+      "key": "blue",
+      "group": "Button",
+      "id": "pets-use-item-v2",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Pets/pets-use-item-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-0be8b03b-2e79-449c-a6c0-a712d94e38b5.png",
+      "prompt": "Use case: precise-object-edit. The original compact target Mascotes mock (SECOND of the user's two images, with bottom inventory) is the exact design reference. Reproduce ONE blank BLUE 'Usar Item' button body from that target. No text. Wide rounded rectangle, aspect ratio 3.1:1. Bright light-cyan glossy top edge flowing into vivid saturated electric royal-blue lower face, broad smooth convex face, restrained deep blue lower sidewall, thin navy outline, smoothly rounded corners. Same clean RPG mobile button silhouette, same bold blue hue and shallow volume as the target mock. ABSOLUTELY NO GOLD BORDER, no gems, no turquoise/teal, no inset inner button or extra concentric outlines, no Home pill. True transparent background outside whole button. One button only, centered, full shape, minimal clear margin. Native 2048x660 if possible, high-quality sharp UI sprite. No lettering/numbers, no icons, no other objects.",
+      "width": 2206,
+      "height": 713,
+      "sha256": "9c164da219f33f4d3e495ab4ef8fe3f7b107ec0744796cb5232a41ab68f4824d"
+    },
+    {
+      "key": "panel",
+      "group": "Menu",
+      "id": "pets-panel-v2",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-panel-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-b767a6b9-5995-4ec6-949c-4556d912fc63.png",
+      "prompt": "Use case: precise-object-edit, UI extraction. Among supplied images, use ONLY the compact target mock Mascotes with inventory AT THE BOTTOM, which was the SECOND image uploaded by the user. Ignore the tall rejected implementation and its bright blue triple-frame cards. Reproduce ONE EMPTY navy incubator information panel from the target mock. Portrait rounded rectangle aspect about 0.9 width to 1 height. Very dark midnight navy center (roughly #0C1831 / #11213A), subtle soft center shading only. Exactly one narrow softly rounded desaturated slate-blue edge line (#394C7F), an understated dark outer sidewall and slight top-left highlight. The target has THIN subtle border, NOT a bright wide blue bevel, not multiple concentric frames. Corner radius about 12% of panel width. No text, lock, icon, progress bar or buttons, blank center. True transparency outside silhouette, no glow or background. High resolution 1536 square canvas with centered whole panel and small margins. This will be nine-sliced to preserve corners. Faithful target colors and construction, do not embellish.",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "7d49f42f9c4a8ce3b51aaa366a490c1579e8a5c5e21bdfd0259f3e2bccbd7769"
+    },
+    {
+      "key": "potion",
+      "group": "Icon",
+      "id": "pets-potion-v2",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Pets/pets-potion-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-97dabe5f-56a0-4d70-986d-c2cf06553eb7.png",
+      "prompt": "Use case: precise-object-edit. Use the compact Mascotes mock with inventory at bottom (the oldest image included) as exact icon reference, ignoring other generated UI component images. Produce ONE inventory potion bottle sprite matching its purple round potion with yellow star: round plump transparent magenta-violet glass bottle, glowing purple potion, short purple stopper in thick sunny gold collar, a large simple raised sunny-yellow five-point star on the front, smooth bright cyan/purple edge reflections and broad clean specular highlights. Same fantasy RPG icon as that inventory, front view slight top view, compact readable proportions. Whole object upright centered with 6% padding. No green liquid, no envelope, no leather wrap or extra ornament. True transparent background, no card, no shadow background, no text or quantities. Single sprite, 2048 square if possible, clean high quality readable at 70 px.",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "c836b29d0be0fc7e044ce1f66b0b73935732ad8348cf0e0016ba2fb3177e14b6"
+    },
+    {
+      "key": "crystal",
+      "group": "Icon",
+      "id": "pets-crystal-v2",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Pets/pets-crystal-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-32f79a84-4986-4688-8b0f-4c55e3e21c41.png",
+      "prompt": "Use case: stylized-concept. One standalone fantasy mobile RPG inventory CRYSTAL sprite matching a saturated polished magical pet-menu icon: one main upright amethyst-violet faceted crystal with bright lavender face at upper right, growing from two smaller cyan/royal-blue crystal points. Compact slightly left-leaning cluster, thick clean gemstone shapes with sharp readable facets, brilliant cyan lower highlights, rich saturated purple top. Front three-quarter view, whole object with 8% clear margin. Smooth clean highly polished cartoon game painting, no realism, no grain, no tiny particles or extra jewelry. True transparent background, no tile/container, no text, no floor/shadow patch. High native resolution 2048 square if possible. Colors and clean shape should match purple/gold star-potion inventory icon of a fantasy pet incubator UI.",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "be9103fe54db32f312a9784fbcc428afb517e58e9ceeccb06ba9797c43bdb748"
+    },
+    {
+      "key": "hourglass",
+      "group": "Icon",
+      "id": "pets-hourglass-v2",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Pets/pets-hourglass-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-21b29a72-8c8f-4970-9b64-2db06b473434.png",
+      "prompt": "Use case: stylized-concept. Production RPG inventory sprite, ONE small magical hourglass. Exactly the compact fantasy pet-menu type: golden orange circular top and bottom caps with purple underside, two gold side rods, slim elegant clear hourglass with glowing turquoise/cyan glass, cream-yellow sand and a lavender-pink reflection near the upper bulb. Slightly tilted about 12 degrees, three-quarter frontal so the top cap ellipse is visible, whole icon with small transparent margins. Broad clean gold highlights and smooth glossy cartoon volume, saturated warm gold plus bright cyan/violet, exceptionally crisp readable contours. No realistic brassy metal, no white sticker outline, no shadow patch, no particles around silhouette, no tile/container, no text/count. True transparent background. Single isolated object, native 2048px square if possible.",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "30c16287c9607dbdf0c3c1a7190eaeed80f7e5765199b775d5362322ed69891f"
+    },
+    {
+      "key": "divider",
+      "group": "Menu",
+      "id": "pets-divider-v2",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-divider-v2.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ff384beb-76ff-4915-ab1f-7fbebef3d29f.png",
+      "prompt": "Use case: stylized-concept. One fantasy RPG UI horizontal DIVIDER asset: a very long thin sunny-gold/orange line with tiny spiral curl finials at far left and right; in its exact center a small upright faceted violet-purple diamond jewel held in a polished golden setting, with one small symmetric gold curl extending to each side of the jewel. Reference construction is the divider between pet incubator cards and bottom inventory in a glossy fantasy mobile menu. Keep the whole design extremely WIDE and LOW: total visible width roughly 20 times the maximum central jewel height. Gold line thickness only one eighth of jewel height. Jewel small and restrained, not a giant medallion. The long line should remain straight and continuous. Sunny yellow face, orange sides and a few pale highlights, magenta/violet central gem. One complete isolated divider, no text, no panels, no background glow, no cast backdrop. TRUE transparent background with all blank padding transparent. High resolution 3072px wide if possible. Render the thin entire divider within a wider canvas; avoid increasing its height or adding ornaments.",
+      "width": 2172,
+      "height": 724,
+      "sha256": "5a54bc59c71f7bf3b7c26fb2789b88840d06353e8cad96f79cdcd54bb9267493",
+      "status": "Superseded by PETS-ORNAMENT-V3.json: corrected curls, color and glossy faceted gem"
+    }
+  ]
+}

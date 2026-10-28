@@ -1,0 +1,22 @@
+{
+  "version": 126,
+  "date": "2026-10-26",
+  "tool": "built-in image_gen",
+  "selection": "User approved V125 third design (ivory cartouche) and requested it separated without text.",
+  "reference": "Tools/royal-postman/previews/modal-header-v125/03-cartela-marfim.png",
+  "output": "header-marfim-sem-texto.png",
+  "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-5129498e-1e7f-4982-8ae9-97c31d4ed6b8.png",
+  "transparent_background": true,
+  "prompt": "Use case: precise-object-edit / background-extraction, standalone transparent game UI sprite.\nEdit target: attached local image, specifically the THIRD SELECTED HEADER design: warm IVORY inset title plaque, RUBY-RED backing/border, and TWO GOLD side clamps. The user approved this exact design and requests it separated WITHOUT TEXT.\nExtract and finish ONLY that decorative header assembly as ONE reusable sprite:\n- Keep the full warm-ivory face with its same gently undulating long edges, concave/pinched short ends and rounded transitions.\n- Keep the glossy dimensional ruby-red backing visible around the ivory insert, and the same two substantial gold end clamps hugging its left and right.\n- Match the source silhouette, proportions, palette, surface highlights, bevel widths and front-on lighting faithfully. Symmetric clean side fittings, subtle existing raised thickness, no new ornaments or redesign.\n- Remove EVERY letter of the red word \"Título\", including the accent, all letter extrusion, highlights and cast shadows. Reconstruct the previously occluded ivory/title area and the upper red backing continuously; the entire writing area must be clean blank softly shaded warm ivory. No ghost letters, embossed lettering or residual word-shaped shadows.\n- Completely remove the red modal body, vertical frame rails, dark content window, white surroundings, green round X/close button and all unrelated elements. The standalone sprite must terminate cleanly behind the gold end clamps, with no leftover red panel tails or long rails below it.\nComposition: only one horizontal header plaque, front-on orthographic, centered and large in a wide landscape canvas, with small even fully transparent safety margins around all outer edges. Do not clip the clamps or the red backing. Preserve the roughly 3:1 wide low header proportions of the source assembly; do not squash the title face or make a capsule.\nOutput: actual transparent-background RGBA PNG, clean antialiased alpha silhouette. Preserve subtle contact shading INSIDE the assembly, no large exterior drop shadow. No solid background, no white rectangle, no simulated checkerboard painted into image. NO TEXT, numbers, symbols, labels or watermark anywhere. Production quality painted 3D casual-mobile UI finish matching the approved source.",
+  "scope": "Standalone reusable PNG only; no Unity prefab installation or unrelated modal changes.",
+  "sha256": "a981f7a35857c397677143b2b5aa90322a9582b5baed88d7ae061a2690622180",
+  "alphaCheck": {
+    "width": 2172,
+    "height": 724,
+    "pixelFormat": "Format32bppArgb",
+    "alphaMin": 0,
+    "alphaMax": 255,
+    "transparentSamples": 10824,
+    "samples": 32344
+  }
+}

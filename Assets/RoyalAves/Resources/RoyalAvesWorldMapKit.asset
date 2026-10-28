@@ -49,14 +49,15 @@ MonoBehaviour:
   santaFriendlyMessage: "Voc\xEA encontrou o Papai Noel! Evento especial de Natal em breve\u2026"
   santaVillainMessage: "Ho, ho, ho\u2026 Voc\xEA encontrou o Noel do mal! Um desafio especial vem a\xED!"
   rendererIndex: 1
-  radius: 26
-  cameraHeight: 4.9
+  radius: 20
+  cameraHeight: 5.544536
   cameraBack: 4.4
-  pitch: 32
+  pitch: 36.634096
   fov: 48
   focusAhead: -2.55
   renderScale: 1
   tokenScale: 0.62
+  levelNumberFont: {fileID: 11400000, guid: 866b4301ef1c73d4dbc8e392640e02c2, type: 2}
   night: 0
   dayNightCycle: 0
   dayNightCycleMinutes: 4
@@ -369,6 +370,8 @@ MonoBehaviour:
   hardBadge: {fileID: 3170614429149742659, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
   expressBadge: {fileID: 1215592849687920709, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
   levelStar: {fileID: 5146797785118366110, guid: b654435ce7714e64a966c37d4334fc80, type: 3}
+  rewardStarGold: {fileID: 21300000, guid: ad29b4803592408da4eaf4bf15184e0f, type: 3}
+  rewardStarEmpty: {fileID: 21300000, guid: 163711894e2eb39cb8ea518eae601600, type: 3}
   shrubCoral: {fileID: 6344862151248206742, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
   shrubGold: {fileID: 2454125026547011538, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}
   shrubMint: {fileID: 398682009815318506, guid: fdfa66f90c605c847b5f39be0720645d, type: 3}

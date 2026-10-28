@@ -1,0 +1,121 @@
+{
+  "generator": "built-in image_gen",
+  "assets": {
+    "inkPuddle": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-039d0239-9131-41c9-87e7-6454a26e5496.png",
+      "prompt": "Use case: stylized-concept. Production 2D sprite for Magic Mail mobile puzzle map, rich playful glossy clean cartoon illustration, broad rounded shapes, smooth saturated shading and bright clean reflections. Fully transparent background. No text, no UI, no numbers, no characters, no extra surrounding scenery. A single low irregular pool of magical violet and turquoise INK seen EXACTLY from ABOVE, orthographic top down. Asymmetric broad puddle, thick glossy cobalt violet lip, deep saturated dark indigo center with turquoise purple reflected gradient to suggest liquid depth. Two short thick curved cream specular reflections hugging the upper left inner rim, one small attached rounded lobe at right. Thick smooth meniscus, not a bowl. ONLY liquid and its slightly raised viscous rim. No bottle, no quill, no pedestal, no front facing basin, no floating letters, no particles, no smoke, no fog glow, no glass container. Wide 3:2 footprint, all silhouette visible with transparent margin. Big simple readable polished shapes, liquid pool to lie flat on map ground.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/AutoIslandsV70/ink-puddle-overhead-v70.png",
+      "guid": "e68ee3746d4d6c6d96b1d4202b1f7455"
+    },
+    "winterCabin": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-67511c90-81b7-48b4-b03c-2742debb2bd8.png",
+      "prompt": "Use case: stylized-concept. Production 2D sprite for Magic Mail mobile puzzle map, rich playful glossy clean cartoon illustration, broad rounded shapes, smooth saturated shading and bright clean reflections. Fully transparent background. No text, no UI, no numbers, no characters, no extra surrounding scenery. One small CHRISTMAS POST OFFICE COTTAGE, pure FRONTAL ELEVATION straight on, orthographic. Show ONLY the front facade, no left or right side wall, NO isometric perspective. Width about 1.1x height. Snowy rounded ruby-red roof with gold envelope crest, ivory plaster facade and green teal arched door, two warm golden glowing windows, simple evergreen wreath on door, tiny snow ledges on roof, chunky clean golden trims. Horizontal straight FLAT bottom foundation line with zero depth footprint so building can sink evenly into map grass. No platform, no ground patch, no shadow outside object, no stairs jutting forward. Clean big shapes, full building in frame, transparent margin.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/AutoIslandsV70/christmas-post-office-front-v70.png",
+      "guid": "af3c811e5672d281aeda2808e00f551d"
+    },
+    "winterDepot": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d4c3763f-bc57-4674-86e6-da324fcd34a8.png",
+      "prompt": "Use case: stylized-concept. Production 2D sprite for Magic Mail mobile puzzle map, rich playful glossy clean cartoon illustration, broad rounded shapes, smooth saturated shading and bright clean reflections. Fully transparent background. No text, no UI, no numbers, no characters, no extra surrounding scenery. One tall CHRISTMAS GIFT DISPATCH WORKSHOP building, pure FRONTAL ELEVATION straight on, orthographic. Show ONLY front facade, no side walls, NO isometric view. Height 1.6x width. Two stories, rounded emerald green double roof edged in cream snow, gold trim and red ribbons, cream warm pink wall, broad ruby front double door with golden envelope emblem, upstairs warm amber window, one tiny golden star on roof ridge. Festive but simple readable architecture, big glossy bevels. Horizontal straight FLAT foundation with zero visible floor footprint so the sprite can sink evenly into grass. No front platform, no ground or stairs or surrounding objects, full building in frame, transparent margin.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/AutoIslandsV70/christmas-dispatch-front-v70.png",
+      "guid": "4a5c96e631fb7f933625c829f15db6d4"
+    },
+    "stampWorkshop": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-858389e5-5ddb-48e6-a0ec-cc049a72ffd3.png",
+      "prompt": "Use case: stylized-concept. Production 2D sprite for Magic Mail mobile puzzle map, rich playful glossy clean cartoon illustration, broad rounded shapes, smooth saturated shading and bright clean reflections. Fully transparent background. No text, no UI, no numbers, no characters, no extra surrounding scenery. One normal magical STAMP MAKER WORKSHOP building, pure FRONTAL ELEVATION straight on orthographic, only front facade visible, NO left/right walls, no isometric angle. Wide small shop width 1.2x height, turquoise teal rounded roof with warm gold edge, coral cream front wall, royal violet rounded door, two arched windows with bright cyan glass, simple golden scalloped postage stamp emblem above door. Cheerful vivid colors matching purple-roof postal cottages, rich glossy bevels. No Christmas or snow. Absolutely horizontal straight flat foundation line to sink evenly into grass. No platform, no stairs jutting out, no ground patch, no shadow outside object. Full building in frame, transparent margin.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/AutoIslandsV70/stamp-workshop-front-v70.png",
+      "guid": "475c7cda088d5efcbdb9d5f436cceb26"
+    },
+    "gifts": {
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-69b64fe2-352d-49aa-be3e-6fe05ac3e1d4.png",
+      "prompt": "Use case: stylized-concept. Production 2D sprite for glossy playful mobile puzzle map, fully transparent background. One small cluster of THREE wrapped Christmas parcels seen EXACTLY FROM ABOVE, ORTHOGRAPHIC TOP DOWN, top faces only with shallow neatly shaded beveled rims for depth. No front-facing tall gift boxes, no isometric angle. Ruby red square gift with cream golden crossing ribbon and compact glossy bow seen above; smaller emerald green parcel and small ivory envelope with red wax seal lying flat next to it. Broad clean rounded silhouettes, rich smooth glossy cartoon highlights, bold readable simple shapes. Objects overlap neatly in one small cohesive cluster, no ground patch, no scene, no text, no numbers, no particles, no glow fog, transparent empty margins around entire cluster.",
+      "file": "Assets/RoyalAves/Art/MapKitV3/AutoIslandsV70/christmas-parcels-overhead-v70.png",
+      "guid": "1eaf7c2da5305ca271f4442fc3980e68"
+    }
+  },
+  "sequence": [
+    {
+      "island": 1,
+      "from": 1,
+      "to": 15,
+      "recipe": "Preserved"
+    },
+    {
+      "island": 2,
+      "from": 16,
+      "to": 30,
+      "recipe": "Ink Springs"
+    },
+    {
+      "island": 3,
+      "from": 31,
+      "to": 45,
+      "recipe": "Christmas Dispatch"
+    },
+    {
+      "island": 4,
+      "from": 46,
+      "to": 60,
+      "recipe": "Melody Lagoon"
+    },
+    {
+      "island": 5,
+      "from": 61,
+      "to": 75,
+      "recipe": "Blossom Post"
+    },
+    {
+      "island": 6,
+      "from": 76,
+      "to": 90,
+      "recipe": "Christmas Ribbon Rescue"
+    },
+    {
+      "island": 7,
+      "from": 91,
+      "to": 105,
+      "recipe": "Ember Stampworks"
+    },
+    {
+      "island": 8,
+      "from": 106,
+      "to": 120,
+      "recipe": "Letter Gardens"
+    },
+    {
+      "island": 9,
+      "from": 121,
+      "to": 135,
+      "recipe": "Christmas Dispatch"
+    },
+    {
+      "island": 10,
+      "from": 136,
+      "to": 150,
+      "recipe": "Ink Springs"
+    },
+    {
+      "island": 11,
+      "from": 151,
+      "to": 165,
+      "recipe": "Melody Lagoon"
+    },
+    {
+      "island": 12,
+      "from": 166,
+      "to": 180,
+      "recipe": "Christmas Ribbon Rescue"
+    },
+    {
+      "island": 13,
+      "from": 181,
+      "to": 195,
+      "recipe": "Blossom Post"
+    },
+    {
+      "island": 14,
+      "from": 196,
+      "to": 200,
+      "recipe": "Ember Stampworks"
+    }
+  ]
+}

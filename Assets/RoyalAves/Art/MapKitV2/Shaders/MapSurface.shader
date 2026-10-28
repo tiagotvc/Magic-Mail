@@ -6,6 +6,7 @@ Shader "RoyalAves/WorldMap/Surface"
         _PaintTex ("Chao pintado", 2D) = "white" {}
         _PaintAmount ("Pintura", Range(0,1)) = 0
         _TokenMode ("Botao de fase", Float) = 0
+        _SpecialLevel("Special level",Float)=0
         _GroundMode ("Terreno ilustrado", Float) = 0
         _GreenIslandGradient("Grama viva por ilha",Float)=0
         _IndependentPathColor("Cor independente da estrada",Float)=0
@@ -33,6 +34,8 @@ Shader "RoyalAves/WorldMap/Surface"
         _GroundBrushLawn("Pintura das laterais",2D)="white"{}
         _GroundBrushPath("Pintura da trilha",2D)="white"{}
         _GroundBrushAmount("Pintura artística do terreno",Range(0,1))=0
+        _LawnStipple("Pintinhas distantes do gramado",Range(0,1))=1
+        _MapCursor("Posicao da camera na rota",Float)=0
         _PathMint("Trilha menta",Float)=0
         _SimpleGroundVariant("Paleta ilustrada da ilha",Float)=0
         _SimpleLawnColor("Cor lateral da ilha",Color)=(.4,.7,.5,1)
@@ -44,6 +47,8 @@ Shader "RoyalAves/WorldMap/Surface"
         _FaceColor ("Cor do botao", Color) = (1,0.2,0.6,1)
         _Tint ("Tint", Color) = (1,1,1,1)
         _Desat ("Desaturar", Range(0,1)) = 0
+        _RewardMode("Reward star",Float)=0
+        _RewardEarned("Earned star",Float)=0
         _Glow ("Brilho", Range(0,1)) = 0
         _HazeColor ("Bruma", Color) = (0.85,0.92,1,1)
         _HazeNear ("Bruma inicio", Float) = 16
@@ -79,7 +84,8 @@ Shader "RoyalAves/WorldMap/Surface"
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _Tint; half _Desat; half _Glow; half4 _HazeColor; half _HazeNear; half _HazeFar; half _NightAmount; half4 _NightColor;
-                half _PaintAmount; half _TokenMode; half _GroundMode; float _PaintScroll; half4 _FaceColor;
+                half _RewardMode,_RewardEarned;
+                half _PaintAmount; half _TokenMode; half _SpecialLevel; half _GroundMode; float _PaintScroll; half4 _FaceColor;
                 float4 _GroundBounds[64];
                 half _TokenFaceAmount;float4 _TokenFaceRect;
                 half _GreenIslandGradient,_IndependentPathColor;float4 _IslandSpan;
@@ -91,7 +97,7 @@ Shader "RoyalAves/WorldMap/Surface"
                 half _HasSnowTex,_SnowRowFlip;float4 _SnowRect;
                 half _SimpleBase,_SimpleGrade,_PathMint;
                 half _CentralEntranceGrade;
-                half _GroundBrushAmount;
+                half _GroundBrushAmount,_LawnStipple;float _MapCursor;
                 half _SimpleGroundVariant;half4 _SimpleLawnColor,_SimplePathColor;
                 float4 _IceLights[12],_IceLightColors[12];float _IceLightCount,_IceNight,_IceClock;
             CBUFFER_END
@@ -192,6 +198,28 @@ Shader "RoyalAves/WorldMap/Surface"
                 dots*=step(.20,j);
                 return saturate(float2(stain,dots));
             }
+            float LawnStipple(float2 world,float ahead)
+            {
+                // Painted freckles are world anchored. Only their contrast fades on approach;
+                // derivative filtering also removes subpixel dots before they can shimmer.
+                float2 grid=world*7.5,cell=floor(grid);
+                float3 noise=frac(float3(cell.x,cell.y,cell.x)*float3(.1031,.1030,.0973));
+                noise+=dot(noise,noise.yzx+33.33);
+                float3 random=frac((noise.xxy+noise.yzz)*noise.zyx);
+                float2 center=.18+random.xy*.64;
+                float radius=.065+random.z*.030;
+                // A world-space circle would flatten into a dash on the curved horizon.
+                // Measure this tiny shape in pixels while keeping its center fixed in the lawn.
+                float2 dx=ddx(grid),dy=ddy(grid),offset=frac(grid)-center;
+                float determinant=dx.x*dy.y-dy.x*dx.y;
+                float inverse=sign(determinant)/max(abs(determinant),.00001);
+                float2 pixelOffset=float2(offset.x*dy.y-offset.y*dy.x,dx.x*offset.y-dx.y*offset.x)*inverse;
+                float pixelRadius=clamp(radius/max(length(float2(dx.x,dy.x)),.001),.60,1.0);
+                float freckles=1-smoothstep(pixelRadius-.55,pixelRadius+.55,length(pixelOffset));
+                float footprint=max(length(dx),length(dy));
+                float fade=smoothstep(3.5,10.5,ahead)*(1-smoothstep(.32,.60,footprint));
+                return freckles*fade*step(.10,random.z)*_LawnStipple;
+            }
             half4 frag(V i) : SV_Target
             {
                 float frozenAmount=0,frozenAura=0;float2 frozenPoint=float2(i.lane.x,i.uv.y*14);
@@ -272,24 +300,27 @@ Shader "RoyalAves/WorldMap/Surface"
                         float shoulder=exp(-pow((abs(i.lane.x)-1.2)/2.4,2));
                         // Broad warm landing light, independent of the painted color patches.
                         float broad=.12+shoulder*.70+sin(s*.19+i.lane.x*.12)*.045;
-                        half3 grassLight=MapColor(half3(.83,.91,.47));
-                        half3 grass=lerp(MapColor(half3(.21,.60,.49)),MapColor(half3(.52,.77,.42)),smoothstep(0,.95,broad));
-                        grass=lerp(grass,MapColor(half3(.42,.77,.58)),(1-lawnBand)*.065);
+                        half3 grassLight=MapColor(half3(.76,.83,.55));
+                        half3 grass=lerp(MapColor(half3(.40,.54,.33)),MapColor(half3(.60,.71,.44)),smoothstep(0,.95,broad));
+                        grass=lerp(grass,MapColor(half3(.61,.72,.45)),(1-lawnBand)*.065);
                         float entrance=exp(-pow((i.lane.y+.20)/2.65,2)-pow(i.lane.x/3.0,2));
                         grass=lerp(grass,grassLight,entrance*.86);
                         float center=exp(-pow((i.lane.x+.22)/1.1,2));
-                        half3 sand=lerp(MapColor(half3(.97,.65,.32)),MapColor(half3(1,.89,.61)),center*.78+.12);
-                        half3 mint=lerp(MapColor(half3(.40,.76,.44)),MapColor(half3(.76,.94,.56)),center*.78+.12);
+                        half3 sand=lerp(MapColor(half3(.85,.72,.49)),MapColor(half3(.95,.86,.64)),center*.78+.12);
+                        half3 mint=lerp(MapColor(half3(.54,.69,.42)),MapColor(half3(.80,.87,.59)),center*.78+.12);
                         half3 path=lerp(sand,mint,_PathMint);
                         if(_SimpleGroundVariant>.5)
                         {
                             half3 lawn=MapColor(_SimpleLawnColor.rgb),lane=MapColor(_SimplePathColor.rgb);
                             half3 softLight=MapColor(half3(1,.96,.80));
-                            half3 lawnLight=MapColor(saturate(_SimpleLawnColor.rgb*1.25+half3(.025,.035,.035)));
-                            grassLight=MapColor(saturate(_SimpleLawnColor.rgb*1.30+.07));
-                            grass=lerp(lawn*.77,lawnLight,smoothstep(0,.95,broad));
+                            half3 lawnLight=MapColor(saturate(_SimpleLawnColor.rgb*1.13+half3(.025,.025,.015)));
+                            grassLight=MapColor(saturate(_SimpleLawnColor.rgb*1.16+.045));
+                            grass=lerp(lawn*.90,lawnLight,smoothstep(0,.95,broad));
                             grass=lerp(grass,lawnLight,(1-lawnBand)*.045);
                             grass=lerp(grass,grassLight,entrance*.72);
+                            float islandT=saturate((s-_IslandSpan.x)/max(1,_IslandSpan.y-_IslandSpan.x));
+                            half3 gradientTone=lerp(lawn*half3(1.07,1.04,.94),lawn*half3(.95,.98,1.02),islandT);
+                            grass=lerp(grass,gradientTone,.16);
                             path=lerp(lane*.86,lerp(lane,softLight,.23),center*.78+.12);
                         }
                         if(_GreenIslandGradient>.5)
@@ -297,32 +328,41 @@ Shader "RoyalAves/WorldMap/Surface"
                             float islandProgress=saturate((s-_IslandSpan.x)/max(1,_IslandSpan.y-_IslandSpan.x));
                             // Keep the approved soft painting; add only a restrained warm-to-cool
                             // undertone so dapples, stripes and light effects remain readable.
-                            half3 warm=MapColor(half3(.80,.87,.48));
-                            half3 middle=MapColor(half3(.50,.74,.43));
-                            half3 cool=MapColor(half3(.27,.57,.40));
+                            half3 warm=MapColor(half3(.73,.80,.53));
+                            half3 middle=MapColor(half3(.57,.69,.43));
+                            half3 cool=MapColor(half3(.44,.58,.35));
                             half3 tone=lerp(warm,middle,smoothstep(0,.55,islandProgress));
                             tone=lerp(tone,cool,smoothstep(.45,1,islandProgress));
                             grass=lerp(grass,tone,.12);
                         }
                         if(_IndependentPathColor>.5)
-                            path=MapColor(_SimplePathColor.rgb)*lerp(.90,1.08,center*.70+.15);
-                        // A composed opening: warm sage road, deeper leaf-green margins, restrained
-                        // buttery landing light. World coordinates make the grade stable while scrolling.
+                            path=MapColor(_SimplePathColor.rgb)*lerp(.96,1.04,center*.70+.15);
+                        // Warm sage/olive grass and buttery sand share a yellow undertone.
+                        // Keep this world anchored, so scrolling never changes the color grade.
                         float entranceGrade=_CentralEntranceGrade*(1-smoothstep(24,33,s));
                         float travel=saturate(s/18);
-                        half3 openingGrass=lerp(MapColor(half3(.48,.70,.44)),MapColor(half3(.30,.59,.46)),travel);
-                        openingGrass=lerp(openingGrass,MapColor(half3(.68,.76,.44)),entrance*.40);
-                        openingGrass*=lerp(.91,1.06,shoulder);
-                        half3 openingPath=lerp(MapColor(half3(.96,.86,.66)),MapColor(half3(.88,.79,.63)),travel);
-                        openingPath*=lerp(.96,1.035,center);
+                        half3 openingGrass=lerp(MapColor(half3(.55,.67,.42)),MapColor(half3(.44,.57,.35)),travel);
+                        openingGrass=lerp(openingGrass,MapColor(half3(.69,.77,.50)),entrance*.32);
+                        openingGrass*=lerp(.96,1.035,shoulder);
+                        half3 openingPath=lerp(MapColor(half3(.85,.72,.49)),MapColor(half3(.95,.86,.64)),center*.78+.12);
+                        openingPath=lerp(openingPath,MapColor(half3(.94,.83,.61)),travel*.14);
                         grass=lerp(grass,openingGrass,entranceGrade*.80);
                         // The postal road keeps its own color throughout the first mission;
                         // the entrance lawn grade can end without making road and grass merge again.
                         float postalRoad=_CentralEntranceGrade*(1-smoothstep(155,166,s));
-                        path=lerp(path,openingPath,postalRoad*.85*(1-step(.5,_IndependentPathColor)));
+                        path=lerp(path,openingPath,postalRoad*(1-step(.5,_IndependentPathColor)));
                         // Lawn bands read a little more clearly; the playable lane stays soft.
-                        grass*=lerp(.955,1.045,lawnBand);
-                        path*=lerp(.982,1.022,pathBand);
+                        grass*=lerp(.945,1.045,lawnBand);
+                        path*=lerp(.972,1.025,pathBand);
+                        // Soft leaf shadows retain the warm lawn hue instead of adding a cyan cast.
+                        float bankDistance=smoothstep(1.25,3.9,abs(i.lane.x));
+                        float canopy=.5+.5*sin(s*.34+i.lane.x*.48);
+                        half3 coolShadow=grass*half3(.82,.90,.80);
+                        grass=lerp(grass,coolShadow,bankDistance*(.10+canopy*.16));
+                        float warmPool=exp(-pow((i.lane.x+1.3)/1.7,2)-pow(sin(s*.16)*1.1,2));
+                        grass=lerp(grass,grass*half3(1.07,1.04,.94),warmPool*.10);
+                        half3 peachShadow=path*half3(.93,.93,.89);
+                        path=lerp(peachShadow,path,saturate(.45+center*.55));
                         if(_GroundBrushAmount>.001)
                         {
                             // Mirrored, gently warped world UVs keep brush marks attached to the island,
@@ -346,8 +386,21 @@ Shader "RoyalAves/WorldMap/Surface"
                         half3 stainPaint=lerp(grass* .82,lerp(grass,grassLight,.65),step(.48,GroundPatchHash(floor(s/1.8),3.71)));
                         grass=lerp(grass,stainPaint,dapples.x*.46*awayFromRim);
                         grass=lerp(grass,grassLight,dapples.y*.54*awayFromRim);
+                        grass*=1-LawnStipple(float2(i.lane.x,s),s-_MapCursor)*.16*awayFromRim;
                         path=lerp(path,path*1.10,dapples.x*.18*awayFromRim);
                         path=lerp(path,lerp(path,MapColor(half3(1,.99,.92)),.20),dapples.y*.18*awayFromRim);
+                        // Fresh green keeps hue in the darker bands instead of fading to grey.
+                        // Custom/themed palettes and snow keep their authored colors.
+                        if (_SimpleGroundVariant < .5 && _SnowCoverage < .01)
+                        {
+                            grass=lerp(MapColor(half3(.372549,.560784,.219608)),MapColor(half3(.537255,.701961,.329412)),.22+.78*lawnBand);
+                            grass=lerp(grass,MapColor(half3(.537255,.701961,.329412))*1.08,dapples.y*.10);
+                            if(_IndependentPathColor < .5)
+                            {
+                                path=lerp(MapColor(half3(.878431,.698039,.411765)),MapColor(half3(1,.886275,.627451)),.32+.58*center+.10*pathBand);
+                                path=lerp(path,MapColor(half3(1,.886275,.627451))*1.04,dapples.y*.08);
+                            }
+                        }
                         bankSurface=grass;
                         art=lerp(grass,path,1-smoothstep(-.018,.022,distance));
                         art=lerp(art,grass*.90,wall*.62);
@@ -483,11 +536,11 @@ Shader "RoyalAves/WorldMap/Surface"
                     float2 uv = i.uv;
                     // Saturated lacquer: a domed face, deep lower edge and a clear cream reflection.
                     float2 p=(uv-.5)*2;
-                    half radial=length(p);
+                    half radial=pow(pow(abs(p.x),2.63158)+pow(abs(p.y),2.63158),1.0/2.63158);
                     half gradient=smoothstep(-1,1,p.y);
                     float2 faceP=p/.90869565;
-                    float faceRadius=length(faceP);
-                    float dome=sqrt(saturate(1-dot(faceP,faceP)));
+                    float faceRadius=pow(pow(abs(faceP.x),2.63158)+pow(abs(faceP.y),2.63158),1.0/2.63158);
+                    float dome=sqrt(saturate(1-faceRadius*faceRadius));
                     float lighting=saturate(.44+dome*.45+faceP.y*.36-faceP.x*.17);
                     half3 face=_FaceColor.rgb*lerp(.48,1.20,lighting);
                     float crown=exp(-pow((faceP.x+.25)/.72,2)-pow((faceP.y-.43)/.55,2));
@@ -508,6 +561,15 @@ Shader "RoyalAves/WorldMap/Surface"
                     float2 shinePoint=float2(dot(shineDelta,float2(.94,.342)),dot(shineDelta,float2(-.342,.94)))/float2(.34,.115);
                     float specular=1-smoothstep(.72,1,length(shinePoint));
                     face=lerp(face,MapColor(half3(1,.995,.96)),specular*.94);
+                    if(_SpecialLevel>.5)
+                    {
+                        float2 starP=faceP-float2(0,.22);
+                        float angle=atan2(starP.x,starP.y);
+                        float sector=abs(frac(angle/6.2831853*5+.5)-.5)*2;
+                        float starRadius=lerp(.23,.52,pow(1-sector,1.45));
+                        float star=1-smoothstep(starRadius-.015,starRadius+.015,length(starP));
+                        face=lerp(face,MapColor(half3(1,.96,.69)),star*.94);
+                    }
                     if(_TokenFaceAmount>.5)
                     {
                         float2 faceUV=(uv-.5)*1.074766+.5;
@@ -524,7 +586,19 @@ Shader "RoyalAves/WorldMap/Surface"
                     crystal=lerp(crystal,MapColor(half3(1,1,1)),crystalShine*.95);
                     half3 purpleChannel=MapColor(half3(.42,.025,.70))*lerp(.72,1.22,gradient);
                     purpleChannel=lerp(purpleChannel,MapColor(half3(.97,.79,1)),goldFlash*.62);
-                    c=i.col.a>2.5?purpleChannel:i.col.a>1.5?crystal:lerp(gold,face,saturate(i.col.a));
+                    half3 cream=lerp(MapColor(half3(.90,.76,.58)),MapColor(half3(1,.97,.87)),gradient);
+                    c=lerp(cream,face,saturate(i.col.a));
+                }
+                if(_RewardMode>.5)
+                {
+                    float2 p=i.uv*2-1;
+                    float light=saturate(.58+p.y*.35-p.x*.22);
+                    half3 silver=lerp(MapColor(half3(.32,.42,.58)),MapColor(half3(.94,.98,1)),light);
+                    half3 gold=lerp(MapColor(half3(.91,.34,.015)),MapColor(half3(1,.94,.24)),light);
+                    c=lerp(silver,gold,_RewardEarned)*lerp(.68,1,saturate(i.col.a));
+                    float shine=exp(-dot((p-float2(-.22,.34))*float2(3.5,7),(p-float2(-.22,.34))*float2(3.5,7)));
+                    c=lerp(c,MapColor(half3(1,1,.94)),shine*.92);
+                    return half4(c,1);
                 }
                 half luma = dot(c, half3(0.3, 0.59, 0.11));
                 c = lerp(c, luma.xxx, _Desat);

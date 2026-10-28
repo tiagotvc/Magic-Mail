@@ -181,6 +181,9 @@ namespace RoyalAves.EditorTools
         void OnPreprocessTexture()
         {
             if (!assetPath.StartsWith("Assets/RoyalAves/Art/")) return;
+            // This kit owns native Sprite assets with explicit pixel rectangles. Resizing its textures
+            // here invalidates those rectangles and clips the right/bottom of the painted UI.
+            if (RoyalPostmanTextureImportPolicy.Owns(assetPath)) return;
             // Snow modal pieces use explicit sprite rectangles to remove transparent export margins.
             // Their builder owns these settings, including the four separate snow corners.
             if (assetPath.StartsWith("Assets/RoyalAves/Art/modal/")) return;

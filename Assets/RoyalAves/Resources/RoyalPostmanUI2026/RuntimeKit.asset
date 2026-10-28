@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d4746e57ed6e247b591d65222455da, type: 3}
+  m_Name: RuntimeKit
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.UI.RoyalPostman2026.RoyalPostmanRuntimeKit
+  home: {fileID: 6294034069078978172, guid: 37be744d63871b44fa42a271688bcc63, type: 3}
+  playModal: {fileID: 3148975532336582328, guid: ad864705db324444ca5a9da24b129ac5, type: 3}
+  navigation: {fileID: 4658630149882884590, guid: 8dfcdd5963f2c7549b0d621e4ec00330, type: 3}
+  additionalScreens:
+  - id: pets
+    title: Mascotes
+    prefab: {fileID: 352656610903740391, guid: 7ee578ef49a5411428ff9894f1689a9d, type: 3}
+    hideNavigation: 1
+  - id: menu
+    title: Menu
+    prefab: {fileID: 7226726943978087289, guid: 4a4d47d6175b0344ab48ea1043f8a918, type: 3}
+    hideNavigation: 1
+  rocket: {fileID: 21300000, guid: 52ab4a82c293c9844824dea5dc84c130, type: 2}
+  bomb: {fileID: 21300000, guid: acd12dac7eaee3b4b86dcfa035cf8205, type: 2}
+  orb: {fileID: 21300000, guid: 8a2a44f98e196cc4ca6725ed145e5caf, type: 2}

@@ -52,6 +52,10 @@ namespace RoyalAves.Meta
         [Header("Figuras de ligado/desligado (Resources/RoyalAvesFeatures se ficar vazio)")]
         [SerializeField] Sprite musicOn, musicOff, soundOn, soundOff, vibrationOn, vibrationOff;
 
+        [Header("Optional RPG presentation (existing preference keys are unchanged)")]
+        [SerializeField] bool useRpgStateLabels;
+        [SerializeField] TextMeshProUGUI musicState, soundState, vibrationState;
+
         /// Sound of a tap, given by the lobby.
         public System.Action OnTap;
 
@@ -107,12 +111,21 @@ namespace RoyalAves.Meta
             if (vibrationIcon != null) vibrationIcon.sprite = IsOn(VibrationKey) ? vibrationOn : vibrationOff;
             SetState(hintPill, hintText, IsOn(HintKey));
             SetState(notificationsPill, notificationsText, IsOn(NotificationsKey));
+            if (useRpgStateLabels)
+            {
+                SetState(null, musicState, IsOn(MusicKey));
+                SetState(null, soundState, IsOn(SoundKey));
+                SetState(null, vibrationState, IsOn(VibrationKey));
+                if (musicIcon != null) musicIcon.color = IsOn(MusicKey) ? Color.white : new Color(.6f, .6f, .65f, 1);
+                if (soundIcon != null) soundIcon.color = IsOn(SoundKey) ? Color.white : new Color(.6f, .6f, .65f, 1);
+            }
         }
 
         void SetState(Image pill, TextMeshProUGUI label, bool on)
         {
             if (pill != null) pill.color = on ? onColour : offColour;
             if (label != null) label.text = on ? onWord : offWord;
+            if (useRpgStateLabels && label != null) label.color = on ? onColour : offColour;
         }
 
         /// The builder fills these in, but a screen assembled by hand can leave them empty and still work.

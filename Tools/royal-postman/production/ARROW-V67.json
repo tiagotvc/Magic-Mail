@@ -1,0 +1,13 @@
+{
+  "tool": "Built-in ImageGen",
+  "reference": "Assets/RoyalAves/Art/UI/UI assets/x icone copiar.png",
+  "asset": "Assets/RoyalAves/Art/UI/UI assets/seta_voltar_creme.png",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "prompt": "Create ONE standalone LEFT-POINTING BACK ARROW icon for a mobile game's UI, matching the attached X icon reference extremely closely. Reference role: material, palette, corner rounding and extrusion style ONLY. Replace the X silhouette with a clean, bold left arrow: broad horizontal shaft on the right, large chevron/arrowhead pointing left, generous rounded external corners and clean readable silhouette. Front-facing orthographic view. Exactly the reference's very pale warm creamy ivory face (approximately #fcfbd0), uniform broad smooth flat face without glossy hotspots. Thin warm sandy beige extrusion visible mainly BELOW and just to the right (approximately #e6d395), same subtle relief as reference. No outlines, no black border, no dark cast shadow, no gradients or textures, no gold, no red button, no circular backing, no other objects, no text. Single centered arrow occupying about 85% of image width, entire outline and relief visible with transparent padding. Real transparent alpha background, clean antialiased edges. Production PNG sprite. Match this restrained simple cartoon icon rather than adding extra ornament or realism.",
+  "revision_prompt": "EDIT THE FIRST IMAGE (left arrow) using the SECOND IMAGE (X icon) as exact material/style reference. Keep the left arrow silhouette, proportions, rounded corners and thin beige offset extrusion. REMOVE ALL glow, bloom, aura, halo, light rays, blurry shadow and illumination surrounding the arrow. Completely remove the surrounding luminous haze; the pixels outside the sharp arrow silhouette and its narrow solid beige extrusion must have alpha=0. The face should be a UNIFORM FLAT PALE CREAM fill, exactly matching the second X reference, approximately #fcfbd0. The narrow bottom-right extrusion should be UNIFORM FLAT SAND BEIGE, matching the X reference approximately #e6d395. This is a clean cutout UI symbol with crisp antialiased boundaries and a flat face; no gradients, no lighting effects, no shading on the face, no bevel gradients, no background. Keep only TWO SOLID COLORS plus edge antialiasing, like the reference X. Center one arrow on a truly transparent background. No button circle or text.",
+  "original": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-87ffddea-4409-42b0-bc09-f1a4c5ab0c72.png",
+  "validation": "Original PNG bytes preserved. Alpha inspected; composited over red for visual QA (review/arrow-v67/on-red.png). No prefab changes."
+}

@@ -1,0 +1,22 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "Tools/royal-postman/approved/home.png",
+  "sources": [
+    "Assets/RoyalAves/Art/RoyalPostmanUI2026/level-base-v6.png",
+    "Assets/RoyalAves/Art/RoyalPostmanUI2026/pet-base-v6.png"
+  ],
+  "sizes": {
+    "level": [
+      440,
+      220
+    ],
+    "pet": [
+      200,
+      210
+    ]
+  },
+  "prompts": {
+    "level-base-v6": "Production game asset. The attached APPROVED Royal Postman mock is the visual authority. Faithfully reproduce the specified individual button, not a redesign. Reproduce ONLY the left Nível button BASE, removing its text. Exact approved silhouette: substantial wide rounded rectangle, width/height about 2.28, visibly tall, broad circular corner arcs. Sunny golden yellow outer rim with orange lower thickness, clean continuous rounded rim like reference. Inside, emerald teal button body fitting precisely into the gold. The TEAL BODY HAS A LARGE RAISED CENTRAL ROUNDED RECTANGLE in the SAME TEAL COLOR. This is broad soft 3D relief, not a separate border. Broad light turquoise shoulder across upper edge and dark teal lower slope. The raised central face occupies roughly 80% width and 68% height of teal body. It blends into body through a soft same-color bevel. NO inner dark border, NO neon turquoise outline, NO second rim, NO silver line. Preserve that broad center relief. Do NOT make the center flat or totally smooth. No letters, no digits. Match exact proportions, corner roundness, gold thickness, teal shade and broad painted highlights of approved reference. Exactly ONE standalone button base per image, large and centered with small transparent margins, genuine transparent background. Both gold and colored center must be visible together and perfectly fitted. One gold outer border only. All shading is intrinsic cartoon volume. Immaculate broad smooth paint, NO grain, dark smears, texture, dust, artifacts, ground shadow, glow or decorations. Front view; no perspective tilt. This output must be a faithful clean reconstruction of the supplied button, including its correct center relief. Preserve reference style aggressively.",
+    "pet-base-v6": "Production game asset. The attached APPROVED Royal Postman mock is the visual authority. Faithfully reproduce the specified individual button, not a redesign. Reproduce ONLY the right Pet button BASE, removing paw and text. Exact approved silhouette: approximately square with broad rounded corners, visibly substantial tall compact button, same height as reference relative to Nível. Sunny golden yellow outer rim with warm orange lower thickness, clean continuous ring like reference. Inside is one single rich plum-purple softly convex body with smooth purple highlight upper left and dark plum lower right. NO extra purple inner ring, NO dark internal outline, NO neon line, NO silver edge, NO extra inset rectangle or nested borders. No paw, no letters. Match exact rounded proportions, gold thickness, purple shade and clean painted finish of approved reference. Exactly ONE standalone button base per image, large and centered with small transparent margins, genuine transparent background. Both gold and colored center must be visible together and perfectly fitted. One gold outer border only. All shading is intrinsic cartoon volume. Immaculate broad smooth paint, NO grain, dark smears, texture, dust, artifacts, ground shadow, glow or decorations. Front view; no perspective tilt. This output must be a faithful clean reconstruction of the supplied button, including its correct center relief. Preserve reference style aggressively."
+  }
+}

@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');process.chdir(path.resolve(__dirname,'../..'));
+const guid=()=>crypto.randomBytes(16).toString('hex');
+for(const name of ['PostalEventsConfig','PostalEventState','PostalEvents','PostalEventGraphic','LobbyEventsScreen']){
+ const file=`Assets/RoyalAves/Scripts/Meta/${name}.cs`;
+ if(!fs.existsSync(file+'.meta'))fs.writeFileSync(file+'.meta',`fileFormatVersion: 2\nguid: ${guid()}\nMonoImporter:\n  externalObjects: {}\n  serializedVersion: 2\n  defaultReferences: []\n  executionOrder: 0\n  icon: {instanceID: 0}\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n`);
+}
+const file='Assets/RoyalAves/Resources/RoyalAvesEvents.asset',scriptGuid=fs.readFileSync('Assets/RoyalAves/Scripts/Meta/PostalEventsConfig.cs.meta','utf8').match(/^guid: (\w+)/m)[1];
+if(!fs.existsSync(file))fs.writeFileSync(file,`%YAML 1.1\n%TAG !u! tag:unity3d.com,2011:\n--- !u!114 &11400000\nMonoBehaviour:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: {fileID: 0}\n  m_Enabled: 1\n  m_EditorHideFlags: 0\n  m_Script: {fileID: 11500000, guid: ${scriptGuid}, type: 3}\n  m_Name: RoyalAvesEvents\n  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.PostalEventsConfig\n  dailyGoal: 3\n  dailyCoins: 150\n  seasonEnabled: 0\n  seasonId: christmas-2026\n  seasonTitle: The stolen Christmas\n  seasonDescription: Recover one gift per Christmas level. Replays count once.\n  seasonUnlockLevel: 31\n  startsUtc: \n  endsUtc: \n  seasonRewards:\n  - goal: 3\n    coins: 150\n  - goal: 8\n    coins: 350\n  - goal: 15\n    coins: 750\n`);
+if(!fs.existsSync(file+'.meta'))fs.writeFileSync(file+'.meta',`fileFormatVersion: 2\nguid: ${guid()}\nNativeFormatImporter:\n  externalObjects: {}\n  mainObjectFileID: 11400000\n  userData: \n  assetBundleName: \n  assetBundleVariant: \n`);
+console.log('Events configuration and stable script metadata installed. Existing tuning and player saves retained.');

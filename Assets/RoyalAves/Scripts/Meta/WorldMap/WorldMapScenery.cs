@@ -83,7 +83,7 @@ namespace RoyalAves.Meta.WorldMap
         }
     }
 
-    public enum PropKind { Tree, Small, Landmark, Lamp, Mailbox, Dog, FloatingMail, Geyser, Character, GroundDetail, WaterRipple, Steam, Meteor, WaterRock, LightShaft }
+    public enum PropKind { Tree, Small, Landmark, Lamp, Mailbox, Dog, FloatingMail, Geyser, Character, GroundDetail, WaterRipple, Steam, Meteor, WaterRock, LightShaft, RiverPlatform, RiverPlant, RiverFall, Mist }
     public enum WorldMapObjectTheme { Season, None, Ice }
 
     public enum WorldMapEffectVisibility { Automatic, Show, Hide }
@@ -128,6 +128,8 @@ namespace RoyalAves.Meta.WorldMap
         public WorldMapAdornment[] adornments;
         public bool groundPinned;
         public float groundDepth;
+        public int supportedLevel;
+        public float raySpacing;
         public float rotation, intensity, thickness; // LightShaft: graus (+ vem da esquerda) e opacidade; o tamanho e o height
     }
 
@@ -216,11 +218,14 @@ namespace RoyalAves.Meta.WorldMap
             for(var chapter=0;chapter<count;chapter++)
             {
                 var first=route.Islands?.FirstLevel(chapter)??chapter*20+1;if(first>limit)break;
+                if(route.Islands!=null&&route.Islands.Managed(route.Islands.islands[chapter]))
+                {WorldMapAutoScenery.Populate(list,route,kit,chapter,limit);continue;}
                 var grove=chapter%3==1;
                 void Add(float phase,float side,Sprite sprite,PropKind kind,float height,int seed)
                 {
                     var level=first+phase;var s=route.MetersAt(level);
                     if(sprite==null||level>limit+.1f||route.InGap(s,.5f))return;
+                    if(route.Islands?.automaticSequence==true&&route.IslandIndexAt(s)!=chapter)return;
                     list.Add(new PropPlacement{s=s,offset=side,sprite=UpgradeStyle(sprite,kit),kind=kind,height=height,seed=chapter*71+seed,shadow=true,fixedPlacement=true});
                 }
                 for(var i=0;i<(grove?5:4);i++)
@@ -247,20 +252,50 @@ namespace RoyalAves.Meta.WorldMap
             }
             WorldMapLayout.For(kit)?.Apply(list,route,kit);
             var layout=WorldMapLayout.For(kit);
+            // Banks own land props. Keep authored entries available in the editor, but do not
+            // render their old positions as floating buildings/trees when a new lake covers them.
+            list.RemoveAll(item=>route.InGap(item.s,.35f)&&item.kind!=PropKind.WaterRipple&&item.kind!=PropKind.WaterRock&&item.kind!=PropKind.FloatingMail&&item.kind!=PropKind.LightShaft&&item.kind!=PropKind.RiverPlatform&&item.kind!=PropKind.RiverPlant&&item.kind!=PropKind.RiverFall);
             foreach(var gap in route.Gaps)
             {
                 var settings=route.CrossingAt(gap);var center=(gap.start+gap.end)*.5f;
-                void Extra(string suffix,Sprite sprite,PropKind kind,float s,float x,float size,int seed)
+                void Extra(string suffix,Sprite sprite,PropKind kind,float s,float x,float size,int seed,int supportedLevel=0,bool flip=false,float submerge=0)
                 {
                     var id="river-"+gap.afterLevel+"-"+suffix;
                     if(sprite==null||layout?.ExtraClaimed(id)==true)return;
-                    list.Add(new PropPlacement{id=id,s=s,offset=x,sprite=sprite,kind=kind,height=size,seed=seed,shadow=false,fixedPlacement=true});
+                    list.Add(new PropPlacement{id=id,s=s,offset=x,sprite=sprite,kind=kind,height=size,seed=seed,shadow=false,fixedPlacement=true,supportedLevel=supportedLevel,flipX=flip,bottomPivot=true,groundPinned=submerge>0,groundDepth=submerge,theme=route.Islands?.Managed(settings)==true?(route.Islands.Recipe(settings).christmas?WorldMapObjectTheme.Ice:WorldMapObjectTheme.None):WorldMapObjectTheme.Season});
+                }
+                var art=route.Islands;
+                if(art!=null&&settings!=null)
+                {
+                    if(settings.crossing==WorldMapCrossing.Stones&&settings.lakeLevels>0)
+                        for(int level=gap.afterLevel-settings.lakeLevels+1;level<=gap.afterLevel;level++)
+                        {
+                            if(list.Exists(item=>item.kind==PropKind.RiverPlatform&&item.supportedLevel==level))continue;
+                            var side=route.LevelLateral(level);var custom=settings.stones.Find(stone=>stone.levelOffset==level-gap.afterLevel);
+                            var themed=side<0?art.lavaStoneLeft:art.lavaStoneRight;
+                            var sprite=custom?.sprite!=null?custom.sprite:settings.liquid==WorldMapLiquid.Lava&&themed!=null?themed:side<0?art.stoneLeft:art.stoneRight;
+                            Extra("platform-"+level,sprite,PropKind.RiverPlatform,route.Pos(level),side,1.12f*settings.stoneSize*(custom?.size??1),level,level);
+                        }
+                    if(settings.waterPlants&&(settings.liquid!=WorldMapLiquid.Lava||settings.plants.Count>0))
+                        for(int i=0;i<(settings.plants.Count>0?settings.plants.Count:2);i++)
+                        {
+                            var plant=settings.plants.Count>0?settings.plants[i]:null;
+                            var side=plant?.lateral??(i==0?-2.10f:2.10f);
+                            Extra("plant-"+i,plant?.sprite!=null?plant.sprite:art.bankPlant,PropKind.RiverPlant,
+                                Mathf.Lerp(gap.start,gap.end,plant?.progress??(settings.sideWaterfall&&settings.waterfallOnRight?(i==0?.88f:.10f):(i==0?.10f:.88f))),side,1.18f*(plant?.size??1),i,flip:side>0,submerge:plant?.submerge??.42f);
+                        }
+                    if(settings.sideWaterfall)
+                    {
+                        var sprite=settings.waterfallSprite!=null?settings.waterfallSprite:(settings.liquid==WorldMapLiquid.Lava?art.lavaFall:settings.liquid==WorldMapLiquid.Ink||settings.liquid==WorldMapLiquid.Symphony?art.inkFall:art.waterFall);
+                        Extra("waterfall",sprite,PropKind.RiverFall,Mathf.Lerp(gap.start,gap.end,settings.waterfallProgress),
+                            (settings.waterfallOnRight?1:-1)*settings.waterfallLateral,settings.waterfallSize,71,flip:settings.waterfallOnRight);
+                    }
                 }
                 if(kit.waterRipple!=null&&(settings?.waterMotion??WorldMapWaterMotion.Wakes)==WorldMapWaterMotion.Wakes)
                     for(int i=0;i<2;i++)Extra("wake-"+i,kit.waterRipple,PropKind.WaterRipple,center+(i==0?-.12f:.12f),i==0?-2.1f:2.1f,.30f,gap.afterLevel+i);
-                if(settings?.channelRocks==true||settings?.crossing==WorldMapCrossing.Stones)
+                if(settings?.lakeLevels==0&&(settings.channelRocks||settings.crossing==WorldMapCrossing.Stones))
                 {
-                    var stepping=settings.crossing==WorldMapCrossing.Stones;
+                    var stepping=settings.crossing==WorldMapCrossing.Stones&&settings.lakeLevels==0;
                     for(int i=0;i<(stepping?4:2);i++)Extra("rocks-"+i,kit.waterRocks??kit.simpleNature[4],PropKind.WaterRock,
                         stepping?Mathf.Lerp(gap.start+.15f,gap.end-.15f,i/3f):center+(i==0?-.25f:.25f),stepping?(i%2==0?-.13f:.13f):i==0?-1.25f:1.5f,stepping?.42f:.32f,i);
                 }

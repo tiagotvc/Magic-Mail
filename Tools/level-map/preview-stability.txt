@@ -1,0 +1,1 @@
+PASS: hidden/uninitialized card and active material-less card do not throw during Santa host selection; 54 map renders across sections 1, 21, 41, 61, 81 and back to 1, advancing event time through 60 seconds. 20 frames with automatic Santa active. Render targets remain valid; zero Unity errors. Saved scene, islands, layout and player data untouched.

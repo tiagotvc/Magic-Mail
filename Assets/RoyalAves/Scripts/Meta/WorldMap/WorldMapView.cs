@@ -17,6 +17,7 @@ namespace RoyalAves.Meta.WorldMap
     // Vive longe da origem, em layer proprio, e e desligado quando o mapa fecha.
     public sealed class WorldMapView : MonoBehaviour
     {
+        static readonly Unity.Profiling.ProfilerMarker TickMarker=new Unity.Profiling.ProfilerMarker("MagicMail.Map.Tick");
         static readonly Vector3 RootOffset = new Vector3(0, -3000, 0);
         const float SlotSpacing = 500f; // cada mapa vivo ocupa uma faixa propria do espaco (camera enxerga 160 m)
         const int MaxNodes = 14;
@@ -33,6 +34,9 @@ namespace RoyalAves.Meta.WorldMap
             public TextMeshPro number;
             public Transform numberT;
             public readonly MeshRenderer[] stars = new MeshRenderer[3];
+            public readonly MeshFilter[] starMeshes = new MeshFilter[3];
+            public readonly bool[] starArtwork = new bool[3];
+            public bool showStars,showCrown;
             public MeshRenderer crown;
             public Transform shadowT;
             public MeshRenderer badge;
@@ -142,7 +146,43 @@ namespace RoyalAves.Meta.WorldMap
         Material[] islandMaterials;
         public int RenderedLevelCount=>maxShown;
         public WorldMapKit KitAt(float meters)=>islandKits!=null?islandKits[Route.IslandIndexAt(meters)]:kit;
+        public bool SeasonEventsAllowed
+        {
+            get
+            {
+                if(Route.Islands?.automaticSequence!=true)return true;
+                var style=Route.Islands.Recipe(Route.IslandAt(builtCursor+kit.focusAhead));
+                return style?.christmas==true;
+            }
+        }
         int SceneryLimit=>!Application.isPlaying?Route.LevelSlots:maxShown;
+
+        // Object edits preserve pooled renderers and do not invalidate the terrain.
+        readonly Dictionary<int,PropPlacement> riverPlatforms=new Dictionary<int,PropPlacement>();
+        void CacheRiverPlatforms()
+        {
+            riverPlatforms.Clear();
+            foreach(var p in props)if(p.kind==PropKind.RiverPlatform&&p.supportedLevel>0)riverPlatforms[p.supportedLevel]=p;
+        }
+        float LevelMeters(int level)=>riverPlatforms.TryGetValue(level,out var platform)?platform.s:Route.Pos(level);
+        public bool RefreshPlacement(WorldMapLayout.Entry entry)
+        {
+            if(entry==null||props==null)return false;
+            for(var i=0;i<props.Count;i++)
+                if(props[i].id==entry.id)
+                {
+                    var placement=entry.Placement(Route,KitAt(Route.MetersAt(entry.level)));
+                    // The visibility search requires sorted distances. Rebuild only when crossing a neighbour.
+                    if((i>0&&props[i-1].s>placement.s)||(i+1<props.Count&&props[i+1].s<placement.s))return false;
+                    if(props[i].kind==PropKind.GroundDetail||placement.kind==PropKind.GroundDetail)return false;
+                    if(placement.kind==PropKind.RiverPlatform&&props[i].supportedLevel!=placement.supportedLevel)return false;
+                    var platformChanged=props[i].kind==PropKind.RiverPlatform||placement.kind==PropKind.RiverPlatform;
+                    props[i]=placement;
+                    if(platformChanged)CacheRiverPlatforms();
+                    return true;
+                }
+            return false;
+        }
 
         public void ReloadScenery()
         {
@@ -150,7 +190,7 @@ namespace RoyalAves.Meta.WorldMap
             BindGround();
             foreach(var pair in activeSlots){pair.Value.go.SetActive(false);free.Push(pair.Value);}
             activeSlots.Clear();
-            props=WorldMapScenery.Build(Route,kit,SceneryLimit,KitAt);
+            props=WorldMapScenery.Build(Route,kit,SceneryLimit,KitAt);CacheRiverPlatforms();
         }
 
         public bool ProjectProp(int index,float aspect,out Rect bounds,out float depth)
@@ -273,7 +313,7 @@ namespace RoyalAves.Meta.WorldMap
             matSurface.SetFloat("_SimpleBase",kit.simpleBase?1:0);
             matSurface.SetFloat("_CentralEntranceGrade",kit.simpleBase&&WorldMapMission100.PolishedEntrance?1:0);
             matSurface.SetFloat("_SimpleGrade",kit.simpleBase&&!kit.customGround&&(kit.seasonPreview==1||kit.SeasonLook?.groundMaterials==null)?1:0);
-            matSurface.SetFloat("_PathMint",kit.simpleBase||kit.simplePalette==1?1:0);
+            matSurface.SetFloat("_PathMint",kit.simplePalette==1?1:0);
             matSurface.SetFloat("_SimpleGroundVariant",kit.simpleGroundVariant?1:0);
             matSurface.SetFloat("_GroundBrushAmount",kit.groundBrushLawn!=null&&kit.groundBrushPath!=null?1:0);
             if(kit.groundBrushLawn!=null)matSurface.SetTexture("_GroundBrushLawn",kit.groundBrushLawn);
@@ -363,20 +403,23 @@ namespace RoyalAves.Meta.WorldMap
             manualRendering=editorOnly||!Application.isPlaying;
             maxShown = this.levelCount;
             Route = new WorldMapRoute(islandsOverride??Resources.Load<WorldMapIslands>(WorldMapIslands.ResourcePath),this.levelCount);
+            if(editorOnly&&Route.Islands?.automaticSequence==true)maxShown=Route.LevelSlots;
             this.kit=Instantiate(kit);kit=this.kit;kit.hideFlags=HideFlags.HideAndDontSave;kit.simpleBase=Route.Islands?.unifiedBase==true;
             if(kit.simpleBase)
             {
                 kit.terrainTheme=WorldMapTerrainTheme.GreenLand;
                 kit.bridgeDeck=kit.bridgeLogs=kit.simpleBridge??kit.bridgeDeck;
+                if(Route.Islands.bridgeDeck!=null)kit.bridgeDeck=kit.bridgeLogs=kit.bridgeTimber=Route.Islands.bridgeDeck;
                 kit.levelCrown=kit.simpleCrown??kit.levelCrown;kit.levelStar=kit.simpleStar??kit.levelStar;
                 kit.hardBadge=kit.simpleHard??kit.hardBadge;kit.expressBadge=kit.simpleExpress??kit.expressBadge;
             }
             if(Route.Islands!=null)
             {
-                islandKits=new WorldMapKit[Route.Islands.islands.Count];
+                islandKits=new WorldMapKit[Route.Islands.ActiveIslandCount];
                 for(var i=0;i<islandKits.Length;i++)
                 {
                     var island=Route.Islands.islands[i];var style=Instantiate(kit);
+                    if(Route.Islands.Managed(island))style.seasonPreview=Route.Islands.Recipe(island).christmas?2:1;
                     style.hideFlags=HideFlags.HideAndDontSave;style.terrainTheme=kit.simpleBase?(island.groundStyle==WorldMapGroundStyle.Volcanic?WorldMapTerrainTheme.LavaLand:WorldMapTerrainTheme.GreenLand):island.terrain;style.simpleBase=kit.simpleBase;style.simplePalette=island.palette;
                     style.simpleGroundVariant=island.groundStyle!=WorldMapGroundStyle.Green||island.customColors;
                     style.simpleGreenGradient=island.groundStyle==WorldMapGroundStyle.Green&&!island.customColors;
@@ -392,7 +435,7 @@ namespace RoyalAves.Meta.WorldMap
             terrain = new WorldMapTerrain();
             tokenMesh = WorldMapTokenMesh.Build();
             rewardStarMesh=WorldMapTokenMesh.BuildRewardStar();
-            matRewardStar=MakeMaterial(kit.surface,"RewardStars_NoOutline",false);matRewardStar.SetFloat("_NightAmount",0);matRewardStar.SetFloat("_PaintAmount",0);matRewardStar.SetFloat("_TokenMode",0);matRewardStar.SetFloat("_GroundMode",0);
+            matRewardStar=MakeMaterial(kit.surface,"RewardStars_NoOutline",false);matRewardStar.SetFloat("_RewardMode",1);matRewardStar.SetFloat("_NightAmount",0);matRewardStar.SetFloat("_PaintAmount",0);matRewardStar.SetFloat("_TokenMode",0);matRewardStar.SetFloat("_GroundMode",0);
             skullMesh=WorldMapTokenMesh.BuildSkull();matSkull=MakeMaterial(kit.surface,"SeloCaveira",false);matSkull.SetFloat("_NightAmount",0);
             shadowMesh = WorldMapCards.ShadowQuad();
             var flags = editorOnly || !Application.isPlaying ? HideFlags.HideAndDontSave : HideFlags.None;
@@ -411,6 +454,14 @@ namespace RoyalAves.Meta.WorldMap
             }
             matWater = MakeMaterial(kit.water, "MapWater", true);
             matWater.SetFloat("_HasWakeSprite",kit.waterRipple!=null?1:0);
+            var lavaArt=Route.Islands?.lavaSurface;
+            matWater.SetFloat("_HasLavaArt",lavaArt!=null?1:0);
+            if(lavaArt!=null)
+            {
+                var texture=lavaArt.texture;var rect=lavaArt.rect;
+                matWater.SetTexture("_LavaTex",texture);
+                matWater.SetVector("_LavaRect",new Vector4(rect.x/texture.width,rect.y/texture.height,rect.width/texture.width,rect.height/texture.height));
+            }
             matTokens = MakeMaterial(kit.surface,"MapTokens",true);
             matTokens.SetFloat("_GroundMode",0);
             matTokens.SetFloat("_TokenMode",1);
@@ -472,7 +523,7 @@ namespace RoyalAves.Meta.WorldMap
             if(islandMaterials!=null)transform.Find("Chao").GetComponent<MeshRenderer>().sharedMaterials=islandMaterials;
             AddMesh("Agua", terrain.water, matWater);
             for (var i = 0; i < nodes.Length; i++) nodes[i] = CreateNode(i);
-            props = WorldMapScenery.Build(Route, kit, SceneryLimit,KitAt);
+            props = WorldMapScenery.Build(Route, kit, SceneryLimit,KitAt);CacheRiverPlatforms();
 
             if (surface != null)
             {
@@ -554,7 +605,8 @@ namespace RoyalAves.Meta.WorldMap
             node.numberT.localRotation = Quaternion.Euler(90, 0, 0);
             node.number = textGo.AddComponent<TextMeshPro>();
             node.number.rectTransform.sizeDelta = new Vector2(0.62f, 0.44f);
-            if (art != null && art.displayFont != null) node.number.font = art.displayFont;
+            if (kit.levelNumberFont != null) node.number.font = kit.levelNumberFont;
+            else if (art != null && art.displayFont != null) node.number.font = art.displayFont;
             node.number.alignment = TextAlignmentOptions.Center;
             node.number.fontStyle = FontStyles.Normal;
             node.number.color = Color.white;
@@ -581,7 +633,7 @@ namespace RoyalAves.Meta.WorldMap
                 {
                     var starGo = new GameObject("Estrela_" + (j + 1)) { layer = layer };
                     starGo.transform.SetParent(node.decorationRoot, false);
-                    starGo.AddComponent<MeshFilter>().sharedMesh = rewardStarMesh;
+                    node.starMeshes[j]=starGo.AddComponent<MeshFilter>();node.starMeshes[j].sharedMesh=rewardStarMesh;
                     var star = starGo.AddComponent<MeshRenderer>();
                     star.sharedMaterial = matRewardStar;
                     star.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -593,10 +645,10 @@ namespace RoyalAves.Meta.WorldMap
             {
                 var crownGo = new GameObject("Coroa") { layer = layer };
                 crownGo.transform.SetParent(node.decorationRoot, false);
-                crownGo.AddComponent<MeshFilter>().sharedMesh = WorldMapCards.Get(kit.levelCrown, .42f);
+                crownGo.AddComponent<MeshFilter>().sharedMesh = WorldMapCards.Get(kit.levelCrown, .40f);
                 node.crown = crownGo.AddComponent<MeshRenderer>();
                 node.crown.sharedMaterial = CardMaterial(kit.levelCrown.texture);
-                var crownBlock=new MaterialPropertyBlock();crownBlock.SetFloat("_NightAmount",0);node.crown.SetPropertyBlock(crownBlock);
+                var crownBlock=new MaterialPropertyBlock();crownBlock.SetFloat("_NightAmount",0);crownBlock.SetFloat("_HazeNear",1000);crownBlock.SetFloat("_HazeFar",2000);node.crown.SetPropertyBlock(crownBlock);
                 node.crown.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 node.crown.receiveShadows = false;
             }
@@ -699,6 +751,7 @@ namespace RoyalAves.Meta.WorldMap
         // Chamado todo quadro enquanto o mapa esta aberto.
         public void Tick(float cursorLevels, int nextLevel, bool dragging)
         {
+            using var sample=TickMarker.Auto();
             if (disposed) return;
             EnsureTarget();
             var cursor = Route.MetersAt(cursorLevels);
@@ -706,7 +759,8 @@ namespace RoyalAves.Meta.WorldMap
             matWater.SetFloat("_Frozen",kit.Christmas?1:0);
             if(boundGround!=kit.GroundArt||boundGroundRows!=kit.GroundBounds||boundSeason!=kit.SeasonLook||christmas!=kit.Christmas||boundSnowCoverage!=(kit.SeasonLook?.snowCoverage??.72f))BindGround();
             matSurface.SetFloat("_PaintScroll", (cursor - Route.Pos(1)) / 18f);
-            if(islandMaterials!=null)foreach(var m in islandMaterials)m.SetFloat("_PaintScroll",(cursor-Route.Pos(1))/18f);
+            matSurface.SetFloat("_MapCursor",cursor);
+            if(islandMaterials!=null)foreach(var m in islandMaterials){m.SetFloat("_PaintScroll",(cursor-Route.Pos(1))/18f);m.SetFloat("_MapCursor",cursor);}
             christmas = kit.Christmas;
             camModel.Aspect=cam.aspect;
             cam.transform.localPosition = camModel.Position(cursor);
@@ -729,6 +783,8 @@ namespace RoyalAves.Meta.WorldMap
             UpdateProps(cursor);
             UpdateIceReflections(cursor);
             UpdateShafts(cursor);
+            if(riverNotes==null)riverNotes=new WorldMapRiverNotes(transform,layer,CardMaterial(Texture2D.whiteTexture));
+            riverNotes.Tick(Route,camModel,kit.radius,cursor,Now);
             if(santa==null&&kit.santaEventEnabled&&(kit.santaFriendly!=null||kit.santaVillain!=null))santa=new WorldMapSantaEvent(this,kit,layer,CardMaterial);
             santa?.Tick(Now,dragging);
         }
@@ -859,8 +915,8 @@ namespace RoyalAves.Meta.WorldMap
             var used = 0;
             for (var level = first; level <= maxShown && used < nodes.Length; level++)
             {
-                if(LevelExists!=null&&!LevelExists(level))continue;
-                var s = Route.Pos(level);
+                if(LevelExists!=null&&!LevelExists(level)&&(level<=levelCount||Application.isPlaying&&!manualRendering))continue;
+                var s = LevelMeters(level);
                 var rel = s - cursor;
                 if (rel > Front - 12) break;
                 var node = nodes[used++];
@@ -874,6 +930,7 @@ namespace RoyalAves.Meta.WorldMap
         {
             var radius = kit.radius;
             var playable = level <= levelCount;
+            var special=Route.Islands!=null&&level%Mathf.Max(1,Route.Islands.specialLevelEvery)==0;
             var active = playable && level == nextLevel;
             var done = playable && level < nextLevel;
             var locked = !playable || level > nextLevel;
@@ -888,32 +945,38 @@ namespace RoyalAves.Meta.WorldMap
                 node.go.name = "Nivel_" + level;
                 node.reference.level = level;
                 node.number.text = level.ToString();
-                node.number.fontSizeMax = level >= 100 ? 2.6f : 3.6f;
-                node.number.color = locked ? new Color(0.93f, 0.93f, 0.97f) : Color.white;
+                node.number.fontSizeMax = special?2.3f:level >= 100 ? 2.6f : 3.6f;
+                node.number.color = special?new Color(.30f,.10f,.42f):locked ? new Color(0.93f, 0.93f, 0.97f) : Color.white;
                 node.number.ForceMeshUpdate();
-                node.numberT.localPosition = new Vector3(0, WorldMapTokenMesh.FaceHeight + .012f, 0);
+                node.numberT.localPosition = new Vector3(0, WorldMapTokenMesh.FaceHeight + .012f,special?-.24f:0);
                 node.number.fontSharedMaterial=active?matNumbersActive:matNumbers;
+                node.showStars=done||active;
                 for (var j = 0; j < 3; j++) if (node.stars[j] != null)
                 {
                     var star=node.stars[j];star.gameObject.SetActive(done||active);
+                    var reward=j<earned?kit.rewardStarGold:kit.rewardStarEmpty;
+                    node.starArtwork[j]=reward!=null;
+                    node.starMeshes[j].sharedMesh=reward!=null?WorldMapCards.Get(reward,.30f):rewardStarMesh;
+                    star.sharedMaterial=reward!=null?CardMaterial(reward.texture):matRewardStar;
                     // Score ornaments remain legible at night; silver slots show missing stars.
                     var starBlock=new MaterialPropertyBlock();
                     starBlock.SetFloat("_NightAmount",0);starBlock.SetFloat("_HazeNear",1000);starBlock.SetFloat("_HazeFar",2000);
-                    starBlock.SetFloat("_Desat",j<earned?0:.92f);
-                    starBlock.SetColor("_Tint",j<earned?Color.white:new Color(.72f,.77f,.85f,1));
+                    starBlock.SetFloat("_RewardEarned",j<earned?1:0);
                     star.SetPropertyBlock(starBlock);
                 }
                 var difficulty=WorldMapEditorial.DifficultyOf(level);
                 if(difficulty!='n')node.numberT.localPosition+=new Vector3(0,0,-.07f);
                 var emblem=difficulty=='v'?kit.expressBadge:difficulty=='h'?kit.hardBadge:null;
                 node.badge.gameObject.SetActive(emblem!=null);
-                if(node.crown!=null)node.crown.gameObject.SetActive(earned==3&&emblem==null);
+                node.showCrown=earned==3&&emblem==null;
+                if(node.crown!=null)node.crown.gameObject.SetActive(node.showCrown);
                 if(difficulty!='n'){node.badgeMesh.sharedMesh=skullMesh;node.badge.sharedMaterial=matSkull;node.badge.gameObject.SetActive(true);}
                 node.block.Clear();
                 node.block.SetColor("_Tint", Color.white);
                 node.block.SetFloat("_PaintAmount", 0);
                 node.block.SetFloat("_GroundMode", 0);
                 node.block.SetFloat("_TokenMode", 1);
+                node.block.SetFloat("_SpecialLevel",special?1:0);
                 var faceSprite=active?kit.levelFaceActive:done?kit.levelFaceCompleted:kit.levelFaceUpcoming;
                 if(faceSprite!=null)
                 {
@@ -922,14 +985,16 @@ namespace RoyalAves.Meta.WorldMap
                     node.block.SetVector("_TokenFaceRect",new Vector4(rect.x/tex.width,rect.y/tex.height,rect.width/tex.width,rect.height/tex.height));
                     node.block.SetFloat("_TokenFaceAmount",0);
                 }
-                Color face = active ? new Color32(164,28,255,255) : done ? new Color32(255,145,8,255) : new Color32(139,20,242,255);
+                Color face = active ? new Color32(164,28,255,255) : done ? new Color32(255,145,8,255) : new Color32(246,38,145,255);
                 if(difficulty=='h')face=new Color32(225,5,35,255);
                 if(difficulty=='v')face=new Color32(166,0,26,255);
+                if(special)face=new Color32(255,161,20,255);
                 node.block.SetColor("_FaceColor", QualitySettings.activeColorSpace == ColorSpace.Linear ? face.linear : face);
                 node.block.SetFloat("_Desat", 0);
                 node.body.SetPropertyBlock(node.block);
             }
-            var x = Route.CenterX(s);
+            var hasPlatform=riverPlatforms.TryGetValue(level,out var platform);
+            var x = Route.CenterX(s)+(hasPlatform?WorldMapTerrain.Lateral(platform.offset,rel):Route.LevelLateral(level));
             var pulse = active && !dragging ? 1 + 0.05f * Mathf.Sin(Now * 3) : 1;
             if (active)
             {
@@ -948,7 +1013,7 @@ namespace RoyalAves.Meta.WorldMap
             var size=kit.tokenScale*apparent*(active?1.14f*pulse:1);
             // Keep the tilted front edge above the terrain; burying it clipped the cream rim and stars.
             var support=WorldMapTokenMesh.Radius*size*Mathf.Abs(Mathf.Sin(faceLift*Mathf.Deg2Rad))+.008f;
-            node.t.localPosition=MapCurve.Point(rel,x,0,radius,Route.Curvature)+normal*support;
+            node.t.localPosition=MapCurve.Point(rel,x,hasPlatform?Route.WaterHeight(s)+.025f:0,radius,Route.Curvature)+normal*support;
             node.t.localScale = new Vector3(size,size*thickness,size);
             void Billboard(Transform decoration,Vector3 anchor)
             {
@@ -957,23 +1022,30 @@ namespace RoyalAves.Meta.WorldMap
                 decoration.localScale=Vector3.one*size;
             }
             node.decorationRoot.gameObject.SetActive(true);
-            if(node.crown!=null)Billboard(node.crown.transform,new Vector3(0,WorldMapTokenMesh.FaceHeight+.01f,.27f));
+            var rewardScale=active?1:Mathf.Lerp(1,.5f,Mathf.InverseLerp(4.5f,10.5f,rel));
+            var showRewards=active||rel<10.5f;
+            if(node.crown!=null){node.crown.gameObject.SetActive(node.showCrown&&showRewards);Billboard(node.crown.transform,new Vector3(0,WorldMapTokenMesh.FaceHeight+.01f,.24f));node.crown.transform.localPosition+=camModel.Rotation*Vector3.back*(.18f*size);node.crown.transform.localScale=new Vector3(size*1.10f,size,size)*rewardScale;}
             Billboard(node.badge.transform,new Vector3(0,WorldMapTokenMesh.FaceHeight+.10f,.37f));
             for(var j=0;j<node.stars.Length;j++)if(node.stars[j]!=null)
             {
-                Billboard(node.stars[j].transform,new Vector3((j-1)*.245f,.11f,j==1?-.65f:-.58f));
-                node.stars[j].transform.localScale*=j==1?1.16f:.95f;
+                node.stars[j].gameObject.SetActive(node.showStars&&showRewards);
+                bool artwork=node.starArtwork[j];float starScale=(artwork?(j==1?1.22f:1.06f):(j==1?1.38f:1.19f))*rewardScale;
+                Billboard(node.stars[j].transform,new Vector3((j-1)*(artwork?.285f:.325f)*rewardScale,.16f,j==1?-.68f:-.61f));
+                // Pull the entire camera-facing star clear of the curved ground, including its lower tips.
+                node.stars[j].transform.localPosition+=camModel.Rotation*(Vector3.back*.30f+Vector3.down*(.085f+(artwork?.15f*starScale:0)))*size;
+                node.stars[j].transform.localScale*=starScale;
             }
             var groundRotation=MapCurve.Orientation(rel,radius,x,Route.Curvature);
             node.shadowT.SetParent(node.decorationRoot,false);
             node.shadowT.localRotation=groundRotation;
-            node.shadowT.localPosition=MapCurve.Point(rel,x,.006f,radius,Route.Curvature)+groundRotation*new Vector3(.10f*size,0,-.06f*size);
+            node.shadowT.localPosition=MapCurve.Point(rel,x,hasPlatform?Route.WaterHeight(s)+.016f:.006f,radius,Route.Curvature)+groundRotation*new Vector3(.10f*size,0,-.06f*size);
             node.shadowT.localScale=new Vector3(.48f*size,1,.44f*size);
         }
 
         // ---- cenografia -----------------------------------------------------------------------------
 
         // Raios de sol editaveis (WorldMapLightSet): um WorldMapLightFx por luz, posicionado por fase + lateral.
+        WorldMapRiverNotes riverNotes;
         WorldMapLightSet lightSet;
         bool lightSetLoaded;
         readonly System.Collections.Generic.List<WorldMapLightFx> shaftFx = new System.Collections.Generic.List<WorldMapLightFx>();
@@ -1072,25 +1144,33 @@ namespace RoyalAves.Meta.WorldMap
         // Posiciona um cartao em pe no chao; ele "se ergue" conforme se aproxima (funcao da distancia, reversivel).
         void Pose(Slot slot, PropPlacement p, float cursor, bool forceStanding)
         {
+            var kit=KitAt(p.s);
+            var propChristmas=kit.Christmas;
             var radius = kit.radius;
             var rel = p.s - cursor;
             // The opening is composed as an illustrated landscape. An object whose contact
             // point has crossed behind the crest must not hover in the sky above another prop.
             bool opening=kit.simpleBase&&WorldMapMission100.PolishedEntrance&&cursor<Route.MetersAt(20);
-            if(opening&&!forceStanding&&!camModel.SurfaceVisible(cursor,p.s)){slot.go.SetActive(false);return;}
+            bool upright=p.kind==PropKind.Tree||p.kind==PropKind.Small||p.kind==PropKind.Landmark||p.kind==PropKind.Lamp||p.kind==PropKind.Mailbox||p.kind==PropKind.Dog||p.kind==PropKind.Geyser||p.kind==PropKind.Character;
+            if((opening||upright)&&!forceStanding&&!camModel.SurfaceVisible(cursor,p.s)){slot.go.SetActive(false);return;}
             slot.go.SetActive(true);
+            var riverFrontal=p.kind==PropKind.RiverPlant||p.kind==PropKind.RiverFall;
+            var autoFrontal=Route.Islands?.Managed(Route.IslandAt(p.s))==true&&(p.kind==PropKind.Tree||p.kind==PropKind.Landmark||p.kind==PropKind.Character||p.kind==PropKind.Lamp||p.kind==PropKind.Mailbox||p.kind==PropKind.Small&&WorldMapScenery.IsShrub(p,kit));
+            var mist=p.kind==PropKind.Mist;
+            forceStanding|=riverFrontal||mist;
             var floating = p.kind == PropKind.FloatingMail;
-            var groundDetail=p.kind==PropKind.GroundDetail||p.kind==PropKind.WaterRipple||p.kind==PropKind.WaterRock;
-            var visualEffect=p.kind==PropKind.WaterRipple||p.kind==PropKind.Steam||p.kind==PropKind.Meteor;
+            var groundDetail=p.kind==PropKind.GroundDetail||p.kind==PropKind.WaterRipple||p.kind==PropKind.WaterRock||p.kind==PropKind.RiverPlatform;
+            var visualEffect=p.kind==PropKind.WaterRipple||p.kind==PropKind.Steam||p.kind==PropKind.Meteor||mist;
             var phase=Mathf.Repeat(Now*.23f+p.seed*.37f,1);
             var approvedPostman=p.kind==PropKind.Character&&(p.sprite==kit.postmanSprite&&kit.postmanSprite!=null||WorldMapMission100.Character(p.sprite)!=null);
             var walk=p.kind==PropKind.Character&&!approvedPostman?Mathf.Sin(Now*.85f+p.seed)*.075f:0;
             var x = Route.CenterX(p.s) + WorldMapTerrain.Lateral(p.offset, rel) + walk + (floating ? Mathf.Sin(Now * .32f + p.seed) * .08f : 0);
-            var foot = floating||p.kind==PropKind.WaterRipple ? Route.WaterHeight(p.s)+.008f : Route.InGap(p.s)&&groundDetail?Route.WaterHeight(p.s):WorldMapTerrain.SurfaceHeight(Route,p.s,p.offset);
+            var foot = floating||riverFrontal||p.kind==PropKind.WaterRipple ? Route.WaterHeight(p.s)+.008f : Route.InGap(p.s)&&groundDetail?Route.WaterHeight(p.s):WorldMapTerrain.SurfaceHeight(Route,p.s,p.offset);
             if(p.kind==PropKind.Steam)foot+=phase*p.height*.65f;
+            if(mist)foot+=.035f;
             if(p.kind==PropKind.Meteor){foot+=(1-phase)*p.height*2.5f;x+=(1-phase)*p.height;}
             slot.t.localPosition = MapCurve.Point(rel, x, foot, radius,Route.Curvature);
-            slot.t.localRotation = MapCurve.Orientation(rel, radius, x,Route.Curvature);
+            slot.t.localRotation = riverFrontal?camModel.Rotation:MapCurve.Orientation(rel, radius, x,Route.Curvature);
             var sprite = PoseSprite(p);
             bool animatedMailbox=WorldMapMailbox.Supports(sprite);
             slot.cardRenderer.enabled=!approvedPostman&&!groundDetail&&p.kind!=PropKind.LightShaft;
@@ -1107,17 +1187,38 @@ namespace RoyalAves.Meta.WorldMap
                 slot.cardBlock.SetFloat("_GroundedFoot",floating?0:1);
                 slot.cardRenderer.SetPropertyBlock(slot.cardBlock);
             }
-            var raise = forceStanding ? 1 : 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(LiftNear, LiftFar, rel));
+            // Standing scenery unfolds from the terrain tangent around its visible foot.
+            // Scroll changes orientation only: never grow a miniature into the final prop.
+            float liftFar=LiftFar,liftNear=LiftNear;
+            if(upright&&kit.simpleBase&&kit.illustratedProjection)
+            {
+                float horizon=radius*camModel.PitchAt(camModel.Aspect)*Mathf.Deg2Rad;
+                liftFar=Mathf.Max(.5f,Mathf.Min(LiftFar,horizon));
+                // Finish the hinge just below the crest, keeping readable silhouettes
+                // through the rest of the map instead of a long edge-on approach.
+                liftNear=Mathf.Max(.1f,liftFar-3.5f);
+            }
+            var raise = forceStanding ? 1 : 1 - Mathf.SmoothStep(0, 1, Mathf.InverseLerp(liftNear, liftFar, rel));
             bool workScene=p.workMotion!=WorldMapWorkMotion.None||p.id!=null&&p.id.StartsWith("work52-")||p.customAdornments&&p.adornments!=null&&System.Array.Exists(p.adornments,a=>a.motion!=WorldMapAdornmentMotion.None);
             var sway = !workScene&&(p.kind == PropKind.Tree || p.kind == PropKind.Small) ? Mathf.Sin(Now * 1.1f + p.seed) * 1.3f : 0;
-            slot.card.localRotation = floating ? Quaternion.Euler(90, 0, Mathf.Sin(Now * .5f + p.seed) * 12) : Quaternion.Euler((1 - raise) * (kit.simpleBase?35:LieAngle), 0, sway);
-            var breathe=kit.simpleBase&&!approvedPostman&&!workScene&&(p.kind==PropKind.Tree||p.kind==PropKind.Small||p.kind==PropKind.Landmark||p.kind==PropKind.Character)?Mathf.Sin(Now*1.7f+p.seed*.7f)*(p.kind==PropKind.Character?.027f:.014f):0;
+            var standing=autoFrontal||mist?Quaternion.Inverse(slot.t.localRotation)*camModel.Rotation:Quaternion.Euler(0,0,sway);
+            var folded=Quaternion.Euler(kit.simpleBase?(upright?90:35):LieAngle,0,0);
+            slot.card.localRotation = floating ? Quaternion.Euler(90, 0, Mathf.Sin(Now * .5f + p.seed) * 12) : Quaternion.Slerp(folded,standing,raise);
             var mirror=WorldMapScenery.IsMirrored(p);
-            slot.card.localScale=new Vector3((mirror?-1:1)*(1+breathe*.65f),1+breathe,1);
-            // Sink only the artwork. The placement anchor and its contact shadow stay on the terrain.
+            slot.card.localScale=new Vector3(mirror?-1:1,1,1);
+            // Keep authored burial in the standing pose. During the hinge, rotate around
+            // its visible ground contact instead of pushing the entire card below the grass.
             var pinned=p.groundPinned&&!floating&&!groundDetail&&!visualEffect;
-            var sink=pinned?p.height*Mathf.Clamp(p.groundDepth,0,.30f):0;
-            slot.card.localPosition = new Vector3(0, -p.height * .018f-sink, 0);
+            var sink=pinned?p.height*Mathf.Clamp(p.groundDepth,0,p.kind==PropKind.RiverPlant?.70f:.30f):0;
+            var standingPosition=new Vector3(0,-p.height*.018f-sink,0);
+            slot.card.localPosition=standingPosition;
+            if(upright&&kit.simpleBase&&!forceStanding)
+            {
+                var contact=Vector3.up*(-standingPosition.y/Mathf.Max(.25f,(standing*Vector3.up).y));
+                var hinge=standingPosition+standing*contact;
+                slot.card.localPosition=hinge-slot.card.localRotation*contact;
+            }
+            slot.cardBlock.SetFloat("_ClipBelow",p.kind==PropKind.RiverPlant&&p.groundPinned?sink:-999);
             if(p.workMotion==WorldMapWorkMotion.WateringCan){slot.card.localRotation*=Quaternion.Euler(0,0,-12+Mathf.Sin(Now*1.1f+p.seed)*5);slot.card.localPosition+=Vector3.up*p.height*(.22f+Mathf.Sin(Now*1.1f+p.seed)*.035f);}
             if(p.workMotion==WorldMapWorkMotion.FloatingIslet)slot.card.localPosition+=Vector3.up*p.height*(.30f+Mathf.Sin(Now*.9f+p.seed)*.045f);
             if(approvedPostman)
@@ -1144,15 +1245,22 @@ namespace RoyalAves.Meta.WorldMap
             {
                 if(slot.groundDetail==null)slot.groundDetail=new WorldMapGroundDetail(slot.card,layer,CardMaterial);
                 var moving=p;if(p.kind==PropKind.WaterRipple)moving.offset+=(phase-.5f)*.9f;
-                slot.groundDetail.Tick(sprite,moving,Route,transform,cursor,radius,p.kind==PropKind.WaterRipple||p.kind==PropKind.WaterRock,
+                Vector2? autoFootprint=null;
+                if(p.kind==PropKind.GroundDetail&&Route.Islands?.Managed(Route.IslandAt(p.s))==true)
+                {
+                    bool liquidProp=sprite.name.Contains("puddle");
+                    autoFootprint=new Vector2(Mathf.Min(WorldMapCards.Width(sprite,p.height),liquidProp?1.40f:1.05f),p.height*(liquidProp?1.85f:1.20f));
+                }
+                slot.groundDetail.Tick(sprite,moving,Route,transform,cursor,radius,p.kind==PropKind.WaterRipple||p.kind==PropKind.WaterRock||p.kind==PropKind.RiverPlatform,
                     visualEffect?EffectMaterial(sprite.texture):null,visualEffect?Mathf.Sin(phase*Mathf.PI)*.75f:1,mirror,
-                    WorldMapScenery.HasIceTheme(p,christmas)&&kit.groundDetails!=null&&kit.groundDetails.Length>0&&sprite==kit.groundDetails[0],magicTime:Now);
+                    WorldMapScenery.HasIceTheme(p,propChristmas)&&kit.groundDetails!=null&&kit.groundDetails.Length>0&&sprite==kit.groundDetails[0],footprint:autoFootprint,magicTime:Now);
                 // Frozen crossings have a solid face, without animated water wakes above it.
-                if(p.kind==PropKind.WaterRipple&&christmas)slot.groundDetail.SetActive(false);
+                if(p.kind==PropKind.WaterRipple&&propChristmas)slot.groundDetail.SetActive(false);
             }
             else slot.groundDetail?.SetActive(false);
             var houseLight=p.kind==PropKind.Landmark&&WorldMapWindowLight.IsBuilding(sprite);
-            var luminous=matGlow!=null&&(p.kind==PropKind.Lamp||p.kind==PropKind.Geyser||houseLight&&night>.01f);
+            float lightReveal=upright?raise:1;
+            var luminous=matGlow!=null&&lightReveal>.001f&&(p.kind==PropKind.Lamp||p.kind==PropKind.Geyser||houseLight&&night>.01f);
             slot.lightRenderer.enabled=false;
             if(!luminous)slot.groundGlow?.SetActive(false);
             if(luminous)
@@ -1163,6 +1271,7 @@ namespace RoyalAves.Meta.WorldMap
                 slot.lightRenderer.SetPropertyBlock(slot.lightBlock);
                 if(slot.groundGlow==null)slot.groundGlow=new WorldMapGroundDetail(slot.t,layer,CardMaterial);
                 var poolColor=houseLight?new Color(1,.64f,.25f,night*.40f):new Color(1,.68f,.22f,.10f+night*.48f);
+                poolColor.a*=lightReveal;
                 if(p.kind==PropKind.Lamp){var tint=WorldMapLampArt.Tint(sprite);poolColor=new Color(tint.r,tint.g,tint.b,poolColor.a);}
                 slot.groundGlow.Glow(p,Route,transform,cursor,radius,matGlow,houseLight?new Vector2(p.height*.95f,p.height*.62f):new Vector2(.90f,.70f),poolColor);
             }
@@ -1173,7 +1282,7 @@ namespace RoyalAves.Meta.WorldMap
                 if(slot.lightFx==null)slot.lightFx=new WorldMapLightFx(slot.card,layer,matBeam,matSparkle);
                 var sh=slot.shaft??(slot.shaft=new WorldMapLightSet.Shaft());
                 sh.enabled=true;sh.height=0;sh.angle=mirror?-p.rotation:p.rotation;sh.scale=1;sh.length=6f*p.height;sh.width=2.4f*p.height*(p.thickness>0?p.thickness:1);
-                sh.intensity=p.intensity>0?p.intensity:.35f;sh.tint=WorldMapLightTint.Warm;sh.bands=3;sh.sparkles=3;sh.sparkleSize=.07f*Mathf.Max(.4f,p.height);sh.seed=p.seed==0?7:p.seed;
+                sh.intensity=p.intensity>0?p.intensity:.35f;sh.tint=WorldMapLightTint.Warm;sh.bands=3;sh.raySpacing=p.raySpacing;sh.sparkles=3;sh.sparkleSize=.07f*Mathf.Max(.4f,p.height);sh.seed=p.seed==0?7:p.seed;
                 slot.lightFx.TickShaft(sh,Now,raise*(1-night)); // raios de sol somem a noite
             }
             else if(matBeam!=null&&matSparkle!=null&&(p.kind==PropKind.Mailbox||p.kind==PropKind.Lamp))
@@ -1200,7 +1309,7 @@ namespace RoyalAves.Meta.WorldMap
                 }
                 slot.lampHalo.gameObject.SetActive(true);slot.lampHalo.transform.localPosition=WorldMapCards.ImagePoint(sprite,p.height,new Vector2(glass.x,glass.y))+Vector3.back*.03f;
                 slot.lampHalo.transform.localScale=new Vector3(.65f,.58f,1)*p.height;
-                slot.lampHaloBlock.SetColor("_Color",new Color(lampTint.r,lampTint.g,lampTint.b,.16f+night*.64f));slot.lampHalo.SetPropertyBlock(slot.lampHaloBlock);
+                slot.lampHaloBlock.SetColor("_Color",new Color(lampTint.r,lampTint.g,lampTint.b,(.16f+night*.64f)*lightReveal));slot.lampHalo.SetPropertyBlock(slot.lampHaloBlock);
             }
             else if(slot.lampHalo!=null)slot.lampHalo.gameObject.SetActive(false);
             if(p.customAdornments&&p.adornments!=null&&p.adornments.Length>0||!p.customAdornments&&WorldMapAdornment.HasDefault(sprite))
@@ -1209,7 +1318,7 @@ namespace RoyalAves.Meta.WorldMap
                 slot.adornments.Tick(sprite,p.height,p.customAdornments,p.adornments,p.effectPieces,kit,Now,night);
             }
             else slot.adornments?.SetActive(false);
-              slot.cardBlock.SetColor("_Tint",visualEffect?new Color(1,1,1,Mathf.Sin(phase*Mathf.PI)*.8f):Color.white);
+            slot.cardBlock.SetColor("_Tint",mist?new Color(1,1,1,p.intensity>0?Mathf.Clamp01(p.intensity):.68f):visualEffect?new Color(1,1,1,Mathf.Sin(phase*Mathf.PI)*.8f):Color.white);
             slot.cardRenderer.SetPropertyBlock(slot.cardBlock);
             AnimateLayers(slot,p);
             if(animatedMailbox)
@@ -1227,13 +1336,13 @@ namespace RoyalAves.Meta.WorldMap
                     matTreeLeaves.SetTexture("_MainTex",kit.postalTreeDetails[0].texture);hazeMaterials.Add(matTreeLeaves);
                 }
                 if(slot.treeDecor==null)slot.treeDecor=new WorldMapTreeDecor(slot.card,layer,CardMaterial,matTreeLeaves);
-                slot.treeDecor.Tick(kit,p,sprite,Now,WorldMapScenery.HasIceTheme(p,christmas)||p.s<Route.Pos(1));
+                slot.treeDecor.Tick(kit,p,sprite,Now,WorldMapScenery.HasIceTheme(p,propChristmas)||p.s<Route.Pos(1));
             }
             else slot.treeDecor?.SetActive(false);
-            DressSnow(slot, p);
+            DressSnow(slot, p,KitAt(p.s));
             slot.separatedSnow?.Apply(p.effectPieces,p.height);
             var shrub=WorldMapScenery.IsShrub(p,kit);
-            var festive=WorldMapScenery.HasIceTheme(p,christmas)&&(p.kind==PropKind.Tree||shrub||p.lightsEffect.visibility==WorldMapEffectVisibility.Show||p.iceEffect.visibility==WorldMapEffectVisibility.Show);
+            var festive=WorldMapScenery.HasIceTheme(p,propChristmas)&&(p.kind==PropKind.Tree||shrub||p.lightsEffect.visibility==WorldMapEffectVisibility.Show||p.iceEffect.visibility==WorldMapEffectVisibility.Show);
             if(festive)
             {
                 if(slot.christmasDecor==null)slot.christmasDecor=new WorldMapChristmasDecor(slot.card,layer,CardMaterial);
@@ -1253,6 +1362,7 @@ namespace RoyalAves.Meta.WorldMap
             }
             var width = WorldMapCards.Width(sprite, p.height);
             var shadowAlpha = p.shadow && !floating && !groundDetail && !visualEffect ? Mathf.Lerp(pinned?.26f:.20f,pinned?.40f:.34f,raise) : 0;
+            if(upright)shadowAlpha*=raise;
             bool entranceContact=WorldMapMission100.PolishedEntrance&&p.s<Route.MetersAt(20)&&p.kind==PropKind.Character;
             if(entranceContact)shadowAlpha*=.82f;
             slot.shadowRenderer.enabled = shadowAlpha > 0.01f;
@@ -1267,9 +1377,9 @@ namespace RoyalAves.Meta.WorldMap
             }
         }
 
-        void DressSnow(Slot slot, PropPlacement p)
+        void DressSnow(Slot slot, PropPlacement p,WorldMapKit kit)
         {
-            var snow=WorldMapScenery.HasIceTheme(p,christmas);
+            var snow=WorldMapScenery.HasIceTheme(p,kit.Christmas);
             p.snowEffect.Apply(slot.snowRoot,p.height,new Vector2(0,.55f),true);
             var key = p.sprite.GetEntityId().GetHashCode() ^ p.height.GetHashCode() ^ (snow ? 123456 : 0) ^ (kit.SeasonLook?.GetHashCode()??0) ^ ((int)p.theme*397) ^ ((int)p.kind*7919);
             if (slot.dressKey == key) return;
@@ -1377,7 +1487,7 @@ namespace RoyalAves.Meta.WorldMap
                 var distance = Vector3.Dot(center - ray.origin, normal) / denominator;
                 if (distance < 0 || distance >= nearest) continue;
                 var local = Quaternion.Inverse(node.t.localRotation) * (ray.GetPoint(distance) - node.t.localPosition) / node.t.localScale.x;
-                if (local.x * local.x + local.z * local.z > WorldMapTokenMesh.Radius * WorldMapTokenMesh.Radius) continue;
+                if (Mathf.Pow(Mathf.Abs(local.x/WorldMapTokenMesh.Radius),2.63158f) + Mathf.Pow(Mathf.Abs(local.z/WorldMapTokenMesh.Radius),2.63158f) > 1) continue;
                 nearest = distance;
                 picked = node.level;
             }
@@ -1393,10 +1503,30 @@ namespace RoyalAves.Meta.WorldMap
         }
 
         // Para ferramentas de editor: projecao de um medalhao na tela do mapa (0..1).
+        public bool ProjectLevelBounds(int level,float cursorLevels,float aspect,out Rect bounds)
+        {
+            bounds=default;
+            if(!camModel.SurfaceVisible(Route.MetersAt(cursorLevels),LevelMeters(level)))return false;
+            foreach(var node in nodes)
+            {
+                if(node==null||!node.go.activeSelf||node.level!=level)continue;
+                var lo=Vector2.positiveInfinity;var hi=Vector2.negativeInfinity;var box=tokenMesh.bounds;
+                for(int i=0;i<8;i++)
+                {
+                    var p=new Vector3((i&1)==0?box.min.x:box.max.x,(i&2)==0?box.min.y:box.max.y,(i&4)==0?box.min.z:box.max.z);
+                    p=node.t.localPosition+node.t.localRotation*Vector3.Scale(p,node.t.localScale);
+                    if(!camModel.ProjectPoint(p,aspect,out var screen,out _))return false;
+                    lo=Vector2.Min(lo,screen);hi=Vector2.Max(hi,screen);
+                }
+                bounds=Rect.MinMaxRect(lo.x,lo.y,hi.x,hi.y);return true;
+            }
+            return false;
+        }
+
         public bool ProjectLevel(int level, float cursorLevels, float aspect, out Vector2 screen)
         {
             var cursor = Route.MetersAt(cursorLevels);
-            var s = Route.Pos(level);
+            var s = LevelMeters(level);
             screen = default;
             if (!camModel.SurfaceVisible(cursor, s)) return false;
             foreach (var node in nodes)
@@ -1435,6 +1565,7 @@ namespace RoyalAves.Meta.WorldMap
             if (disposed) return;
             disposed = true;
             santa?.Dispose();santa=null;
+            riverNotes?.Dispose();riverNotes=null;
             foreach(var slot in slots){slot.adornments?.Dispose();slot.mailbox?.Dispose();slot.postman?.Dispose();slot.groundDetail?.Dispose();slot.groundGlow?.Dispose();slot.separatedSnow?.Dispose();slot.christmasDecor?.Dispose();slot.windowLight?.Dispose();}
             if (cam != null) cam.targetTexture = null;
             if (image != null && image.texture == rt) image.texture = null;
