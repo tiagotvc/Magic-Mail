@@ -1,0 +1,8 @@
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const root=path.resolve(__dirname,'../../..'),manifest=JSON.parse(fs.readFileSync(path.join(__dirname,'BLUE-ENAMEL-V103.json'),'utf8'));
+const stage=path.join(root,'Library/MapValidation/blue-enamel-v103'),iso=path.join(root,'Library/MapValidation/BlueEnamelImport');fs.mkdirSync(stage,{recursive:true});
+if(!fs.existsSync(path.join(stage,'before.prefab')))fs.copyFileSync(path.join(root,'Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Pets.prefab'),path.join(stage,'before.prefab'));
+for(const folder of ['Assets/Editor','Assets/BlueEnamelV103','ProjectSettings','Packages'])fs.mkdirSync(path.join(iso,folder),{recursive:true});
+fs.writeFileSync(path.join(iso,'ProjectSettings/ProjectVersion.txt'),'m_EditorVersion: 6000.6.0f1\n');fs.writeFileSync(path.join(iso,'Packages/manifest.json'),JSON.stringify({dependencies:{'com.unity.modules.imageconversion':'1.0.0'}}));
+for(const asset of manifest.assets){const file=path.join(root,manifest.art,asset.file);fs.mkdirSync(path.dirname(file),{recursive:true});if(!fs.existsSync(file))fs.copyFileSync(asset.source,file);if(!fs.readFileSync(file).equals(fs.readFileSync(asset.source)))throw Error('Painted source changed');if(!fs.existsSync(file+'.meta'))fs.writeFileSync(file+'.meta','fileFormatVersion: 2\nguid: '+crypto.randomUUID().replaceAll('-','')+'\n');fs.copyFileSync(file,path.join(iso,'Assets/BlueEnamelV103',asset.file));fs.copyFileSync(file+'.meta',path.join(iso,'Assets/BlueEnamelV103',asset.file+'.meta'));}
+fs.copyFileSync(path.join(__dirname,'BlueEnamelV103Import.cs'),path.join(iso,'Assets/Editor/BlueEnamelV103Import.cs'));console.log(iso);

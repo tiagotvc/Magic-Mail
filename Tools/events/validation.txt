@@ -1,0 +1,3 @@
+PASS: delivery-only configuration with no Christmas content; featured delivery progression, Play and Collect; shared reward deduplication with journey milestones; daily rollover and JSON persistence; missing-wallet rollback; disabled seasonal rules retained; native fresh/ready/collected/completed/narrow-phone UI; actual Play/Map/Collect callbacks; map suspend/resume; zero Unity errors. Test wallet and state are in memory; no player saves or currency modified.
+
+PASS: complete main runtime compiled with zero compiler errors after the delivery-only change.

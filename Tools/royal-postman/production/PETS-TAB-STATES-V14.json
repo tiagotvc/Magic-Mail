@@ -1,0 +1,63 @@
+{
+  "version": 14,
+  "tool": "built-in image_gen",
+  "notes": "Only two missing painted states are newly generated. Original V4 PNGs remain unchanged. Four native Sprite regions preserve source pixels and omit disconnected alpha specks. The selected tab uses gold; inactive uses blue. Paw stays lavender and egg stays gold.",
+  "assets": [
+    {
+      "id": "pets-tab-current-gold-v14",
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Pets/pets-tab-current-gold-v14.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-114ac1af-08db-4b75-aecb-528e50f6db7a.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "spriteRect": [
+        139,
+        140,
+        972,
+        974
+      ],
+      "prompt": "Use case: precise-object-edit. Create ONE selected-state variant of a fantasy RPG UI tab button as a genuine transparent PNG.\nImage 1 is the EDIT TARGET / exact selected container: preserve its rounded-square silhouette, framing, gold rim thickness, bright pale-yellow upper highlights, orange gold sidewalls, warm dark amber inset face, transparency and button proportions. Keep it the same button design, same front view, same empty lower label area.\nReplace ONLY the spotted egg icon with the lavender-blue PAW icon from Image 2. Image 2 is an ICON IDENTITY reference: copy its one large paw pad and four toes, glossy periwinkle/lavender face, white upper-left reflections, dark blue-purple side relief. The paw must retain its blue/lavender color even in this selected golden container. Center the paw in the upper-middle icon area, at the same visual size and placement as Image 2's paw, leaving the lower quarter clear for a separate text label. Remove every part of the egg.\nNo lettering, no text, no badge, no added objects, no background, no ground shadow. One button only. Match the existing smooth clean polished cartoon UI, no noisy realistic metal, no blur, no new rim layers. Entire button visible, native high-resolution edges. Preserve true transparent background outside the button.",
+      "sha256": "cf2c977580606447b8ca63f0ae66e30c79273c98bf3d8eb352773fcc3bdedb46"
+    },
+    {
+      "id": "pets-tab-incubator-blue-v14",
+      "path": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Pets/pets-tab-incubator-blue-v14.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-e3f233f8-5547-4044-8f4d-1637b7c1cb90.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "spriteRect": [
+        148,
+        150,
+        956,
+        948
+      ],
+      "prompt": "Use case: precise-object-edit. Create ONE unselected-state variant of a fantasy RPG UI tab button as a genuine transparent PNG.\nImage 1 is the EDIT TARGET / exact unselected container: preserve its rounded-square silhouette, framing, substantial navy-blue/periwinkle rim, pale cool upper-left edge highlights, dark midnight navy inset face, button proportions and transparency. Same front view, same empty lower label area.\nReplace ONLY the lavender paw icon with the golden spotted EGG from Image 2. Image 2 is the ICON IDENTITY reference: preserve the simple smooth egg silhouette, bright creamy yellow/golden shell, orange large rounded spots, glossy pale-yellow upper-left reflection, orange lower side relief. Center this gold egg in the upper-middle icon area with the same visual size and placement as Image 2's egg, leaving the lower quarter clear for the separate label. Remove all parts of the paw. Egg stays golden; only its surrounding container is the inactive navy-blue design.\nNo text, lettering, badge, additional ornaments, background, ground shadow or new layers. One button only, entire silhouette visible. Existing clean polished cartoon RPG UI finish, crisp highlights and smooth relief, no realistic metal noise or blur. Native high resolution. Preserve genuine transparency outside the button.",
+      "sha256": "1b8dec3a561cd26c4867f0d939accef222e0162e5d694196ff22fc19df4a162f"
+    }
+  ],
+  "reused": [
+    {
+      "id": "pets-tab-current-blue-v14",
+      "source": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Pets/pets-tab-current-v4.png",
+      "spriteRect": [
+        151,
+        155,
+        950,
+        942
+      ]
+    },
+    {
+      "id": "pets-tab-incubator-gold-v14",
+      "source": "Assets/RoyalAves/Art/UI/Tab/RoyalPostman/Pets/pets-tab-incubator-v4.png",
+      "spriteRect": [
+        146,
+        142,
+        960,
+        969
+      ]
+    }
+  ]
+}

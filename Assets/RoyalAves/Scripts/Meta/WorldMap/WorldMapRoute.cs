@@ -82,7 +82,7 @@ namespace RoyalAves.Meta.WorldMap
             if(Islands!=null)
                 for(var i=1;i<Islands.islands.Count;i++)bridge.Add(Islands.FirstLevel(i)-1);
             // The first mission crosses one connected postal campus, independent of island sizing.
-            if(WorldMapMission100.Active)bridge.RemoveWhere(level=>level<100);
+            if(WorldMapMission100.Active&&Islands==null)bridge.RemoveWhere(level=>level<100);
             pos[1] = StartPad;
             for (var i = 2; i <= LevelSlots; i++)
             {
@@ -97,7 +97,9 @@ namespace RoyalAves.Meta.WorldMap
             foreach (var k in ordered)
             {
                 if (k < 1 || k >= LevelSlots) continue;
-                gaps.Add(new Gap { start = pos[k] + LandMargin, end = pos[k + 1] - LandMargin, afterLevel = k });
+                var settings=Islands?.AtLevel(k);
+                var lake=settings?.crossing==WorldMapCrossing.Stones?Mathf.Clamp(settings.lakeLevels,0,4):0;
+                gaps.Add(new Gap { start = lake>0?pos[Mathf.Max(1,k-lake+1)]-.85f:pos[k]+LandMargin, end = pos[k+1]-LandMargin, afterLevel=k });
             }
         }
 
@@ -152,26 +154,48 @@ namespace RoyalAves.Meta.WorldMap
                     IntegratedRamp(meters-gap.start+ease)-IntegratedRamp(meters-gap.end);
             }
             var amplitude=Islands?.unifiedBase==true?.36f:.30f;
-            var original=amplitude*Mathf.Sin(travel*(Mathf.PI*2/9.6f));
+            var sway=Islands!=null?Islands.pathSway:1;
+            var frequency=Islands!=null?Islands.pathFrequency:1;
+            var original=amplitude*Mathf.Sin(travel*(Mathf.PI*2/9.6f)*frequency);
             if(WorldMapMission100.Active&&meters<Pos(100))
             {
                 float transition=Mathf.SmoothStep(0,1,Mathf.InverseLerp(MetersAt(95),MetersAt(100),meters));
-                return Mathf.Lerp(.40f*Mathf.Sin(travel*(Mathf.PI*2/14.4f)),original,transition);
+                return Mathf.Lerp(.40f*Mathf.Sin(travel*(Mathf.PI*2/14.4f)*frequency),original,transition)*sway;
             }
-            return original;
+            return original*sway;
         }
 
         public bool InGap(float meters, float pad = 0)
         {
             for (var i = 0; i < gaps.Count; i++)
-                if (meters > gaps[i].start - pad && meters < gaps[i].end + pad) return true;
+            {
+                if(meters<gaps[i].start-pad)break;
+                if(meters>gaps[i].start-pad&&meters<gaps[i].end+pad)return true;
+            }
             return false;
         }
         public WorldMapIslands.Island CrossingAt(Gap gap)=>Islands?.AtLevel(gap.afterLevel);
+        public float LevelLateral(int level)
+        {
+            foreach(var gap in gaps)
+            {
+                var settings=CrossingAt(gap);
+                if(settings?.crossing!=WorldMapCrossing.Stones||settings.lakeLevels<=0)continue;
+                if(level<=gap.afterLevel&&level>gap.afterLevel-settings.lakeLevels)
+                {
+                    foreach(var stone in settings.stones)if(stone.levelOffset==level-gap.afterLevel)return stone.lateral;
+                    return (level-(gap.afterLevel-settings.lakeLevels+1))%2==0?-.65f:.65f;
+                }
+            }
+            return 0;
+        }
         public float WaterHeight(float meters)
         {
-            foreach(var gap in gaps)if(meters>=gap.start-.7f&&meters<=gap.end+.7f)
-                return -Mathf.Clamp(CrossingAt(gap)?.channelDepth??.23f,.08f,.55f);
+            foreach(var gap in gaps)
+            {
+                if(meters<gap.start-.7f)break;
+                if(meters<=gap.end+.7f)return -Mathf.Clamp(CrossingAt(gap)?.channelDepth??.23f,.08f,.55f);
+            }
             return WorldMapTerrain.WaterY;
         }
 
@@ -180,8 +204,10 @@ namespace RoyalAves.Meta.WorldMap
         {
             var distance = Islands?.unifiedBase==true?meters-(Pos(1)-1.4f):1000f;
             foreach (var gap in gaps)
-                distance = Mathf.Min(distance, meters <= gap.start
-                    ? gap.start - 1f - meters : meters - gap.end - 1f);
+            {
+                if(meters<=gap.start){distance=Mathf.Min(distance,gap.start-1f-meters);break;}
+                distance=Mathf.Min(distance,meters-gap.end-1f);
+            }
             return distance;
         }
 
@@ -198,7 +224,7 @@ namespace RoyalAves.Meta.WorldMap
             if(Islands?.unifiedBase==true)inset=Cap(meters,Pos(1)-1.4f,.6f);
             foreach (var gap in gaps)
             {
-                if (meters <= gap.start) inset = Mathf.Min(inset, Cap(gap.start - meters, 1f, .6f));
+                if (meters <= gap.start){inset = Mathf.Min(inset, Cap(gap.start - meters, 1f, .6f));break;}
                 else if (meters >= gap.end) inset = Mathf.Min(inset, Cap(meters - gap.end, 1f, .6f));
             }
             return inset;
@@ -208,7 +234,7 @@ namespace RoyalAves.Meta.WorldMap
             Mathf.Clamp((level - 1) / WorldMapEditorial.LevelsPerChapter, 0, WorldMapEditorial.ChapterTitles.Length - 1);
 
         public int ChapterAtMeters(float meters) =>
-            Mathf.Max(0,(Mathf.RoundToInt(LevelAt(meters))-1)/WorldMapEditorial.LevelsPerChapter);
+            Islands!=null?IslandIndexAt(meters):Mathf.Max(0,(Mathf.RoundToInt(LevelAt(meters))-1)/WorldMapEditorial.LevelsPerChapter);
 
         // Mistura suave (12 m) na fronteira entre capitulos: cores da proxima regiao aparecem antes da transicao.
         public MapPalette PaletteAt(float meters)
@@ -226,7 +252,7 @@ namespace RoyalAves.Meta.WorldMap
         }
 
         public static MapPalette PaletteOfChapter(int chapter) => Palettes[Mathf.Clamp(chapter, 0, Palettes.Length - 1)];
-        public static MapPalette BasePalette(bool mint)=>Pal("#579B46","#478A40",mint?"#ACDEC0":"#F8D49B",mint?"#97CFB3":"#F1C58F","#94BF60","#417D3E","#21AFE1","#E8EFBD","#D6E4B2","#C3D4A0");
+        public static MapPalette BasePalette(bool mint)=>Pal("#94AE6F","#809B5B",mint?"#C8D7AA":"#E8D197",mint?"#B8C996":"#DDC28A","#A6BC7D","#607C4D","#21AFE1","#E5E8CF","#CED8AE","#BCC89A");
 
         static MapPalette Pal(string outerA, string outerB, string pathA, string pathB, string rim, string face,
             string water, string haze, string tileA, string tileB) => new MapPalette

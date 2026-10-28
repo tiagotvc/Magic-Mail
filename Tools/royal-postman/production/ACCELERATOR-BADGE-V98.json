@@ -1,0 +1,63 @@
+{
+  "version": 98,
+  "date": "2026-10-23",
+  "tool": "Built-in ImageGen",
+  "status": "Installed in actual Pets.prefab after native checks",
+  "reference": "C:/Users/Tiago Carvalho/Documents/projetos/Magic-Mail/Tools/royal-postman/previews/accelerate-badge-v97/mock.png",
+  "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-fc2627b1-fd2f-4db1-a206-e6bdbd821df4.png",
+  "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/AcceleratorBadgeV98/badge.png",
+  "prompt": "Production game UI sprite derived from the attached APPROVED BADGE reference. Reference role: exact badge silhouette, red/gold palette and painted relief. Generate ONE standalone EMPTY starburst/scalloped badge background, no other objects.\n\nMATCH the reference's rounded roughly12-tooth sunny-gold seal rim, thick readable yellow lit face, orange lower return, gentle broad pale-yellow highlight, small internal contact shadow. Inner RED enamel face MUST follow EXACTLY the same rounded starburst silhouette, every outer lobe/peak and valley matched by a concentric inward lobe/peak/valley. Uniform gold rim thickness through teeth and valleys. NO circular red disk or inner circular outline. The red face is gently convex, one clean broad red highlight and darker red lower return; broad smooth painting, not texture.\n\nCRITICAL REMOVE all hourglass, x0, text, symbols, price marks, digits, button behind it, blue circle, background and cast shadow. Both RED CENTER and GOLD RIM are present in the same single aligned sprite to preserve perfect matching; the game will separate their layers by color. Red center must be solid red family, gold rim gold/yellow/orange family, no white decorations. Do not include brown shadow floating outside or extra pieces.\n\nFully transparent exterior with crisp antialiased silhouette; isolated badge centered front-facing, symmetric in a square composition with small transparent safety padding, slight material bottom thickness allowed. Entire outer edge visible, no cropping. High-resolution source roughly1536 square. No sheet, alternate sizes, separated pieces or labels. Same simple rounded casual-game material quality as approved reference.",
+  "layering": "One aligned original red/gold badge PNG; two complementary UI material masks provide independent matching gold/red Images; separate existing hourglass and native live count Text.",
+  "round_button_art": "Existing user blue/gold Accelerate PNGs and authored thick chevrons retained.",
+  "native_result": "PASS: native shader/compile/render; original paint reproduced by complementary gold/red layers (<1% pixels differ>3); independent hourglass/live count; old detached icon/count hidden; stock/item/gold/rejected payment/save-once and PT/EN; attached badge click routes to accelerator and fixed badge/rim survive press; arrows/caption clear, safe360/390/720; large count retained.",
+  "sha256": "07f90779d7dba5926bb8fbcde35ae9bc029f83e7b9a681ce1f46934019b2d07b",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "installation_audit": {
+    "changed": [
+      "Pets/Hatchery/Accelerate/Image#1",
+      "Pets/Hatchery#114:20821e4f2412446582a7595aa420b84c",
+      "Pets/Hatchery/Accelerate#224",
+      "Pets/Hatchery/Accelerate/Quantity#1"
+    ],
+    "added": [
+      "Pets/Hatchery/Accelerate/ResourceBadge/Hourglass#1",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Hourglass#224",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Hourglass#222",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Hourglass#114:fe87c0e1cc204ed48ad3b37840f39efc",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#1",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#224",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#222",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#114:5f7201a12d95ffc409449d95f23cf332",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#114:e8f6b7ece4534a6ab0631aa43870d718",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#114:cfabb0440166ab443bba8876756fdfa9",
+      "Pets/Hatchery/Accelerate/ResourceBadge/Quantity#114:e19747de3f5aca642ab2be37e372fb86",
+      "Pets/Hatchery/Accelerate/ResourceBadge#1",
+      "Pets/Hatchery/Accelerate/ResourceBadge#224",
+      "Pets/Hatchery/Accelerate/ResourceBadge#222",
+      "Pets/Hatchery/Accelerate/ResourceBadge#114:fe87c0e1cc204ed48ad3b37840f39efc",
+      "Pets/Hatchery/Accelerate/ResourceBadge/GoldBorder#1",
+      "Pets/Hatchery/Accelerate/ResourceBadge/GoldBorder#224",
+      "Pets/Hatchery/Accelerate/ResourceBadge/GoldBorder#222",
+      "Pets/Hatchery/Accelerate/ResourceBadge/GoldBorder#114:fe87c0e1cc204ed48ad3b37840f39efc",
+      "Pets/Hatchery/Accelerate/GoldCost#1",
+      "Pets/Hatchery/Accelerate/GoldCost#224",
+      "Pets/Hatchery/Accelerate/GoldCost#222",
+      "Pets/Hatchery/Accelerate/GoldCost#114:5f7201a12d95ffc409449d95f23cf332",
+      "Pets/Hatchery/Accelerate/GoldCost#114:e8f6b7ece4534a6ab0631aa43870d718",
+      "Pets/Hatchery/Accelerate/GoldCost#114:cfabb0440166ab443bba8876756fdfa9",
+      "Pets/Hatchery/Accelerate/GoldCost#114:e19747de3f5aca642ab2be37e372fb86",
+      "Pets/Hatchery/Accelerate/ResourceBadge/RedFace#1",
+      "Pets/Hatchery/Accelerate/ResourceBadge/RedFace#224",
+      "Pets/Hatchery/Accelerate/ResourceBadge/RedFace#222",
+      "Pets/Hatchery/Accelerate/ResourceBadge/RedFace#114:fe87c0e1cc204ed48ad3b37840f39efc"
+    ],
+    "preservedComponents": 1998,
+    "preservedCurrentProfile": 486
+  },
+  "native_sprite": "1254x1254 original PNG; largest-alpha native crop (x:67.00, y:88.00, width:1120.00, height:1083.00)",
+  "reusable_prefab": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Components/AcceleratorStockBadgeV98.prefab",
+  "runtime": "Optional separateAcceleratorStock shows stock in badge and preserves existing next gold price in separate PT/EN label; economy and callbacks unchanged."
+}

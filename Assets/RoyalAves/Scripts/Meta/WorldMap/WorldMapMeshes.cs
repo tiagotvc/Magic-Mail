@@ -9,7 +9,7 @@ namespace RoyalAves.Meta.WorldMap
     {
         public const float Radius = 0.46f;
         public const float SideHeight = .052f;
-        public const float FaceHeight = .105f;
+        public const float FaceHeight = .155f;
         public const float FaceRadius = .418f;
         public const float RimInner = .445f;
         const int Segments = 128;
@@ -42,7 +42,7 @@ namespace RoyalAves.Meta.WorldMap
                 for (var i = 0; i <= Segments; i++)
                 {
                     var a = i * Mathf.PI * 2 / Segments;
-                    var dir = new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a));
+                    var dir = new Vector3(Mathf.Sign(Mathf.Cos(a))*Mathf.Pow(Mathf.Abs(Mathf.Cos(a)),.76f), 0, Mathf.Sign(Mathf.Sin(a))*Mathf.Pow(Mathf.Abs(Mathf.Sin(a)),.76f));
                     v.Add(dir * r0 + Vector3.up * y0);
                     v.Add(dir * r1 + Vector3.up * y1);
                     var nn = nrm(dir);
@@ -58,14 +58,11 @@ namespace RoyalAves.Meta.WorldMap
                 }
             }
 
-            // Match the navigation bar: white crystal base, thin gold, purple channel, gold lip.
-            Ring(Radius*.97f,0,Radius,.014f,d=>d,crystal,crystal);
-            Ring(Radius,.014f,Radius*.99f,.040f,d=>(d+Vector3.up*.3f).normalized,crystal,crystal);
-            Ring(Radius*.99f,.040f,Radius*.955f,SideHeight,d=>(d+Vector3.up).normalized,crystal,crystal);
-            Ring(Radius*.955f,SideHeight,Radius*.943f,.058f,d=>Vector3.up,gold,gold);
-            Ring(Radius*.943f,.058f,Radius*.918f,.064f,d=>Vector3.up,channel,channel);
-            Ring(Radius*.918f,.064f,FaceRadius,.068f,d=>Vector3.up,gold,gold);
-            Ring(FaceRadius,.068f,FaceRadius*.87f,FaceHeight-.025f,d=>(Vector3.up+d*.4f).normalized,purpleOuter,purpleInner);
+            // One cream cushion rim and a rounded enamel face; numbers/rewards remain separate.
+            Ring(Radius*.97f,0,Radius,.025f,d=>d,gold,gold);
+            Ring(Radius,.025f,Radius*.985f,.070f,d=>(d+Vector3.up*.3f).normalized,gold,gold);
+            Ring(Radius*.985f,.070f,FaceRadius,.085f,d=>(d+Vector3.up).normalized,gold,gold);
+            Ring(FaceRadius,.085f,FaceRadius*.87f,FaceHeight-.025f,d=>(Vector3.up+d*.4f).normalized,purpleOuter,purpleInner);
             Ring(FaceRadius*.87f,FaceHeight-.025f,FaceRadius*.55f,FaceHeight-.006f,d=>(Vector3.up+d*.15f).normalized,purpleOuter,purpleInner);
             Ring(FaceRadius*.55f,FaceHeight-.006f,0,FaceHeight,d=>Vector3.up,purpleOuter,purpleInner);
 
@@ -103,7 +100,7 @@ namespace RoyalAves.Meta.WorldMap
                 var warm=Color.Lerp(new Color(1,.48f,.035f),new Color(1,.91f,.27f),Mathf.Clamp01(.52f+p.y*3.1f-p.x*1.4f));
                 if(outer)warm=Color.Lerp(warm,new Color(1,.78f,.13f),.25f);
                 else warm=Color.Lerp(warm,new Color(1,.97f,.48f),.34f);
-                return Vc(warm);
+                var color=Vc(warm);color.a=outer?0:1;return color;
             }
             v.Add(new Vector3(-.014f,.022f,-.010f));colors.Add(Vc(new Color(1,.91f,.28f)));
             foreach(var p in contour){v.Add(new Vector3(p.x*.82f,p.y*.82f,-.006f));colors.Add(Shade(p,false));}
@@ -119,7 +116,7 @@ namespace RoyalAves.Meta.WorldMap
                 if(Vector3.Cross(v[indices[i+1]]-v[indices[i]],v[indices[i+2]]-v[indices[i]]).z>0)
                 {int swap=indices[i+1];indices[i+1]=indices[i+2];indices[i+2]=swap;}
             var mesh=new Mesh{name="RoundedRewardStar_NoOutline",vertices=v.ToArray(),colors=colors.ToArray(),triangles=indices.ToArray()};
-            mesh.uv=new Vector2[v.Count];mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
+            mesh.uv=v.ConvertAll(p=>new Vector2(p.x/.258f+.5f,p.y/.258f+.5f)).ToArray();mesh.RecalculateNormals();mesh.RecalculateBounds();return mesh;
         }
 
         public static Mesh BuildSkull()

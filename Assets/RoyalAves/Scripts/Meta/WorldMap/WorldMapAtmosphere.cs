@@ -7,10 +7,12 @@ namespace RoyalAves.Meta.WorldMap
     {
         sealed class SkyLayer
         {
-            public RectTransform root;public CanvasGroup group;public Image background;
+            public RectTransform root;public CanvasGroup group;public Image background,villain;
             public WorldMapWeatherGraphic gradient,sun,ambient,meteors,moon;
             public readonly Image[] clouds=new Image[4];public WorldMapIslands.Island style;
             public readonly Image[] meteorSprites=new Image[3];
+            public bool staticDrawn;public WorldMapIslands.Island drawnStyle;public Vector2 drawnSize;
+            public float drawnNight,drawnHorizon;public Vector4 drawnVillain;public Sprite drawnBackdrop,drawnVillainSprite;
         }
         WorldMapKit kit;WorldMapRoute route;WorldMapCameraModel skyCamera;
         SkyLayer current,previous;WorldMapWeatherGraphic effects,previousEffects;
@@ -18,6 +20,7 @@ namespace RoyalAves.Meta.WorldMap
         public float TransitionProgress {get;private set;}=1;
         public float Night;   // 0 = dia, 1 = noite (definido pelo WorldMapView)
         public int ActiveIsland=>active;
+        public bool NeedsAnimation=>route?.Islands!=null&&!route.Islands.staticSky&&active>=0&&route.Islands.ChristmasSky(current.style)&&route.Islands.christmasVillain!=null&&route.Islands.villainHop>0;
         public static WorldMapAtmosphere Create(RectTransform root,RectTransform skyParent,Image sky,WorldMapKit kit,WorldMapRoute route=null)
         {
             var a=root.gameObject.AddComponent<WorldMapAtmosphere>();a.kit=kit;a.route=route;
@@ -42,6 +45,7 @@ namespace RoyalAves.Meta.WorldMap
             var l=new SkyLayer{root=(RectTransform)go.transform,group=go.GetComponent<CanvasGroup>()};Stretch(l.root);
             l.group.blocksRaycasts=false;l.group.interactable=false;l.gradient=Graphic(l.root,"Gradiente");
             l.background=Image(l.root,"BackgroundSeparado");Stretch(l.background.rectTransform);
+            l.villain=Image(l.root,"RibbonRookSilhouette");l.villain.preserveAspect=true;
             l.sun=Graphic(l.root,"RaiosDeSol");l.moon=Graphic(l.root,"LuaEEstrelas");l.ambient=Graphic(l.root,"LuzDoAmbiente");l.meteors=Graphic(l.root,"Meteoros");
             for(var i=0;i<4;i++){l.clouds[i]=Image(l.root,"Nuvem_"+i);l.clouds[i].preserveAspect=true;}
             for(var i=0;i<3;i++){l.meteorSprites[i]=Image(l.root,"MeteoroSprite_"+i);l.meteorSprites[i].preserveAspect=true;}
@@ -56,6 +60,8 @@ namespace RoyalAves.Meta.WorldMap
         }
         public void Tick(float cursor,float time)
         {
+            bool still=route?.Islands?.staticSky==true;
+            if(still)time=0;
             var focus=route!=null?route.MetersAt(cursor)+kit.focusAhead:0;
             var index=route?.Islands!=null?route.IslandIndexAt(focus):0;
             var style=route?.IslandAt(focus)??WorldMapIslands.DefaultIsland(kit.Lava?4:0);
@@ -63,51 +69,72 @@ namespace RoyalAves.Meta.WorldMap
             else if(active!=index)
             {
                 direction=index>active?1:-1;active=index;
-                var a=current.style;var same=route?.Islands?.unifiedBase==true&&a!=null&&a.background==style.background&&a.skyTop==style.skyTop&&a.skyBottom==style.skyBottom&&a.cloudSmall==style.cloudSmall&&a.cloudWide==style.cloudWide&&a.weather==style.weather&&a.weatherIntensity==style.weatherIntensity&&a.meteors==style.meteors;
+                var a=current.style;var same=route?.Islands!=null&&route.Islands.ChristmasSky(a)&&route.Islands.ChristmasSky(style)||route?.Islands?.unifiedBase==true&&a!=null&&a.background==style.background&&a.skyTop==style.skyTop&&a.skyBottom==style.skyBottom&&a.cloudSmall==style.cloudSmall&&a.cloudWide==style.cloudWide&&a.weather==style.weather&&a.weatherIntensity==style.weatherIntensity&&a.meteors==style.meteors&&route.Islands.ChristmasSky(a)==route.Islands.ChristmasSky(style);
                 if(same)current.style=style;
                 else{var swap=previous;previous=current;current=swap;current.style=style;current.root.SetAsLastSibling();changedAt=time;}
             }
             if(time<lastTime)changedAt=time-1;lastTime=time;
-            TransitionProgress=Mathf.SmoothStep(0,1,Mathf.Clamp01((time-changedAt)/.8f));
+            TransitionProgress=still?1:Mathf.SmoothStep(0,1,Mathf.Clamp01((time-changedAt)/.8f));
             var size=((RectTransform)current.root.parent).rect.size;var horizon=HorizonHeight(size);
             Draw(current,time,TransitionProgress,direction*(1-TransitionProgress)*size.x*.2f,size,horizon);
             Draw(previous,time,1-TransitionProgress,-direction*TransitionProgress*size.x*.2f,size,horizon);
-            Weather(effects,current.style,time,TransitionProgress);Weather(previousEffects,previous.style,time,1-TransitionProgress);
+            effects.enabled=previousEffects.enabled=!still;
+            if(!still){Weather(effects,current.style,time,TransitionProgress);Weather(previousEffects,previous.style,time,1-TransitionProgress);}
         }
         void Draw(SkyLayer l,float time,float alpha,float slide,Vector2 size,float horizon)
         {
-            l.group.alpha=alpha;l.root.anchorMin=new Vector2(-.2f,horizon-.04f);l.root.anchorMax=new Vector2(1.2f,1);
+            var overscan=route?.Islands?.staticSky==true?.06f:.2f;
+            l.group.alpha=alpha;l.root.anchorMin=new Vector2(-overscan,horizon-.04f);l.root.anchorMax=new Vector2(1+overscan,1);
             l.root.offsetMin=l.root.offsetMax=new Vector2(slide,0);
             var s=l.style;if(s==null)return;
-            l.background.sprite=s.background;l.background.enabled=s.background!=null;
+            var winter=route?.Islands?.ChristmasSky(s)==true;
+            var seasonal=route?.Islands;bool still=seasonal?.staticSky==true;
+            var villainPose=seasonal!=null?new Vector4(seasonal.villainPosition.x,seasonal.villainPosition.y,seasonal.villainSize,seasonal.villainOpacity):Vector4.zero;
+            if(still&&l.staticDrawn&&l.drawnStyle==s&&l.drawnSize==size&&l.drawnNight==Night&&l.drawnHorizon==horizon&&l.drawnVillain==villainPose&&l.drawnBackdrop==seasonal.christmasBackdrop&&l.drawnVillainSprite==seasonal.christmasVillain)return;
+            l.staticDrawn=still;l.drawnStyle=s;l.drawnSize=size;l.drawnNight=Night;l.drawnHorizon=horizon;l.drawnVillain=villainPose;
+            l.drawnBackdrop=seasonal?.christmasBackdrop;l.drawnVillainSprite=seasonal?.christmasVillain;
+            l.background.sprite=winter?route.Islands.christmasBackdrop:s.background;l.background.enabled=l.background.sprite!=null;
+            l.villain.sprite=winter?seasonal.christmasVillain:null;l.villain.enabled=l.villain.sprite!=null;
+            if(l.villain.enabled)
+            {
+                float phase=Mathf.Repeat(time*seasonal.villainSpeed,1);
+                float jump=Mathf.Sin(phase*Mathf.PI);
+                var position=seasonal.villainPosition+(still?Vector2.zero:new Vector2((phase-.5f)*.035f,jump*seasonal.villainHop));
+                l.villain.rectTransform.anchorMin=l.villain.rectTransform.anchorMax=position;
+                l.villain.rectTransform.anchoredPosition=Vector2.zero;l.villain.rectTransform.sizeDelta=Vector2.one*seasonal.villainSize;
+                l.villain.rectTransform.localRotation=still?Quaternion.identity:Quaternion.Euler(0,0,Mathf.Lerp(-4,4,phase));
+                l.villain.color=still?new Color(1,1,1,seasonal.villainOpacity):new Color(.65f,.88f,.90f,seasonal.villainOpacity);
+            }
             var n=Night;
-            l.background.color=Color.Lerp(Color.white,new Color(.20f,.26f,.52f),n);
+            l.background.color=Color.Lerp(Color.white,winter?new Color(.65f,.72f,.93f):new Color(.20f,.26f,.52f),winter?n*.45f:n);
             l.gradient.enabled=!l.background.enabled;l.gradient.mode=7;
-            l.gradient.skyTop=Color.Lerp(s.skyTop,new Color(.03f,.05f,.17f),n);
+            l.gradient.skyTop=Color.Lerp(winter?new Color(.19f,.40f,.71f):s.skyTop,new Color(.03f,.05f,.17f),n);
             var dusk=Mathf.Sin(n*Mathf.PI)*.60f;
-            l.gradient.skyBottom=Color.Lerp(Color.Lerp(s.skyBottom,new Color(.96f,.43f,.26f),dusk),new Color(.12f,.18f,.42f),n);l.gradient.SetVerticesDirty();
-            l.moon.mode=13;l.moon.time=time;l.moon.enabled=n>.01f;l.moon.canvasRenderer.SetAlpha(n);l.moon.SetVerticesDirty();
-            var underwater=s.terrain==WorldMapTerrainTheme.CoastLand;
-            var cavern=s.terrain==WorldMapTerrainTheme.CrystalLand;
-            l.sun.canvasRenderer.SetAlpha(1-n);l.sun.mode=underwater?11:cavern?0:s.weather==WorldMapWeather.Clear||s.weather==WorldMapWeather.Wind?5:0;l.sun.time=time;l.sun.SetVerticesDirty();
-            l.ambient.mode=route?.Islands?.unifiedBase==true?12:s.terrain==WorldMapTerrainTheme.ForestLand||s.terrain==WorldMapTerrainTheme.MarshLand||cavern?9:s.terrain==WorldMapTerrainTheme.AuroraLand?10:0;l.ambient.time=time;l.ambient.SetVerticesDirty();
+            l.gradient.skyBottom=Color.Lerp(Color.Lerp(winter?new Color(.63f,.87f,.92f):s.skyBottom,winter?new Color(.70f,.67f,.86f):new Color(.96f,.43f,.26f),dusk),new Color(.12f,.18f,.42f),n);l.gradient.SetVerticesDirty();
+            l.moon.mode=13;l.moon.time=time;l.moon.enabled=!winter&&n>.01f;l.moon.canvasRenderer.SetAlpha(n);l.moon.SetVerticesDirty();
+            if(still)l.moon.enabled=false;
+            var underwater=!winter&&s.terrain==WorldMapTerrainTheme.CoastLand;
+            var cavern=!winter&&s.terrain==WorldMapTerrainTheme.CrystalLand;
+            l.sun.canvasRenderer.SetAlpha(1-n);l.sun.mode=winter?0:underwater?11:cavern?0:s.weather==WorldMapWeather.Clear||s.weather==WorldMapWeather.Wind?5:0;l.sun.time=time;l.sun.SetVerticesDirty();
+            if(still)l.sun.mode=0;
+            l.ambient.mode=winter?(l.background.enabled?0:14):route?.Islands?.unifiedBase==true?12:s.terrain==WorldMapTerrainTheme.ForestLand||s.terrain==WorldMapTerrainTheme.MarshLand||cavern?9:s.terrain==WorldMapTerrainTheme.AuroraLand?10:0;l.ambient.time=time;l.ambient.SetVerticesDirty();
             l.meteors.mode=0;l.meteors.SetVerticesDirty();
             for(var i=0;i<l.meteorSprites.Length;i++)
             {
                 var sprite=l.meteorSprites[i];var phase=Mathf.Repeat(time*.17f+i*.37f,1);var t=phase/.52f;
-                sprite.sprite=kit.meteorSprite;sprite.enabled=s.meteors&&kit.meteorSprite!=null&&phase<.52f;
+                sprite.sprite=kit.meteorSprite;sprite.enabled=!still&&!winter&&s.meteors&&kit.meteorSprite!=null&&phase<.52f;
                 var sign=i%2==0?1:-1;
                 sprite.rectTransform.anchorMin=sprite.rectTransform.anchorMax=new Vector2(.18f+i*.26f+sign*t*.24f,1-t*.9f);
                 sprite.rectTransform.anchoredPosition=Vector2.zero;sprite.rectTransform.sizeDelta=new Vector2(100+i*20,120+i*24);
                 sprite.rectTransform.localScale=new Vector3(sign,1,1);sprite.color=new Color(1,1,1,Mathf.Sin(Mathf.Clamp01(t)*Mathf.PI)*.9f);
             }
-            var lava=s.terrain==WorldMapTerrainTheme.LavaLand;var wet=s.weather==WorldMapWeather.Rain||s.weather==WorldMapWeather.Storm;
+            var lava=!winter&&s.terrain==WorldMapTerrainTheme.LavaLand;var wet=s.weather==WorldMapWeather.Rain||s.weather==WorldMapWeather.Storm;
             for(var i=0;i<4;i++)
             {
                 var cloud=l.clouds[i];cloud.sprite=i%2==0?s.cloudWide:s.cloudSmall;
                 if(route?.Islands?.unifiedBase==true&&cloud.sprite==null)cloud.sprite=i%2==0?kit.simpleCloudWide:kit.simpleCloudSmall;
                 if(cloud.sprite==null)cloud.sprite=lava?(i%2==0?kit.lavaCloudWide:kit.lavaCloudSmall):(i%2==0?kit.warmCloudWide:kit.warmCloudSmall);
-                cloud.enabled=cloud.sprite!=null&&!underwater&&!cavern;cloud.color=wet?new Color(.65f,.73f,.87f,.7f):new Color(1,1,1,lava?.52f:.76f);cloud.color=Color.Lerp(cloud.color,new Color(.32f,.38f,.66f,cloud.color.a*.8f),n);
+                cloud.enabled=!still&&!winter&&cloud.sprite!=null&&!underwater&&!cavern;cloud.color=wet?new Color(.65f,.73f,.87f,.7f):new Color(1,1,1,lava?.52f:.76f);if(winter)cloud.color=new Color(.93f,.97f,1,.65f);cloud.color=Color.Lerp(cloud.color,new Color(.32f,.38f,.66f,cloud.color.a*.8f),n);
                 var x=Mathf.Repeat(i*.32f+time*(s.weather==WorldMapWeather.Wind?.014f:.004f),1.4f)-.2f;
                 cloud.rectTransform.anchorMin=cloud.rectTransform.anchorMax=new Vector2(x,.35f+(i%3)*.22f);
                 cloud.rectTransform.anchoredPosition=Vector2.zero;cloud.rectTransform.sizeDelta=route?.Islands?.unifiedBase==true?new Vector2(145+i*20,65+i*8):new Vector2(250+i*38,105+i*16);
@@ -131,6 +158,29 @@ namespace RoyalAves.Meta.WorldMap
         {
             vh.Clear();
             var r = rectTransform.rect;
+            if(mode==14)
+            {
+                // Quiet snowy fir silhouettes sit behind every island's own terrain.
+                for(int i=0;i<9;i++)
+                {
+                    float x=r.xMin+r.width*(.04f+i*.115f),h=r.height*(.17f+(i%3)*.055f);
+                    for(int tier=0;tier<3;tier++)
+                    {
+                        float y=r.yMin+h*(.18f+tier*.22f),wide=h*(.38f-tier*.07f);
+                        var tip=new Vector2(x,y+h*.48f);
+                        Triangle(vh,tip,new Vector2(x-wide,y),new Vector2(x+wide,y),new Color(.34f,.65f,.76f,.34f));
+                        Triangle(vh,tip,new Vector2(x-wide*.63f,y+h*.16f),new Vector2(x+wide*.63f,y+h*.16f),new Color(.90f,.98f,1,.45f));
+                    }
+                }
+                for(int i=0;i<17;i++)
+                {
+                    var p=new Vector2(r.xMin+r.width*Mathf.Repeat(i*.618f+.11f,1),r.yMin+r.height*(.24f+.68f*Mathf.Repeat(i*.371f,1)));
+                    var c=new Color(.96f,1,1,.45f);
+                    Circle(vh,p,1.4f+i%3*.5f,c);
+                    if(i%5==0){Line(vh,p-Vector2.right*4,p+Vector2.right*4,.8f,c);Line(vh,p-Vector2.up*4,p+Vector2.up*4,.8f,c);}
+                }
+                return;
+            }
             if(mode==13)
             {
                 // Lua grande e brilhante + estrelas que piscam (noite).

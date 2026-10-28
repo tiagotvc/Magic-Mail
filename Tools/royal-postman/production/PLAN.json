@@ -1,0 +1,76 @@
+{
+  "version": "2026-10-19",
+  "scope": "Separate painted home/play modal assets and authorized runtime replacement; preserve gameplay/progress/ad systems; no new event or pet mechanics.",
+  "references": {
+    "home": "Tools/royal-postman/approved/home.png",
+    "modal": "Tools/royal-postman/approved/play-modal-tight-inset.png"
+  },
+  "rules": [
+    "Clean painting; no drop/cast shadows, dark overlay texture, grain, smears or faceted artifacts.",
+    "Preserve approved palette, proportions, lettering and identities.",
+    "One shared painted center master for state colors; separate gold frames for action buttons only.",
+    "Booster buttons: no metallic frame; tight cream inset, distinct center relief and same-color lower wall.",
+    "Avatar frame and portrait independently replaceable.",
+    "Events deferred. Pet species/care/battle system not selected; fabricate Pet access only.",
+    "Grátis captures visible reward on click and grants it after successful ad completion; asset production does not invent ad mechanics."
+  ],
+  "generated": [
+    "button-face-master",
+    "button-frame-gold",
+    "circle-face-master",
+    "circle-frame-gold",
+    "modal-body-red",
+    "modal-header-red",
+    "modal-header-lip-gold",
+    "panel-cream",
+    "socket-cream-tight",
+    "navigation-red",
+    "navigation-gold-rail",
+    "coin-envelope",
+    "heart-red",
+    "gear-cream",
+    "paw-cream",
+    "lock-gray",
+    "courier-portrait",
+    "booster-rocket",
+    "booster-bomb",
+    "booster-orb",
+    "hero-courier-owl",
+    "home-background",
+    "hero-courier",
+    "hero-owl"
+  ],
+  "reuse": [
+    "nav-events-v22",
+    "nav-ranking-v22",
+    "nav-map-v22",
+    "nav-teams-v22",
+    "nav-collection-v22",
+    "goal-postal-cap",
+    "goal-wax-seal",
+    "goal-potion"
+  ],
+  "vectorGlyphs": [
+    "plus",
+    "close",
+    "check",
+    "rewarded-video"
+  ],
+  "review": [
+    "Raw alpha/edge inspection on light and dark backgrounds",
+    "Painted component consistency",
+    "Frame/face separation and press travel",
+    "Avatar frame/portrait swap independence",
+    "Native assembled home/modal at phone aspect ratios",
+    "Booster normal/selected/locked states",
+    "Small tip reward badge separation",
+    "No player-save mutation and no event integration"
+  ],
+  "frameReuse": "button-frame-gold also forms the modal outline through sprite slicing",
+  "productionStatus": {
+    "paintedKit": "fabricated",
+    "nativePrefabs": "reviewed at 9:16 and 9:20",
+    "typography": "Native candidate; exact generated-mock glyph equivalence not certified",
+    "gameIntegration": "Applied: runtime catalog and LobbyController adapters replace home / MenuPlay presentation"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "tool": "built-in image_gen",
+  "oneAssetPerFile": true,
+  "assets": [
+    {
+      "id": "top-settings-base-v10",
+      "prompt": "Edit this purple button body. Keep its circular silhouette and transparency. Correct the geometry: remove the deep dark circular groove and remove the appearance of a separate dome sitting on a donut. It must look like ONE SOLID softly beveled game button, with a broad outer bevel smoothly flowing into a large shallow raised face, as on a round molded pushbutton. The central surface occupies 78% of diameter and is only gently convex, almost frontal planar. The bevel is a continuous broad 3D slope, upper-left soft lavender, lower-right deep plum. No thin line between bevel and face, no gap, no trench, no inner ring. Reduce magenta/saturation and specularity, match deep plum cap purple; smooth restrained broad highlights, not neon. Perfectly clean even paint, no texture, no mottling or marks. No gear or text. Transparent background. Preserve the solid substantial dimensional volume through the broad bevel, not a circular stroke.",
+      "source": "exec-c15920bb-44fe-4c03-92a2-0ddcd1468764.png"
+    },
+    {
+      "id": "top-plus-base-v10",
+      "prompt": "Create ONE isolated production game UI asset matching the approved LAST attached user reference (second screenshot, small teal plus buttons). Output only the teal circular BUTTON BODY, WITHOUT the cream plus symbol, with genuine transparent background. Exact frontal view, perfect circle. Match the dark turquoise teal of those small reference buttons, not bright green or blue. It has substantial sculpted 3D RELIEF: broad rounded shoulder surrounding a raised gently convex central face about 76% of diameter. Soft thick rolled transition from shoulder to raised face, shading explains volume across a broad area, NOT a thin engraved ring, NOT a circular drawn line. Upper-left broad soft turquoise reflection, lower-right deep teal edge; dimensional toy-like painted game UI. The central face itself has clear subtle dome volume, bright upper face and deeper lower face. Single continuous clean smooth material, balanced highlight, no neon, no glowing rim, no gold, no concentric strokes, no grain or smudges, no scratches, no exterior cast shadow. Center object at large scale with 6% transparent margin. No icon, no text, one button only.",
+      "source": "exec-d35a6687-f6b2-4968-a1aa-60b244df2f18.png"
+    },
+    {
+      "id": "top-plus-symbol-v10",
+      "prompt": "Edit ONLY the cream plus sign shape/material. Narrow BOTH bars so each bar is exactly 30% of total width, keeping equal length arms. Crisp squared ends with small softened corners, not swollen rounded ends. Reduce the strong white glossy bevel to a very shallow broad cream edge with NO white stroke. Warm pale ivory frontal face, short tan thickness underneath for raised game-icon relief. No golden rim. Match the simple solid cream plus of a Royal Match-style teal plus button. Preserve transparent background, one symbol centered. Smooth clean paint, no mottled texture. Full symbol silhouette must be thin-armed Greek cross, not fat.",
+      "source": "exec-7170ac93-6b1b-4a48-8f75-7826c3ca8182.png"
+    },
+    {
+      "id": "top-gear-cream-v10",
+      "prompt": "ONE separate production UI icon on genuine transparent background: reconstruct the CREAM GEAR inside the purple settings button in the LAST attached user's SECOND approved reference screenshot. Output ONLY the cream gear, NO purple button. Eight broad softly rounded rectangular teeth with rounded valleys, symmetric orthographic front view. Circular center hole diameter 31% of total gear width, truly EMPTY/TRANSPARENT so an underlying button can show through. Substantial cream raised front surface, gentle bevel, short warm tan sculpted sidewall below/right; broad soft highlight upper-left. Match the reference glyph's substantial softly sculpted 3D relief, warm ivory glove color, readable simple silhouette. Front is warm pale cream, not yellow; bevel is cream, not a white outline. Uniform clean premium painted cartoon material, no texture, no smudges, no stains, no grain, no scratches, no colored pixels in hole, no exterior glow or cast shadow. ONE gear only, centered filling 78% square canvas. Transparency both outside and through center hole.",
+      "source": "exec-c6f8e1f0-6674-4af0-9654-1bd25bb59b67.png"
+    }
+  ]
+}

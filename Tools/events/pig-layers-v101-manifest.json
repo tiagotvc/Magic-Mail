@@ -1,0 +1,66 @@
+{
+  "tool": "built-in ImageGen",
+  "prompts": [
+    "pig-layers-v101-prompts.json",
+    "pig-layers-v101-badge-prompts.json"
+  ],
+  "status": "Options for selection; live V98 shortcut unchanged.",
+  "assets": [
+    {
+      "id": "pig",
+      "title": "Porquinho separado",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-b02aed67-3503-4c78-bff5-68895c44e3a8.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/pig.png",
+      "maxSize": 512
+    },
+    {
+      "id": "container-01",
+      "title": "01 · Medalhão azul",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-01f91bbf-a152-4137-9e26-be1776191e63.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/container-01.png",
+      "maxSize": 512
+    },
+    {
+      "id": "container-02",
+      "title": "02 · Selo postal azul",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-2abc1bdb-53fc-42f3-9455-c6add29e5a55.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/container-02.png",
+      "maxSize": 512
+    },
+    {
+      "id": "container-03",
+      "title": "03 · Escudo azul",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-dd04fad8-f611-437a-ac57-2a9f66ca1925.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/container-03.png",
+      "maxSize": 512
+    },
+    {
+      "id": "container-04",
+      "title": "04 · Medalhão com laço natalino",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-e76e4aa9-4ea7-4165-ba62-17418826da17.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/container-04.png",
+      "maxSize": 512
+    },
+    {
+      "id": "badge-01",
+      "title": "Badge A · Vermelho",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-54d58783-5045-4138-b127-b0226bb9e74c.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/badge-01.png",
+      "maxSize": 256
+    },
+    {
+      "id": "badge-02",
+      "title": "Badge B · Selo verde",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-aaca32fa-ed76-494e-b57e-08e957985d9d.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/badge-02.png",
+      "maxSize": 256
+    },
+    {
+      "id": "badge-03",
+      "title": "Badge C · Estrela dourada",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-fa2a90c4-9b12-4bff-bf70-df14dbf8c4e3.png",
+      "output": "Assets/RoyalAves/Art/Interface/PigBankV101/badge-03.png",
+      "maxSize": 256
+    }
+  ]
+}

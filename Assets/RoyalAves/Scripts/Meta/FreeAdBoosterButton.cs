@@ -30,6 +30,17 @@ namespace RoyalAves.Meta
         bool adPending;
         Vector2 iconSize;
         bool iconSizeCaptured;
+        System.Func<BoostType, Sprite> presentationSprite;
+
+        // Replace presentation without changing the configured reward pool, timer or ad/grant callbacks.
+        public void BindPresentation(Image targetIcon, Button targetButton, System.Func<BoostType, Sprite> spriteForType)
+        {
+            icon=targetIcon;button=targetButton;presentationSprite=spriteForType;
+            iconSizeCaptured=icon!=null;
+            if(icon!=null)iconSize=icon.rectTransform.sizeDelta;
+            if(button!=null)button.interactable=!adPending;
+            ShowCurrent();
+        }
 
         void OnEnable()
         {
@@ -64,7 +75,7 @@ namespace RoyalAves.Meta
         void ShowCurrent()
         {
             if (icon == null || rotation == null || rotation.Count == 0) return;
-            icon.sprite = rotation[current].icon;
+            icon.sprite = presentationSprite?.Invoke(rotation[current].boostType) ?? rotation[current].icon;
             icon.preserveAspect = true;
             if (iconSizeCaptured) icon.rectTransform.sizeDelta = iconSize;
         }

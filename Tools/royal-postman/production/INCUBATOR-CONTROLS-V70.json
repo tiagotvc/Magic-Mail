@@ -1,0 +1,29 @@
+{
+  "tool": "Built-in ImageGen",
+  "request": "Gold incubate paw button with fixed rim and separately raised pressable center, plus gold/teal time progress bar, per user reference.",
+  "prompts": {
+    "rim": "Production game UI asset: ONLY the FIXED OUTER RIM AND RECESSED SOCKET of a circular gold paw-button on a teal incubator. Premium simple cartoon painting like a casual mobile puzzle game: sunny yellow gold face, warm orange sidewalls and shadows, pale yellow broad highlight upper-left. Perfect front-facing circular geometry, no perspective tilt. The circle should occupy 82% of a square canvas. The outer rim is a clean substantial rounded golden ring around a DARK AMBER RECESSED CIRCULAR WELL. Outer diameter 100%, well diameter 79%. The dark amber well can be an opaque flat brown-orange circle, NOT a movable face. The raised central button will be a SEPARATE sprite added later, so do NOT draw any central yellow face or paw symbol. A single low rounded gold ring, bright broad smooth upper-left reflection, a little orange extrusion under the bottom edge. Few broad shapes, no realistic metal, no micro-details, no star highlights, no decoration. A transparent alpha background, no outer glow, no ambient haze, no drop shadow extending beyond a narrow contact shadow. No text, no paw, no icon, no extra concentric rings, no machine or scenery. The purpose is a fixed socket that stays still when its separate center is pressed.",
+    "face": "Production game UI asset: ONLY ONE RAISED CENTRAL CIRCULAR BUTTON FACE, a separate moving component for a gold circular paw button on a teal incubator. Square transparent PNG. Perfect front-facing circular geometry, no perspective tilt. Centered circle occupies 82% of square canvas. Bright sunny GOLDEN YELLOW broad smooth slightly convex center, simple soft pale-yellow broad top-left highlight, one smooth rounded chamfer near its perimeter and thick warm ORANGE extrusion wall visible along lower quarter, making the face project noticeably forward as a pressable 3D puck. Face should look RAISED OUTWARD, never recessed or concave. Same simple painted cartoon gold as Royal Match casual game UI, sunny yellow lit faces and orange shadows, not realistic metallic bronze. Large clean blank central area where an independent dark orange paw icon will be overlaid later. Do not draw the paw. No fixed outer ring, no socket, no dark inner ring, no border frame, no outline decoration, no nested bevels. Only a single yellow raised disc with orange lower sidewall. Transparent alpha outside its tight rounded silhouette, no glow or haze, no ground shadow, no text, no icon, no background, no full button assembly.",
+    "track": "Production 2D mobile-game UI sprite: one EMPTY PROGRESS/TIMER BAR TRACK, a simple long horizontal capsule. Sunny yellow thin rounded gold outer rim with a narrow orange lower edge; interior is solid deep dark TEAL petrol blue (#004756), subtly recessed. Smooth broad highlights and clean soft cartoon bevel, same sunny gold and teal as a bright fantasy game's incubator. Shape ratio about 10.7:1 width:height (very long and low). Use a wide landscape image canvas with the bar centered in it and transparent generous vertical padding, complete rounded left and right ends. The outer gold border is only about 9% of the capsule height on each side, not chunky, no ornate pieces. The entire track remains EMPTY dark teal, no filled blue section and no numbers or lettering because progress fill and TIME TEXT are separate Unity objects. True transparent alpha outside capsule. No black outline, no knobs, no arrows, no badges, no gems, no flourishes, no glow, no haze, no drop shadow outside a tight orange underside. No scene or additional objects. Frontal straight-on view, symmetrical and clean."
+  },
+  "assets": [
+    {
+      "asset": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/IncubatorControlsV70/incubate-fixed-rim.png",
+      "original": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-e1ecb4dc-fd06-42e1-bba5-fedf6f49d40c.png"
+    },
+    {
+      "asset": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/IncubatorControlsV70/incubate-raised-face.png",
+      "original": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-1428cc28-eec8-4e09-be1d-c00d4dc3e730.png"
+    },
+    {
+      "asset": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/IncubatorControlsV70/timer-track.png",
+      "original": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-cd18a52e-7466-4e69-9eab-c38fa031eda5.png"
+    }
+  ],
+  "reuse": [
+    "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/Sprites/paw-cream.asset (separate amber tint)",
+    "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/Sprites/pets-progress-blue-v16.asset"
+  ],
+  "method": "Original PNG bytes retained; native Unity Sprite rectangles trim transparent margins without editing source pixels. Timer frame uses native9-slice. Separate sliced fill is driven by existing fillAmount and opt-in responsive RoyalPostmanProgressClip. Separate paw is child of moving center.",
+  "scope": "Only paw control and time-bar subtrees on four incubators. Root positions/sizes, scene, captions, tabs, user buttons, inventory, CurrentProfile and incubation economy preserved through semantic component merge."
+}

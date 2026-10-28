@@ -83,7 +83,7 @@ namespace RoyalAves.EditorTools
         // "Mostrar esta tela": a hidden window turned on while it is edited, and put back afterwards.
         GameObject previewed;
 
-        [MenuItem("Royal Aves/Editor de telas")]
+        [MenuItem("Royal Aves/Editor de telas (legado)")]
         static void Open()
         {
             var window = GetWindow<RoyalAvesScreenEditor>("Editor de telas");

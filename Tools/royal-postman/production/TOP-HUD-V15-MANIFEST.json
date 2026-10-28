@@ -1,0 +1,77 @@
+{
+  "tool": "built-in ImageGen",
+  "prompts": "TOP-HUD-V15-PROMPTS.json",
+  "assets": [
+    {
+      "id": "top-button-body-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-419f582e-58d0-4140-b29f-7b6f76f0f460.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-button-body-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-gear-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-0da6c61f-e13e-497b-9622-eb18a4d751a4.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-gear-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-plus-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-e8eb86d8-9727-492c-a6a9-29dbd0dad795.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-plus-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-avatar-frame-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-9e6a0b3d-e1d7-4a44-8e06-945cc1266179.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-avatar-frame-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-heart-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-274d3169-3ce4-4883-824e-a6cd1d7fee60.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-heart-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-envelope-coin-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-d3ff35cc-8522-4dbc-a94a-4c1320b6b241.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-envelope-coin-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    },
+    {
+      "id": "top-value-panel-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-7dc67115-1ff1-466f-a53c-18c2fa9f4d53.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-value-panel-v15.png",
+      "actualWidth": 2172,
+      "actualHeight": 724,
+      "native4K": false
+    },
+    {
+      "id": "top-avatar-portrait-v15",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-ccae1408-4294-4e8c-b332-35aa74aaf42d.png",
+      "output": "Assets/RoyalAves/Art/RoyalPostmanUI2026/top-avatar-portrait-v15.png",
+      "actualWidth": 1254,
+      "actualHeight": 1254,
+      "native4K": false
+    }
+  ],
+  "resolutionNote": "Built-in ImageGen returned 1254 square / 2172x724 panel despite 4K prompts. Explicit 3840 resubmission also returned 1254. No artificial upscaling or pixel modifications performed.",
+  "resolutionRetry": {
+    "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a13551-4eae-78c2-b012-d5d47dd589ce/exec-42dab3fc-65b0-4edf-9086-eb2732ce93d0.png",
+    "actualWidth": 1254,
+    "actualHeight": 1254,
+    "used": false
+  }
+}

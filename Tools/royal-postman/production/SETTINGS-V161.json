@@ -1,0 +1,70 @@
+{
+  "version": 161,
+  "status": "Installed and final native check PASS, extracted from real lobby prefab",
+  "art": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/SettingsV161",
+  "prefab": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/SettingsWindowV161.prefab",
+  "method": "Built-in ImageGen, separate transparent raster assets; live Unity TMP/control states",
+  "assets": [
+    {
+      "key": "frame",
+      "file": "frame.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-d76cbf53-fcc6-43f6-a04d-f94ca39b842d.png",
+      "prompt": "Local production correction of the attached blank transparent window frame. Preserve the entire parchment body, tray, gold frame and seam EXACTLY. Correct ONLY the top crystal crest: shrink the complete crystal orb, envelope, gold mounting and bottom diamond to about 62% of their existing size, keep horizontally CENTERED, anchored high at the top edge. The bottom point of the complete smaller crest must end by 13% down from the top of the full image (original ends around17%). This creates a genuinely unobstructed EMPTY copper title strip between the small centered crest and existing straight gold front seam, for live game text later. Keep the same copper arch outline and height. No text added. No change to the body, rim, tray, texture, lighting, overall proportions or canvas. True transparent background retained, high quality crisp painted gold and crystal.",
+      "sha256": "297ff85d1d7a0fa6bf841c41ecf25625b46aca16caf60b6fa2570ccffebab783"
+    },
+    {
+      "key": "button",
+      "file": "button.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-91408a79-ee3a-47d6-ab9d-33c2b6783a19.png",
+      "prompt": "ONE isolated production UI sprite on real transparent alpha. Reference screenshot is MATERIAL STYLE ONLY. A single elegant horizontal EMPTY sapphire-blue capsule action button for Magic Mail, ratio 5.4:1. Very slim continuous polished gold perimeter, delicate ivory upper-edge reflection, subtle warm copper dark lower bevel and small contact shadow. Deep ultramarine lower face transitioning to saturated sapphire/cobalt middle and graceful lighter curved glass reflection at upper third; hand-painted premium fantasy RPG craftsmanship, clean symmetric rounded ends. No pointed tips, no folded/diamond/or leaf endcaps, no gems, no ornaments, no icons, absolutely no text. Center must be smooth for live Unity text. Fill canvas near edges with a small transparent margin. Dimensional polished bevels matching this approved reference blue buttons; never flat CSS gradient or thick chunky ring. Render high resolution landscape, crisp defect-free silhouette, one single reusable sprite, no sprite sheet, no checkerboard.",
+      "sha256": "c861b69ce9b8f09696486f70cf9d6b55c47e8208ab548d47ca0135583fc2a5c3"
+    },
+    {
+      "key": "sound",
+      "file": "sound.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-79943090-8ac1-47bb-bbf4-84a5a82342b4.png",
+      "prompt": "One production-ready isolated round SOUND toggle sprite, on genuine transparent alpha, high-resolution 512 square or larger. Match the attached fantasy RPG reference's two blue round utility controls precisely in material and clarity: slender polished GOLD circular rim, copper edge shadow, deep sapphire convex glass face with delicate upper curved icy-blue specular reflection and indigo depth below. A large simple solid GOLD SPEAKER WITH TWO SOUND WAVES centered on face, carved dimensional bevel, crisp recognizable silhouette, warm ivory highlight on raised gold. No text, no off mark, no outer decorative flourishes, no extra gemstones, no squashed circle. One circle only, fill canvas leaving 6% transparent margin. Premium hand-painted mobile game production sprite, not a flat vector or CSS button. Soft contact shadow only, no big halo or sparkle field, no checkerboard.",
+      "sha256": "98fc6ff761d0447d501d2c3c139b1050dddbe0dad1a57d5a891628bce7025c9e"
+    },
+    {
+      "key": "music",
+      "file": "music.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-36f37494-82a8-4ab6-8cc0-74c9a11d72e3.png",
+      "prompt": "One isolated production-ready round MUSIC toggle sprite on true transparent alpha. Match attached fantasy RPG blue round SOUND/MUSIC controls: slender polished gold circular rim with copper undershadow; rich deep sapphire convex glass face, cobalt upper third broad curved reflective highlight and indigo lower depth. Center a single large raised GOLD pair of joined musical eighth notes, simple readable silhouette, bevel and ivory highlight, no text. High quality hand-painted 3D UI craftsmanship. Perfect circular symmetry, not oval. One button only with 6% transparent margin, no decorative scrolls, no halo, no gems beyond glass face, no checkerboard. Keep material, rim thickness and lighting consistent with reference.",
+      "sha256": "e3b92db7e5ba0f69839fc7ac4dfd61ddca0cda5994e7051cb2494bff67c577b0"
+    },
+    {
+      "key": "close",
+      "file": "close.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-2cc819db-8422-4372-aeb5-20fb835da2b9.png",
+      "prompt": "Single isolated production UI sprite: small circular RED CLOSE BUTTON with centered raised IVORY X for a magical postman fantasy RPG. Real transparent alpha. Match reference warm gold material and elegant polished craftsmanship: slender continuous gold round rim, dark copper underside, ruby/crimson convex face with gentle bright scarlet upper highlight and deep red lower shadows, carved ivory X with softly rounded corners and warm brown depth. Accurate symmetry, no chunky huge X, no extra ornaments, no glow, no sparkles, no text, no checkerboard. Render large and crisp with 6% transparent margin, one circle only. Reference is material style not target image.",
+      "sha256": "171a3ec745451384a692e3f9b021f9ecce8a19a6a25a188d21f5799aea07ab00"
+    }
+  ],
+  "rejectedFrame": {
+    "key": "frame",
+    "hint": "Generated images are saved to C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a as C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-14a0b264-4119-4e6f-a723-4bbdb67467c1.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link.",
+    "prompt": "Create ONE production-ready isolated transparent raster UI asset for the real Unity game Magic Mail. The reference is the approved design language, NOT a screenshot to include. Asset is a BLANK portrait SETTINGS WINDOW FRAME ONLY, no UI text, no controls or glyphs except the centered postal crystal crest. Preserve this exact header principle from reference: a narrower low COPPER ARCH behind a STRAIGHT HORIZONTAL GOLD FRONT SEAM, a small exquisite violet/cyan crystal ball containing one cream envelope with red wax seal at the center top of the arch, mounted in restrained sculpted gold. Warm honey parchment body with a continuous polished rounded gold frame, hand-painted dimensional bevels, warm glints on upper edges, rich copper shadows underneath, immaculate symmetrical craft. No huge wide title rectangle, no flat stripe header, no extra corner ornaments. Frame outline rectangular with softly rounded corners, width:height approximately 0.75, arch and crest add 20% height above parchment body. Entire window including crest fits canvas with 3% transparent margin; frame fills almost all canvas. Blank copper title area is below the orb and above gold seam, wide enough for a live title. Parchment body has ONE inset cream sound-controls tray in its upper quarter, broad softly recessed rounded rectangle with thin warm ivory/gold edge and gentle shadow, EMPTY interior. Remaining lower body parchment blank and quiet for 3 live setting rows; no baked buttons, no baked text, no symbols, no close button, no side tabs, no scenery, no UI screenshot. High-end painterly casual fantasy RPG mobile craft matching reference gold/copper/ivory/sapphire materials. Crisp accurate borders, consistent overhead-left soft light, luminous but restrained. REAL alpha transparency outside silhouette, absolutely no checkerboard painted background. This is one reusable frame asset, not multiple assets or a sprite sheet.",
+    "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a17ecd-29bc-7273-8663-93134d65678a\\exec-14a0b264-4119-4e6f-a723-4bbdb67467c1.png"
+  },
+  "reference": "Tools/royal-postman/previews/header-restored-v160/02-configuracoes.png",
+  "nativeChecks": "PASS: actual SettingsScreen compile; genuine alpha/lossless sprites; native TMP labels; first-open/close/reopen/new instance; all five existing preferences toggle 1/-80 exactly once and persist; actual GraphicRaycaster/pointer clicks; fullscreen input shield; 360x640,390x844,720x1280,640x360 bounds; 44px portrait control targets; no text overflow; notch safe-area fit. Audio singleton is an isolated null test shim; real production mixer path is unchanged.",
+  "audit": {
+    "scope": "RoyalAvesLobby/Content/TelaConfiguracoes only",
+    "removedOldSettingsBlocks": 95,
+    "installedSettingsBlocks": 114,
+    "unrelatedBlocksPreserved": 542,
+    "controllerIdentityPreserved": true,
+    "fitGuid": "d7e89c148c634ea78f38e2176aa3d0f6",
+    "sha256": "6bb1a84401d1fb2266968d0279152e40efb47c43f6b27ea9c842dda4a0d0dcc3"
+  },
+  "legacySceneOffsetCheck": "PASS: real game scene keeps old -107px root override; full-screen fit neutralizes it; native test simulates that override",
+  "sceneIntegration": "Assets/SweetSugar/Scenes/game.unity uses RoyalAvesLobby guid 3ab795e93fbd7c8439dc9970007e07b2; scene unchanged; existing gear ToggleSettings finds existing SettingsScreen identity",
+  "sourceHashes": {
+    "Assets/RoyalAves/Scripts/Meta/SettingsScreen.cs": "c4ee140c0b8f9ab2077d026cdd20e88ca7f6e55f90bd58b08a31444032b3466f",
+    "Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanSettingsFit.cs": "3e10b4568feda68754c4d00f1de0f260d4b6119759e39ded848bee1cf95fb546",
+    "Assets/RoyalAves/Editor/RoyalPostmanTextureImportPolicy.cs": "b40e67274fb922d9630f4f8f1e622967fdba2f1daf8c34cea55f715f5c64e117",
+    "Tools/royal-postman/production/SettingsV161Build.cs": "efcbc262866f148acbfe93e160c0a3dc5d7c77e700168a00724b229a7f55912a",
+    "Tools/royal-postman/production/SettingsV161Check.cs": "e0a1b80c0c63c0c0bd83730575df95620e4661c5a1a3a67eeecd2736862f9990"
+  }
+}

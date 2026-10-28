@@ -31,7 +31,8 @@ namespace RoyalAves.EditorTools
         WorldMapLayout.Chapter owner;
         int dragControl;
         Vector2 dragOffset;
-        static float ClampPhase(float phase,WorldMapLayout.Chapter chapter) =>
+        static float ClampPhase(float phase,WorldMapLayout.Chapter chapter,WorldMapView world) =>
+            world.Route.Islands!=null?Mathf.Clamp(phase,world.Route.Islands.FirstLevel(chapter.index)-3,world.Route.Islands.FirstLevel(chapter.index+1)+1):
             Mathf.Clamp(phase,chapter.index*20-2,chapter.index*20+22);
 
         public static WorldMapLayout GetOrCreate()
@@ -43,9 +44,10 @@ namespace RoyalAves.EditorTools
             AssetDatabase.CreateAsset(asset,AssetPath);AssetDatabase.SaveAssets();return asset;
         }
         public void ClearSelection(){selected=null;owner=null;}
-        void Changed(WorldMapView world)
+        void Changed(WorldMapView world,bool placementOnly=false)
         {
-            EditorUtility.SetDirty(layout);world.ReloadScenery();
+            EditorUtility.SetDirty(layout);
+            if(!placementOnly||!world.RefreshPlacement(selected))world.ReloadScenery();
         }
         WorldMapLayout.Chapter EnsureChapter(int chapter,WorldMapView world)
         {
@@ -121,8 +123,11 @@ namespace RoyalAves.EditorTools
                     owner=EnsureChapter(world.Route.ChapterAtMeters(world.Route.MetersAt(cursor)),world);
                     Undo.RecordObject(layout,"Adicionar objeto do mapa");
                     selected=new WorldMapLayout.Entry{id=Guid.NewGuid().ToString("N"),sprite=addItem.sprite,keepSprite=true,customSize=true,
-                        level=Mathf.Clamp(cursor+1,owner.index*20+1,owner.index*20+20),lateral=1.85f,height=addItem.size,kind=addItem.kind,shadow=addCategory!=WorldMapAssetCategory.Effects&&addItem.kind!=PropKind.GroundDetail,
-                        groundPinned=addCategory!=WorldMapAssetCategory.Effects&&addItem.kind!=PropKind.GroundDetail&&addItem.kind!=PropKind.WaterRock};
+                        level=ClampPhase(cursor+1,owner,world),lateral=1.85f,height=addItem.size,kind=addItem.kind,shadow=addCategory!=WorldMapAssetCategory.Effects&&addItem.kind!=PropKind.GroundDetail,
+                        groundPinned=addCategory!=WorldMapAssetCategory.Effects&&addItem.kind!=PropKind.GroundDetail&&addItem.kind!=PropKind.WaterRock&&addItem.kind!=PropKind.RiverPlatform};
+                    if(addItem.kind==PropKind.RiverPlant){selected.groundDepth=.42f;selected.bottomPivot=true;}
+                    if(addItem.kind==PropKind.RiverFall)selected.bottomPivot=true;
+                    if(addItem.kind==PropKind.Mist){selected.intensity=.68f;selected.theme=WorldMapObjectTheme.None;selected.bottomPivot=true;}
                     if(addItem.kind==PropKind.WaterRipple&&world.Route.Gaps.Count>0)
                     {
                         var anchor=world.Route.MetersAt(cursor);var gap=world.Route.Gaps.OrderBy(g=>Mathf.Abs((g.start+g.end)*.5f-anchor)).First();
@@ -141,13 +146,15 @@ namespace RoyalAves.EditorTools
             var kind=(PropKind)EditorGUILayout.EnumPopup("Tipo / animação",selected.kind);
             var workMotion=(WorldMapWorkMotion)EditorGUILayout.EnumPopup("Rotina do correio",selected.workMotion);
             var rotation=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Rotação do raio (°)",selected.rotation,-80,80):selected.rotation;
-            var intensity=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Intensidade da luz",selected.intensity,.05f,1):selected.intensity;
+            var intensity=selected.kind==PropKind.Mist?EditorGUILayout.Slider("Mist opacity",selected.intensity,.05f,1):selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Intensidade da luz",selected.intensity,.05f,1):selected.intensity;
             var thickness=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Espessura do raio",selected.thickness,.2f,4):selected.thickness;
+            var raySpacing=selected.kind==PropKind.LightShaft?EditorGUILayout.Slider("Ray spacing",selected.raySpacing,0,1):selected.raySpacing;
+            var supportedLevel=selected.kind==PropKind.RiverPlatform?EditorGUILayout.IntField("Supported level",selected.supportedLevel):selected.supportedLevel;
             var flipX=EditorGUILayout.Toggle("Virar horizontalmente",selected.flipX);
             var groundPinned=EditorGUILayout.Toggle("Cravar no chão",selected.groundPinned);
             var groundDepth=selected.groundDepth;
             if(groundPinned&&!selected.groundPinned&&groundDepth<=0)groundDepth=.06f;
-            if(groundPinned)groundDepth=EditorGUILayout.Slider("Profundidade (%)",groundDepth*100,0,30)/100;
+            if(groundPinned)groundDepth=EditorGUILayout.Slider("Profundidade (%)",groundDepth*100,0,selected.kind==PropKind.RiverPlant?70:30)/100;
             var useTheme=EditorGUILayout.Toggle("Adicionar tema",selected.theme!=WorldMapObjectTheme.None);
             var theme=useTheme?(selected.theme==WorldMapObjectTheme.None?WorldMapObjectTheme.Season:selected.theme):WorldMapObjectTheme.None;
             if(useTheme)
@@ -174,15 +181,15 @@ namespace RoyalAves.EditorTools
             if(EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(layout,"Ajustar objeto do mapa");
-                selected.sprite=sprite;selected.keepSprite=true;selected.level=ClampPhase(phase,owner);
+                selected.sprite=sprite;selected.keepSprite=true;selected.level=ClampPhase(phase,owner,world);
                 selected.caption=caption;
                 selected.workMotion=workMotion;
-                selected.lateral=side;selected.height=size;selected.customSize=true;selected.kind=kind;selected.rotation=rotation;selected.intensity=intensity;selected.thickness=thickness;selected.flipX=flipX;selected.theme=theme;
+                selected.lateral=side;selected.height=size;selected.customSize=true;selected.kind=kind;selected.rotation=rotation;selected.intensity=intensity;selected.thickness=thickness;selected.raySpacing=raySpacing;selected.supportedLevel=supportedLevel;selected.flipX=flipX;selected.theme=theme;
                 selected.groundPinned=groundPinned;selected.groundDepth=groundDepth;
-                selected.snowEffect=snowEffect;selected.lightsEffect=lightsEffect;selected.iceEffect=iceEffect;selected.effectPieces=effectPieces;selected.customAdornments=customAdornments;selected.adornments=adornments;Changed(world);
+                selected.snowEffect=snowEffect;selected.lightsEffect=lightsEffect;selected.iceEffect=iceEffect;selected.effectPieces=effectPieces;selected.customAdornments=customAdornments;selected.adornments=adornments;Changed(world,true);
             }
             if(GUILayout.Button("Usar tamanho padrão da categoria"))
-            {Undo.RecordObject(layout,"Padronizar tamanho do objeto");selected.customSize=false;Changed(world);}
+            {Undo.RecordObject(layout,"Padronizar tamanho do objeto");selected.customSize=false;Changed(world,true);}
             if(GUILayout.Button("Remover objeto selecionado"))
             {Undo.RecordObject(layout,"Remover objeto do mapa");if(!string.IsNullOrEmpty(selected.sourceId))layout.hiddenExtras.Add(selected.sourceId);owner.entries.Remove(selected);ClearSelection();Changed(world);}
         }
@@ -342,7 +349,7 @@ namespace RoyalAves.EditorTools
                     {
                         Vector2 local=piece.transform.parent.InverseTransformPoint(ray.GetPoint(distance));var pose=WorldMapPiecePose.Find(selected.effectPieces,dragPieceId);
                         pose.offset=pieceOffsetStart+(local-pieceDragStart)/selected.EffectiveHeight(world.CameraModel.Kit);
-                        selected.effectPieces=WorldMapPiecePose.Set(selected.effectPieces,dragPieceId,pose);Changed(world);
+                        selected.effectPieces=WorldMapPiecePose.Set(selected.effectPieces,dragPieceId,pose);Changed(world,true);
                     }
                 }
                 e.Use();
@@ -353,8 +360,8 @@ namespace RoyalAves.EditorTools
                 {
                     selected.height=selected.EffectiveHeight(world.CameraModel.Kit);
                     selected.sprite=selected.EffectiveSprite(world.CameraModel.Kit);
-                    selected.level=ClampPhase(phase,owner);
-                    selected.lateral=side;selected.keepSprite=true;Changed(world);
+                    selected.level=ClampPhase(phase,owner,world);
+                    selected.lateral=side;selected.keepSprite=true;Changed(world,true);
                 }
                 e.Use();
             }

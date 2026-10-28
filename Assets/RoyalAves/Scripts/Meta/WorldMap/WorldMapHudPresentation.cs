@@ -23,7 +23,7 @@ namespace RoyalAves.Meta.WorldMap
         Material navigationLabelMaterial;
         WorldMapTopHud topHud;
         int selectedTab=2;
-        bool active;
+        bool active,chromeVisible=true,accountHeaderVisible=true;
         public WorldMapHudPresentation(RectTransform content,RectTransform nav,WorldMapKit kit,TMP_FontAsset navigationFont=null)
         {this.content=content;sourceNav=nav;this.kit=kit;this.navigationFont=navigationFont;}
         public void BindButtons(Button avatar,Button coins,Button lives,Button settings,Button[] navigation)
@@ -176,7 +176,7 @@ namespace RoyalAves.Meta.WorldMap
                     }
                     else if(WorldMapMission100.Active){var text=label.text;restore.Add(()=>{if(label!=null)label.text=text;});label.text=WorldMapMission100.English(text);}
                     var color=label.color;restore.Add(()=>{if(label!=null)label.color=color;});
-                    label.color=new Color(.38f,.22f,.10f);Remember(label.rectTransform);
+                    label.color=new Color32(255,244,203,255);Remember(label.rectTransform);
                     if(WorldMapHudTheme.Current!=null&&WorldMapHudTheme.Current.font!=null)label.font=WorldMapHudTheme.Current.font;else if(navigationFont!=null)label.font=navigationFont;
                     label.enableVertexGradient=false;label.fontStyle=FontStyles.Normal;label.fontSize=31;
                     label.enableAutoSizing=false;label.alignment=TextAlignmentOptions.Center;
@@ -186,8 +186,8 @@ namespace RoyalAves.Meta.WorldMap
                         // Never change the shared font asset or instantiate a material each frame.
                         navigationLabelMaterial=new Material(label.fontSharedMaterial){name="Legenda da navegação do mapa",hideFlags=HideFlags.HideAndDontSave};
                         navigationLabelMaterial.SetColor(ShaderUtilities.ID_FaceColor,Color.white);
-                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth,.065f);
-                        navigationLabelMaterial.SetColor(ShaderUtilities.ID_OutlineColor,new Color(1,.96f,.83f));
+                        navigationLabelMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth,.025f);
+                        navigationLabelMaterial.SetColor(ShaderUtilities.ID_OutlineColor,new Color(.26f,.07f,.29f));
                         navigationLabelMaterial.EnableKeyword("UNDERLAY_ON");navigationLabelMaterial.DisableKeyword("UNDERLAY_INNER");
                         navigationLabelMaterial.SetColor(ShaderUtilities.ID_UnderlayColor,new Color(.25f,.12f,.045f,.40f));
                         navigationLabelMaterial.SetFloat(ShaderUtilities.ID_UnderlayOffsetX,-.15f);
@@ -206,7 +206,7 @@ namespace RoyalAves.Meta.WorldMap
                 var r=(RectTransform)button.transform;r.SetSiblingIndex(i+1);
                 r.anchorMin=new Vector2(i/5f,0);r.anchorMax=new Vector2((i+1)/5f,1);r.offsetMin=r.offsetMax=Vector2.zero;
             }
-            SelectTab(selectedTab);Tick();
+            SelectTab(selectedTab);Tick();ApplyChromeVisibility();
         }
         public void Hide()
         {
@@ -218,7 +218,11 @@ namespace RoyalAves.Meta.WorldMap
             texts.Clear();pictures.Clear();tabs.Clear();header=null;nav=null;navigationPanel=null;
         }
         public void SetChromeVisible(bool visible)
-        {if(header!=null)header.gameObject.SetActive(visible);if(nav!=null)nav.gameObject.SetActive(visible);}
+        {chromeVisible=visible;ApplyChromeVisibility();}
+        public void SetAccountHeaderVisible(bool visible)
+        {accountHeaderVisible=visible;ApplyChromeVisibility();}
+        void ApplyChromeVisibility()
+        {if(header!=null)header.gameObject.SetActive(chromeVisible&&accountHeaderVisible);if(nav!=null)nav.gameObject.SetActive(chromeVisible);}
     }
 
     // The painted HUD is separate from the retired scene layout. Values and actions still belong

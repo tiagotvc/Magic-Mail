@@ -1,0 +1,80 @@
+{
+  "status": "Installed in actual Pets.prefab",
+  "mode": "built-in image_gen",
+  "reference": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-6624b31c-d230-4567-8cbb-7302ecba37aa.png",
+  "assets": [
+    {
+      "file": "background.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-87125533-6301-4da4-ac2e-b14c5d94f2f4.png",
+      "prompt": "Use case: background-extraction / production UI texture. Reference image is the approved blue-metal hatchery mock. Produce ONLY the uninterrupted painted blue BACKGROUND SURFACE behind all the interface, as one full-bleed portrait rectangular texture. Remove absolutely ALL foreground UI, header, lettering, egg, chamber, buttons, icons, frames, timer, purple shelf, gold rails and objects; fill their former locations with continuous matching blue metal. Preserve the approved navy/cobalt palette and broad restrained soft enameled-metal reflection: a luminous soft azure vertical sweep around the left quarter, weaker broad blue reflection at right, quieter dark navy-blue middle, gently shaded side returns. Smooth broad painted gradients; blue reflective cartoon enamel, not realistic chrome. Maintain calm readable background with a softly reflective sense of volume. Solid opaque edge-to-edge blue rectangle, no transparency, no margins, no panel border, no corners, no seams, no brushed texture, no grain/noise/scratches, no glitter, no symbols, no text, no tiles or busy bands, no vignetting to black. Portrait aspect about 9:16, polished lossless game UI background asset, source colors close to the approved reference.",
+      "sha256": "44b4805f32c137bd07e16c909e664370e05c0ac8d1550d8743991f154cdc3d36"
+    },
+    {
+      "file": "title-pt.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-f6c8f682-c34b-4139-a9eb-b06ce1478f52.png",
+      "prompt": "Use case: text-localization / production game header lettering. Reference is our existing transparent Chocadeira title PNG. Replace its word with EXACT text 'Incubadora'. Produce ONLY this single word, straight horizontal baseline, same cheerful chunky rounded letterforms, smooth warm cream face, broad soft off-white top highlights, caramel lower face shading, fine dark warm-brown outline and short substantial brown lower/right 3D extrusion matching the reference. Preserve the professionally painted cartoon finish. No gold/yellow outline or rim, no surrounding red/header bar, no extra text, no icons, no plate, no curved or arched baseline, no cast drop shadow, no long shadow, no grain. All letters must be fully visible, centered, consistent cap/lowercase as written, with generous transparent padding on every side. Genuine transparent background. Wide landscape sprite with crisp edges at native high resolution.",
+      "sha256": "04ae07673d916744d7cbd25381910d1697f305f5cc1533a288fc9ae52c3e4094"
+    },
+    {
+      "file": "title-en.png",
+      "source": "C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-111e1741-ba0b-4696-be2c-29e04bde7b28.png",
+      "prompt": "Use case: text-localization / production game header lettering. Reference is our existing transparent Chocadeira title PNG. Replace its word with EXACT text 'Incubator'. Produce ONLY this single word, straight horizontal baseline, same cheerful chunky rounded letterforms, smooth warm cream face, broad soft off-white top highlights, caramel lower face shading, fine dark warm-brown outline and short substantial brown lower/right 3D extrusion matching the reference. Preserve the professionally painted cartoon finish. No gold/yellow outline or rim, no surrounding red/header bar, no extra text, no icons, no plate, no curved or arched baseline, no cast drop shadow, no long shadow, no grain. All letters must be fully visible, centered, consistent cap/lowercase as written, with generous transparent padding on every side. Genuine transparent background. Wide landscape sprite with crisp edges at native high resolution.",
+      "sha256": "a9dd2baaf21dbae51dbafa39318467bb8ab303f6d18004fd3c1abac26a225b89"
+    }
+  ],
+  "art": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/BlueEnamelV103/",
+  "native_result": "PASS: Unity native import/serialization of three original PNGs; opaque blue background, reflection/navy contrast; transparent title margins and native alpha-bounds sprites; textures retain dimensions, lossless compression, mipmaps and trilinear filtering.",
+  "imported": [
+    {
+      "name": "background",
+      "guid": "8df94a52f3e7d2346abab8aef8042319",
+      "width": 940,
+      "height": 1672
+    },
+    {
+      "name": "title-pt",
+      "guid": "113c78984fd4cee4abb923376023af9e",
+      "width": 2056,
+      "height": 400
+    },
+    {
+      "name": "title-en",
+      "guid": "54ab23e16679e03489e8c791fd138f20",
+      "width": 2061,
+      "height": 435
+    }
+  ],
+  "audit": {
+    "changed": [
+      {
+        "component": "Pets/Background#114:fe87c0e1cc204ed48ad3b37840f39efc",
+        "fields": [
+          "m_Sprite",
+          "m_Color"
+        ]
+      },
+      {
+        "component": "Pets/Header/Title#114:fa23c0e1f150eb64ca593a1e31aab2fb",
+        "fields": [
+          "portuguese",
+          "english"
+        ]
+      },
+      {
+        "component": "Pets/Header/Title#114:fe87c0e1cc204ed48ad3b37840f39efc",
+        "fields": [
+          "m_Sprite"
+        ]
+      },
+      {
+        "component": "Pets/Header/Title#224",
+        "fields": [
+          "m_SizeDelta"
+        ]
+      }
+    ],
+    "preserved": 2032,
+    "preservedCurrentProfile": 486,
+    "preservedTabs": 21
+  }
+}

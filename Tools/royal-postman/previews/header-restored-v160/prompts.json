@@ -1,0 +1,43 @@
+{
+  "version": 160,
+  "date": "2026-10-28",
+  "method": "Built-in ImageGen localized header edits",
+  "status": "Header restoration based on previous approved structure; output review pending",
+  "correction": "V159 used Clockmaker finish reference as permission for new flat title band/left postal badge. This was unauthorized geometry change. Restore narrower rear copper arch and centered top crystal-ball envelope ornament.",
+  "referenceGeometry": "../preplay-finish-v153/mock.png (header structure only); prior V148/149 scoped header approval",
+  "targets": [
+    "../painted-master-v159/02-configuracoes.png",
+    "../painted-master-v159/03-menu.png",
+    "../painted-master-v159/04-summon.png"
+  ],
+  "prompts": {
+    "settings": "Precise HEADER-ONLY correction.\nIMAGE1 is the CURRENT Configurações screen to edit. Keep its entire panel BODY, buttons, audio controls, typography, side tabs, gold frame, HOME HUD, courier, background, bottom medallions, dimensions and placement unchanged.\nIMAGE2 (older full Nível14 preplay) is reference ONLY for the PREVIOUSLY APPROVED HEADER STRUCTURE: narrower rear copper ARCH, straight gold front seam, violet crystal ball with sealed envelope centered ON TOP of the arch.\n\nUser NEVER authorized the new flat rectangular title band and large upper-left envelope badge in IMAGE1. Remove ONLY that unapproved header design and restore the approved arch:\n- REAR arched copper cap, about88% of front panelbody width, centered over it. Curved high middle and rounded rising shoulders, gold contour, set BEHIND the main front frame.\n- Frontbody keeps its EXACT current horizontal upper seam and position. Do not raise/lower or resize the body/content to make room. New arch sits above this existing seam, in the former title-band region, with discreet additional crest height into the dim background.\n- The copper cap is simply filled copper like Image2, with elegant gold outline matching IMAGE1's painted gold quality. No straight rectangular upper title bar.\n- Small violet/cyan crystal BALL WITH A SEALED ENVELOPE INSIDE at the CENTER TOP crest, matching Image2. Not a large opaque envelope lying in front of an orb at upper-left. Remove the old upper-left badge completely; that spot becomes normal arch/body/background as appropriate. Use the exact crystal-orb/postal identity from Image2.\n- Configurações centered in the arch with the SAME beautiful title font/material as Image1, readable moderate scale. No giantletters, ribbons or extra ornaments.\n- Red round close stays the SAME design/size, repositioned only as part of header to sit on the upper-right FRONT FRAME seam like Image2. No change to its ruby/gold rendering.\nDo not copy Image2's scene, goals, boosters, text, controls, entire body or preplay dimensions. It is header geometry reference only. Everything below the existing title/body seam and everything around the modal remains Image1.\nKeep the excellent high-quality PAINTED gold/enamel/material finish of Image1. Do not turn into CSS/Paint. One complete portrait Configurações screen. Only header restoration, no other design changes.",
+    "menu": "Precise HEADER ONLY restoration.\nIMAGE1 is the Menu screen to edit. Preserve its exact body, contents, buttons, images, lower edge/cutout, side tabs, HOME HUD, courier, background, bottommedallions, dimmer, dimensions and positions.\nIMAGE2 is the CORRECTED SHARED HEADER MASTER. Replace only Image1's unapproved flat rectangular copper title bar and upper-left envelope badge with Image2's APPROVED narrow rear COPPER ARCH, straight horizontal GOLD front seam, centered-top violet CRYSTAL BALL containing sealed envelope, matching gold framing and small red close on upper-right seam.\nUse EXACT SAME shape, scale and location of arch/orb/titlefield/close as Image2, with the title \"Menu\" instead of Configurações. Same moderate titlefont and painted finish; center title in samefield, do not enlarge it to fill arch.\nKeep Image1's frontbody upper seam and body location unchanged. Header fits above this seam as in Image2. Remove old upper-left badge completely, do not add it elsewhere. The only envelope crest is the centered crystal-ball envelope ornament from Image2.\nDo NOT copy Image2's audio icons, settingsbuttons, captions or body contents. Everything below headerseam remains from Image1. Do NOT move/resize bodycontrols, redesign background, add new ornaments or change scene/camera/HUD. Do NOT change Summon into incubator; no eggs/timers. Retain Image1's high-quality hand-painted material finish.\nOne complete portrait Menu screen, only restored shared header.",
+    "summon": "Precise HEADER ONLY restoration.\nIMAGE1 is the Summon screen to edit. Preserve its exact body, contents, buttons, images, lower edge/cutout, side tabs, HOME HUD, courier, background, bottommedallions, dimmer, dimensions and positions.\nIMAGE2 is the CORRECTED SHARED HEADER MASTER. Replace only Image1's unapproved flat rectangular copper title bar and upper-left envelope badge with Image2's APPROVED narrow rear COPPER ARCH, straight horizontal GOLD front seam, centered-top violet CRYSTAL BALL containing sealed envelope, matching gold framing and small red close on upper-right seam.\nUse EXACT SAME shape, scale and location of arch/orb/titlefield/close as Image2, with the title \"Summon\" instead of Configurações. Same moderate titlefont and painted finish; center title in samefield, do not enlarge it to fill arch.\nKeep Image1's frontbody upper seam and body location unchanged. Header fits above this seam as in Image2. Remove old upper-left badge completely, do not add it elsewhere. The only envelope crest is the centered crystal-ball envelope ornament from Image2.\nDo NOT copy Image2's audio icons, settingsbuttons, captions or body contents. Everything below headerseam remains from Image1. Do NOT move/resize bodycontrols, redesign background, add new ornaments or change scene/camera/HUD. Do NOT change Summon into incubator; no eggs/timers. Retain Image1's high-quality hand-painted material finish.\nOne complete portrait Summon screen, only restored shared header."
+  },
+  "sources": {
+    "settings": "C:/Users/Tiago Carvalho/.codex/generated_images/01a17ecd-29bc-7273-8663-93134d65678a/exec-5623f5ea-8a62-4666-aced-0e7adda77f94.png",
+    "menu": "C:/Users/Tiago Carvalho/.codex/generated_images/01a17ecd-29bc-7273-8663-93134d65678a/exec-4bb423e6-5155-4801-a18b-fa41f1af2c07.png",
+    "summon": "C:/Users/Tiago Carvalho/.codex/generated_images/01a17ecd-29bc-7273-8663-93134d65678a/exec-dfa8f0ba-2265-4716-9e06-253e76b307d3.png"
+  },
+  "review": "Three modals now share restored arched copper cap/center crystal-ball with sealed letter; red close at front seam. Bodies/content and existing HUD visually retained. Generative edit not pixel-identical outside requested area; no such guarantee claimed. Home is byte-identical to V159 (SHA256 matched). No additional design approval inferred.",
+  "inventory": [
+    {
+      "Name": "01-home.png",
+      "SHA256": "1E3B3F1AD9397B073464E97347F90893125D164222BF32CFEC278E7E4633F44B"
+    },
+    {
+      "Name": "02-configuracoes.png",
+      "SHA256": "A908782E1F78272FD5A58640317CE937C167741B6A4AC9CC81CB5A29BF80AC0A"
+    },
+    {
+      "Name": "03-menu.png",
+      "SHA256": "7E9BCA79682F669F58F9EEB79C431CAE562A99F0E6BD015F020CC8DFFC64F50F"
+    },
+    {
+      "Name": "04-summon.png",
+      "SHA256": "1F1B051C427173B8A0C1687CD9C0668C4172A0CF6F6913407A1CAD7A990A511E"
+    }
+  ],
+  "production": "Image prototypes only; no Unity, prefab, runtime, production art or economy changes. Summon only; no incubator. Map remains provisional and preplay V156 untouched."
+}

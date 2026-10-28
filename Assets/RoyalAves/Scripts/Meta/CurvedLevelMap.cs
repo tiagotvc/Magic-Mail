@@ -32,9 +32,12 @@ namespace RoyalAves.Meta
         WorldMapAtmosphere atmosphere;
         WorldMapHudPresentation hudPresentation;
         WorldMapSantaBalloon santaBalloon;
+        WorldMapCurrentLevel currentLevelMarker;
+        WorldMapReturnToLevel returnToCurrent;
+        WorldMapLetterVault letterVault;
         public event Action<bool> SantaEventCaught;
         public bool SantaBalloonVisible=>santaBalloon!=null&&santaBalloon.Visible;
-        public bool NeedsPreviewFrames=>world!=null&&(world.SantaNeedsFrames||world.ChristmasNeedsFrames||world.NightNeedsFrames||world.IceNeedsFrames||world.MailboxNeedsFrames||world.CharacterNeedsFrames||world.AdornmentNeedsFrames||SantaBalloonVisible);
+        public bool NeedsPreviewFrames=>world!=null&&(world.SantaNeedsFrames||world.ChristmasNeedsFrames||world.NightNeedsFrames||world.IceNeedsFrames||world.MailboxNeedsFrames||world.CharacterNeedsFrames||world.AdornmentNeedsFrames||atmosphere?.NeedsAnimation==true||SantaBalloonVisible);
         LobbyFeaturesConfig art;
         RectTransform viewport;
         CurvedMapRoad road;
@@ -53,6 +56,7 @@ namespace RoyalAves.Meta
         int levelCount, nextLevel;
         float cursor, targetCursor, velocity;
         bool dragging;
+        bool covered,chromeVisible=true;
         Vector2 lastSize;
         float lastClickBlocked;
         public bool Visible => gameObject.activeSelf;
@@ -60,7 +64,16 @@ namespace RoyalAves.Meta
         public float Cursor => cursor;
         public void BindHudButtons(Button avatar,Button coins,Button lives,Button settings,Button[] navigation)=>hudPresentation?.BindButtons(avatar,coins,lives,settings,navigation);
         public void SelectNavigationTab(int tab)=>hudPresentation?.SelectTab(tab);
-        public void SetChromeVisible(bool visible)=>hudPresentation?.SetChromeVisible(visible);
+        public void SetChromeVisible(bool visible)
+        {chromeVisible=visible;hudPresentation?.SetChromeVisible(visible);letterVault?.SetAvailable(visible&&!covered&&isActiveAndEnabled);}
+        public void SetAccountHeaderVisible(bool visible)=>hudPresentation?.SetAccountHeaderVisible(visible);
+        public void SetCovered(bool value)
+        {
+            covered=value;velocity=0;dragging=false;
+            letterVault?.SetAvailable(!value&&chromeVisible&&isActiveAndEnabled);
+            world?.SetActive(!value&&isActiveAndEnabled);
+            if(value){santaBalloon?.Hide();currentButton?.gameObject.SetActive(false);}else if(isActiveAndEnabled)Draw();
+        }
 
         public static CurvedLevelMap Create(RectTransform parent, RectTransform nav, LevelMapConfig config,
             LobbyFeaturesConfig art, int levelCount, Func<int> nextLevel, Action<int> selected, Action openAgency, WorldMapKit kitOverride=null,WorldMapIslands islandsOverride=null)
@@ -106,6 +119,7 @@ namespace RoyalAves.Meta
             if (map.world == null) map.BuildFlatWorld(root, bottom);
             if (map.world != null) map.atmosphere = WorldMapAtmosphere.Create(root, skyPanel, map.sky, kit,map.world.Route);
             map.BuildHud(root, nav, bottom, openAgency);
+            if(map.world!=null)map.currentLevelMarker=new WorldMapCurrentLevel(map.viewport,art);
             if(map.world!=null)map.santaBalloon=new WorldMapSantaBalloon(root,art);
             root.gameObject.SetActive(false);
             return map;
@@ -189,6 +203,7 @@ namespace RoyalAves.Meta
             if(world!=null)
             {
                 hudPresentation=new WorldMapHudPresentation(root.parent as RectTransform,nav,world.CameraModel.Kit,art!=null?art.displayFont:null);
+                letterVault=new WorldMapLetterVault(root,art,open=>{SetChromeVisible(!open);SetCovered(open);});
                 if(!WorldMapTopHud.Ready(world.CameraModel.Kit))
                 {
                     var plate=Rect("PainelSuperiorDoMapa",root);plate.anchorMin=new Vector2(0,1);plate.anchorMax=Vector2.one;
@@ -218,8 +233,8 @@ namespace RoyalAves.Meta
             controls.pivot = new Vector2(0.5f, 0);
             controls.sizeDelta = new Vector2(0, 80);
             controls.anchoredPosition = new Vector2(0, bottom + 12);
-            map.currentButton = map.MakeButton(controls, WorldMapMission100.English("Meu nível"), new Vector2(0.85f, 0.5f), new Vector2(220, 76),
-                art != null ? art.pill : null, () => map.FocusCurrent());
+            map.returnToCurrent=new WorldMapReturnToLevel(controls,art,()=>map.FocusCurrent());
+            map.currentButton=map.returnToCurrent.Button;
             map.playButton = map.MakeButton(controls, "Jogar", new Vector2(0.82f, 0.5f), new Vector2(340, 126),
                 art != null ? art.buttonGreen : null, () => map.Select(map.nextLevel));
             map.playLabel = map.playButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -266,10 +281,13 @@ namespace RoyalAves.Meta
 
         public void Open(bool focus = true)
         {
+            covered=false;
             nextLevel = Mathf.Clamp(getNextLevel(), 1, Mathf.Max(1, levelCount + 1));
             nextLevel=WorldMapLevelCatalog.NextExisting(nextLevel);
             gameObject.SetActive(true);
+            world?.SetActive(true);
             hudPresentation?.Show();
+            letterVault?.SetAvailable(chromeVisible);
             playButton.interactable = nextLevel <= levelCount;
             playLabel.text = nextLevel <= levelCount ? $"Nível {nextLevel}" : "Concluído!";
             title.text = levelCount == 0 ? "NOVAS ROTAS EM BREVE" : "ROTA DO CORREIO";
@@ -286,13 +304,15 @@ namespace RoyalAves.Meta
         }
 
         // O mundo 3D so renderiza (camera + RenderTexture) enquanto o mapa esta visivel.
-        void OnEnable() => world?.SetActive(true);
-        void OnDisable(){world?.SetActive(false);hudPresentation?.Hide();santaBalloon?.Hide();}
+        void OnEnable(){world?.SetActive(!covered);letterVault?.SetAvailable(!covered&&chromeVisible);}
+        void OnDisable(){world?.SetActive(false);hudPresentation?.Hide();santaBalloon?.Hide();letterVault?.Close();}
 
         void FocusCurrent(bool immediately = false)
         {
             velocity = 0;
-            targetCursor = Clamp(world!=null?world.CursorForLevel(Mathf.Min(nextLevel,levelCount)):Mathf.Min(nextLevel,levelCount)-.75f);
+            // The old focus-ahead offset placed the current token behind the bottom HUD.
+            // Use its own map cursor so the node and avatar return into the usable viewport.
+            targetCursor = Clamp(world!=null?Mathf.Min(nextLevel,levelCount):Mathf.Min(nextLevel,levelCount)-.75f);
             if (immediately) cursor = targetCursor;
         }
 
@@ -300,7 +320,7 @@ namespace RoyalAves.Meta
         float Clamp(float value) =>
             Mathf.Clamp(value, 1, Mathf.Max(1, world != null ? world.CursorForLevel(Mathf.Max(1,levelCount))+.15f : levelCount - 3));
 
-        public bool CanSelect(int level) => level >= 1 && level <= levelCount && level <= nextLevel && WorldMapLevelCatalog.Exists(level);
+        public bool CanSelect(int level) => !covered && level >= 1 && level <= levelCount && level <= nextLevel && WorldMapLevelCatalog.Exists(level);
 
         void Select(int level)
         {
@@ -316,6 +336,7 @@ namespace RoyalAves.Meta
 
         void AdvanceMotion(float deltaTime)
         {
+            if(covered){hudPresentation?.Tick();return;}
             if (!dragging)
             {
                 if (Mathf.Abs(velocity) > 0.01f)
@@ -396,17 +417,18 @@ namespace RoyalAves.Meta
                 marker.sizeDelta = new Vector2(80, 100);
                 marker.localScale = Vector3.one * scale;
             }
+            returnToCurrent?.Refresh(nextLevel<=levelCount&&!marker.gameObject.activeSelf);
         }
 
         void DrawWorld()
         {
             hudPresentation?.Tick();
             world.Tick(cursor, nextLevel, dragging);
+            currentLevelMarker?.Tick(world,nextLevel,cursor,viewport.rect.size,dragging);
             santaBalloon?.Tick(world.Clock);
             if(currentButton!=null)
             {
-                var visible=world.ProjectLevel(nextLevel,cursor,viewport.rect.width/viewport.rect.height,out var p)&&p.y>.14f&&p.y<.76f;
-                currentButton.gameObject.SetActive(!visible);
+                returnToCurrent.Refresh(nextLevel<=levelCount&&currentLevelMarker!=null&&!currentLevelMarker.Visible);
             }
             if (atmosphere != null) atmosphere.Night = world.Night;
             atmosphere?.Tick(cursor, world.TimeOverride>=0?world.TimeOverride:Time.realtimeSinceStartup);
@@ -541,11 +563,11 @@ namespace RoyalAves.Meta
         }
 
 #if UNITY_EDITOR
-        public bool PreviewMotion(float deltaTime)
+        public bool PreviewMotion(float deltaTime, bool animate = true)
         {
             AdvanceMotion(Mathf.Clamp(deltaTime,0,.05f));
             world?.RenderNow();
-            return NeedsPreviewFrames||!dragging&&(Mathf.Abs(velocity)>.01f||Mathf.Abs(cursor-targetCursor)>.001f);
+            return animate&&NeedsPreviewFrames||!dragging&&(Mathf.Abs(velocity)>.01f||Mathf.Abs(cursor-targetCursor)>.001f);
         }
 
         public void PreviewAt(float levelCursor)

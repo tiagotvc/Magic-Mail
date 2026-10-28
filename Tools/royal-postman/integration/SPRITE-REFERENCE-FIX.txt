@@ -1,0 +1,7 @@
+
+Correção de importação em 19/10/2026:
+- Os PNGs são texturas; cada sprite de UI agora é um asset nativo persistente em Art/RoyalPostmanUI2026/Sprites. Prefabs não dependem dos IDs de subassets gerados pelo importador.
+- Recortes respeitam a resolução efetivamente importada. Corrigido o erro de recorte fora da textura que interrompia a reconstrução.
+- As 133 referências m_Sprite dos prefabs entregues resolvem para objetos existentes; catálogo dos reforços também usa os novos sprites.
+- Simulator em modo de edição usa a home/modal instaladas em vez do renderer antigo do level map.
+- Runtime e Editor completos compilados com saída 0. Captura após reabertura da Unity verificada no projeto isolado; não foi controlada a sessão Play já aberta do usuário.

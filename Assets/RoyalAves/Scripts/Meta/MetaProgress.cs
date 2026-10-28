@@ -76,6 +76,7 @@ namespace RoyalAves.Meta
         /// Credits only newly earned stars, including improvements on replays.
         public static int RecordWin(int level, AreaProgressionConfig config)
         {
+            bool firstWin = level > Data.highestLevelWon;
             var earned = LevelManager.THIS != null ? LevelManager.THIS.stars : 1;
             var record = Data.records.Find(r => r.level == level);
             // Old saves awarded a fixed reward and have no per-level credited-star field.
@@ -88,6 +89,7 @@ namespace RoyalAves.Meta
             Data.highestLevelWon = Mathf.Max(Data.highestLevelWon, level);
             Data.stars += added;
             Save();
+            if (firstWin) PostalEvents.RecordFirstWin(level);
             return added;
         }
 
@@ -158,15 +160,19 @@ namespace RoyalAves.Meta
             record.score = Mathf.Max(record.score, score);
             record.wins++;
             Save();
+            PostalEvents.RecordLevelWin(level);
         }
 
         public static bool IsMissionClaimed(string id) => Data.claimedMissions.Contains(id);
 
         public static bool ClaimMission(LobbyFeaturesConfig.Mission mission)
         {
-            if (mission == null || LevelsWon < mission.goal || IsMissionClaimed(mission.id)) return false;
+            if (mission == null || string.IsNullOrWhiteSpace(mission.id) || LevelsWon < Mathf.Max(1, mission.goal) || IsMissionClaimed(mission.id)) return false;
+            // Never consume a reward if the game wallet has not initialized yet.
+            if (mission.coins > 0 && InitScript.Instance == null) return false;
             Data.claimedMissions.Add(mission.id);
-            if (mission.coins > 0 && InitScript.Instance != null) InitScript.Instance.AddGems(mission.coins);
+            try { if (mission.coins > 0) InitScript.Instance.AddGems(mission.coins); }
+            catch { Data.claimedMissions.Remove(mission.id); throw; }
             Save();
             return true;
         }
@@ -244,6 +250,7 @@ namespace RoyalAves.Meta
         public static void ResetAll()
         {
             data = new SaveData();
+            PostalEvents.ResetProgress();
             Save();
         }
 

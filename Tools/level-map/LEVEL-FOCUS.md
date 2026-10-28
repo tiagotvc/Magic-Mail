@@ -1,0 +1,19 @@
+# Current level marker and reward stars
+
+Reward stars use the V77 glossy gold/platinum illustrations with small cream cushions; see [LEVEL-REWARDS.md](LEVEL-REWARDS.md). They are widely spaced, and the center badge is slightly larger. Their entire camera-facing plane is pulled toward the camera so the lower tips clear the curved terrain. Kits without the illustrations retain the rounded mesh fallback and its reward-only shader branch.
+
+`WorldMapCurrentLevel` creates one avatar marker and one focus graphic for the current playable level. It follows the actual projected token bounds, including river-platform adjustments and token scale. It places the avatar beside the token, switches sides when necessary, clamps horizontally and hides outside the usable map viewport. The default portrait comes from the approved HUD artwork; selected custom profile avatars use the existing feature sprite list. The frame is a rounded polished gold/purple shape drawn with native UI geometry and a rounded portrait mask.
+
+The current token has a cream/gold halo, five small twinkles and three short vertical light streaks. The effect uses a single lightweight UI mesh and updates its phase at 24 Hz when the map draws. It has no particle systems or per-frame object creation. It does not request continuous editor repainting; the existing editor animation preference remains in control. All marker/effect graphics pass input through to the map.
+
+## V87: offscreen return pin
+
+The former text pill **My level** is replaced by a glossy purple drop with a polished gold/cream edge and a circular live avatar. It sits centered above the bottom navigation and appears when the current playable level's on-node position marker leaves the usable viewport. Tapping it calls the existing FocusCurrent action, preserving the smooth scroll back to the current level. It hides as that level returns into view. No return pin is shown for an unavailable level after campaign completion, or over a covered menu.
+
+FocusCurrent now uses the current level's own cursor in the illustrated world. Its former focus-ahead offset could finish with the token behind the bottom HUD and leave the return control permanently visible. Both initial focus and tapped return now frame the node and its avatar within the usable viewport; authored prop placements and layouts are unchanged.
+
+`WorldMapReturnToLevel` uses the same default HUD portrait/custom profile selection as the existing on-node marker. Its children pass pointer input to one 156×190 canvas-unit button; the width still exceeds 44 physical pixels on the tested 360-pixel phone. `WorldMapReturnPinGraphic` extends the native position-frame geometry with a rounded drop outline, enamel gradients, circular mask, broad glint and small chevron. There are no new bitmap assets, animation loops, material instances, particles or per-frame object creation.
+
+`ReturnPinV87Validation.Run` checks both scroll directions, actual button activation and monotonic easing to the saved current level, automatic hiding, default/custom profile switching, menu suspension, campaign completion, touch size and geometry count. Native captures cover standard and narrow phones, before/after return and a selected custom avatar. The main runtime is also compiled with zero compiler errors. Preview state is isolated; no player saves are changed.
+
+No new raster artwork or image processing was needed. The approved HUD and existing mesh artwork are reused. Validation renders current levels 1, 5, 15, 30, 31 and 100 plus another effect phase, a custom profile portrait, a narrow phone and an offscreen case. The isolated profile facade changes only in memory; player progress and profile data are never written by these checks. Native captures are in `previews/level-focus-v75`; the result is recorded in `level-focus-v75-validation.txt`.

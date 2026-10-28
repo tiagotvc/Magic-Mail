@@ -1,0 +1,566 @@
+{
+  "version": 24,
+  "created": "2026-10-21",
+  "authorization": "User: pode começar a fazer tudo ai, todos os assets no capricho. Shared separate glow on all four eggs. Increase header height so buttons clear gold rail.",
+  "reference": "Tools/royal-postman/previews/pets-incubator-cartoon-v23.png",
+  "status": "installed",
+  "tool": "built-in image_gen",
+  "requirements": {
+    "headerHeight": 190,
+    "thinSocketPixels": 2,
+    "movingFacePressScale": 0.94,
+    "quantity": "lower-right at icon feet, baseline slightly raised",
+    "glow": "one separate reusable sprite, same effect on all four eggs",
+    "preserve": [
+      "Home",
+      "Navigation",
+      "CurrentProfile content",
+      "incubation stock/timers/unlocks",
+      "48h legendary",
+      "safe-area viewport"
+    ],
+    "geometry": "No taper. Same width above/below. Outer and inner shape mirror-symmetric both axes. Equal bevel width on all four sides, same rule for fixed rim.",
+    "paint": "User explicitly reverted geometric-finish result: preserve previous rich teal painting and broad single plateau. Geometry symmetry and uniform bevel still required; do not replace with inset-looking glassy finish."
+  },
+  "assets": [
+    {
+      "id": "pets-cartoon-v24-workshop",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-c89ce783-63df-4ba8-b111-b125061076c8.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-workshop.png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "298f948b47ab578397c5175754d36ee6396dbbf0f7580e37c3af8f00acc40892",
+      "hasAlpha": false,
+      "transparentFraction": 0,
+      "partialAlphaFraction": 0,
+      "boundsTopLeft": {
+        "left": 0,
+        "top": 0,
+        "width": 1086,
+        "height": 1448
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-workshop.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-header",
+      "group": "Menu",
+      "status": "native-reuse",
+      "paintSource": "pets-header-red-home-v4",
+      "geometry": "Native header strip, reuse Home paint"
+    },
+    {
+      "id": "pets-cartoon-v24-control-panel",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-d634002f-dcaa-4ed5-b1b2-51fc31f5efd7.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-control-panel.png",
+      "width": 2022,
+      "height": 778,
+      "sha256": "13f74d95bd286587617b6669216a6f10be28f7b7eba1fc3721f9ba5a15a9ef10",
+      "hasAlpha": true,
+      "transparentFraction": 0.2825436903572273,
+      "partialAlphaFraction": 0.717282768721442,
+      "boundsTopLeft": {
+        "left": 46,
+        "top": 94,
+        "width": 1930,
+        "height": 590
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-control-panel.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-shelf",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-b871312e-f05e-4066-966d-52ba48c90aef.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-shelf.png",
+      "width": 1942,
+      "height": 809,
+      "sha256": "6436c9eae85b04f06114b6ebb59491b577c03bfa4d22cfed04144bee27e8c9ec",
+      "hasAlpha": false,
+      "transparentFraction": 0,
+      "partialAlphaFraction": 0,
+      "boundsTopLeft": {
+        "left": 0,
+        "top": 0,
+        "width": 1942,
+        "height": 809
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-shelf.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-plaque-red",
+      "group": "Menu",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-round-red",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-plaque-purple",
+      "group": "Menu",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-purple",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-incubator-common",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-9cf6c6cb-1c5c-4b1e-80e7-df7eb3d5be49.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-incubator-common.png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "3906835b7d7ea4c3219e082fa19fb5f5a0f3602cdc59831e639930b4e039bcb6",
+      "hasAlpha": true,
+      "transparentFraction": 0.48689498692551103,
+      "partialAlphaFraction": 0.5122973962943744,
+      "boundsTopLeft": {
+        "left": 11,
+        "top": 47,
+        "width": 1065,
+        "height": 1360
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-incubator-common.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-incubator-rare",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-7f5b3bb5-dca2-4700-8f00-be141ca21dec.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-incubator-rare.png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "55c05c40ccbc0512b37471030afcbffbd2351bd2fec152279e70554ba4568457",
+      "hasAlpha": true,
+      "transparentFraction": 0.3896909943733911,
+      "partialAlphaFraction": 0.6093150646602159,
+      "boundsTopLeft": {
+        "left": 7,
+        "top": 25,
+        "width": 1072,
+        "height": 1393
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-incubator-rare.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-incubator-epic",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-942dae9e-3465-440e-8f56-47767c67389a.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-incubator-epic.png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "d19b08ae845467d4222b9b9cb54616d466528df432bce929fae0a647e20e8a37",
+      "hasAlpha": true,
+      "transparentFraction": 0.37082010622386374,
+      "partialAlphaFraction": 0.62859675630577,
+      "boundsTopLeft": {
+        "left": 4,
+        "top": 9,
+        "width": 1079,
+        "height": 1410
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-incubator-epic.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-incubator-legendary",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-ea60f878-a639-43fc-89d2-a32c48795333.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-incubator-legendary.png",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "c8934c9594d40afb1d090ee13cc9ab5afd0adc5cdfa2d730e5fa786ef819100b",
+      "hasAlpha": true,
+      "transparentFraction": 0.4362141723390617,
+      "partialAlphaFraction": 0.5628580222418933,
+      "boundsTopLeft": {
+        "left": 9,
+        "top": 34,
+        "width": 1068,
+        "height": 1382
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-incubator-legendary.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-common",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-f128b01b-cad6-417e-b469-9b2c9dca630b.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-common.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "bf2df8b73e3ac27d5130dfbf3117122d99f96516f3678126bc39dd3148dacd8e",
+      "hasAlpha": true,
+      "transparentFraction": 0.4757652282714844,
+      "partialAlphaFraction": 0.5242347717285156,
+      "boundsTopLeft": {
+        "left": 47,
+        "top": 223,
+        "width": 924,
+        "height": 1147
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-common.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-rare",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-faae5976-6d84-47ea-9b32-85d27236bc6b.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-rare.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "0c47e2cd40e36d0a241c575fc6a0fadcde9bf9c915cfb3ebf44686ba6effc68a",
+      "hasAlpha": true,
+      "transparentFraction": 0.4326648712158203,
+      "partialAlphaFraction": 0.5673351287841797,
+      "boundsTopLeft": {
+        "left": 31,
+        "top": 177,
+        "width": 961,
+        "height": 1201
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-rare.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-epic",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-eb006506-a6cb-4ed9-8e00-a81c7af5079b.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-epic.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "c35ee627451a28f036c3f462231382cab30c46b593d52521a7c2d67b2128e1be",
+      "hasAlpha": true,
+      "transparentFraction": 0.4017473856608073,
+      "partialAlphaFraction": 0.5982526143391927,
+      "boundsTopLeft": {
+        "left": 23,
+        "top": 130,
+        "width": 979,
+        "height": 1251
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-epic.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-legendary",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-dfb7bbdd-dd1d-4760-aec4-725b62c5ac9d.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-legendary.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "a05f819df07ae2453f566dd637c515788d406566552c9f38b10d8018a0ee375a",
+      "hasAlpha": true,
+      "transparentFraction": 0.3961219787597656,
+      "partialAlphaFraction": 0.6038780212402344,
+      "boundsTopLeft": {
+        "left": 17,
+        "top": 151,
+        "width": 990,
+        "height": 1238
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-legendary.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-egg-glow",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-69053cd0-659f-4d63-b70a-6a5723c3e8c5.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-egg-glow.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "27a4490059da307acb0fc1e5dd4e1bc76e808f76e1ef39025cc8b43912cd977a",
+      "hasAlpha": true,
+      "transparentFraction": 0.4440008799235026,
+      "partialAlphaFraction": 0.5559991200764974,
+      "boundsTopLeft": {
+        "left": 0,
+        "top": 99,
+        "width": 1024,
+        "height": 1355
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-egg-glow.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-action-rim",
+      "group": "Button",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-48628c82-a155-4150-aaf9-c9204f846802.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-action-rim.png",
+      "width": 1923,
+      "height": 818,
+      "sha256": "8c0657b7ecc1300eceffd4d6b5aaa5ab76e33a05b80ad5a2e4694b91637be010",
+      "hasAlpha": true,
+      "transparentFraction": 0.7811246435187481,
+      "partialAlphaFraction": 0.2164297329839404,
+      "boundsTopLeft": {
+        "left": 68,
+        "top": 89,
+        "width": 1787,
+        "height": 642
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-action-rim.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-action-teal",
+      "group": "Button",
+      "status": "rejected-asymmetric",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-d85e9790-386e-48f5-aaef-30835c48a672.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-action-teal.png",
+      "width": 1942,
+      "height": 809,
+      "sha256": "369128ca2c97003ea6ba2499afd1ff0b4152e2db1e19a5913b40a7b60a56c1e8",
+      "hasAlpha": true,
+      "transparentFraction": 0.2596331945326712,
+      "partialAlphaFraction": 0.7396723778195609,
+      "boundsTopLeft": {
+        "left": 62,
+        "top": 75,
+        "width": 1818,
+        "height": 665
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-action-teal.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-action-purple",
+      "group": "Button",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-714bde04-2751-444c-98ef-53568325f411.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-action-purple.png",
+      "width": 1922,
+      "height": 818,
+      "sha256": "409ba34f144956eca3dcd2381dc0a2de2383610add17874642583904a7f5ea70",
+      "hasAlpha": true,
+      "transparentFraction": 0.25326486010650073,
+      "partialAlphaFraction": 0.7464082086457414,
+      "boundsTopLeft": {
+        "left": 58,
+        "top": 74,
+        "width": 1808,
+        "height": 677
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-action-purple.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-tab-rim",
+      "group": "Button",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-rim",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-tab-teal",
+      "group": "Button",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-teal-symmetric",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-tab-purple",
+      "group": "Button",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-purple",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-round-rim",
+      "group": "Button",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-rim",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-round-red",
+      "group": "Button",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-12063a0e-427b-4fd1-9e35-0aac670860a1.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-round-red.png",
+      "width": 1921,
+      "height": 819,
+      "sha256": "ace2fdc24b176fa366b51f8116205037adae79766efcaae79925871df10b5976",
+      "hasAlpha": true,
+      "transparentFraction": 0.24814100816183066,
+      "partialAlphaFraction": 0.7510371518700514,
+      "boundsTopLeft": {
+        "left": 56,
+        "top": 70,
+        "width": 1810,
+        "height": 684
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-round-red.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-round-purple",
+      "group": "Button",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-purple",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-paw",
+      "group": "Icon",
+      "status": "reuse-approved",
+      "spriteId": "paw-cream"
+    },
+    {
+      "id": "pets-cartoon-v24-back",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-b6247463-9e20-42c2-9d70-636ccb476a9a.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-back.png",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "a4ec0a30d051af9ac4fb73446d834059ca13ee10cbeab8bc0f4a1d45f09c9953",
+      "hasAlpha": true,
+      "transparentFraction": 0.6256782124951352,
+      "partialAlphaFraction": 0.3736699658381854,
+      "boundsTopLeft": {
+        "left": 70,
+        "top": 187,
+        "width": 1115,
+        "height": 913
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-back.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-help",
+      "group": "Icon",
+      "status": "native-glyph",
+      "font": "Assets/RoyalAves/Fonts/LilitaOne-Regular.ttf",
+      "glyph": "?"
+    },
+    {
+      "id": "pets-cartoon-v24-hourglass",
+      "group": "Icon",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-7531c7e1-0b06-4756-bce3-573aed56c0cb.png",
+      "path": "Assets/RoyalAves/Art/UI/Icon/RoyalPostman/PetsCartoon/pets-cartoon-v24-hourglass.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "789f23af6c73fa5db30ed3e5eea1942b9787b2b112749ff7c112c76f39582f82",
+      "hasAlpha": true,
+      "transparentFraction": 0.4091943105061849,
+      "partialAlphaFraction": 0.5908056894938151,
+      "boundsTopLeft": {
+        "left": 82,
+        "top": 71,
+        "width": 860,
+        "height": 1400
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-hourglass.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-arrow",
+      "group": "Button",
+      "status": "reuse-approved",
+      "spriteId": "pets-page-arrow-v6"
+    },
+    {
+      "id": "pets-cartoon-v24-progress-track",
+      "group": "Menu",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-teal-symmetric",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-progress-fill",
+      "group": "Menu",
+      "status": "native-reuse",
+      "paintSource": "pets-cartoon-v24-action-teal-symmetric",
+      "geometry": "RoyalPostmanSymmetricButtonFace"
+    },
+    {
+      "id": "pets-cartoon-v24-pedestal",
+      "group": "Menu",
+      "status": "generated",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-1cb6a506-bc97-4956-9160-472f44bf1ba2.png",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/PetsCartoon/pets-cartoon-v24-pedestal.png",
+      "width": 2020,
+      "height": 779,
+      "sha256": "0100155ca27c9a9df36adf40a955483d409aeb4156cc4ba33ace358fb0ab5348",
+      "hasAlpha": true,
+      "transparentFraction": 0.409315065010994,
+      "partialAlphaFraction": 0.5898117667992729,
+      "boundsTopLeft": {
+        "left": 114,
+        "top": 95,
+        "width": 1792,
+        "height": 590
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-pedestal.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-action-teal-symmetric",
+      "group": "Button",
+      "status": "restored-reference-paint-approved-native-geometry-validated",
+      "replaces": "pets-cartoon-v24-action-teal",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-89e938f7-f641-4e20-a91e-a0b10e0c5b01.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-action-teal-symmetric.png",
+      "width": 1922,
+      "height": 818,
+      "sha256": "8486804c780fc8f6f329d7fefd7ec36134e02f2209f336ebe1f06fdc1d04d0d4",
+      "hasAlpha": true,
+      "transparentFraction": 0.2539098178598597,
+      "partialAlphaFraction": 0.7458395772537266,
+      "boundsTopLeft": {
+        "left": 59,
+        "top": 74,
+        "width": 1806,
+        "height": 678
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-action-teal-symmetric.txt"
+    },
+    {
+      "id": "pets-cartoon-v24-action-teal-geometric",
+      "group": "Button",
+      "status": "rejected-user-reverted-finish",
+      "replaces": "pets-cartoon-v24-action-teal-symmetric",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a15af4-fedb-77d3-b750-1054318794bd\\exec-05d5d418-075d-4733-91eb-2b94cf259956.png",
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/PetsCartoon/pets-cartoon-v24-action-teal-geometric.png",
+      "width": 1812,
+      "height": 868,
+      "sha256": "3480dbc4ac9f9c16257bfdb78f0b6896df5f2bae32ec5c012449004d03b9261f",
+      "hasAlpha": true,
+      "transparentFraction": 0.23297067171239358,
+      "partialAlphaFraction": 0.7650901313313191,
+      "boundsTopLeft": {
+        "left": 72,
+        "top": 70,
+        "width": 1668,
+        "height": 727
+      },
+      "prompt": "Tools/royal-postman/production/pets-cartoon-v24-prompts/pets-cartoon-v24-action-teal-geometric.txt"
+    }
+  ],
+  "selection": {
+    "actionTeal": "pets-cartoon-v24-action-teal-symmetric"
+  },
+  "geometry": {
+    "method": "Native concentric rounded-rectangle mesh, unchanged approved painting texture",
+    "component": "Assets/RoyalAves/Scripts/UI/RoyalPostman2026/RoyalPostmanSymmetricButtonFace.cs",
+    "shader": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Shaders/RoyalPostmanSymmetricPaint.shader",
+    "review": "Tools/royal-postman/previews/pets-action-teal-v24-native.png",
+    "validation": "Tools/royal-postman/production/review/pets-cartoon-v24/button-geometry-validation.txt",
+    "bevelReviewPixels": 64,
+    "topBottomWidthsEqual": true,
+    "productionInstalled": true
+  },
+  "installation": {
+    "prefab": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Pets.prefab",
+    "sha256": "5ee1e041314f10224ae055c93e1fbaeefa616adeffb883fdf48226be99c7fe2d",
+    "sources": 19,
+    "nativeResourceFiles": 69,
+    "preserved": [
+      "CurrentProfile",
+      "Home",
+      "Navigation",
+      "stock/timers/unlocks",
+      "Legendary 48h"
+    ],
+    "review": "Tools/royal-postman/production/review/pets-cartoon-v24",
+    "validation": "Native resolution checks see validation.txt; dependencies and original PNG hashes verified"
+  }
+}

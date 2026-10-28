@@ -1,0 +1,41 @@
+# Play modal — round coat-button boosters and three header variations
+
+Built-in imagegen visual studies, not runtime assets. User requested containers inspired by the Courier's coat buttons and clarified ROUND, NOT OVAL. The Round 80 screenshot is reference only; retain our Royal Postman identity, palette, content and typography. No Butler's Gift, rewards tag, timers, English UI, or source watermark is adopted.
+
+All candidates use true circular independently rendered-looking booster supports with available gold, selected teal/check and locked gray/padlock states. Preserve the small tip badge on Grátis and its click-captured rewarded-ad behavior. Only modal HEADER form differs across candidates:
+
+- A: red curved ribbon, `previews/play-modal-round-header-a-red-ribbon.png`.
+- B: straight compact plum postal plaque, `previews/play-modal-round-header-b-plum-plaque.png`.
+- C: warm ivory inset title card on red, `previews/play-modal-round-header-c-ivory-insert.png`.
+
+No header or new container has been selected for production yet. Main Play button remains rounded rectangular; the round requirement applies to booster containers, not every UI control. Existing home, scene, gameplay, data and ads are unchanged. Exact production text matching, independent layer extraction, artifact cleanup and state implementation remain future tasks after visual selection.
+
+## Prompt A
+
+Create ONE polished Royal Postman PLAY MODAL variation from OUR existing Nível 14 mockup. Among the recent images, the Royal Postman modal with gold postal cap, red seal, teal potion, Jogar and Grátis is the EDIT TARGET. The screenshot labeled Round 80 is ONLY a structural header reference, NOT our game or content: do NOT import Butler's Gift, its bell, rewards tag, green booster tiles, timers, infinity icons, English text or watermark. Keep OUR red/plum/teal/ivory/gold palette, exact rounded ivory typography, goal icons and target numbers 20/12/8, red outer body, cream panel, Jogar and Grátis buttons, SMALL rocket/video badge on the upper-right tip of Grátis, dimmed Royal Postman home and composition.
+
+REQUIRED FOR ALL VARIATIONS — CIRCULAR BOOSTER CONTAINERS: replace the three square/rounded-square booster sockets with THREE PERFECTLY ROUND CIRCLES, width EXACTLY equal to height, not oval, not squircle, not a vertically stretched medallion. Inspired by the smooth convex GOLD COAT BUTTONS on our Courier: substantial rounded button volume, a broad soft reflection on the upper-left face, orange/gold lower bevel and a restrained separate rim. NO sewing holes, thread, engravings, crown, filigree or realistic metal. Colored center, rim, icon, count, check and lock remain visually distinct independent pieces. Keep the current row spacing and approximate icon size; circles fit comfortably within the cream panel.
+LEFT: circular sunny yellow-gold convex button behind the existing rocket; red 4 badge lower right.
+MIDDLE: circular emerald-teal convex button with restrained sunny-gold rim behind the original purple bomb; red 4 lower right and small check badge upper right.
+RIGHT: circular muted lavender/slate-gray convex button behind the dimmed original magic orb; separate gray padlock lower center; no inventory number. All three must have identical true round outline and smooth sculpted volume.
+Keep exact Selecionar reforços heading. Do not change booster identities or introduce a new game mechanic.
+
+Preserve approved painting quality: clean broad shapes, softly sculpted cartoon gold, no stains, noise, grain, smearing, malformed text, halos or jagged edges. Full portrait screen, no device frame, no annotations or variation label on artwork. This is a design preview, not a production screenshot.
+
+VARIATION A — RED CURVED RIBBON HEADER:
+Replace only our previous bulky plum header with a wide clean WARM RED gently arched ribbon header, inspired by the simple top/bottom gold strips of the Round 80 reference, but painted entirely in OUR existing Courier red and sunny gold. Broad red face, gentle forward curve, one restrained gold upper strip and one gold lower strip, short dark-plum folded side returns that connect naturally to our red modal. No decorative scroll curls or jewelry. Exact large ivory "Nível 14" lettering centered in our typography. Existing round red/gold X at upper-right remains. Keep approximately the original header footprint and title scale. All modal content below stays in its original place.
+
+## Prompt B
+
+Create HEADER VARIATION B of this Royal Postman play modal, changing ONLY the title header. Keep the exact existing three PERFECTLY ROUND circular booster containers inspired by the Courier's coat buttons, all their available/selected/locked colors, icons, quantities/check/lock, the red/gold body, cream objective panel, all numbers, exact typography, Jogar and Grátis, SMALL badge at Grátis upper-right tip, background and composition.
+
+VARIATION B — INTEGRATED PLUM POSTAL PLAQUE:
+Replace the arched RED RIBBON with a more compact and structured PLUM nameplate integrated into the upper red modal. Its silhouette is a wide ordinary horizontal rectangle with four softly CHAMFERED rounded corners, a STRAIGHT top and STRAIGHT lower edge (no bow/arch, no waving ribbon, no rolled returns). It has one substantial smooth sunny-gold beveled border, calm plum enamel face with broad restrained upper-left highlight and short dark-plum lower bevel, no ornate decoration. Keep roughly the same width and header center as the current red ribbon, but slightly reduce header height about 10%, leaving more quiet red body visible around it; keep all body contents below fixed in place. Exact large ivory "Nível 14" centered in the same approved rounded lettering and dark short shadow, not a new font. Preserve the same round red/gold X at upper-right. The plaque should feel like a clean royal POSTAL badge in OUR game's palette, not a fancy fantasy scroll, no crown, no envelope symbol added, no gems. This must be visibly a different HEADER FORM from the red arched ribbon, not just a recolor. Keep the original clean premium painted mobile match-3 finish, no realistic metal, stains, grain or artifacts. One full portrait modal screen, no notes or variant labels.
+
+## Prompt C
+
+Create HEADER VARIATION C of the attached Royal Postman pre-level modal. Change ONLY the title header; preserve the EXACT rest of this mockup, especially the THREE TRUE CIRCULAR convex booster containers inspired by our Courier's coat buttons, their gold/teal/gray state colors and same shapes, icons, counts/check/lock; red body, cream inner panel, goal illustrations/20/12/8, title wording, approved lettering family, Jogar/Grátis buttons, tiny reward badge attached at the Grátis upper-right tip, and dimmed home.
+
+VARIATION C — WARM IVORY POSTAL TITLE INSERT:
+Replace the current red arched ribbon header with a SINGLE calm warm-IVORY title insert nested into a broad RED top band. The insert resembles a simple royal postal name card: a horizontal rounded rectangle with restrained softly clipped upper corners and a gentle rounded lower edge, slightly narrower than the modal body, WITHOUT ribbon tails, arch, rolls, stamp teeth, wax seal or ornament. A very thin sunny-gold lit upper lip and a short plum recess shadow make the ivory card feel perfectly fitted inside the red header band; do not add a big heavy gold frame. Large exact "Nível 14" in DEEP PLUM lettering on ivory, same glyph shapes/proportions/weight/spacing as the original approved title, with a very short softer warm shadow for legibility. The broad warm red band remains clearly visible around the ivory insert; its outer top corners softly round into the red modal. Existing separate round red/gold X stays at the upper-right corner. Keep the approximate existing title center and overall footprint and keep all content below stationary. This third header should have a distinctly lighter, cleaner postal feel using only OUR approved palette. No new font, no character portrait or new symbols. Maintain the same premium softly sculpted Royal Postman cartoon painting, smooth broad highlights, no stains/grain/artifacts, no realistic metal, no redesign of anything else. Output one complete portrait modal screen, no editorial text or variation labels.
+

@@ -17,6 +17,12 @@ namespace RoyalAves.Meta.WorldMap
         Sprite shown;
         bool shownMirrored;
         float ratio;
+        bool geometryValid,lastWater;
+        WorldMapRoute lastRoute;
+        float lastCursor,lastRadius,lastCurvature;
+        Vector4 lastShape;
+        Vector2 lastFootprint;
+        Matrix4x4 lastProjection;
         static Sprite glowSprite;
         public void Glow(PropPlacement p,WorldMapRoute route,Transform world,float cursor,float radius,Material glowMaterial,Vector2 footprint,Color color)
         {
@@ -48,7 +54,7 @@ namespace RoyalAves.Meta.WorldMap
             root.SetActive(true);
             if(shown!=sprite||shownMirrored!=mirror)
             {
-                shown=sprite;shownMirrored=mirror;var bounds=WorldMapCards.VisibleBounds(sprite);ratio=bounds.width/Mathf.Max(.001f,bounds.height);
+                shown=sprite;shownMirrored=mirror;geometryValid=false;var bounds=WorldMapCards.VisibleBounds(sprite);ratio=bounds.width/Mathf.Max(.001f,bounds.height);
                 var uv=new Vector2[vertices.Length];
                 for(int y=0;y<=Rows;y++)for(int x=0;x<=Columns;x++)
                 {
@@ -67,13 +73,21 @@ namespace RoyalAves.Meta.WorldMap
             block.SetVector("_IceWorld",new Vector4(p.offset,p.s,p.height*ratio,p.height));
             block.SetColor("_Tint",new Color(1,1,1,opacity));renderer.SetPropertyBlock(block);
             if(glow.HasValue){block.SetColor("_Color",glow.Value);renderer.SetPropertyBlock(block);}
+            // Color and magic keep animating; the conformed mesh only changes with its geometry.
+            var projection=root.transform.worldToLocalMatrix*world.localToWorldMatrix;
+            var size=footprint??new Vector2(p.height*ratio,p.height);
+            var shape=new Vector4(p.s,p.offset,p.height,ratio);var curvature=route.Curvature;
+            if(geometryValid&&lastRoute==route&&lastCursor==cursor&&lastRadius==radius&&lastWater==water&&
+                lastCurvature==curvature&&lastShape.Equals(shape)&&lastFootprint.Equals(size)&&lastProjection.Equals(projection))return;
+            geometryValid=true;lastRoute=route;lastCursor=cursor;lastRadius=radius;lastWater=water;
+            lastCurvature=curvature;lastShape=shape;lastFootprint=size;lastProjection=projection;
             for(int y=0;y<=Rows;y++)for(int x=0;x<=Columns;x++)
             {
-                float s=p.s+(y/(float)Rows-.5f)*(footprint?.y??p.height);
-                float side=p.offset+(x/(float)Columns-.5f)*(footprint?.x??p.height*ratio);
+                float s=p.s+(y/(float)Rows-.5f)*size.y;
+                float side=p.offset+(x/(float)Columns-.5f)*size.x;
                 var point=MapCurve.Point(s-cursor,route.CenterX(s)+WorldMapTerrain.Lateral(side,s-cursor),
-                    (water||route.InGap(s)?route.WaterHeight(s):WorldMapTerrain.SurfaceHeight(route,s,side))+.012f,radius,route.Curvature);
-                vertices[y*(Columns+1)+x]=root.transform.InverseTransformPoint(world.TransformPoint(point));
+                    (water||route.InGap(s)?route.WaterHeight(s):WorldMapTerrain.SurfaceHeight(route,s,side))+.012f,radius,curvature);
+                vertices[y*(Columns+1)+x]=projection.MultiplyPoint3x4(point);
             }
             mesh.vertices=vertices;mesh.RecalculateBounds();
         }

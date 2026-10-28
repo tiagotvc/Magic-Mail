@@ -26,6 +26,8 @@ namespace RoyalAves.EditorTools
         int previewReached;
         WorldMapKit previewKit;
         bool needsRebuild;
+        bool previewDirty=true,previewMoving;
+        double nextWindowFrame;
         WorldMapIslands captureIslands;
         Vector2 settingsScroll,previewPan;
         float sidebarWidth=420,previewZoom=1;
@@ -34,7 +36,7 @@ namespace RoyalAves.EditorTools
         Vector2 mapPressPosition;
         int mapDragControl;
         double lastMapDrag,lastPreviewFrame;
-        int seasonPreview;
+        [SerializeField] int seasonPreview;
         readonly RoyalAvesMapIslandControls islandControls=new RoyalAvesMapIslandControls();
         readonly RoyalAvesMapLayoutControls layoutControls=new RoyalAvesMapLayoutControls();
         static bool creatingScenePreview;
@@ -64,9 +66,9 @@ namespace RoyalAves.EditorTools
         internal bool NeedsSceneAnimation=>map!=null&&map.NeedsPreviewFrames;
         internal void ClickScenePreview(Vector2 viewport){map.ClickViewport(viewport);RenderCanvas();}
         internal void RenderScenePreview() => RenderScenePreview(0);
-        internal bool RenderScenePreview(float deltaTime)
+        internal bool RenderScenePreview(float deltaTime, bool animate = true)
         {
-            var moving=map.PreviewMotion(deltaTime);
+            var moving=map.PreviewMotion(deltaTime,animate);
             level=map.Cursor;
             RenderCanvas();
             return moving;
@@ -75,9 +77,9 @@ namespace RoyalAves.EditorTools
         internal void DragScenePreview(float fraction,float deltaTime)
         {
             map.DragByViewport(fraction,deltaTime);
-            level=map.Cursor;
+            level=map.Cursor;previewDirty=true;
         }
-        internal void EndSceneDrag(){if(scenePointer!=null)map.EndDrag(scenePointer);}
+        internal void EndSceneDrag(){if(scenePointer!=null)map.EndDrag(scenePointer);previewDirty=true;}
         internal void ScrollScenePreview(float delta)=>map.Scroll(delta);
 
         [MenuItem("Royal Aves/Mapa de níveis/Pré-visualizar mundo curvo")]
@@ -162,13 +164,24 @@ namespace RoyalAves.EditorTools
         void RenderWindow()
         {
             if(camera==null||map==null)return;
+            var animate=RoyalAvesMapSimulatorPreview.AnimatePreview;
+            if(!scenePreview&&!previewDirty&&!previewMoving&&!animate&&Mathf.Approximately(level,map.Cursor))return;
             var now=EditorApplication.timeSinceStartup;
             var deltaTime=lastPreviewFrame>0?(float)(now-lastPreviewFrame):0;
             lastPreviewFrame=now;
             // PreviewAt resets velocity. Use it only for an explicit sidebar/toolbar position change;
             // mouse navigation advances the same drag, easing and inertia used by the game.
             if(!Mathf.Approximately(level,map.Cursor))map.PreviewAt(level);
-            RenderScenePreview(deltaTime);
+            previewMoving=RenderScenePreview(deltaTime,animate);
+            previewDirty=false;
+        }
+
+        void Update()
+        {
+            if(scenePreview||map==null||EditorApplication.timeSinceStartup<nextWindowFrame)return;
+            if(!previewDirty&&!previewMoving&&!RoyalAvesMapSimulatorPreview.AnimatePreview)return;
+            nextWindowFrame=EditorApplication.timeSinceStartup+1d/30;
+            Repaint();
         }
 
         internal void HandleMapNavigation(Event e,Rect imageRect)
@@ -258,7 +271,16 @@ namespace RoyalAves.EditorTools
             EditorGUI.BeginChangeCheck();
             seasonPreview=EditorGUILayout.Popup("Preview de season",seasonPreview,new[]{"Season ativa no jogo","Sem decoração","Natal / neve sobreposta"});
             if(EditorGUI.EndChangeCheck()){previewKit.seasonPreview=seasonPreview;Build(capture.width,capture.height,previewReached);}
-            EditorGUILayout.HelpBox("O preview de season não altera a season ativa. Natal coloca neve sobre os objetos de qualquer área e aplica o chão nevado.",MessageType.None);
+            var savedSeason=SeasonConfig.Instance?.Active;
+            EditorGUILayout.LabelField("Active season",savedSeason==null?"None":string.IsNullOrWhiteSpace(savedSeason.title)?savedSeason.id:savedSeason.title);
+            if(GUILayout.Button("Save as active season"))
+            {
+                RoyalAvesMapSeasonControls.SaveActive(seasonPreview);
+                seasonPreview=0;
+                Build(capture.width,capture.height,previewReached);
+                ShowNotification(new GUIContent("Active season saved"));
+            }
+            EditorGUILayout.HelpBox("Preview changes are temporary. Save as active season keeps this look in the game and after reopening Unity.",MessageType.None);
             if(GUILayout.Button("Editar seasons e camadas do mapa"))EditorApplication.ExecuteMenuItem("Royal Aves/Editor de temporadas");
             DrawSantaSettings();
             DrawNightSettings();
@@ -278,6 +300,7 @@ namespace RoyalAves.EditorTools
             {
                 layoutControls.Toolbar(map.World,ref level);
             }
+            RoyalAvesMapSimulatorPreview.AnimatePreview=EditorGUILayout.Toggle("Animate editor preview",RoyalAvesMapSimulatorPreview.AnimatePreview);
             if(GUILayout.Button("Atualizar dados e reconstruir preview")){AssetDatabase.Refresh();needsRebuild=true;}
             EditorGUILayout.EndScrollView();GUILayout.EndArea();
             EditorGUI.DrawRect(divider,new Color(.13f,.13f,.13f));
@@ -293,6 +316,7 @@ namespace RoyalAves.EditorTools
             pane.yMin=28;
             if(capture!=null&&map!=null)
             {
+                if(GUI.changed)previewDirty=true;
                 if(Event.current.type==EventType.Repaint)RenderWindow();
                 GUI.BeginGroup(pane);
                 var area=new Rect(0,0,pane.width,pane.height);
@@ -312,7 +336,8 @@ namespace RoyalAves.EditorTools
                 // Object/effect editing claims its own hit first; dragging empty ground still navigates.
                 layoutControls.Overlay(imageRect,map.World,level);
                 HandleMapNavigation(e,imageRect);
-                GUI.EndGroup();Repaint();
+                GUI.EndGroup();
+                if(GUI.changed){previewDirty=true;Repaint();}
             }
         }
 
@@ -379,7 +404,7 @@ namespace RoyalAves.EditorTools
 
         void Cleanup()
         {
-            EndMapNavigation();lastPreviewFrame=0;
+            EndMapNavigation();lastPreviewFrame=0;previewMoving=false;previewDirty=true;
             // Edit-mode MonoBehaviours are not guaranteed an OnDestroy callback on preview-scene close.
             if(map!=null&&map.World!=null)map.World.Dispose();
             map = null;

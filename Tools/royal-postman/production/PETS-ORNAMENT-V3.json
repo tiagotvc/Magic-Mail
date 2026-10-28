@@ -1,0 +1,27 @@
+{
+  "tool": "built-in image_gen",
+  "assets": [
+    {
+      "key": "divider_corrected",
+      "group": "Menu",
+      "id": "pets-divider-lines-v3",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-divider-lines-v3.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-50fc3d3c-5014-46c9-9317-b98ea5857f2b.png",
+      "prompt": "Use case: precise-object-edit / background extraction. The attached close-up is the EXACT ornament to reproduce. Rebuild/extract ONLY that horizontal gold inventory divider, remove ALL navy background, text, cards and scenery. Match this supplied ornament exactly, not a redesign: a long very thin straight sunny-yellow gold line with orange underside; a small clockwise curled spiral finial at each far end; in the middle a ROUNDED almost circular plump purple amethyst cabochon with a sharp four-point pale reflection, held in a flame/teardrop-shaped gold mount with a little point above and below; sweeping symmetric S-shaped golden arabesque wings curl outward to each side of that central mount, with small inner loop details. The central jewel is ROUND/OVAL, NOT a tall diamond or elongated faceted lozenge. The wings are long flowing scrolls as in the crop, not just two little circles next to a diamond. Gold smoothly glossy sunny yellow face and orange edges, exactly like the reference. Overall whole divider proportions visible width : maximum central height about 18:1. Central ornament occupies approximately 17 percent of total width. Entire divider centered, full ends visible. Render on TRUE TRANSPARENT background, no glow, no backdrop, no lettering or panels. High native resolution about 3072 px wide if possible. Preserve exact silhouette and relative sizes of the reference.",
+      "width": 2172,
+      "height": 724,
+      "sha256": "63b81891df3c75b0992207bd295eec009ed715767569681f58877adc933b5403"
+    },
+    {
+      "key": "center_glossy",
+      "group": "Menu",
+      "id": "pets-ornament-center-v3",
+      "path": "Assets/RoyalAves/Art/UI/Menu/RoyalPostman/Pets/pets-ornament-center-v3.png",
+      "source": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a13551-4eae-78c2-b012-d5d47dd589ce\\exec-a8c4cb71-6586-472c-bc8c-3c03fdfdf118.png",
+      "prompt": "Use case: precise-object-edit. There are three recent reference images: (A) the GOLD SCROLL ORNAMENT with a purple jewel on transparency is the EDIT TARGET; (B) a green Jogar button is a previous material reference, IGNORE its green color and button shape; (C) the user's NEWEST CLOSE-UP of a luminous PURPLE DIAMOND mounted in a gold game header is the EXACT GEM MATERIAL/FINISH reference. Edit A. Preserve ALL its gold scrolls, full upward outer curls, symmetry, color planes, golden mount, overall silhouette and transparent background. Change ONLY the purple gemstone inside the existing setting. Keep the existing rounded pointed oval gem silhouette so it fits the same gold mount; do not change it into the diamond-shaped silhouette of C. Match C's gemstone finish: clearly organized LARGE cut facets with crisp boundaries, vivid royal-purple and violet side facets, luminous magenta-purple central facets, clean soft specular streaks on the upper-left facet and bright pale-lavender reflection on the upper ridge. A polished convex cut gemstone with visible facet planes AND GLOSSY SHINE, exactly like C. Gentle luminous gradients within facets, not flat matte polygon fills. Reflections follow the cut planes, broad and clean, NOT a huge four-point painted star obscuring the facets, no realistic cloudy refraction or noisy colorful swirls. Strong readable violet edge bevels, dimensional and jewel-like at small game UI size, crisp professionally painted cartoon mobile-game quality. NO GREEN. Keep the sunny gold/orange ornament exactly unchanged. Do not add objects or letters. Preserve true transparent background. High native resolution at least 2121x741, whole ornament centered fully visible with clear margin.",
+      "width": 2121,
+      "height": 741,
+      "sha256": "088b20e5ce41c277cbb62d28cfccd4d3d9db2e97c9fa17f8bdf9b51dc6e966ac"
+    }
+  ]
+}

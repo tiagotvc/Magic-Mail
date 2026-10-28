@@ -1,0 +1,32 @@
+{
+  "version": 121,
+  "date": "2026-10-24",
+  "prefab": "Assets/RoyalAves/Prefabs/RoyalPostmanUI2026/Pets.prefab",
+  "before": "9ef7d8340de408cb4b0ddacb3a7c01fcc8a42d1f69353c25cbe82f3c9fc3c3e1",
+  "after": "be116ce21f6db8d8e81c33b7dbaa8cda519063e75c93ec74242904dba3f0073f",
+  "beforeComponents": 2037,
+  "afterComponents": 2262,
+  "preservedProfile": 486,
+  "notes": [
+    "Native UI assembled and rendered in a hidden isolated Unity project.",
+    "Original header, authored round sprites, blue AllIn1 button materials and profile preserved.",
+    "No generated mascot entered the empty production reward catalogue.",
+    "New reusable native bevel/clock/reward-text graphics; existing gold rim and neutral face sprites reused.",
+    "Live clock stock and inventory labels; original economy and durable reward receipts retained."
+  ],
+  "materials": [
+    {
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Materials/IncubatorV121/CancelRed.mat",
+      "sha256": "a78e7971e1b84739df5a77aa3f1958efb012764121c9a877c02f86310ccfc1a3"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Materials/IncubatorV121/DrawerBlue.mat",
+      "sha256": "7f62b6447b2eb4cdae771f46d36ec0220de3c2a822f9e1191ef16ae2c8f7680b"
+    },
+    {
+      "path": "Assets/RoyalAves/Art/UI/Button/RoyalPostman/Materials/IncubatorV121/IncubateGreen.mat",
+      "sha256": "6ec665fe256678f6bfc0590a16208bc7b42db5b9051ee3d348c61251fa53a20e"
+    }
+  ],
+  "checks": "review/hatchery-v121/checks.txt"
+}

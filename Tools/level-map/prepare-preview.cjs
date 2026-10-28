@@ -43,11 +43,26 @@ function copySource(relative) {
 for (const name of fs.readdirSync(path.join(root, 'Assets/RoyalAves/Scripts/Meta')))
   if (name.endsWith('.cs') && name.includes('Map')) copySource('Assets/RoyalAves/Scripts/Meta/' + name);
 for (const file of ['Assets/RoyalAves/Scripts/Meta/LobbyFeaturesConfig.cs',
+  'Assets/RoyalAves/Scripts/Meta/PostalEventsConfig.cs',
+  'Assets/RoyalAves/Scripts/Meta/PostalEventState.cs',
+  'Assets/RoyalAves/Scripts/Meta/PostalEvents.cs',
+  'Assets/RoyalAves/Scripts/Meta/PostalEventGraphic.cs',
+  'Assets/RoyalAves/Scripts/Meta/LobbyEventsScreen.cs',
   'Assets/RoyalAves/Editor/RoyalAvesLevelMapPreview.cs',
   'Assets/SweetSugar/Scripts/MapScripts/IMapProgressManager.cs',
   'Assets/SweetSugar/Scripts/MapScripts/PlayerPrefsMapProgressManager.cs']) copySource(file);
 for (const file of ['Assets/RoyalAves/Resources/RoyalAvesLevelMap.asset',
   'Assets/RoyalAves/Resources/RoyalAvesFeatures.asset',
+  'Assets/RoyalAves/Resources/RoyalAvesEvents.asset',
+  'Assets/RoyalAves/Resources/MapLibrary/Personagens/courier-wizard-v50.asset',
+  'Assets/RoyalAves/Resources/EventsV88/backstage.png',
+  'Assets/RoyalAves/Resources/EventsV92/scene.png',
+  'Assets/RoyalAves/Resources/EventsV92/letter.png',
+  'Assets/RoyalAves/Resources/MapEventsV90/letter-vault.png',
+  'Assets/RoyalAves/Resources/MapEventsV93/postal-pig.png',
+  'Assets/RoyalAves/Resources/MapEventsV98/postal-pig-badge.png',
+  'Assets/RoyalAves/Resources/MapNavigationV99/return-pin.png',
+  'Assets/RoyalAves/Resources/MapLibrary/Personagens/postal-apprentice-v93.asset',
   'Assets/RoyalAves/Prefabs/RoyalAvesLobby.prefab',
   'Assets/TextMesh Pro/Resources/TMP Settings.asset']) copyAsset(file);
 // Shader include dependencies use filenames rather than GUID references.
@@ -55,12 +70,16 @@ for (const file of fs.readdirSync(path.join(root, 'Assets/TextMesh Pro/Shaders')
   if (file.endsWith('.cginc')) copyAsset('Assets/TextMesh Pro/Shaders/' + file);
 fs.mkdirSync(path.join(destination, 'Assets/Editor'), {recursive: true});
 fs.writeFileSync(path.join(destination, 'Assets/PreviewSaveFacades.cs'), `
-namespace RoyalAves.Meta { public static class MetaProgress { public static int NextLevel => 1; } }
+namespace RoyalAves.Meta { public static class MetaProgress { public static int NextLevel => 1; public static int Avatar {get;set;} public static int LevelsWon=>0; public static event System.Action Changed; public static bool IsMissionClaimed(string id)=>false; public static bool ClaimMission(LobbyFeaturesConfig.Mission m)=>throw new System.Exception("Live wallet used in isolated preview"); } }
 namespace SweetSugar.Scripts.MapScripts {
     public static class LevelsMap {
         public static IMapProgressManager _mapProgressManager = new PlayerPrefsMapProgressManager();
     }
 }
+`);
+fs.writeFileSync(path.join(destination, 'Assets/EventsPreviewFacades.cs'), `
+namespace SweetSugar.Scripts { public class SoundBase { public static SoundBase Instance=>null; public UnityEngine.AudioClip click; public void PlayOneShot(UnityEngine.AudioClip clip){} } }
+namespace SweetSugar.Scripts.Core { public class InitScript { public static InitScript Instance=>null; public void AddGems(int n)=>throw new System.Exception("Live wallet used in isolated preview"); } }
 `);
 const ugui = fs.readdirSync(path.join(root, 'Library/PackageCache')).find(x => x.startsWith('com.unity.ugui@'));
 fs.mkdirSync(path.join(destination, 'Packages'), {recursive: true});

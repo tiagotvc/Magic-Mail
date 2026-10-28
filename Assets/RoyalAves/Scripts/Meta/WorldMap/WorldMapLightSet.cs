@@ -32,6 +32,7 @@ namespace RoyalAves.Meta.WorldMap
             [Tooltip("Largura na base, perto do chao (m). O feixe afunila para a fonte.")]
             [Range(.3f, 8)] public float width = 1.7f;
             [Range(1, 6)] public int bands = 3;
+            [Range(0,1)] public float raySpacing=.5f;
             [Range(0, 1)] public float intensity = .55f;
             public WorldMapLightTint tint = WorldMapLightTint.Warm;
             public Color customColor = new Color(1, .93f, .6f);

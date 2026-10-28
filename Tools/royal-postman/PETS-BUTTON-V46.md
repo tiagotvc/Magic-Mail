@@ -1,0 +1,23 @@
+# Botões V44–V46
+
+O usuário pediu dourado como a barra dos ovos, centro com chanfro mais visível e encaixe corrigido; depois escolheu verde vivo para Incubar, azul vivo para Acelerar e a referência do botão Conectar.
+
+O material `button-egg-gold-v44.mat` usa uma rampa de laranja a amarelo nas bordas neutras existentes. Os materiais `button-green-v45.mat` e `button-blue-v45.mat` colorem o novo centro neutro separadamente. O shader mantém o comportamento anterior por padrão; somente esses materiais ativam a paleta personalizada.
+
+Centro novo: `Assets/RoyalAves/Art/UI/Button/RoyalPostman/NeutralV40/button-reference-center-v46.png`. Gerado pelo ImageGen integrado, sem CLI. Original: `C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-642bcda1-03f4-4a63-b198-7efdcfcff1ea.png`. Os bytes do PNG são preservados. O Sprite nativo recorta os limites opacos e usa nove fatias. O centro acompanha a posição da sua borda e ocupa o retângulo da borda menos20 unidades em cada dimensão, ficando ligeiramente sob a moldura. A moldura continua fixa durante o clique. O tamanho externo reduzido dos botões é preservado.
+
+Capturas e exportador: `production/review/pets-machine-v46/`. Estoque para a captura é injetado somente em memória.
+
+## Prompt final
+
+```text
+Create a production-ready mobile game BUTTON CENTER SPRITE based very closely on the colored BLUE BUTTON BODY in the user's most recent reference (the Connect button). Reference role: exact shape, relief and clean painted cartoon UI style. Output ONLY the button's INNER COLORED BODY, recolored NEUTRAL GRAYSCALE for runtime tinting. Do NOT include the gold outer frame, lettering, f icon, text, background or external shadow. Strong simple readable chunky convex bevel: ONE broad rounded rectangular raised face, ONE sloping shoulder all around, bright top shoulder and dark lower shoulder. The raised face is broad, flat, smoothly shaded and clean. Include the small simple white two-part gloss glint near the upper left as in the reference. Outer shape a symmetrical straight-sided rounded rectangle: identical upper and lower width, four identical corners, no taper or perspective. Uniform geometric bevel thickness around all four sides, about 12 percent of button height. Match the reference's crisp, saturated game UI finish but in neutral greys, not metallic and not cloudy. Absolutely clean: no smudges, noise, texture, cloudy mottling or uneven patches. Exactly ONE central face, no inset depression behind where text would go, no double bevel or extra concentric line. Wide canvas about1944x809; body centered, approximately1770px wide x550px tall with comfortable transparent margins. Preserve REAL transparent background and smooth alpha silhouette. No rim or gold border, no text or icon. This center will be placed under an existing separate gold rim in Unity.
+```
+
+## Borda V46
+
+O usuário também pediu a borda como no exemplo Conectar. Novo asset neutro separado: `Assets/RoyalAves/Art/UI/Button/RoyalPostman/NeutralV40/button-reference-rim-v46.png`, gerado pelo ImageGen integrado. Original: `C:/Users/Tiago Carvalho/.codex/generated_images/01a15af4-fedb-77d3-b750-1054318794bd/exec-2a2ec158-96aa-4e66-9fb7-d56b577e3e31.png`. PNG preservado; o material dourado V44 aplica a cor em runtime.
+
+```text
+Production mobile game UI sprite. The user's BLUE CONNECT BUTTON screenshot is the exact visual reference. The most recent neutral GREY CENTER sprite is the supporting shape/proportion reference. Create ONLY its separate OUTER FRAME / RIM, leaving the entire central opening genuinely transparent. Match the Connect button's broad clean rounded yellow-gold frame geometry and cartoon bevel construction, but output the frame in NEUTRAL GRAYSCALE so it can be gold-colored in Unity. A clean thick rounded rectangular ring, straight top/bottom and sides, identical corner radii, no taper, no perspective. Horizontal proportions matching the neutral center, roughly3.2:1. Frame thickness uniform around all four sides, about8 percent of the outer height. One smoothly beveled frame, bright upper surface and darker lower outer lip. Crisp smooth light grey top highlights, mid-grey broad rim, charcoal lower lip. No silver metallic reflections or mottling. Very clean evenly painted cartoon finish like the yellow frame on the blue Connect reference, rather than the old thin ornate silver frame. Canvas approximately2080x800, centered with transparent margins. Outside ring and center hole both truly transparent. No button center, text, symbol, icon, background, external drop shadow, glow, stains, texture, roughness or irregular contours. One isolated seamless symmetrical rounded rectangle border only, ready as a native game sprite.
+```

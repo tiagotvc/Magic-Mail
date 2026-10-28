@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ee8f35fb5a3e3ebc36904e5ddb7f2b, type: 3}
+  m_Name: RoyalAvesEvents
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.PostalEventsConfig
+  dailyGoal: 3
+  dailyCoins: 150
+  seasonEnabled: 0
+  seasonId: christmas-2026
+  seasonTitle: The stolen Christmas
+  seasonDescription: Recover one gift per Christmas level. Replays count once.
+  seasonUnlockLevel: 31
+  startsUtc: 
+  endsUtc: 
+  seasonRewards:
+  - goal: 3
+    coins: 150
+  - goal: 8
+    coins: 350
+  - goal: 15
+    coins: 750

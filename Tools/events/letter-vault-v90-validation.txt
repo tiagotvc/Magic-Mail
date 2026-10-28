@@ -1,0 +1,3 @@
+PASS: transparent glossy vault sprite, 512 UI import without mipmaps; top-right shortcut below HUD with narrow-phone touch size; permanent across islands; hidden under menus/chrome; actual tap opens dedicated coming-soon explanation; map/HUD pause and restore on button/outside close; no fake price/balance or purchase action; standard/narrow native captures without text overflow; zero Unity errors. No store requests, wallet or player-save writes.
+
+PASS: full main runtime compiled with zero compiler errors; letter-vault-v90-compile.log.

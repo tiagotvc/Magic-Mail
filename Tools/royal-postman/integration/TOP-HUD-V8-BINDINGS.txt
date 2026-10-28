@@ -1,0 +1,8 @@
+PASS home play/profile/navigation callbacks
+PASS covered menus and return home
+PASS selected navigation labels
+PASS legacy Play/Close callbacks
+PASS dynamic goal sprites/counts
+PASS booster activation/selection/lock
+PASS real FreeAdBoosterButton with isolated ad/wallet facades: rotating artwork, captured item, one ad per click, freeze while pending, completion re-enable
+No player progress or wallet writes. This is a binding test, not an ad SDK/network completion test.

@@ -1,0 +1,11 @@
+# Distance-faded lawn freckles V95
+
+The supplied reference has a fine dotted painting on the distant lawn. V95 adds that detail to the procedural illustrated ground shared by normal and themed islands. Freckles keep fixed centers in route/lateral coordinates. Their contrast fades smoothly between 3.5 and 10.5 route metres ahead of the camera, so approaching areas become clean. There is no clock-driven motion, random regeneration or camera-panning texture.
+
+The existing Surface shader generates one small irregular dot per cell. A pixel-space distance metric keeps the tiny marks rounded under the curved ground projection, rather than stretching antialiasing into horizontal dashes. Derivatives soften edges and fade undersampled cells near the crest. Dots darken the current lawn color, so lavender and other palettes retain their identity. They do not affect the playable path or its bevel. Existing large painted dapples remain independent. Seasonal snow is composited over the grass afterward, keeping the pattern below snow coverage.
+
+`_LawnStipple` is the Surface material intensity (default 1, 0 disables it). `_MapCursor` is the route-space camera position, updated alongside the existing paint scroll for the main ground and every island material. No new textures, materials, objects, particles, update components or editor repaint loops are created. The extra work is fragment arithmetic in the existing ground pass plus the cursor upload in its existing material loop.
+
+`LawnStippleV95Validation` renders actual GPU A/B views with the effect off/on on green and lavender islands. It samples projected lawn/path areas to check visible distant marks, clean nearby grass and an unchanged playable lane. It also checks live cursor values on all island materials, no objects added by toggling the pattern, stable ground material count during forward/reverse scroll, and native normal/seasonal and narrow-phone captures. Scenery pooling may legitimately create other objects when visiting another island; the pattern allocation check compares the same camera position.
+
+Native captures and report are in `previews/lawn-stipple-v95/` and `lawn-stipple-v95-validation.txt`. No layout, island configuration, asset scale, player progress or purchase data is changed by V95.

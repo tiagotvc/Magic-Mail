@@ -13,28 +13,281 @@ MonoBehaviour:
   m_Name: RoyalAvesWorldMapIslands
   m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.WorldMap.WorldMapIslands
   unifiedBase: 1
-  levelsPerIsland: 50
+  staticSky: 1
+  christmasVillainCharacter: {fileID: 21300000, guid: c7157b1e9a795fbc861ee0439c0f4c23, type: 3}
+  villainMapSize: 1.55
+  christmasSky: 1
+  christmasBackdrop: {fileID: 21300000, guid: bf7a9200e08301895eaa835b4903bf47, type: 3}
+  christmasVillain: {fileID: 21300000, guid: 8dc78a066fa5158a0c2626f2330ab080, type: 3}
+  villainPosition: {x: 0.45, y: 0.36}
+  villainSize: 220
+  villainOpacity: 0.9
+  villainHop: 0
+  villainSpeed: 0.16
+  stoneLeft: {fileID: 21300000, guid: 9cf128d00c3d686f23b778731b565eea, type: 3}
+  stoneRight: {fileID: 21300000, guid: 15b90c64e13f5f6273341f79b4a54eb2, type: 3}
+  bankPlant: {fileID: 21300000, guid: d43427d894b059ea6236a6a64074b06c, type: 3}
+  inkFall: {fileID: 21300000, guid: 127099c89d7182264df4dd8987fa432f, type: 3}
+  waterFall: {fileID: 21300000, guid: 4487fa1303c0dc5291382def3f63f39d, type: 3}
+  lavaFall: {fileID: 21300000, guid: ede417c2d4267b3ce429ce90759f6b6d, type: 3}
+  lavaStoneLeft: {fileID: 21300000, guid: 0ff37ce4ccfd289dce75b5f4d961f9ef, type: 3}
+  lavaStoneRight: {fileID: 21300000, guid: 979bd029961f26f91783684e134479c5, type: 3}
+  lavaSurface: {fileID: 21300000, guid: 22c3b842dc29bbe7901cd39e8a5560a7, type: 3}
+  bridgeDeck: {fileID: 21300000, guid: e7d0ed20407d4cb2adf956730a620c68, type: 3}
+  levelsPerIsland: 15
+  specialLevelEvery: 30
   lateralCurvature: 1.55
+  pathSway: 1.35
+  pathFrequency: 1.12
   postProcessing: 1
-  bloom: 0.7
-  vibrance: 20
-  formatVersion: 3
+  bloom: 0.24
+  vibrance: 4
+  formatVersion: 4
+  automaticSequence: 1
+  plannedLevels: 200
+  recipes:
+  - title: Letter Gardens
+    christmas: 0
+    groundStyle: 0
+    liquid: 0
+    skyTop: {r: 0.12, g: 0.47, b: 0.78, a: 1}
+    skyBottom: {r: 0.4, g: 0.87, b: 0.84, a: 1}
+    trees:
+    - {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    - {fileID: 21300000, guid: b6caa42e1c0e188812817c389261eb38, type: 3}
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: e5b6b4cc8b3e4a826e190c12c10c2a54, type: 3}
+    - {fileID: 21300000, guid: b4366e82a4041bb41950da878acff36c, type: 3}
+    - {fileID: 21300000, guid: 802e055b455db09f6ec2ccac29ac0479, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: b50ac91ce39c3a1a904ad96006ae63a2, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story: []
+    monuments:
+    - {fileID: 21300000, guid: 1037c6a3304c090c62b27bd4a0742bdc, type: 3}
+    monumentSize: 1.35
+    mist:
+    - {fileID: 21300000, guid: 0a358e23d789c521e4e41d197e187091, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.72
+    treeSize: 1.48
+    buildingSize: 1.28
+    propSize: 0.7
+    density: 1
+  - title: Ink Springs
+    christmas: 0
+    groundStyle: 1
+    liquid: 1
+    skyTop: {r: 0.23, g: 0.19, b: 0.55, a: 1}
+    skyBottom: {r: 0.66, g: 0.54, b: 0.93, a: 1}
+    trees:
+    - {fileID: 21300000, guid: 80e97873caa9e5b5f9b440506bfbccd9, type: 3}
+    - {fileID: 21300000, guid: f124c2d8bb9d8f2a093c3f11224e98b6, type: 3}
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: 802e055b455db09f6ec2ccac29ac0479, type: 3}
+    - {fileID: 21300000, guid: b4366e82a4041bb41950da878acff36c, type: 3}
+    - {fileID: 21300000, guid: e5b6b4cc8b3e4a826e190c12c10c2a54, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 459101dc699abbfc6e9c4eb2e1ea0b62, type: 3}
+    - {fileID: 21300000, guid: b50ac91ce39c3a1a904ad96006ae63a2, type: 3}
+    - {fileID: 21300000, guid: 6ff63db3d145c88a2145e116af94f623, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story: []
+    monuments:
+    - {fileID: 21300000, guid: daa9afe44ed8f497c2170a43334aba41, type: 3}
+    monumentSize: 1.05
+    mist:
+    - {fileID: 21300000, guid: 09613873f67fd6186203516c77065619, type: 3}
+    - {fileID: 21300000, guid: ff3823317bb6c291a3f7ad06bf24447e, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.64
+    treeSize: 1.48
+    buildingSize: 1.28
+    propSize: 0.88
+    density: 1
+  - title: Melody Lagoon
+    christmas: 0
+    groundStyle: 3
+    liquid: 2
+    skyTop: {r: 0.06, g: 0.42, b: 0.6, a: 1}
+    skyBottom: {r: 0.37, g: 0.88, b: 0.85, a: 1}
+    trees:
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    - {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    - {fileID: 21300000, guid: f124c2d8bb9d8f2a093c3f11224e98b6, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: b4366e82a4041bb41950da878acff36c, type: 3}
+    - {fileID: 21300000, guid: e5b6b4cc8b3e4a826e190c12c10c2a54, type: 3}
+    - {fileID: 21300000, guid: 802e055b455db09f6ec2ccac29ac0479, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 6ff63db3d145c88a2145e116af94f623, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story: []
+    monuments:
+    - {fileID: 21300000, guid: daa9afe44ed8f497c2170a43334aba41, type: 3}
+    monumentSize: 1.05
+    mist:
+    - {fileID: 21300000, guid: 0a358e23d789c521e4e41d197e187091, type: 3}
+    - {fileID: 21300000, guid: ff3823317bb6c291a3f7ad06bf24447e, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.64
+    treeSize: 1.48
+    buildingSize: 1.28
+    propSize: 0.7
+    density: 1
+  - title: Blossom Post
+    christmas: 0
+    groundStyle: 6
+    liquid: 4
+    skyTop: {r: 0.4, g: 0.23, b: 0.66, a: 1}
+    skyBottom: {r: 0.96, g: 0.66, b: 0.81, a: 1}
+    trees:
+    - {fileID: 21300000, guid: b6caa42e1c0e188812817c389261eb38, type: 3}
+    - {fileID: 21300000, guid: f124c2d8bb9d8f2a093c3f11224e98b6, type: 3}
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: e5b6b4cc8b3e4a826e190c12c10c2a54, type: 3}
+    - {fileID: 21300000, guid: b4366e82a4041bb41950da878acff36c, type: 3}
+    - {fileID: 21300000, guid: 802e055b455db09f6ec2ccac29ac0479, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 459101dc699abbfc6e9c4eb2e1ea0b62, type: 3}
+    - {fileID: 21300000, guid: b50ac91ce39c3a1a904ad96006ae63a2, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story: []
+    monuments:
+    - {fileID: 21300000, guid: 1037c6a3304c090c62b27bd4a0742bdc, type: 3}
+    monumentSize: 1.35
+    mist:
+    - {fileID: 21300000, guid: 0a358e23d789c521e4e41d197e187091, type: 3}
+    - {fileID: 21300000, guid: 09613873f67fd6186203516c77065619, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.66
+    treeSize: 1.48
+    buildingSize: 1.28
+    propSize: 0.7
+    density: 1
+  - title: Ember Stampworks
+    christmas: 0
+    groundStyle: 2
+    liquid: 3
+    skyTop: {r: 0.28, g: 0.12, b: 0.39, a: 1}
+    skyBottom: {r: 0.96, g: 0.52, b: 0.3, a: 1}
+    trees:
+    - {fileID: 21300000, guid: 55188497a938f4a4a33a39d9f75e8292, type: 3}
+    - {fileID: 21300000, guid: 80e97873caa9e5b5f9b440506bfbccd9, type: 3}
+    - {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: b4366e82a4041bb41950da878acff36c, type: 3}
+    - {fileID: 21300000, guid: 802e055b455db09f6ec2ccac29ac0479, type: 3}
+    - {fileID: 21300000, guid: e5b6b4cc8b3e4a826e190c12c10c2a54, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 0ff37ce4ccfd289dce75b5f4d961f9ef, type: 3}
+    - {fileID: 21300000, guid: 979bd029961f26f91783684e134479c5, type: 3}
+    story: []
+    monuments:
+    - {fileID: 21300000, guid: 1037c6a3304c090c62b27bd4a0742bdc, type: 3}
+    monumentSize: 1.35
+    mist:
+    - {fileID: 21300000, guid: ff3823317bb6c291a3f7ad06bf24447e, type: 3}
+    - {fileID: 21300000, guid: 09613873f67fd6186203516c77065619, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.7
+    treeSize: 1.48
+    buildingSize: 1.28
+    propSize: 0.7
+    density: 1
+  - title: Christmas Dispatch
+    christmas: 1
+    groundStyle: 5
+    liquid: 0
+    skyTop: {r: 0.08, g: 0.27, b: 0.58, a: 1}
+    skyBottom: {r: 0.53, g: 0.87, b: 0.91, a: 1}
+    trees:
+    - {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
+    - {fileID: 21300000, guid: cccf63ddb6b746cbbaca2e8500514d2c, type: 3}
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: 067c311e1425635dba97fa468c588293, type: 3}
+    - {fileID: 21300000, guid: 64b78abe8f5452f6eda7837451ade4f2, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 1eaf7c2da5305ca271f4442fc3980e68, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story:
+    - {fileID: 21300000, guid: d816d0295ddd2db4705d74b658febc21, type: 3}
+    - {fileID: 21300000, guid: c7157b1e9a795fbc861ee0439c0f4c23, type: 3}
+    monuments:
+    - {fileID: 21300000, guid: b0c62eff97e19dcdb53612d171748c8c, type: 3}
+    monumentSize: 1.4
+    mist:
+    - {fileID: 21300000, guid: 0a358e23d789c521e4e41d197e187091, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.74
+    treeSize: 1.55
+    buildingSize: 1.376
+    propSize: 0.82
+    density: 1.25
+  - title: Christmas Ribbon Rescue
+    christmas: 1
+    groundStyle: 6
+    liquid: 0
+    skyTop: {r: 0.15, g: 0.2, b: 0.48, a: 1}
+    skyBottom: {r: 0.72, g: 0.73, b: 0.94, a: 1}
+    trees:
+    - {fileID: 21300000, guid: 528cb541bd011894437418dc8e0eff2f, type: 3}
+    - {fileID: 21300000, guid: d26a0a627385361602217802512285dc, type: 3}
+    - {fileID: 21300000, guid: f124c2d8bb9d8f2a093c3f11224e98b6, type: 3}
+    buildings:
+    - {fileID: 21300000, guid: 64b78abe8f5452f6eda7837451ade4f2, type: 3}
+    - {fileID: 21300000, guid: 067c311e1425635dba97fa468c588293, type: 3}
+    groundProps:
+    - {fileID: 21300000, guid: 1eaf7c2da5305ca271f4442fc3980e68, type: 3}
+    - {fileID: 21300000, guid: 9c156696cd5943cfbd8b24560b80d35e, type: 3}
+    story:
+    - {fileID: 21300000, guid: c7157b1e9a795fbc861ee0439c0f4c23, type: 3}
+    - {fileID: 21300000, guid: d816d0295ddd2db4705d74b658febc21, type: 3}
+    monuments:
+    - {fileID: 21300000, guid: b0c62eff97e19dcdb53612d171748c8c, type: 3}
+    monumentSize: 1.4
+    mist:
+    - {fileID: 21300000, guid: 0a358e23d789c521e4e41d197e187091, type: 3}
+    - {fileID: 21300000, guid: 09613873f67fd6186203516c77065619, type: 3}
+    mistSize: 0.65
+    mistOpacity: 0.64
+    treeSize: 1.55
+    buildingSize: 1.376
+    propSize: 0.82
+    density: 1.25
   islands:
   - id: 7ee15ec2db934be187ca3d2e4815e4f6
     title: Jardim das Cartas
-    levelSlots: 20
+    levelSlots: 15
     terrain: 0
     groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
+    channelWidth: 2.1
+    channelDepth: 0.14
     bankShape: 0
     crossing: 0
     waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 0
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -49,104 +302,592 @@ MonoBehaviour:
     weather: 0
     weatherIntensity: 1
   - id: d422d7eb5f5b474da610bd46ec79c5d0
-    title: Bosque Encantado
-    levelSlots: 20
-    terrain: 2
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
-    channelRocks: 0
-    customChannelColor: 0
-    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
-    palette: 1
-    customColors: 0
-    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
-    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
-    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
-    groundMaterials: {fileID: 0}
-    background: {fileID: 0}
-    skyTop: {r: 0.19304036, g: 0.08788714, b: 0.745283, a: 1}
-    skyBottom: {r: 0.867, g: 0.663, b: 0.949, a: 1}
-    cloudSmall: {fileID: 0}
-    cloudWide: {fileID: 0}
-    volcanoes: 0
-    meteors: 0
-    weather: 1
-    weatherIntensity: 1
-  - id: 7bfc8f32d3b1401eaedb6af3bb53f767
-    title: "Recife das P\xE9rolas"
-    levelSlots: 20
-    terrain: 3
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    title: Ink Springs 1
+    sceneryVariant: 0
+    recipeIndex: 1
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 1
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 0
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
     groundMaterials: {fileID: 0}
     background: {fileID: 0}
-    skyTop: {r: 0.02745098, g: 0.3254902, b: 0.6156863, a: 1}
-    skyBottom: {r: 0.19215687, g: 0.79607844, b: 0.8039216, a: 1}
+    skyTop: {r: 0.23, g: 0.19, b: 0.55, a: 1}
+    skyBottom: {r: 0.66, g: 0.54, b: 0.93, a: 1}
     cloudSmall: {fileID: 0}
     cloudWide: {fileID: 0}
     volcanoes: 0
     meteors: 0
     weather: 0
-    weatherIntensity: 1
-  - id: fe612b06748c4c7f8ac47c008670e1db
-    title: Serra da Aurora
-    levelSlots: 20
-    terrain: 4
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    weatherIntensity: 0
+  - id: 7bfc8f32d3b1401eaedb6af3bb53f767
+    title: Christmas Dispatch 1
+    sceneryVariant: 0
+    recipeIndex: 5
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 5
+    channelWidth: 2.45
+    channelDepth: 0.18
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
-    palette: 3
+    palette: 0
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
     groundMaterials: {fileID: 0}
     background: {fileID: 0}
-    skyTop: {r: 0.216, g: 0.255, b: 0.655, a: 1}
-    skyBottom: {r: 0.725, g: 0.91, b: 0.965, a: 1}
+    skyTop: {r: 0.08, g: 0.27, b: 0.58, a: 1}
+    skyBottom: {r: 0.53, g: 0.87, b: 0.91, a: 1}
     cloudSmall: {fileID: 0}
     cloudWide: {fileID: 0}
     volcanoes: 0
     meteors: 0
     weather: 4
-    weatherIntensity: 1
-  - id: 721157766f404f41b6203fbf9468fc40
-    title: Vale Termal
-    levelSlots: 20
-    terrain: 1
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
+    weatherIntensity: 0.25
+  - id: fe612b06748c4c7f8ac47c008670e1db
+    title: Melody Lagoon 1
+    sceneryVariant: 0
+    recipeIndex: 2
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 3
+    channelWidth: 2.1
+    channelDepth: 0.18
     bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.06, g: 0.42, b: 0.6, a: 1}
+    skyBottom: {r: 0.37, g: 0.88, b: 0.85, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 721157766f404f41b6203fbf9468fc40
+    title: Blossom Post 1
+    sceneryVariant: 0
+    recipeIndex: 3
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 6
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 1
+    crossing: 1
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.4, g: 0.23, b: 0.66, a: 1}
+    skyBottom: {r: 0.96, g: 0.66, b: 0.81, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 1b6bf784707c4c3a95413a72bfc3451b
+    title: Christmas Ribbon Rescue 1
+    sceneryVariant: 0
+    recipeIndex: 6
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 6
+    channelWidth: 2.45
+    channelDepth: 0.18
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.15, g: 0.2, b: 0.48, a: 1}
+    skyBottom: {r: 0.72, g: 0.73, b: 0.94, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 4
+    weatherIntensity: 0.25
+  - id: ad2a9489cb284f848f0ae00af08aad59
+    title: Ember Stampworks 1
+    sceneryVariant: 0
+    recipeIndex: 4
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 2
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 0
+    crossing: 2
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 1
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.28, g: 0.12, b: 0.39, a: 1}
+    skyBottom: {r: 0.96, g: 0.52, b: 0.3, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: e12242171bf44552b8973ee87be290e3
+    title: Letter Gardens 2
+    sceneryVariant: 1
+    recipeIndex: 0
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 0
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 1
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.12, g: 0.47, b: 0.78, a: 1}
+    skyBottom: {r: 0.4, g: 0.87, b: 0.84, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: d934975264414e52bf524aeea4b48b3a
+    title: Christmas Dispatch 2
+    sceneryVariant: 1
+    recipeIndex: 5
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 5
+    channelWidth: 2.45
+    channelDepth: 0.18
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.08, g: 0.27, b: 0.58, a: 1}
+    skyBottom: {r: 0.53, g: 0.87, b: 0.91, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 4
+    weatherIntensity: 0.25
+  - id: e02f95e008ef43179736a34963161c2f
+    title: Ink Springs 2
+    sceneryVariant: 1
+    recipeIndex: 1
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 1
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.23, g: 0.19, b: 0.55, a: 1}
+    skyBottom: {r: 0.66, g: 0.54, b: 0.93, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 200ce26f441c304ccfb25cec3bc139b0
+    title: Melody Lagoon 2
+    sceneryVariant: 1
+    recipeIndex: 2
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 3
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.06, g: 0.42, b: 0.6, a: 1}
+    skyBottom: {r: 0.37, g: 0.88, b: 0.85, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 51d947ed43179425b0eaae41ea64ab39
+    title: Christmas Ribbon Rescue 2
+    sceneryVariant: 1
+    recipeIndex: 6
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 6
+    channelWidth: 2.45
+    channelDepth: 0.18
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.15, g: 0.2, b: 0.48, a: 1}
+    skyBottom: {r: 0.72, g: 0.73, b: 0.94, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 4
+    weatherIntensity: 0.25
+  - id: 489ac84c0cbf18be21c3ab39d43b7ddd
+    title: Blossom Post 2
+    sceneryVariant: 1
+    recipeIndex: 3
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 6
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.4, g: 0.23, b: 0.66, a: 1}
+    skyBottom: {r: 0.96, g: 0.66, b: 0.81, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 901844aa9ea6a46f272c369b79ed97b8
+    title: Ember Stampworks 2
+    sceneryVariant: 1
+    recipeIndex: 4
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 2
+    channelWidth: 2.1
+    channelDepth: 0.18
+    bankShape: 1
+    crossing: 1
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 0
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.5
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.28, g: 0.12, b: 0.39, a: 1}
+    skyBottom: {r: 0.96, g: 0.52, b: 0.3, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 0
+  - id: 937e3769bfd4df42afed6972912750f6
+    title: Postal Island 15
+    levelSlots: 15
+    terrain: 1
+    groundStyle: 2
+    channelWidth: 2.6
+    channelDepth: 0.14
+    bankShape: 2
     crossing: 0
-    waterMotion: 0
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 4
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -160,21 +901,34 @@ MonoBehaviour:
     meteors: 1
     weather: 5
     weatherIntensity: 1
-  - id: 1b6bf784707c4c3a95413a72bfc3451b
-    title: Dunas do Sol
-    levelSlots: 20
+  - id: b8b81d83557afa87f04ca5d6d2b7a795
+    title: Postal Island 16
+    levelSlots: 15
     terrain: 5
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
+    groundStyle: 5
+    channelWidth: 3.1
+    channelDepth: 0.14
     bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 5
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -188,21 +942,34 @@ MonoBehaviour:
     meteors: 0
     weather: 0
     weatherIntensity: 1
-  - id: ad2a9489cb284f848f0ae00af08aad59
-    title: Pomar das Entregas
-    levelSlots: 20
+  - id: 3349510026dff9ffc692d92ba8468d98
+    title: Postal Island 17
+    levelSlots: 15
     terrain: 1
     groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    channelWidth: 2.1
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 6
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -216,21 +983,34 @@ MonoBehaviour:
     meteors: 0
     weather: 0
     weatherIntensity: 1
-  - id: e12242171bf44552b8973ee87be290e3
-    title: Lagoa dos Vagalumes
-    levelSlots: 20
+  - id: 0380b67f473af3fd13d64e116ee54d42
+    title: Postal Island 18
+    levelSlots: 15
     terrain: 7
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    groundStyle: 1
+    channelWidth: 3.5
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 7
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -244,21 +1024,34 @@ MonoBehaviour:
     meteors: 0
     weather: 1
     weatherIntensity: 1
-  - id: d934975264414e52bf524aeea4b48b3a
-    title: Jardim das Nuvens
-    levelSlots: 20
+  - id: b3e3bc5d0ee233582739e43bd8ea3b7d
+    title: Postal Island 19
+    levelSlots: 15
     terrain: 8
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
+    groundStyle: 3
+    channelWidth: 2.6
+    channelDepth: 0.14
     bankShape: 0
     crossing: 0
-    waterMotion: 0
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 8
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -272,21 +1065,34 @@ MonoBehaviour:
     meteors: 0
     weather: 0
     weatherIntensity: 1
-  - id: e02f95e008ef43179736a34963161c2f
-    title: Gruta dos Cristais
-    levelSlots: 20
+  - id: df0adb5de0a05963ae59f6ddf231d94d
+    title: Postal Island 20
+    levelSlots: 15
     terrain: 9
-    groundStyle: 0
-    channelWidth: 1.9
-    channelDepth: 0.23
-    bankShape: 0
-    crossing: 0
-    waterMotion: 0
+    groundStyle: 6
+    channelWidth: 3.1
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
     channelRocks: 0
     customChannelColor: 0
     channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
     palette: 9
     customColors: 0
+    customPathColor: 0
     ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
     path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
     water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
@@ -299,4 +1105,578 @@ MonoBehaviour:
     volcanoes: 0
     meteors: 0
     weather: 0
+    weatherIntensity: 1
+  - id: 6d9f14f02a90c76f044c1482ca4c9ef7
+    title: Postal Island 21
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 7
+    channelWidth: 2.1
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 0
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.10196078, g: 0.19526835, b: 0.94509804, a: 1}
+    skyBottom: {r: 0.3058823, g: 0.915026, b: 0.9607843, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 78f60932905dc91434f554e97d5ff0ab
+    title: Postal Island 22
+    levelSlots: 15
+    terrain: 2
+    groundStyle: 4
+    channelWidth: 3.5
+    channelDepth: 0.14
+    bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 1
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.19304036, g: 0.08788714, b: 0.745283, a: 1}
+    skyBottom: {r: 0.867, g: 0.663, b: 0.949, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 1
+    weatherIntensity: 1
+  - id: 22f714f436ac8972c839e35aaca382d5
+    title: Postal Island 23
+    levelSlots: 15
+    terrain: 3
+    groundStyle: 2
+    channelWidth: 2.6
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.02745098, g: 0.3254902, b: 0.6156863, a: 1}
+    skyBottom: {r: 0.19215687, g: 0.79607844, b: 0.8039216, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: d303b7bcfe785e1339c314c97b6e24e5
+    title: Postal Island 24
+    levelSlots: 15
+    terrain: 4
+    groundStyle: 5
+    channelWidth: 3.1
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 3
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.216, g: 0.255, b: 0.655, a: 1}
+    skyBottom: {r: 0.725, g: 0.91, b: 0.965, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 4
+    weatherIntensity: 1
+  - id: 7d7f83ced945e2eafd5b44fce4ed4ca1
+    title: Postal Island 25
+    levelSlots: 15
+    terrain: 1
+    groundStyle: 0
+    channelWidth: 2.1
+    channelDepth: 0.14
+    bankShape: 0
+    crossing: 0
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 4
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 1, g: 0.596, b: 0.271, a: 1}
+    skyBottom: {r: 1, g: 0.839, b: 0.467, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 1
+    weather: 5
+    weatherIntensity: 1
+  - id: 6eec9f00719493f8ebe744d05ba1a9f4
+    title: Postal Island 26
+    levelSlots: 15
+    terrain: 5
+    groundStyle: 1
+    channelWidth: 3.5
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 5
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 1, g: 0.7137255, b: 0.2901961, a: 1}
+    skyBottom: {r: 1, g: 0.8901961, b: 0.59607846, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 058c05ca6a470480047c805572b7d565
+    title: Postal Island 27
+    levelSlots: 15
+    terrain: 1
+    groundStyle: 3
+    channelWidth: 2.6
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 0
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 6
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.9372549, g: 0.5764706, b: 0.3019608, a: 1}
+    skyBottom: {r: 1, g: 0.8980392, b: 0.61960787, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 0fc3016adf1538dc13c25c72d3e6d0b1
+    title: Postal Island 28
+    levelSlots: 15
+    terrain: 7
+    groundStyle: 6
+    channelWidth: 3.1
+    channelDepth: 0.14
+    bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 7
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.08627451, g: 0.30588236, b: 0.4627451, a: 1}
+    skyBottom: {r: 0.3882353, g: 0.80784315, b: 0.74509805, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 1
+    weatherIntensity: 1
+  - id: 9374cb7c373aa06a411e6f56776eb06f
+    title: Postal Island 29
+    levelSlots: 15
+    terrain: 8
+    groundStyle: 7
+    channelWidth: 2.1
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 8
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.32941177, g: 0.7254902, b: 0.9372549, a: 1}
+    skyBottom: {r: 0.827451, g: 0.96862745, b: 1, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 3648ba1dce1f24ba9e3ea1db8a7f2c13
+    title: Postal Island 30
+    levelSlots: 15
+    terrain: 9
+    groundStyle: 4
+    channelWidth: 3.5
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 1
+    waterMotion: 1
+    liquid: 3
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 2.45
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 9
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.14117648, g: 0.13725491, b: 0.3882353, a: 1}
+    skyBottom: {r: 0.60784316, g: 0.42352942, b: 0.88235295, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 5daf0ea5e090ccc3686d25e8f20d3284
+    title: Postal Island 31
+    levelSlots: 15
+    terrain: 0
+    groundStyle: 2
+    channelWidth: 2.6
+    channelDepth: 0.14
+    bankShape: 0
+    crossing: 0
+    waterMotion: 1
+    liquid: 0
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.10196078, g: 0.19526835, b: 0.94509804, a: 1}
+    skyBottom: {r: 0.3058823, g: 0.915026, b: 0.9607843, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 4b4b31b9f79398635b64daf3e3cb5713
+    title: Postal Island 32
+    levelSlots: 15
+    terrain: 2
+    groundStyle: 5
+    channelWidth: 3.1
+    channelDepth: 0.14
+    bankShape: 1
+    crossing: 2
+    waterMotion: 1
+    liquid: 1
+    waterGloss: 0.85
+    lakeLevels: 3
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 1
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 1
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.19304036, g: 0.08788714, b: 0.745283, a: 1}
+    skyBottom: {r: 0.867, g: 0.663, b: 0.949, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 1
+    weatherIntensity: 1
+  - id: d3927765b89d3eff20418bd034610205
+    title: Postal Island 33
+    levelSlots: 15
+    terrain: 3
+    groundStyle: 0
+    channelWidth: 2.1
+    channelDepth: 0.14
+    bankShape: 2
+    crossing: 0
+    waterMotion: 1
+    liquid: 2
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 0
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 0
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.02745098, g: 0.3254902, b: 0.6156863, a: 1}
+    skyBottom: {r: 0.19215687, g: 0.79607844, b: 0.8039216, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 0
+    weatherIntensity: 1
+  - id: 0d43376b5b3bf4dfa1006152329706cb
+    title: Postal Island 34
+    levelSlots: 15
+    terrain: 4
+    groundStyle: 1
+    channelWidth: 3.5
+    channelDepth: 0.14
+    bankShape: 0
+    crossing: 1
+    waterMotion: 1
+    liquid: 4
+    waterGloss: 0.85
+    lakeLevels: 0
+    stoneSize: 1
+    waterPlants: 1
+    sideWaterfall: 0
+    waterfallOnRight: 1
+    waterfallProgress: 0.58
+    waterfallLateral: 1.95
+    waterfallSize: 1.7
+    waterfallSprite: {fileID: 0}
+    stones: []
+    channelRocks: 0
+    customChannelColor: 0
+    channelColor: {r: 0.13725491, g: 0.6862745, b: 0.88235295, a: 1}
+    palette: 3
+    customColors: 0
+    customPathColor: 0
+    ground: {r: 0.40784314, g: 0.7176471, b: 0.5411765, a: 1}
+    path: {r: 0.7254902, g: 0.9019608, b: 0.61960787, a: 1}
+    water: {r: 0.28627452, g: 0.7490196, b: 0.81960785, a: 1}
+    groundMaterials: {fileID: 0}
+    background: {fileID: 0}
+    skyTop: {r: 0.216, g: 0.255, b: 0.655, a: 1}
+    skyBottom: {r: 0.725, g: 0.91, b: 0.965, a: 1}
+    cloudSmall: {fileID: 0}
+    cloudWide: {fileID: 0}
+    volcanoes: 0
+    meteors: 0
+    weather: 4
     weatherIntensity: 1

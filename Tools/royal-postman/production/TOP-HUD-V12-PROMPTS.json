@@ -1,0 +1,19 @@
+{
+  "tool": "built-in image_gen",
+  "materialAuthority": "Assets/RoyalAves/Art/RoyalPostmanUI2026/level-base-v6.png",
+  "correction": "A single center relief indicated almost only by color. No upper center shadow, contour strokes, or outer dark annulus.",
+  "assets": [
+    {
+      "id": "top-plus-base-v12",
+      "prompt": "Edit this teal circular game-button body with these precise corrections. Preserve silhouette, teal palette, large raised frontal central face and clean level-button finish. REMOVE the dark thin crescent above the central face. REMOVE all bright/dark contour strokes around the center. Instead, the ONE central raised relief is communicated almost entirely by a broad subtle SAME-COLOR transition: soft lighter teal at its upper edge, gradually blending, with no contact shadow above it. Also REMOVE the separate dark outer annular band near the circumference; it reads as a SECOND bevel. Outer body flows as one continuous teal surface right to its silhouette, with no added ring, no extra step, no dark outline or thin specular rim. Only ONE shallow raised central circle, no double marking anywhere. Broad quiet color shading, restrained upper light, clean smooth illustrated finish. Not a dome, not a glossy coin, not a ring or groove. No symbols or text. Genuine transparent background.",
+      "reference": "top-plus-base-v11.png",
+      "source": "exec-2050bfae-c4d1-4da2-afc2-70b8acc65493.png"
+    },
+    {
+      "id": "top-settings-base-v12",
+      "prompt": "Edit this purple circular button body, preserving silhouette, purple color, large raised frontal face, and level-button material. REMOVE the thin dark crescent just above the central face, and remove its bright contour stroke. The center has only ONE shallow relief indication, communicated almost only by a wide subtle transition in purple color. Upper edge of the raised face is softly lighter purple, with NO dark contact shadow or ring above it. REMOVE the separate dark annular band near the outer silhouette, which incorrectly creates a SECOND bevel. Outer body is a continuous broad smooth purple shoulder flowing directly into the silhouette without an extra rim, ring, edge stripe or second step. No doubled markings. Retain a visible but understated raised center through gentle color shading, not sharp lines. Quiet clean smooth painted finish, no strong gloss or neon, no texture, grain, dark marks or added borders. No gear, symbol or text. True transparent background.",
+      "reference": "top-settings-base-v11.png",
+      "source": "exec-a6be41eb-8cd2-4e37-82a5-da15fe0b69be.png"
+    }
+  ]
+}
