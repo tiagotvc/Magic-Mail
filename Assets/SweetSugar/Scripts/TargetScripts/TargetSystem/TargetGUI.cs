@@ -32,6 +32,32 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
         Vector2 iconPosition, iconSize, countPosition;
         bool iconPreserveAspect;
         Image.Type iconType;
+        Coroutine arrivalPulse;
+        Vector3 arrivalRestScale;
+        bool arrivalPoseSaved;
+
+        public void PlayCollectionArrival()
+        {
+            if(image==null || !isActiveAndEnabled)return;
+            if(!arrivalPoseSaved) {arrivalRestScale=image.transform.localScale;arrivalPoseSaved=true;}
+            if(arrivalPulse!=null)StopCoroutine(arrivalPulse);
+            arrivalPulse=StartCoroutine(PulseArrival());
+        }
+        IEnumerator PulseArrival()
+        {
+            for(float age=0;age<.16f;age+=Time.deltaTime)
+            {
+                image.transform.localScale=arrivalRestScale*(1+.13f*Mathf.Sin(age/.16f*Mathf.PI));
+                yield return null;
+            }
+            image.transform.localScale=arrivalRestScale;arrivalPulse=null;
+        }
+        void OnDisable()
+        {
+            if(arrivalPulse!=null)StopCoroutine(arrivalPulse);
+            if(arrivalPoseSaved && image!=null)image.transform.localScale=arrivalRestScale;
+            arrivalPulse=null;arrivalPoseSaved=false;
+        }
 
         public void SetSprite(Sprite spr)
         {

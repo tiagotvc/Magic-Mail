@@ -25,6 +25,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
     public class TargetCounter
     {
           public GameObject targetPrefab;
+        TargetGUI boundGui;
 
         public int count;
         int Savecount;
@@ -181,7 +182,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
                 animComp.target = true;
                 animComp.InitAnimation(animCompLinkObject, pos, obj.transform.localScale, () => { 
                     changeCount(-1);
-                });
+                }, destination: boundGui!=null && boundGui.gameObject.activeInHierarchy ? boundGui : null);
             }
 
             if (targetLevel.name == "Stars")
@@ -233,6 +234,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         public void BindGUI(TargetGUI targetGui)
         {
+            boundGui=targetGui;
             if (targetLevel.name == "Stars" && !showScores)
             {
                 var stars = GameObject.Find("ProgressBar").transform.Find("Stars");

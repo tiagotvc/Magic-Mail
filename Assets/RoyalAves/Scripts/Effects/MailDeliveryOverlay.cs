@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using SweetSugar.Scripts.TargetScripts.TargetSystem;
 using UnityEngine;
@@ -15,10 +15,11 @@ namespace RoyalAves.Effects
         RectTransform area;
         Vector2 previous;
         bool hasPrevious;
+        bool showWake = true;
         readonly List<Image> wake = new List<Image>();
         readonly List<float> born = new List<float>();
 
-        public static MailDeliveryOverlay Create(SpriteRenderer source, TargetGUI destination = null)
+        public static MailDeliveryOverlay Create(SpriteRenderer source, TargetGUI destination = null, bool trail = true)
         {
             var target = destination ?? FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(t => t.image != null && t.image.sprite == source.sprite);
             var hud = target != null ? target.GetComponentInParent<Canvas>()?.rootCanvas : null;
@@ -33,6 +34,7 @@ namespace RoyalAves.Effects
             canvas.sortingOrder = 32700;
             canvas.sortingLayerID = hud.sortingLayerID;
             var effect = root.AddComponent<MailDeliveryOverlay>();
+            effect.showWake = trail;
             effect.source = source; effect.hud = hud; effect.area = rect;
             var imageRoot = new GameObject("DeliveryLetter", typeof(RectTransform), typeof(Image));
             imageRoot.transform.SetParent(root.transform, false);
@@ -60,7 +62,7 @@ namespace RoyalAves.Effects
             var right = camera.WorldToScreenPoint(source.transform.position + Vector3.right * Mathf.Abs(worldSize.x));
             var top = camera.WorldToScreenPoint(source.transform.position + Vector3.up * Mathf.Abs(worldSize.y));
             rect.sizeDelta = new Vector2(Mathf.Abs(right.x - screen.x), Mathf.Abs(top.y - screen.y)) / hud.scaleFactor;
-            if (hasPrevious && Vector2.Distance(previous, point) > 1f)
+            if (showWake && hasPrevious && Vector2.Distance(previous, point) > 1f)
             {
                 var node = new GameObject("DeliveryWake", typeof(RectTransform), typeof(Image));
                 node.transform.SetParent(transform, false);

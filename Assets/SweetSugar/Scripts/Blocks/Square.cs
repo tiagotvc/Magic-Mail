@@ -1259,6 +1259,8 @@ namespace SweetSugar.Scripts.Blocks
         /// </summary>
         public void DestroyBlock(bool destroyTarget=false, Square impactOrigin = null)
         {
+            var stone = GetSubSquare().GetComponent<RoyalAves.Gameplay.EnchantedStone>();
+            if (stone != null) { stone.HandleHit(this, impactOrigin == null || impactOrigin == this); return; }
             var openingBag = GetSubSquare().GetComponent<RoyalAves.Gameplay.BagOpeningStation>();
             if (openingBag != null) {openingBag.HandleHit(impactOrigin ?? this);return;}
             var routeCentral = GetSubSquare().GetComponent<RoyalAves.Gameplay.RouteCentralCell>();
@@ -1588,6 +1590,7 @@ namespace SweetSugar.Scripts.Blocks
             item1 = RoyalAves.Gameplay.InkLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.RouteCentralLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.MailbagLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.EnchantedStoneLaboratory.GetPrefab(sqType) ?? item1;
 #endif
             var layeredBlock = item1?.GetComponent<LayeredBlock>();
             if (layeredBlock != null)

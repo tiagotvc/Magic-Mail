@@ -1340,8 +1340,8 @@ namespace SweetSugar.Scripts.Items
                 if (currentType == ItemsTypes.NONE)
                 {
                     // Objective pieces leave as the collection sprite created by CheckItems below.
-                    // Other multicolor targets break locally, all in the same detonation frame.
-                    bool collectInstead = explodedItem is ItemMulticolor && HasActiveCollectionTarget();
+                    // Non-objective pieces break locally; objective pieces leave intact for the HUD.
+                    bool collectInstead = HasActiveCollectionTarget();
                     if (!collectInstead)
                         foreach (var renderer in GetSpriteRenderers())
                             if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)

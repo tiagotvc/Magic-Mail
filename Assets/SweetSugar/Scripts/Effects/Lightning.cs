@@ -29,6 +29,7 @@ namespace SweetSugar.Scripts.Effects
         {
             var unused = Root;
             Lightning.Prewarm();
+            MulticolorSpinTrail.Prewarm();
             ElectricChargeParticles.Prewarm();
             PowerUpEnergyExit.Prewarm();
         }
@@ -38,13 +39,13 @@ namespace SweetSugar.Scripts.Effects
     {
         public float amplitude = 1.3f;
         public Vector2 pos1, pos2;
-        public bool perlin = true;
+        public bool perlin = false;
         public const float TravelTime = .045f;
+        public const float VisualLifetime = .21f;
         static readonly Stack<Lightning> available = new Stack<Lightning>(ElectricEffects.Capacity);
         static Transform poolRoot;
         static float nextSeed;
         LineRenderer core, halo;
-        readonly LineRenderer[] branches = new LineRenderer[2];
         readonly Vector3[] points = new Vector3[64];
         Transform sourceAnchor, targetAnchor;
         float cellSize, elapsed, seed;
@@ -77,9 +78,7 @@ namespace SweetSugar.Scripts.Effects
             core = GetComponent<LineRenderer>();
             if (core == null) core = gameObject.AddComponent<LineRenderer>();
             Configure(core, Color.white, 5);
-            halo = NewLine("ElectricHalo", new Color(.16f, .55f, 1f, .42f), 3);
-            for (int i = 0; i < branches.Length; i++)
-                branches[i] = NewLine("ElectricBranch", new Color(.4f, .8f, 1f, .65f), 4);
+            halo = NewLine("ElectricHalo", new Color(1f, .76f, .42f, .4f), 3);
             seed = nextSeed += .618034f;
             initialized = true;
         }
@@ -89,11 +88,11 @@ namespace SweetSugar.Scripts.Effects
             Initialize(); leased = true;
             pos1 = from; pos2 = to; elapsed = 0;
             cellSize = Mathf.Max(.01f, cell);
+            seed = nextSeed += .618034f;
             held = hold; sourceAnchor = source; targetAnchor = target;
-            core.widthMultiplier = cellSize * .045f;
-            halo.widthMultiplier = cellSize * .15f;
+            core.widthMultiplier = cellSize * .13f;
+            halo.widthMultiplier = cellSize * .24f;
             core.enabled = halo.enabled = true;
-            foreach (var branch in branches) { branch.widthMultiplier = cellSize * .024f; branch.enabled = true; }
             Sample(0);
         }
         LineRenderer NewLine(string label, Color color, int order)
@@ -105,50 +104,49 @@ namespace SweetSugar.Scripts.Effects
         {
             line.sharedMaterial = ElectricEffects.Ribbon;
             line.useWorldSpace = true;
-            line.widthCurve = AnimationCurve.Linear(0, 1, 1, .55f);
+            line.widthCurve = new AnimationCurve(new Keyframe(0,.75f),new Keyframe(.12f,1),new Keyframe(.85f,1),new Keyframe(1,.65f));
             line.startColor = line.endColor = color;
             line.textureMode = LineTextureMode.Stretch;
-            line.numCapVertices = 0; line.numCornerVertices = 0;
+            line.numCapVertices = 4; line.numCornerVertices = 3;
             line.sortingLayerName = PowerUpEffectOrder.SortingLayer;
             line.sortingOrder = PowerUpEffectOrder.Value + order;
         }
         public void Sample(float time)
         {
             if (!initialized) return;
+            // Fading is decorative only. Keep the lease until its owning selection releases it,
+            // so a recycled beam cannot be cleared later by a different bomb's EndSpin.
+            bool visible = time < VisualLifetime;
+            core.enabled = halo.enabled = visible;
+            if (!visible) return;
+            float fade = 1f-Mathf.SmoothStep(.11f,VisualLifetime,time);
+            core.startColor=core.endColor=new Color(1, .98f, .92f, fade);
+            halo.startColor=halo.endColor=new Color(1, .77f, .43f, .4f*fade);
             Vector3 from = sourceAnchor != null ? sourceAnchor.position : (Vector3)pos1;
             Vector3 to = targetAnchor != null ? targetAnchor.position : (Vector3)pos2;
             var delta = to - from;
             var side = new Vector3(-delta.y, delta.x, 0).normalized;
             float head = Mathf.Clamp01(time / TravelTime);
-            float bend = Mathf.Min(delta.magnitude * .11f, cellSize * .65f) * Mathf.Sin(seed * 3.7f);
-            var control1 = from + delta * .28f + side * bend;
-            var control2 = from + delta * .72f + side * bend * .7f;
+            float length = delta.magnitude;
+            float drift = time * 5.5f;
+            float spread = Mathf.Min(length * .23f, cellSize * .48f);
+            float lobes = Mathf.Clamp(length / cellSize * .75f, 1.7f, 5.5f);
             for (int i = 0; i < points.Length; i++)
             {
-                float t = i / (float)(points.Length - 1) * head, u = 1 - t;
-                float envelope = Mathf.Sin(t * Mathf.PI);
-                float noise = (Mathf.PerlinNoise(seed + t * 16, time * 22) - .5f) * .13f;
-                noise += Mathf.Sin(t * 85 + time * 58 + seed) * .018f;
-                points[i] = u*u*u*from + 3*u*u*t*control1 + 3*u*t*t*control2 + t*t*t*to
-                    + side * (perlin ? noise * cellSize * amplitude * envelope : 0);
+                float t = i / (float)(points.Length - 1) * head;
+                // Independent evolving bends per beam, tapered at both anchors.
+                // Two noise scales avoid a regular sine wave or frame-to-frame jitter.
+                float broad = (Mathf.PerlinNoise(seed * 7.13f + t * lobes, seed + drift) - .5f) * 2f;
+                float detail = (Mathf.PerlinNoise(seed * 3.71f + t * lobes * 2.8f, seed + 19f - drift * 1.3f) - .5f) * 2f;
+                float envelope = Mathf.Pow(Mathf.Sin(t * Mathf.PI), .65f);
+                points[i] = from + delta * t + side * (broad + detail * .32f) * spread * envelope;
             }
             points[0] = from;
             if (head >= 1) points[points.Length - 1] = to;
             core.positionCount = halo.positionCount = points.Length;
             core.SetPositions(points); halo.SetPositions(points);
-            for (int i = 0; i < branches.Length; i++)
-            {
-                int at = 18 + i * 23;
-                var start = points[at];
-                var end = start + delta.normalized * cellSize * .13f + side * cellSize * .16f * (i == 0 ? 1 : -1);
-                var line = branches[i];
-                line.enabled = head >= 1 && Mathf.Sin(time * 39 + seed + i * 2) > .15f;
-                line.positionCount = 3;
-                line.SetPosition(0, start);
-                line.SetPosition(1, Vector3.Lerp(start, end, .55f) - delta.normalized * cellSize * .045f);
-                line.SetPosition(2, end);
-            }
         }
+
         void Update()
         {
             if (!leased) return;
@@ -162,10 +160,84 @@ namespace SweetSugar.Scripts.Effects
         {
             if (!leased) return;
             leased = false; core.enabled = halo.enabled = false;
-            foreach (var branch in branches) branch.enabled = false;
             sourceAnchor = targetAnchor = null;
             gameObject.SetActive(false);
             if (pooled) available.Push(this);
+        }
+    }
+
+    // Pooled elliptical light trail; its rotation follows the existing sprite spin period.
+    public sealed class MulticolorSpinTrail : MonoBehaviour
+    {
+        static readonly Stack<MulticolorSpinTrail> available = new Stack<MulticolorSpinTrail>(16);
+        static Transform poolRoot;
+        readonly Vector3[] points = new Vector3[56];
+        LineRenderer core, glow;
+        Transform anchor;
+        float cell, age, period;
+        bool manualPhase;
+        public bool IsLeased { get; private set; }
+
+        internal static void Prewarm()
+        {
+            if (poolRoot != null) return;
+            poolRoot = ElectricEffects.Root; available.Clear();
+            for (int i=0;i<16;i++)
+            {
+                var node=new GameObject("MulticolorSpinTrail");node.transform.SetParent(poolRoot,false);
+                var trail=node.AddComponent<MulticolorSpinTrail>();
+                trail.core=trail.MakeLine("SpinCore",.095f,5);
+                trail.glow=trail.MakeLine("SpinGlow",.17f,3);
+                node.SetActive(false);available.Push(trail);
+            }
+        }
+        LineRenderer MakeLine(string name,float width,int order)
+        {
+            var node=new GameObject(name);node.transform.SetParent(transform,false);
+            var line=node.AddComponent<LineRenderer>();line.sharedMaterial=ElectricEffects.Ribbon;
+            line.useWorldSpace=true;line.positionCount=points.Length;line.widthMultiplier=width;
+            line.numCapVertices=4;line.numCornerVertices=3;
+            line.sortingLayerName=PowerUpEffectOrder.SortingLayer;line.sortingOrder=PowerUpEffectOrder.Value+order;
+            line.widthCurve=new AnimationCurve(new Keyframe(0,.08f),new Keyframe(.65f,.8f),new Keyframe(1,1));
+            var gradient=new Gradient();
+            gradient.SetKeys(new[]{new GradientColorKey(new Color(.38f,.8f,1),0),
+                new GradientColorKey(new Color(.86f,.57f,1),.35f),
+                new GradientColorKey(new Color(1,.84f,.52f),.75f),new GradientColorKey(Color.white,1)},
+                new[]{new GradientAlphaKey(0,0),new GradientAlphaKey(name=="SpinGlow"?.22f:.8f,.65f),
+                    new GradientAlphaKey(name=="SpinGlow"?.32f:1,1)});
+            line.colorGradient=gradient;return line;
+        }
+        public static MulticolorSpinTrail Rent(Transform source,float cell,float period)
+        {
+            Prewarm();if(available.Count==0)return null;
+            var trail=available.Pop();trail.anchor=source;trail.cell=cell;
+            trail.period=Mathf.Max(.12f,period);trail.age=0;trail.manualPhase=false;trail.IsLeased=true;
+            trail.core.widthMultiplier=cell*.095f;trail.glow.widthMultiplier=cell*.17f;
+            trail.gameObject.SetActive(true);trail.Sample(0);return trail;
+        }
+        public void FollowPhase(float revolutions) {manualPhase=true;Sample(revolutions*period);}
+        public void Sample(float time)
+        {
+            if(anchor==null)return;
+            float head=time/period*Mathf.PI*2;
+            var center=anchor.position+Vector3.down*(cell*.12f);
+            for(int i=0;i<points.Length;i++)
+            {
+                float angle=head-(1-i/(float)(points.Length-1))*Mathf.PI*1.6f;
+                points[i]=center+new Vector3(Mathf.Cos(angle)*cell*.48f,Mathf.Sin(angle)*cell*.21f,0);
+            }
+            core.SetPositions(points);glow.SetPositions(points);
+        }
+        void Update()
+        {
+            if(!IsLeased)return;
+            if(anchor==null || !anchor.gameObject.activeInHierarchy){Release();return;}
+            if(!manualPhase) {age+=Time.deltaTime;Sample(age);}
+        }
+        public void Release()
+        {
+            if(!IsLeased)return;
+            IsLeased=false;anchor=null;gameObject.SetActive(false);available.Push(this);
         }
     }
 
@@ -257,8 +329,8 @@ namespace SweetSugar.Scripts.Effects
             effect.Play(cell, color); return effect;
         }
         public static ElectricChargeParticles Charge(Transform target, float cell) =>
-            Rent(0, target.position, target, cell, new Color(.38f, .8f, 1));
-        public static void Flash(Vector3 position, float cell) => Rent(2, position, null, cell, new Color(.5f, .85f, 1));
+            Rent(0, target.position, target, cell, new Color(1f, .85f, .52f));
+        public static void Flash(Vector3 position, float cell) => Rent(2, position, null, cell, new Color(1f, .86f, .57f));
         public static void Discharge(Vector3 position, float cell) => Discharge(position, cell, new Color(.35f, .8f, 1));
         public static void Discharge(Vector3 position, float cell, Color color) => Rent(1, position, null, cell, color);
         void Initialize()
@@ -274,8 +346,8 @@ namespace SweetSugar.Scripts.Effects
             shape.enabled = mode != 2; shape.shapeType = ParticleSystemShapeType.Circle;
             shape.radiusThickness = mode == 0 ? .08f : 1;
             var emission = particles.emission;
-            emission.rateOverTime = mode == 0 ? 18 : 0;
-            emission.SetBursts(new[] {new ParticleSystem.Burst(0, (short)(mode == 0 ? 7 : mode == 1 ? 14 : 1))});
+            emission.rateOverTime = mode == 0 ? 7 : 0;
+            emission.SetBursts(new[] {new ParticleSystem.Burst(0, (short)(mode == 0 ? 3 : mode == 1 ? 14 : 1))});
             var velocity = particles.velocityOverLifetime;
             velocity.enabled = mode == 0; velocity.orbitalZ = 3;
             var size = particles.sizeOverLifetime; size.enabled = true;

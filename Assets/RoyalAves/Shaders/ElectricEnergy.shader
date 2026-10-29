@@ -1,11 +1,16 @@
 Shader "RoyalAves/ElectricEnergy"
 {
-    Properties { _Mode ("0 ribbon, 1 star, 2 ring", Float) = 0 }
+    Properties
+    {
+        _Mode ("0 ribbon, 1 star, 2 ring", Float) = 0
+        [HideInInspector] _SrcBlend ("Source blend", Float) = 5
+        [HideInInspector] _DstBlend ("Destination blend", Float) = 1
+    }
     SubShader
     {
         Tags { "Queue"="Transparent" "RenderType"="Transparent" "IgnoreProjector"="True" }
         Cull Off ZWrite Off Lighting Off
-        Blend SrcAlpha One
+        Blend [_SrcBlend] [_DstBlend]
         Pass
         {
             CGPROGRAM
@@ -24,8 +29,8 @@ Shader "RoyalAves/ElectricEnergy"
                 {
                     // Soft transverse profile, with packets of light travelling towards the target.
                     float width=abs(p.y);
-                    float packet=pow(.5+.5*cos(i.uv.x*42-_Time.y*38),12);
-                    light=(exp(-width*width*28)*.75+exp(-width*width*4)*.18)*( .72+packet*.7);
+                    float packet=pow(.5+.5*cos(i.uv.x*14-_Time.y*26),8);
+                    light=(exp(-width*width*19)*.86+exp(-width*width*3.5)*.17)*(.94+packet*.16);
                     light*=smoothstep(0,.025,i.uv.x)*smoothstep(1,.97,i.uv.x);
                 }
                 else if (_Mode < 1.5)

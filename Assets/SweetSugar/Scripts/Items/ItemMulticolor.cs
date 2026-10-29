@@ -47,8 +47,10 @@ namespace SweetSugar.Scripts.Items
         Coroutine spinRoutine;
         bool finishSpinCycle;
         Sprite restingSprite;
+        Vector3 spinRestScale, spinRestPosition;
+        bool spinPoseSaved, spinAnimatorWasEnabled;
         readonly List<Lightning> electricArcs = new List<Lightning>();
-        ElectricChargeParticles sourceCharge;
+        MulticolorSpinTrail sourceTrail;
         bool appearing;
         bool sourceVisualExploded;
         float appearanceTime;
@@ -236,7 +238,10 @@ namespace SweetSugar.Scripts.Items
                 // Hard boundary: no beam, spinning frame or orbiting charge survives into detonation.
                 EndSpin();
                 foreach (var target in markedTargets)
+                {
                     if (target.Charge != null) { target.Charge.Clear(); target.Charge = null; }
+                    Restore(target.Highlight);
+                }
                 Phase = SequencePhase.Detonating;
                 Trace("RaysOff");
                 ExplodeSourceVisual();
@@ -363,10 +368,10 @@ namespace SweetSugar.Scripts.Items
         }
         const float PulsePeriod = 0.3f;
         // Neon: a bright inner outline and a wider, softer halo behind it.
-        const float OutlineSpread = 1.05f;
-        const float HaloSpread = 1.16f;
-        const float HaloStrength = 0.3f;
-        static readonly Color NeonColor = new Color(0.35f, 0.9f, 1f, 1f);
+        const float OutlineSpread = 1.065f;
+        const float HaloSpread = 1.18f;
+        const float HaloStrength = 0.4f;
+        static readonly Color NeonColor = new Color(1f, .84f, .5f, 1f);
 
         // The yellow copies drawn under a selected piece (one per sprite of the piece), and the piece's own orders, so
         // they can be put back when it explodes.
@@ -381,6 +386,8 @@ namespace SweetSugar.Scripts.Items
             public SpriteRenderer Renderer;
             public float Spread;
             public float Strength;
+            public float Born;
+            public bool Surface;
         }
 
         // Each sprite of the piece gets a bigger neon copy under it. Raising the piece one order makes the copy show as an
@@ -388,20 +395,36 @@ namespace SweetSugar.Scripts.Items
         private static SelectionHighlight MakeHighlight(Item item)
         {
             var highlight = new SelectionHighlight();
-            foreach (var renderer in item.GetComponentsInChildren<SpriteRenderer>())
+            var artwork=item.GetComponentsInChildren<SpriteRenderer>().Where(r=>r.enabled && r.sprite!=null).ToArray();
+            var top=artwork.OrderBy(r=>SortingLayer.GetLayerValueFromID(r.sortingLayerID)).ThenBy(r=>r.sortingOrder).LastOrDefault();
+            if(top==null)return highlight;
+            int topLayer=top.sortingLayerID, surfaceOrder=top.sortingOrder+2;
+            foreach (var renderer in artwork)
             {
-                if (!renderer.enabled || renderer.sprite == null) continue;
                 var order = renderer.sortingOrder;
                 highlight.Outlines.Add(MakeCopy(renderer, HaloSpread, HaloStrength, order));
                 highlight.Outlines.Add(MakeCopy(renderer, OutlineSpread, 1f, order));
                 renderer.sortingOrder = order + 1;
                 highlight.Raised.Add((renderer, order));
+                // The original implementation only outlined the back of the piece.
+                // This tight overlay lights its actual face above the original artwork.
+                var surface=MakeCopy(renderer,1f,1f,surfaceOrder);
+                surface.Renderer.sortingLayerID=topLayer;
+                surface.Surface=true;surface.Born=Time.time;
+                surface.Renderer.name="MarkedPieceGlow";
+                surface.Renderer.sharedMaterial=TargetChargeMaterial();
+                highlight.Outlines.Add(surface);
             }
             return highlight;
         }
 
         // One shared material: a flat neon silhouette (RoyalAves/NeonSilhouette), so the colour of the piece's art doesn't show.
-        static Material neonMaterial;
+        static Material neonMaterial, targetChargeMaterial;
+        static Material TargetChargeMaterial()
+        {
+            if(targetChargeMaterial==null)targetChargeMaterial=Resources.Load<Material>("ElectricEffects/TargetCharge");
+            return targetChargeMaterial;
+        }
 
         private static Material NeonMaterial()
         {
@@ -443,9 +466,12 @@ namespace SweetSugar.Scripts.Items
                     {
                         if (outline.Renderer == null) continue;
                         var color = Color.white;
-                        color.a = intensity * outline.Strength;
+                        float age=Time.time-outline.Born;
+                        float impact=1-Mathf.SmoothStep(0,1,Mathf.Clamp01(age/.14f));
+                        float sustained=.72f+.10f*Mathf.Sin(age*Mathf.PI*2/PulsePeriod);
+                        color.a=outline.Surface?Mathf.Lerp(sustained,1,impact):intensity*outline.Strength;
                         outline.Renderer.color = color;
-                        outline.Renderer.transform.localScale = Vector3.one * (outline.Spread + 0.06f * intensity);
+                        outline.Renderer.transform.localScale = Vector3.one * (outline.Surface?1: outline.Spread + 0.015f * intensity);
                     }
                 yield return null;
             }
@@ -454,7 +480,11 @@ namespace SweetSugar.Scripts.Items
         private static void Restore(SelectionHighlight highlight)
         {
             foreach (var outline in highlight.Outlines)
-                if (outline.Renderer != null) Destroy(outline.Renderer.gameObject);
+                if (outline.Renderer != null)
+                {
+                    outline.Renderer.enabled=false;outline.Renderer.sprite=null;
+                    Destroy(outline.Renderer.gameObject);
+                }
             foreach (var (renderer, order) in highlight.Raised)
                 if (renderer != null) renderer.sortingOrder = order;
             highlight.Outlines.Clear();
@@ -465,7 +495,7 @@ namespace SweetSugar.Scripts.Items
         {
             var lightning = Lightning.Rent();
             if (lightning == null) return null;
-            lightning.SetLight(pos1, pos2, square.field.squareWidth, hold, transform, target);
+            lightning.SetLight(pos1, pos2, square.field.squareWidth, hold, iconRenderer!=null?iconRenderer.transform:transform, target);
             electricArcs.Add(lightning);
             return lightning;
         }
@@ -475,8 +505,17 @@ namespace SweetSugar.Scripts.Items
         private void BeginSpin()
         {
             EndAppearance();
+            if(iconRenderer==null) iconRenderer=GetSpriteRenderer();
+            if(iconRenderer!=null && !spinPoseSaved)
+            {
+                spinRestScale=iconRenderer.transform.localScale;
+                spinRestPosition=iconRenderer.transform.localPosition;
+                spinPoseSaved=true;
+                if(anim!=null) {spinAnimatorWasEnabled=anim.enabled;anim.enabled=false;}
+            }
             ElectricChargeParticles.Flash(transform.position, field.squareWidth);
-            sourceCharge = ElectricChargeParticles.Charge(transform, field.squareWidth);
+            if (sourceTrail == null) sourceTrail = MulticolorSpinTrail.Rent(iconRenderer!=null?iconRenderer.transform:transform, field.squareWidth,
+                Mathf.Max(1,SpinFrames != null ? SpinFrames.Length : 12)*SpinFrameTime);
             if (spinRoutine != null || SpinFrames == null || SpinFrames.Length == 0) return;
             finishSpinCycle = false;
             restingSprite = iconRenderer != null ? iconRenderer.sprite : null;
@@ -492,7 +531,7 @@ namespace SweetSugar.Scripts.Items
 
         private void EndSpin()
         {
-            if (sourceCharge != null) { sourceCharge.Clear(); sourceCharge = null; }
+            if (sourceTrail != null) { sourceTrail.Release(); sourceTrail = null; }
             foreach (var arc in electricArcs)
                 if (arc != null) arc.Release();
             electricArcs.Clear();
@@ -500,20 +539,51 @@ namespace SweetSugar.Scripts.Items
             spinRoutine = null;
             finishSpinCycle = false;
             if (iconRenderer != null && restingSprite != null) iconRenderer.sprite = restingSprite;
+            if(spinPoseSaved && iconRenderer!=null)
+            {
+                iconRenderer.transform.localScale=spinRestScale;
+                iconRenderer.transform.localPosition=spinRestPosition;
+            }
+            if(spinPoseSaved && anim!=null)anim.enabled=spinAnimatorWasEnabled;
+            spinPoseSaved=false;
+        }
+
+        public static Vector2 SpinScaleAt(float age)
+        {
+            if(age<.09f)
+            {
+                float squeeze=Mathf.Sin(Mathf.Clamp01(age/.09f)*Mathf.PI);
+                return new Vector2(1+squeeze*.09f,1-squeeze*.14f);
+            }
+            float rise=Mathf.SmoothStep(0,1,Mathf.Clamp01((age-.09f)/.13f));
+            return new Vector2(1+rise*.16f,.98f-rise*.045f+Mathf.Sin(age*25)*.018f*rise);
         }
 
         private IEnumerator SpinCor()
         {
+            float age=0,phase=0;
+            float period=SpinFrames.Length*SpinFrameTime;
             do
             {
-                for (int i = 0; i < SpinFrames.Length; i++)
+                float dt=Time.deltaTime;age+=dt;
+                float rate=Mathf.Lerp(.35f,1,Mathf.Clamp01(age/.16f));
+                float previous=phase;phase+=dt*rate/period;
+                if(iconRenderer!=null)
                 {
-                    if (iconRenderer != null) iconRenderer.sprite = SpinFrames[i];
-                    yield return new WaitForSeconds(SpinFrameTime);
+                    iconRenderer.sprite=SpinFrames[Mathf.FloorToInt(phase*SpinFrames.Length)%SpinFrames.Length];
+                    var scale=SpinScaleAt(age);
+                    iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(scale.x,scale.y,1));
+                    // Convert board-cell lift into the sprite parent's coordinates; never move the logical cell.
+                    float parentY=iconRenderer.transform.parent!=null?Mathf.Abs(iconRenderer.transform.parent.lossyScale.y):1;
+                    float lift=field.squareWidth*.09f*Mathf.SmoothStep(0,1,Mathf.Clamp01((age-.09f)/.13f));
+                    iconRenderer.transform.localPosition=spinRestPosition+Vector3.up*(lift/Mathf.Max(.001f,parentY));
                 }
+                if(sourceTrail!=null)sourceTrail.FollowPhase(phase);
+                if(finishSpinCycle && Mathf.FloorToInt(phase)>Mathf.FloorToInt(previous))break;
+                yield return null;
             }
-            while (!finishSpinCycle);
-            spinRoutine = null;
+            while(true);
+            spinRoutine=null;
         }
 
         public Item GetParentItem()

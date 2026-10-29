@@ -22,9 +22,12 @@ namespace RoyalAves.EditorTools
     {
         const string Key = "MagicMail.MulticolorSequenceAudit";
         static readonly ItemsTypes[] Partners = { ItemsTypes.NONE, ItemsTypes.NONE, ItemsTypes.NONE,
-            ItemsTypes.PACKAGE, ItemsTypes.HORIZONTAL_STRIPED, ItemsTypes.MARMALADE, ItemsTypes.MULTICOLOR, ItemsTypes.NONE };
-        static readonly string[] Names = { "empty", "single", "many-with-external-damage", "dynamite", "rocket", "helix", "double-multicolor", "cancel-and-reuse" };
+            ItemsTypes.PACKAGE, ItemsTypes.HORIZONTAL_STRIPED, ItemsTypes.MARMALADE, ItemsTypes.MULTICOLOR, ItemsTypes.NONE, ItemsTypes.NONE };
+        static readonly string[] Names = { "empty", "single", "many-with-external-damage", "dynamite", "rocket", "helix", "double-multicolor", "cancel-and-reuse", "ordinary-match-flight" };
         static int stage, caseIndex, actualCount, releasedCount, originalColorLimit;
+        static List<int> originalPieceColors;
+        static int expectedFlights;
+        static bool collectionCaptureDone;
         static double deadline, nextAt;
         static double nextStatus;
         static ItemMulticolor source;
@@ -58,6 +61,13 @@ namespace RoyalAves.EditorTools
                     if (caseIndex == 3 && owner.MarkedCount == 1)
                         Check(target is ItemPackage package && package.IsAppearing,
                             "Converted dynamite did not animate its entrance while reserved.");
+                    if(caseIndex==2 && owner.MarkedCount==5) ScreenCapture.CaptureScreenshot("Logs/multicolor-flow-v2/native-flow.png");
+                    var glow=target.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault(r=>r.name=="MarkedPieceGlow");
+                    Check(glow!=null && glow.enabled && glow.color.a>=.6f,"Marked piece has no visible surface light.");
+                    Check(glow.sharedMaterial!=null && glow.sharedMaterial.shader.name=="RoyalAves/MulticolorTargetCharge","Surface-light shader missing.");
+                    var artwork=target.GetComponentsInChildren<SpriteRenderer>().First(r=>r.enabled && r.sprite!=null && r.name!="MarkedPieceGlow" && r.name!="SelectOutline");
+                    Check(SortingLayer.GetLayerValueFromID(glow.sortingLayerID)>SortingLayer.GetLayerValueFromID(artwork.sortingLayerID) ||
+                        glow.sortingLayerID==artwork.sortingLayerID && glow.sortingOrder>artwork.sortingOrder,"Surface light is behind the artwork.");
                     known.Add(target);
                     Check(target.IsMulticolorReserved, "Marked target was not reserved.");
                     if (caseIndex == 2 && !attacked)
@@ -77,9 +87,12 @@ namespace RoyalAves.EditorTools
                     Check(!owner.IsSpinning && owner.ActiveArcCount == 0, "Spin or arcs still active at detonation boundary.");
                     Check(!LiveArcs(), "An electric renderer remained visible at detonation boundary.");
                     Check(!LiveChargeParticles(), "Charging particles remained during detonation.");
+                    Check(!LiveTargetGlow(),"Surface light remained during detonation.");
                     if (caseIndex == 6) Check(owner.TargetCount >= 40, "Double-multicolor case did not select the whole board.");
                     if (caseIndex == 2) ScreenCapture.CaptureScreenshot("Logs/multicolor-audit-detonating.png");
                 }
+                if(action=="AllMarked" && caseIndex==0) Check(owner.TargetCount==0,"Empty fixture selected targets.");
+                if(action=="AllMarked" && caseIndex==1) Check(owner.TargetCount==1,"Single fixture selected more than one target.");
                 if (action == "AllMarked" && caseIndex == 2) ScreenCapture.CaptureScreenshot("Logs/multicolor-audit-marked.png");
                 if (action == "Detonate")
                 {
@@ -94,6 +107,7 @@ namespace RoyalAves.EditorTools
                     int ordinary = known.Count(item => item != null && item.currentType == ItemsTypes.NONE);
                     int collecting = known.Count(item => item != null && item.currentType == ItemsTypes.NONE && item.HasActiveCollectionTarget());
                     int flights = LevelManager.THIS.animateItems.Count(effect => effect != null && effect.target && effect.GetComponent<SpriteRenderer>() != null);
+                    expectedFlights=collecting;
                     Check(collecting > 0 && flights == collecting, $"Objective flights mismatch: expected {collecting}, got {flights}.");
                     if (caseIndex == 6) Check(collecting < ordinary, "Double fixture must include non-objective pieces that break locally.");
                 }
@@ -101,8 +115,10 @@ namespace RoyalAves.EditorTools
             }
             catch (Exception e) { failure = e.ToString(); }
         }
+        static bool LiveTargetGlow()=>UnityEngine.Object.FindObjectsByType<SpriteRenderer>(FindObjectsSortMode.None).Any(r=>r.name=="MarkedPieceGlow" && r.enabled && r.sprite!=null);
         static bool LiveArcs() => UnityEngine.Object.FindObjectsByType<Lightning>(FindObjectsSortMode.None)
-            .Any(arc => arc.GetComponentsInChildren<LineRenderer>().Any(line => line.enabled && line.gameObject.activeInHierarchy));
+            .Any(arc => arc.GetComponentsInChildren<LineRenderer>().Any(line => line.enabled && line.gameObject.activeInHierarchy)) ||
+            UnityEngine.Object.FindObjectsByType<MulticolorSpinTrail>(FindObjectsSortMode.None).Any(trail => trail.IsLeased);
         static bool LiveChargeParticles() => UnityEngine.Object.FindObjectsByType<ElectricChargeParticles>(FindObjectsSortMode.None)
             .Any(effect => effect.name == "MarkedPieceElectricSparks" && effect.GetComponent<ParticleSystem>().particleCount > 0);
         static void Actual(Item item)
@@ -126,6 +142,8 @@ namespace RoyalAves.EditorTools
                     File.WriteAllText("Logs/multicolor-audit.result", "RUNNING");
                     timeline.Clear(); failure = null; stage = caseIndex = 0;
                     SessionState.SetBool(Key, true); deadline = EditorApplication.timeSinceStartup + 150;
+                    var gameViewType=typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView");
+                    if(gameViewType!=null)EditorWindow.GetWindow(gameViewType).Focus();
                     EditorApplication.isPlaying = true;
                 }
                 if (SessionState.GetBool(Key, false) && EditorApplication.timeSinceStartup >= nextStatus)
@@ -142,8 +160,13 @@ namespace RoyalAves.EditorTools
                 {
                     if (manager.gameStatus == GameState.Map) manager.gameStatus = GameState.PrepareGame;
                     if (manager.field == null || manager.field.squaresArray == null || manager.field.squaresArray.Length < 25) return;
-                    if (manager.gameStatus != GameState.Playing && manager.gameStatus != GameState.WaitForPopup) return;
+                    if (manager.gameStatus != GameState.Playing && manager.gameStatus != GameState.WaitForPopup && manager.gameStatus != GameState.PrepareGame) return;
+                    // This is an isolated animation fixture, not a campaign startup test.
+                    // Once all cells exist, cancel initial match cleanup before replacing the board.
+                    if(manager.field.squaresArray.Any(cell=>cell==null))return;
+                    manager.field.StopAllCoroutines();
                     originalColorLimit = manager.levelData.colorLimit;
+                    originalPieceColors = manager.levelData.pieceColors?.ToList();
                     manager.gameStatus = GameState.Playing;
                     if (AI.THIS != null) AI.THIS.enabled = false;
                     foreach (var goal in manager.levelData.TargetCounters)
@@ -153,8 +176,22 @@ namespace RoyalAves.EditorTools
                 }
                 if (EditorApplication.timeSinceStartup < nextAt) return;
                 if (stage == 1) { Prepare(manager); stage = 2; nextAt = EditorApplication.timeSinceStartup + .2; return; }
+                if(stage==4)
+                {
+                    if(UnityEngine.Object.FindObjectsByType<AnimateItems>(FindObjectsSortMode.None).Any(f=>f.IsCollectionFlight))return;
+                    Check(manager.levelData.TargetCounters[0].count==998,"Ordinary match arrival did not count exactly once.");
+                    CompleteCase();return;
+                }
                 if (stage == 2)
                 {
+                    if(caseIndex==8)
+                    {
+                        var ordinary=manager.field.GetItems().First(i=>i.currentType==ItemsTypes.NONE && i.color==0);
+                        ordinary.DestroyItem(true);
+                        Check(manager.levelData.TargetCounters[0].count==999,"Ordinary match counted before arrival.");
+                        Check(UnityEngine.Object.FindObjectsByType<AnimateItems>(FindObjectsSortMode.None).Count(f=>f.IsCollectionFlight)==1,"Ordinary match did not create one flight.");
+                        stage=4;return;
+                    }
                     var partner = caseIndex == 0 ? null : manager.field.GetSquare(4,3).Item;
                     if (caseIndex > 0) Check(partner != null && partner.currentType == Partners[caseIndex], $"Fixture partner changed: expected {Partners[caseIndex]}, got {partner?.currentType}.");
                     if (caseIndex == 2 || caseIndex == 4)
@@ -173,15 +210,32 @@ namespace RoyalAves.EditorTools
                         PoolForFixture(source);
                         Check(known.All(i => i == null || !i.IsMulticolorReserved), "Cancellation left reservations.");
                         Check(!LiveArcs(), "Cancellation left live arcs.");
+                        Check(!LiveTargetGlow(),"Cancellation left surface light.");
                         Check(!LiveChargeParticles(), "Cancellation left charging particles.");
                         var cell = manager.field.GetSquare(3,3);
                         cell.Item = null;
                         var reused = cell.GenItem(false, ItemsTypes.MULTICOLOR, noAnim:true) as ItemMulticolor;
                         Check(reused.Phase == ItemMulticolor.SequencePhase.Idle && reused.ActiveArcCount == 0 && !reused.IsSpinning, "Pooled multicolor retained a sequence.");
+                        int cancelledCallbacks=0;
+                        var specimen=manager.field.GetItems().First(i=>i.currentType==ItemsTypes.NONE);
+                        var flightObject=new GameObject("CancelledCollectionAudit");
+                        var cancelledFlight=flightObject.AddComponent<AnimateItems>();cancelledFlight.target=true;
+                        manager.animateItems.Add(cancelledFlight);
+                        cancelledFlight.InitAnimation(specimen.gameObject,Vector2.up*10,Vector2.one,()=>cancelledCallbacks++);
+                        UnityEngine.Object.DestroyImmediate(flightObject);
+                        Check(cancelledCallbacks==0 && !manager.animateItems.Contains(cancelledFlight),"Cancelled flight counted or left a barrier.");
                         CompleteCase(); return;
                     }
                     if (source.Phase == ItemMulticolor.SequencePhase.Detonating) Check(!LiveArcs(), "Ray visible during explosion frames.");
+                    var collectionFlights=UnityEngine.Object.FindObjectsByType<AnimateItems>(FindObjectsSortMode.None).Where(f=>f.IsCollectionFlight).ToArray();
+                    if(caseIndex==2 && !collectionCaptureDone && collectionFlights.Any(f=>f.FlightProgress>.45f))
+                    {collectionCaptureDone=true;ScreenCapture.CaptureScreenshot("Logs/lightball-motion-v4/native-collection.png");}
+                    foreach(var flight in collectionFlights)
+                        Check(Mathf.Abs(Mathf.DeltaAngle(0,flight.transform.eulerAngles.z))<26,"Collection piece is spinning too far.");
                     if (source.Phase != ItemMulticolor.SequencePhase.Finished) return;
+                    if(collectionFlights.Length>0)return;
+                    if(caseIndex==2 || caseIndex==6)
+                        Check(manager.levelData.TargetCounters.Sum(t=>t.count)==999*manager.levelData.TargetCounters.Count-expectedFlights,"Arrival callbacks did not collect exactly once per flight.");
                     Check(raysOff, "Missing phase boundary.");
                     Check(source.TargetCount == source.MarkedCount, "Incomplete marking.");
                     Check(known.All(i => i == null || !i.IsMulticolorReserved), "Finished sequence left reservations.");
@@ -196,7 +250,7 @@ namespace RoyalAves.EditorTools
         {
             timeline.Add($"PASS,{Names[caseIndex]},actual-explosions={actualCount},released={releasedCount}");
             caseIndex++;
-            if (caseIndex == Names.Length) { Finish("PASS: 8 real Play scenarios: empty, single, many with external destruction attempts, dynamite, rocket, helix, double multicolor, cancellation/pool reuse. Every detonation follows all marks, completed spin and zero visible arcs."); return; }
+            if (caseIndex == Names.Length) { Finish("PASS: 9 real Play scenarios (including ordinary match arrival, pending-flight accounting and cancelled flight cleanup): empty, single, many with external destruction attempts, dynamite, rocket, helix, double multicolor, cancellation/pool reuse. Every detonation follows all marks, completed spin and zero visible arcs."); return; }
             stage = 1; nextAt = EditorApplication.timeSinceStartup + 3;
         }
         static void Prepare(LevelManager manager)
@@ -204,8 +258,10 @@ namespace RoyalAves.EditorTools
             manager.StopAllCoroutines(); manager.findMatchesStarted = true;
             manager.DragBlocked = false;
             manager.levelData.colorLimit = caseIndex == 0 ? 1 : originalColorLimit;
+            manager.levelData.pieceColors = Enumerable.Range(0,caseIndex==0?1:4).ToList();
             known.Clear(); detonated.Clear(); actualObserved.Clear(); actualCount = releasedCount = 0;
-            raysOff = attacked = cancelled = false;
+            raysOff = attacked = cancelled = false;collectionCaptureDone=false;
+            foreach(var goal in manager.levelData.TargetCounters)goal.count=999;
             var field = manager.field;
             // Launched specials can remain active after leaving their cell. End every old item lifecycle
             // before constructing the next fixture, so a previous helix cannot attack the new partner.
@@ -228,6 +284,20 @@ namespace RoyalAves.EditorTools
             }
             Check(field.GetSquares().Where(cell => cell != null).All(cell => cell.Item != null), "Fixture has an empty cell.");
             Check(field.GetSquares().Where(cell => cell != null).Select(cell => cell.Item).Distinct().Count() == field.GetSquares().Count(cell => cell != null), "Fixture reused a live item in two cells.");
+            // GenItem clamps colors to the active palette. The empty fixture intentionally
+            // contains colors outside its sole selectable color zero, so force them after spawn.
+            if(caseIndex==0)
+                foreach(var item in field.GetItems()) item.colorableComponent.SetColor(1+(item.square.col+item.square.row)%3);
+            // Explicit piece-collection fixture, independent of the user's open lab/campaign goals.
+            // Color zero is selected in the stress case; the double case also includes non-goal colors.
+            var collectible = field.GetItems().FirstOrDefault(item => item.currentType==ItemsTypes.NONE && item.color==0);
+            if(collectible!=null && manager.levelData.TargetCounters.Count>0)
+            {
+                var goal=manager.levelData.TargetCounters[0];
+                goal.extraObjects=collectible.GetSpriteRenderers().Where(r=>r.sprite!=null).Select(r=>r.sprite).Distinct().ToArray();
+                goal.extraObject=goal.extraObjects[0];goal.collectingAction=CollectingTypes.Destroy;
+                goal.targetLevel.collectAction=CollectingTypes.Destroy;goal.count=999;
+            }
             var sourceCell = field.GetSquare(3,3);
             PoolForFixture(sourceCell.Item); sourceCell.item = null;
             source = sourceCell.GenItem(false, ItemsTypes.MULTICOLOR, noAnim:true) as ItemMulticolor;
@@ -252,7 +322,7 @@ namespace RoyalAves.EditorTools
             File.WriteAllLines("Logs/multicolor-audit-timeline.csv", timeline);
             File.WriteAllText("Logs/multicolor-audit.result", result);
             SessionState.SetBool(Key, false);
-            if (LevelManager.THIS != null && originalColorLimit > 0) LevelManager.THIS.levelData.colorLimit = originalColorLimit;
+            if (LevelManager.THIS != null && originalColorLimit > 0) { LevelManager.THIS.levelData.colorLimit = originalColorLimit; LevelManager.THIS.levelData.pieceColors = originalPieceColors; }
             if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;
             if (result.StartsWith("FAIL")) Debug.LogError(result); else Debug.Log(result);
         }

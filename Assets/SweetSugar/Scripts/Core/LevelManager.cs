@@ -869,6 +869,8 @@ namespace SweetSugar.Scripts.Core
             }
 
 #if UNITY_EDITOR
+            // Keep the stone bench open so the last debris finishes falling; no campaign result/reward.
+            if ((win || lose) && (RoyalAves.Gameplay.EnchantedStoneLaboratory.IsActive || RoyalAves.Gameplay.LightBallLaboratory.IsActive)) return;
             if ((win || lose) && (RoyalAves.Gameplay.MailbagLaboratory.IsActive || RoyalAves.Gameplay.RouteCentralLaboratory.IsActive || RoyalAves.Gameplay.FlyingLetterLaboratory.IsActive || RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
             {
                 Debug.Log(win ? "[Correio Mágico] Laboratório concluído: todas as camadas removidas." : "[Correio Mágico] Laboratório encerrado: jogadas esgotadas.");
