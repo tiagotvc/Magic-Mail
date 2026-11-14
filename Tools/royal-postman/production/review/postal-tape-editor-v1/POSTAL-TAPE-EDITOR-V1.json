@@ -1,0 +1,47 @@
+{
+  "version": "POSTAL-TAPE-EDITOR-V1",
+  "date": "2026-11-13",
+  "status": "production level-editor blocker installed; NO tape goal",
+  "hashes": {
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeCross.png": "49e409ce0873389b2310999204775db9bd11a95f181d36054a9213e1cfea886e",
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeCross.png.meta": "4e73cf3fc60af49ff87471881fe727eca15b2d28670e5278aa324e765be3e26a",
+    "Assets/RoyalAves/Editor/MagicMailEditorCatalog.cs": "d5ced289b54c1c133e53461f432c3a4d58748604c79c8505eb5ee44b9f22b586",
+    "Assets/RoyalAves/Editor/PostalTapeEditorTools.cs": "dd30d5311b68392e3088174ffa69db0a3b564e510f1a82147e91f60e4ced480b",
+    "Assets/RoyalAves/Editor/PostalTapeEditorTools.cs.meta": "5096e0dd22c9ce913dd47f43466e2afa4722951af92e2f27fe13a5444fd3e41e",
+    "Assets/RoyalAves/Editor/PostalTapeLaboratoryTools.cs": "6ca594cb7e1a7b132c8005f183972dd93accf7663dc949dd98f3d3bd5a0088c4",
+    "Assets/RoyalAves/Laboratory/PostalTapeLevel.asset": "824b9a81e5ce4b6f89a28cf7f04217f86ae6db4c1e320d9491603b7caee2119b",
+    "Assets/RoyalAves/Laboratory/PostalTapeTargets.asset": "5a051a054a0b5b42de3c47c16db6bbb2ca3e8a79e57dedb37839e0bb36dae0d8",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeAuthoring.cs": "5930cc9744f93c5991b61e9647e1e131e579d9e0a018d187fcd17bdad9d34c4a",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeAuthoring.cs.meta": "bfcf58643df851f1cf36856cf4b2e40d5e2d4b7f56274627f5ccc7c334052fa8",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeLayer.cs": "c54328de5abe01bcec8b9e33a43eeaaec337dd034de26dd0a2b4c82a21ebcb2a",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapePlacement.cs": "270aad449142d8fa45af038f96950cf1145478b5263267fe61e3c38eae48e165",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapePlacement.cs.meta": "545dd7a935ecbe56b11ca6104c5008cf11e235024c8b274a29459b5fa0e2d699",
+    "Assets/SweetSugar/Resources/Blocks/PostalTape.prefab": "fca55d2b9ebac909aaa9d2f604884f5cb2d6d2494870d6dc99bf9b28a680b392",
+    "Assets/SweetSugar/Resources/Blocks/PostalTape.prefab.meta": "1e133959299cf283544331ebfd460b65c31babc5846b402115172833acddc932",
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "6d9d4e45c71d0ebb8c4f20c9ed9f2160e9e4c9ff2bd324ca63178ec17c1038ac",
+    "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs": "4687ffdf41960aa44575e24580acc0d945b84e4f46808b11e7a3aabfdced1a2a",
+    "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs": "067b7dc3090a909014523bedf5c472f8ab7b32c7834d9ad9746ebeb099f3e0c9",
+    "Assets/SweetSugar/Scripts/Level/LevelData.cs": "40fac395edf19e87826314a68568a060f2d5cad94e6e266d9f0bb9eb997beb35"
+  },
+  "goalCatalogBytePreserved": true,
+  "newGoal": false,
+  "legacyTapeGoalRecord": "kept hidden for serialized compatibility, never selected or incremented",
+  "enum": "PostalTape appended after Safe, no existing values changed",
+  "brush": "Fita postal, one layer over normal pieces/powerups; supports grass floor; rejects ice and other blockers",
+  "runtime": "production Resources prefab; authored placement initialized on owning cell, layer removed at end of peel; no lab override needed",
+  "nativeValidation": "PASS: production Resources prefab, real editor paint/erase/save/reimport and normal level loading with ALL labs disabled; five authored runtime overlays; duplicate hits peel once and preserve piece; direct peeling changes NO real goal; full layer removal restores fall permission; actual swap/match and rocket APIs; final layer cleanup; no tape HUD goal or counter; existing goal/catalog preserved. Not physical pointer/audio/device/full campaign validation.",
+  "compilerErrors": {
+    "runtime": 0,
+    "editor": 0
+  },
+  "campaignEdits": false,
+  "isolatedFixture1901Installed": false,
+  "limits": [
+    "Diagnostic API calls, not physical pointer input",
+    "No audible sound/device/full campaign validation",
+    "Compatibility with ice and other obstacles deliberately blocked"
+  ],
+  "mainEditor": "Production prefab/script references refreshed and matching; fresh ready confirms five authored layers and envelope goal only; main board native capture inspected.",
+  "visualFeedback": "User reported poor appearance during integration; after refresh/restart confirmed agora ficou boa. Preserve current tape art and look.",
+  "finalEditorPlumbing": "Builder refreshes imported scripts before saving prefab, avoiding cached GUID mismatch; laboratory capture hook added for direct main-board review."
+}

@@ -1,0 +1,31 @@
+{
+  "version": "dynamite-combinations-v1",
+  "date": "2026-11-09",
+  "reference": "https://royalmatch.fandom.com/wiki/TNT_Combinations",
+  "primary_rules": "https://dreamgames.helpshift.com/hc/en/3-royal-match/faq/7-power-up-combinations/",
+  "status": "implemented-native-behavior-pass-visual-user-review-pending",
+  "native_results": "review/dynamite-combinations-v1/native.result",
+  "tests": [
+    "rocket horizontal: 43 ordinary pieces, charge before impact",
+    "rocket vertical: 43 ordinary pieces, charge before impact",
+    "propeller: visible cargo, one delivered blast, no package blast at launch, flying render above safe",
+    "light ball: 41 converted packages marked and activated",
+    "double dynamite regression: all 79 ordinary pieces, one blast"
+  ],
+  "limits": [
+    "real swaps initiated through APIs, no physical pointer",
+    "no exact visual-animation parity claim with the reference",
+    "no audible audio/device/full victory flow validation",
+    "no campaign level/reward/economy changes"
+  ],
+  "sha256": {
+    "Assets/RoyalAves/Scripts/Effects/DynamiteCombinationCharge.cs": "564910a1f54cdb477092d636e965cac80bc23df1c915b1641baa2af16289b321",
+    "Assets/RoyalAves/Scripts/Gameplay/ExplosivePackageLaboratory.cs": "6c9e4c25d5ad195371045391dc861d0c0d417f135a87f2843d691a2eadeb24c2",
+    "Assets/RoyalAves/Editor/ExplosivePackageLaboratoryTools.cs": "70a6cfe8a744062d380724a61e08b7fd9692736a4a0159009400871edf64e37e",
+    "Assets/RoyalAves/Editor/DynamiteCombinationsVerification.cs": "585e5ee28aeadabe67ce12aa9a65cfa4a9c67f85e9ae0889af081f06a6df782c",
+    "Assets/SweetSugar/Scripts/Items/ItemStriped.cs": "a7a821ef28d4b717e3aabdc9f948a55945f1a07ab7c7132df682a6ac5390e266",
+    "Assets/SweetSugar/Scripts/Items/ItemMarmalade.cs": "c3656882f37f4f708534d383feb8a2e051ab1f611e11e24b7aa250cff50baeb7",
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "8998cb323d60c7114daa8088a6ba3f9ed1da503072d7c0aa19feb5efbbf2c402",
+    "Assets/SweetSugar/Scripts/Items/ItemMulticolor.cs": "addb64cc61366ddc5e32e04c4902ec3be11f9e613831a135a4152c642df1b717"
+  }
+}

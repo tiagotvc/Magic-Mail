@@ -19,19 +19,27 @@ namespace SweetSugar.Scripts.Items
     /// </summary>
     public class GameBlocker : UnityEngine.MonoBehaviour
     {
+        private LevelManager owner;
+        private void OnEnable()
+        {
+            owner=LevelManager.THIS;
+            if(owner!=null && !owner._stopFall.Contains(this))owner._stopFall.Add(this);
+        }
+
         private void Start()
         {
-            LevelManager.THIS._stopFall.Add(this);
+            if(owner==null)OnEnable();
         }
 
         private void OnDisable()
         {
+            if(owner!=null)owner._stopFall.Remove(this);
             Destroy(this);
         }
 
         private void OnDestroy()
         {
-            LevelManager.THIS._stopFall.Remove(this);
+            if(owner!=null)owner._stopFall.Remove(this);
         }
     }
 }

@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-12",
+  "status": "visual-proposal-user-review-pending",
+  "tool": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Asset type: material redesign preview for the existing Magic Mail 2x2 postal cabinet obstacle. Input image 1 (open cabinet body) and image 2 (actual closed cabinet screenshot) are EDIT TARGET and geometry references; image 3 is the existing envelope design. Create ONE polished landscape concept image showing the SAME cabinet twice side by side, front orthographic view: LEFT closed with its two vertical inset doors and central brass knobs; RIGHT with doors removed, revealing exactly TWO wide horizontal compartments and three neat stacks of ivory red-sealed envelopes on each shelf. Preserve the existing squat near-square cabinet proportions, rounded arched top, single central circular red seal with gold envelope emblem, rounded rectangular body, shelf layout, and inset door geometry. Change the purple/lilac surfaces throughout to warm natural honey/chestnut WOOD, including header, inset doors, shelf and interior walls. Make the broad structural frame honey-brown carved wood too, retaining only restrained thin brass trim, original knobs and the central postal emblem. The wood must read clearly as warm brown wood: gentle directional grain, softly beveled edges and subtle variation, smooth painted cartoon finish, no heavy rough or photoreal grain. Keep the vivid polished 2.5D mobile puzzle game craftsmanship of the original images, with consistent upper-left light, substantial soft bevels, warm amber highlights and deeper walnut recesses. No purple/violet anywhere. Not a new silhouette, not an antique realistic wardrobe; no legs, no extra drawers, no extra compartments, no clocks, no added ornaments, no scene, no UI, no text or labels. Both states same exact design, equal scale, fully contained with generous separation and margins. Transparent background, no opaque backdrop or ground shadow. This is a visual proposal, not a sprite sheet animation.",
+  "output": "escaninho-madeira.png",
+  "references": [
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/CM_armario_modelo_base_v2.png",
+    "Logs/mail-cubby-closed-fit-v3.png",
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/CM_escaninho_carta_cartoon_v2.png"
+  ],
+  "notes": [
+    "Material proposal: warm honey/chestnut wood instead of purple, with restrained brass details.",
+    "Generated closed/open concept, not pixel-identical sprites or final production layers.",
+    "Envelope stacks are illustrative; gameplay inventory/counts not redefined.",
+    "No Unity, prefab, gameplay or campaign edits."
+  ]
+}

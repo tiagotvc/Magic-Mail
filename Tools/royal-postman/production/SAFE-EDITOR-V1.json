@@ -1,0 +1,45 @@
+﻿{
+    "hashes":  {
+                   "Assets/RoyalAves/Scripts/Gameplay/SafeBoardController.cs":  "906F9EA7AC4E06F6969099FCA4B41D476616B144BA50D52D60E99D9387A14364",
+                   "Assets/SweetSugar/Scripts/Blocks/Square.cs":  "1FF30A50CF19088CCE36C82BC03A3C1318452190E3B1854E837E042EC5EBA013",
+                   "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs":  "0F9D5786ED2A0DF78EAF7FEC0ABEA053A2E15BFD9D558DCCBB470BF35C986A09",
+                   "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs":  "7369FFED25C64BBD0EB34EB87BCAB1AE6E18AE6626B7437B290C2A15A9ED15B9",
+                   "Assets/SweetSugar/Scripts/Level/LevelData.cs":  "8E6E270FB621C82B596594D1C276DDD33385DD4FE12109D0D4E292C42936427B",
+                   "Assets/RoyalAves/Scripts/Gameplay/SafeCell.cs":  "5905D75C69D34725493FBB18AAD9B9901B3FBADECC786E72352179456B30D5D7",
+                   "Assets/SweetSugar/Scripts/TargetScripts/TargetEditor/Editor/TargetEditorUtils.cs":  "8061004FD0369C7FD9FE964A1C229AB1BF14F31A522FAC8900C691177CB0954B",
+                   "Assets/RoyalAves/Editor/SafeBoardVerification.cs":  "74FC64BE8BE39504B2C475BAC8AA8253C468D9D41182D9869183B0A813EC6827",
+                   "Assets/SweetSugar/Resources/Blocks/Safe.prefab":  "F37C540706204D8F659E4E8E38BC49A19ADD8DDAC8AE020CDCFE3AF7AF094B3D",
+                   "Assets/RoyalAves/Scripts/Gameplay/SafeTarget.cs":  "DAC8A455C9697887054E5C502607E82D6C698CA3D590ADCB682DD5EC7EE8D986",
+                   "Assets/RoyalAves/Scripts/Effects/SafeBreakAnimation.cs":  "E3FA23FE63C8AA93AB72952C8CBEF4769B4BBF58D9CCB029AC830ED229400785",
+                   "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs":  "91849E5C7D308A48C86F4492EA7B11E55A99FC4C6D4B879A596EC9B6143B3FA7",
+                   "Assets/RoyalAves/Scripts/Gameplay/SafeFootprint.cs":  "2FBE113D64603EA2425A3730B427B36242B9C481758CEE02DB491CD74EF4845B",
+                   "Assets/RoyalAves/Editor/SafeEditorTools.cs":  "8CA7DFBC264C8FCD4EA203C524DE18BD6148DCFDE375D7667D3D598DF1FC3C9D",
+                   "Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset":  "BF92AA9BDA976FE91D1D2463E0A4780D7575EE47773D56CE68CFCC957E2F0545"
+               },
+    "enumIndex":  17,
+    "footprint":  "2x2 shared layer, one anchor and three references",
+    "native":  "Unity 6000.6.0f1, isolated InkwellValidationProject, exit 0",
+    "goal":  "Safe, appended, count from anchors",
+    "campaignChanged":  false,
+    "backups":  "Backups/safe-editor-2026-11-09",
+    "status":  "registered in actual Level Editor",
+    "hits":  5,
+    "notTested":  [
+                      "physical pointer",
+                      "full playthrough",
+                      "all special combinations",
+                      "audio",
+                      "device",
+                      "victory Continue flow"
+                  ],
+    "date":  "2026-11-09",
+    "checks":  [
+                   "native authoring methods and save-load",
+                   "actual rocket: one hit per safe",
+                   "four cells blocked and released",
+                   "one goal decrement",
+                   "neighbor safe preserved",
+                   "animation barrier cleanup"
+               ],
+    "coins":  "visual only"
+}

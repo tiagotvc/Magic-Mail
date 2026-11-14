@@ -130,8 +130,9 @@ namespace SweetSugar.Scripts.Items
 
             if (item1.currentType == ItemsTypes.PACKAGE && item2.currentType == ItemsTypes.PACKAGE)
             {
-                item1.GetTopItemInterface().Destroy(item1, item2);
-                item2.GetTopItemInterface().Destroy(item2, item1);
+                if(item1.destroying || item2.destroying)return;
+                ((ItemPackage)item1).EndAppearance();((ItemPackage)item2).EndAppearance();
+                item1.GetCachedComponent<ItemDestroyAnimation>().DestroyCombined(item1,item2);
             }
         }
 

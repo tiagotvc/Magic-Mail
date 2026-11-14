@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using RoyalAves.Gameplay;
@@ -41,6 +41,10 @@ namespace RoyalAves.EditorTools
 
         [MenuItem(Menu+"Preparar laboratório em U")]
         public static void Prepare()
+        {
+            bool keep=Soft3DProductionTools.IsInstalled;PrepareLegacy();if(keep)Soft3DProductionTools.Apply();
+        }
+        static void PrepareLegacy()
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Pare o Play antes de preparar.");
             var definition=JsonUtility.FromJson<FrameSheet>(File.ReadAllText("Docs/Bolsa_Abrir_Frames.json"));

@@ -216,7 +216,11 @@ namespace RoyalAves.Meta
 
             // Settings as a screen of its own, in place of Sweet Sugar's little window. It lives inside the prefab
             // (menu Royal Aves > Criar tela de configurações), so here it is only found and given the tap sound.
-            settingsScreen = content.GetComponentInChildren<SettingsScreen>(true);
+            // A merged scene can retain the user's older settings layout. Prefer the installed
+            // Royal Postman window while preserving that older layout for recovery.
+            var settingsScreens = content.GetComponentsInChildren<SettingsScreen>(true);
+            settingsScreen = settingsScreens.FirstOrDefault(screen => screen.GetComponent<RoyalPostmanSettingsFit>() != null)
+                ?? settingsScreens.FirstOrDefault();
             if (settingsScreen != null) settingsScreen.OnTap = PlayClick;
 
             if (!SetupRoyalPostmanHome()) Debug.LogError("Royal Postman: RuntimeKit/home ausente; a home antiga não será usada como fallback.",this);
@@ -347,6 +351,9 @@ namespace RoyalAves.Meta
 
         void Show()
         {
+            // The real home lives on this canvas; stale scene overrides must not leave it
+            // hidden and without a raycast area while its buttons remain logically active.
+            GetComponent<Canvas>().enabled = true;
             PlaceBehindSweetSugarPopups();
             if (royalHome == null && (config == null || config.areas.Count == 0))
             {
@@ -544,6 +551,7 @@ namespace RoyalAves.Meta
             Log($"nível {level} vencido; estrela nova: {firstWin}; pontos {LevelManager.Score}; moedas +{coins}");
             // Above the game board and its HUD, on the same camera.
             var canvas = victory.GetComponent<Canvas>();
+            canvas.enabled = true;
             canvas.overrideSorting = true;
             canvas.sortingLayerName = "UI";
             canvas.sortingOrder = 10;

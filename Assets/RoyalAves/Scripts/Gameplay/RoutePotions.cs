@@ -8,7 +8,7 @@ namespace SweetSugar.Scripts.TargetScripts
     {
         public override void InitTarget(LevelData data)
         {
-            foreach (var target in subTargetContainers) target.count = 4;
+            foreach (var target in subTargetContainers) target.count = RoyalAves.Gameplay.PendingElementCounts.Potions(data);
         }
         public override void FulfillTarget<T>(T[] items) { }
         public override int GetDestinationCount() => LevelManager.THIS?.levelData?.TargetCounters?

@@ -1,0 +1,86 @@
+using System;
+using System.IO;
+using System.Linq;
+using RoyalAves.Gameplay;
+using SweetSugar.Scripts;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Items;
+using SweetSugar.Scripts.Items._Interfaces;
+using SweetSugar.Scripts.Level;
+using SweetSugar.Scripts.TargetScripts.TargetEditor;
+using SweetSugar.Scripts.TargetScripts.TargetSystem;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+namespace RoyalAves.EditorTools
+{
+ public static class FrankingSoft3DVerification
+ {
+  const string Key="MagicMail.FrankingSoft3D.Verify";
+  static double at,lastStatus;static int phase,hits;static FrankingMachineCell machine;static Vector3 restScale,restPosition;static bool captured;
+  static void Require(bool value,string reason){if(!value)throw new Exception(reason);}
+  static int Goal()=>LevelManager.THIS.levelData.TargetCounters.Single(t=>t.targetLevel.name=="MachineLetters").count;
+  [InitializeOnLoadMethod]static void Listen(){EditorApplication.update+=Tick;}
+  public static void Run()
+  {
+   Require(Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"),"Isolated only");
+   PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailFrankingSoft3D";
+   FrankingMachineSoft3DTools.Apply();FrankingSoft3DArtCapture.Run();FrankingMachineLaboratoryTools.Prepare();Require(FrankingMachineSoft3DTools.IsInstalled,"Legacy builder lost new art");
+   var data=JsonUtility.FromJson<LevelData>(JsonUtility.ToJson(AssetDatabase.LoadAssetAtPath<LevelContainer>(FrankingMachineLaboratory.LevelPath).levelData));data.levelNum=1904;data.limit=60;
+   var normal=Resources.Load<GameObject>("Items/Item");var sprites=normal.GetComponent<IColorableComponent>().GetSprites(1);var colors=new[]{"gift","stamp","envelope","bow"}.Select(n=>Array.FindIndex(sprites,s=>s!=null&&s.texture.name==n)).ToArray();data.pieceColors=colors.ToList();data.colorLimit=4;
+   foreach(var field in data.fields)for(int y=0;y<field.maxRows;y++)for(int x=0;x<field.maxCols;x++){var cell=field.levelSquares[y*field.maxCols+x];if(cell.blocks.Any(b=>b.squareType==SquareTypes.FrankingMachine))continue;int c=colors[(y+2*x)%4];cell.item=new ItemForEditor{Item=normal,ItemType=ItemsTypes.NONE,Color=c,Tex=sprites[c].texture};}
+   // Keep a legal move on the untouched side of the fixture so the no-moves popup
+   // does not suspend the machine-only diagnostic after its first delivery.
+   var board=data.fields[0];void Piece(int x,int y,int color){var c=board.levelSquares[y*board.maxCols+x];c.item.Color=colors[color];c.item.Texture=sprites[colors[color]].texture;}
+   Piece(6,0,0);Piece(6,1,1);Piece(6,2,0);Piece(5,1,0);Piece(7,2,1);
+   bool Normal(int x,int y)=>!board.levelSquares[y*board.maxCols+x].blocks.Any(b=>b.squareType==SquareTypes.FrankingMachine);
+   int ColorAt(int x,int y)=>board.levelSquares[y*board.maxCols+x].item.Color;
+   for(int y=0;y<board.maxRows;y++)for(int x=0;x<board.maxCols;x++)if(Normal(x,y))
+   {
+    if(x+2<board.maxCols&&Normal(x+1,y)&&Normal(x+2,y))Require(!(ColorAt(x,y)==ColorAt(x+1,y)&&ColorAt(x,y)==ColorAt(x+2,y)),"Fixture has an initial horizontal match");
+    if(y+2<board.maxRows&&Normal(x,y+1)&&Normal(x,y+2))Require(!(ColorAt(x,y)==ColorAt(x,y+1)&&ColorAt(x,y)==ColorAt(x,y+2)),"Fixture has an initial vertical match");
+   }
+   const string levelPath="Assets/SweetSugar/Resources/Levels/Level_1904.asset";var level=AssetDatabase.LoadAssetAtPath<LevelContainer>(levelPath);if(level==null){level=ScriptableObject.CreateInstance<LevelContainer>();AssetDatabase.CreateAsset(level,levelPath);}level.levelData=data;EditorUtility.SetDirty(level);
+   var config=Resources.Load<TargetEditorScriptable>("Levels/TargetEditorScriptable");const string targetPath="Assets/SweetSugar/Resources/Levels/Targets/TargetLevel1904.asset";var targets=AssetDatabase.LoadAssetAtPath<TargetLevel>(targetPath);if(targets==null){targets=ScriptableObject.CreateInstance<TargetLevel>();AssetDatabase.CreateAsset(targets,targetPath);}targets.targets=new TargetList();
+   foreach(var name in new[]{"MachineLetters","CollectItems"}){var definition=config.targets.Single(t=>t.name==name);targets.targets.Add(new TargetObject{targetType=new TargetType{type=config.targets.IndexOf(definition)},sprites=definition.defaultSprites[0].sprites.Copy(),CountDrawer=new Count{count=name=="MachineLetters"?8:1000},ShowTheScoreForStar=new BoolScoreShow()});}
+   EditorUtility.SetDirty(targets);AssetDatabase.SaveAssets();foreach(var key in LightBallLaboratory.OtherKeys)SessionState.SetBool(key,false);LightBallLaboratory.Disable();InkwellLaboratory.Disable();foreach(var key in new[]{"MagicMail.StoneLab.Start","MagicMail.StoneLab.Test","MagicMail.FrankingMachinePreview"})SessionState.SetBool(key,false);
+   SessionState.SetBool(Key,true);SessionState.SetString(Key+"Deadline",DateTime.UtcNow.AddMinutes(4).ToString("O"));EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/game.unity");EditorApplication.isPlaying=true;
+  }
+  static void Tick()
+  {
+   if(!SessionState.GetBool(Key,false)||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+   try
+   {
+    Require(DateTime.UtcNow<DateTime.Parse(SessionState.GetString(Key+"Deadline",""),null,System.Globalization.DateTimeStyles.RoundtripKind),"Timeout");var m=LevelManager.THIS;if(!EditorApplication.isPlaying||m==null)return;
+    if(m.gameStatus==GameState.Map&&AI.THIS!=null){PlayerPrefs.SetInt("OpenLevel",1904);m.currentLevel=1904;m.BoostPackage=m.BoostStriped=m.BoostColorfullBomb=0;m.gameStatus=GameState.PrepareGame;}
+    if(EditorApplication.timeSinceStartup-lastStatus>1){lastStatus=EditorApplication.timeSinceStartup;File.WriteAllText("Logs/franking-soft3d-status.txt","phase="+phase+" state="+m.gameStatus+" timeScale="+Time.timeScale+" count="+(machine!=null?machine.Collected:-1)+" anim="+(machine!=null&&machine.Animation!=null?machine.Animation.IsAnimating:false)+" accept="+(machine!=null?machine.CanAcceptPowerUpHit:false));}
+    if(m.gameStatus==GameState.Tutorial)m.gameStatus=GameState.Playing;if(m.gameStatus!=GameState.Playing||EditorApplication.timeSinceStartup<at)return;
+    if(phase==0)
+    {
+     machine=UnityEngine.Object.FindFirstObjectByType<FrankingMachineCell>();if(machine==null||machine.Animation==null)return;
+     Require(machine.Animation.cabinet.sprite.texture.name=="franking-body"&&machine.Animation.GetComponent<FrankingMachineLever>().lever.GetComponent<SpriteRenderer>().sprite.texture.name=="franking-lever","Actual runtime sprites are old");
+     Require(!machine.Animation.useCabinetDelivery,"Cabinet-only motion flag leaked");Require(Goal()==8&&machine.Collected==0,"Initial quota");restScale=machine.Animation.transform.localScale;restPosition=machine.Animation.transform.localPosition;
+     Capture("Logs/franking-soft3d-initial.png");phase=1;at=EditorApplication.timeSinceStartup+.15;return;
+    }
+    if(phase==1)
+    {
+     Require(machine.AcceptImpact(true),"Machine rejected accepted impact");Require(!machine.AcceptImpact(true),"Duplicate impact accepted while busy");Require(Goal()==8-hits,"Goal counted before letter arrival");captured=false;phase=2;at=EditorApplication.timeSinceStartup+.055;return;
+    }
+    if(phase==2)
+    {
+     if(!captured){if(hits==0)Capture("Logs/franking-soft3d-pressed.png");captured=true;at=EditorApplication.timeSinceStartup+.18;return;}
+     if(hits==0)Capture("Logs/franking-soft3d-ejecting.png");phase=3;return;
+    }
+    if(phase==3)
+    {
+     if(machine.Animation.IsAnimating||!machine.CanAcceptPowerUpHit&&Goal()>0)return;hits++;Require(machine.Collected==hits&&Goal()==8-hits,"Exactly one credit on arrival");Require(Vector3.Distance(machine.Animation.transform.localScale,restScale)<.0001f&&Vector3.Distance(machine.Animation.transform.localPosition,restPosition)<.0001f,"Impact did not restore body transform");Require(Quaternion.Angle(machine.Animation.GetComponent<FrankingMachineLever>().lever.localRotation,Quaternion.Euler(0,0,-28))<.01f,"Lever did not return to pivot angle");
+     if(hits<8){phase=1;at=EditorApplication.timeSinceStartup+.05;return;}
+     Require(!machine.AcceptImpact(true),"Emitted after quota exhausted");Require(machine.transform.parent.GetComponent<Square>().GetSubSquare().GetComponent<FrankingMachineCell>()!=null,"Fixed machine removed");Capture("Logs/franking-soft3d-finished.png");
+     File.WriteAllText("Logs/franking-soft3d-native.result","PASS: production normal load with labs off, new body and lever sprites, original cabinet-only flag false; 8 accepted activations/8 letters/goal0, duplicate busy hits and exhausted quota rejected, no early goal credit, lever returns -28deg and body position/scale restored after every impact, machine remains fixed, no campaign result. Native APIs/camera renders; no physical pointer/device/audio validation.");SessionState.SetBool(Key,false);EditorApplication.Exit(0);
+    }
+   }catch(Exception e){File.WriteAllText("Logs/franking-soft3d-native.result","FAIL: "+e);Debug.LogException(e);SessionState.SetBool(Key,false);EditorApplication.Exit(1);}
+  }
+  static void Capture(string path){PostalTapeLaboratoryTools.CaptureBoard(path);PostalTapeLaboratoryTools.CaptureBoard(path);}
+ }
+}

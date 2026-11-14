@@ -184,6 +184,19 @@ namespace RoyalAves.EditorTools
 
         void OnPreprocessTexture()
         {
+            if (assetPath == "Assets/RoyalAves/Art/Obstacles/Inkwell/InkwellStages.png")
+            {
+                var ink = (TextureImporter)assetImporter;
+                ink.textureType = TextureImporterType.Sprite;
+                ink.spriteImportMode = SpriteImportMode.Multiple;
+                ink.spritePixelsPerUnit = 210;
+                ink.alphaIsTransparency = true;
+                ink.mipmapEnabled = false;
+                ink.textureCompression = TextureImporterCompression.Uncompressed;
+                ink.filterMode = FilterMode.Bilinear;
+                ink.maxTextureSize = 2048;
+                return;
+            }
             if (assetPath.StartsWith("Assets/RoyalAves/Resources/UI/Hud/"))
             {
                 var hudImporter = (TextureImporter)assetImporter;

@@ -10,6 +10,8 @@ Direção visual mais recente: pacote fechado em todos os estados; retirar selo,
 
 ## Revisão para 200 níveis — 19/10/2026
 
+**Atualização de 09/11/2026 — Cofre concluído e aceito pelo usuário após testes.** Ocupação 2×2, cinco acertos de especiais, quebra por fragmentos e moedas independentes, meta única e hélice passando por cima. Ver `Cofre_Level_Editor.md`. A estreia abaixo continua proposta de campanha, não aplicação em fases.
+
 Esta revisão inclui o Gelo: **12 elementos principais, sendo 11 originais + Gelo**. A progressão abaixo é uma proposta para playtest e substitui as estreias do roteiro histórico de 100 fases nas seções seguintes. Nenhum tabuleiro foi alterado nesta revisão.
 
 A antiga Pilha atualmente é a **Caixa de madeira**, com três estados: base, uma tábua e duas em X, conforme aprovação de 22/10/2026. As descrições de pacote com selo e fitas acima são históricas; consultar `Caixa_Cartoon_V3.md` e `Caixa_Lascas_Madeira.md`.
@@ -29,9 +31,9 @@ Tabela única de consulta para os 12 elementos. **Estreia** é a fase que ensina
 | 7 | Poções | Obstáculo fixo 2×2 com quatro frascos. Match adjacente quebra o frasco da cor correspondente; especiais quebram os frascos nas células atingidas, podendo atingir mais de um. O último frasco destrói o suporte em lascas. Meta: quatro poções. | 61 | 62–80 | **Feito e aceito pelo usuário em 23/10/2026.** Ver `Pocoes.md`. Inserção na campanha em etapa própria |
 | 8 | Bolsa do carteiro (antigo Malote) | Bolsa fixa: match ortogonal adjacente ou especial abre a bolsa e emite um pergaminho. Ele sai fechado, abre, faz uma pirueta e voa em arco até a meta, que conta na chegada. Quantidade manual no Level Editor. | 81 | 82–100, consolidando as cem primeiras | **Feita e aceita pelo usuário em 23/10/2026.** Ver `Malote.md`. Campanha em etapa própria |
 | 9 | Encomenda Encantada | Proteção mágica: match não causa dano, só reação visual ineficaz; apenas power-up ou especial válido libera e coleta. | 101 | 102–120 | A produzir |
-| 10 | Tinteiro | Obstáculo fixo com cinco estados; ao quebrar espalha Tinta nas células elegíveis. Dependência aberta: a Tinta virou Grama, então é preciso decidir se volta a existir um piso de tinta próprio ou outro resultado. | 121, condicionada a essa decisão | 122–140 | A produzir; maior risco de retrabalho |
+| 10 | Elemento a redefinir | Espaço reservado para uma nova mecânica. | 121, condicionada à nova definição | 122–140 | A redefinir |
 | 11 | Fita | Overlay superior sobre peça ou obstáculo compatível; bloqueia troca, queda e ativação, e absorve o impacto que a remove. | 141 | 142–160 | A produzir; Fita + Gelo exige regra explícita de prioridade de camadas |
-| 12 | Cofre | Obstáculo fixo com cinco etapas de proteção; só power-ups removem as proteções, depois ele abre e coleta. Reaproveita o filtro de dano da Encantada. | 161 | 162–180 | A produzir |
+| 12 | Cofre | Obstáculo fixo 2×2, cinco acertos de especiais e resistência compartilhada pelas quatro células. Cinco estados; no final se despedaça e espalha moedas por animação procedural. Matches não danificam; a meta conta um cofre na quebra final e libera as quatro células. Moedas apenas visuais. | 161 (proposta) | 162–180 (proposta) | **Concluído, testado e aceito pelo usuário em 09/11/2026**, inclusive correção da hélice por cima. Integrado ao Level Editor; campanha em etapa própria. Ver `Cofre_Level_Editor.md` |
 
 Sem estreias de 181 a 200: domínio do conjunto, alternando combinações, respiros e desafios até o fechamento. As estreias das seções históricas mais abaixo (31, 41, 51, 61, 71, 81 e 91) pertencem ao roteiro de 100 fases e foram substituídas por esta tabela.
 
@@ -49,20 +51,17 @@ Oito elementos têm implementação/protótipo e efeitos próprios. O aceite da 
 | Ovo mágico | Quebra local e cacos | Feito e aceito em 22/10/2026; campanha em etapa própria |
 | Poções | Quebra do vidro em 0,17 s, estouro local, gotas e cacos independentes; suporte explode após o último frasco | **Feito e aceito em 23/10/2026**; campanha em etapa própria |
 | Bolsa do carteiro | Abertura/fechamento em 0,9 s, brilho dourado discreto, pergaminho fechado abrindo, pirueta e voo em arco em 0,72 s; largura constante, ícone aberto na meta | **Feita e aceita em 23/10/2026**; campanha em etapa própria |
+| Cofre 2×2 | Cinco estados, barra/fechadura/porta removidas, quebra completa em fragmentos com espessura e moedas com trajetórias próprias; hélice por cima | **Concluído e aceito pelo usuário em 09/11/2026 após testes**; campanha em etapa própria |
 
-**Ovo mágico, Poções e Bolsa do carteiro concluídos e aceitos pelo usuário. Restam quatro elementos a produzir:**
+**Ovo mágico, Poções, Bolsa do carteiro e Cofre concluídos e aceitos pelo usuário.** A relação abaixo preserva as pendências históricas dos demais elementos; não representa uma contagem atualizada de todos os elementos faltantes.
 
 | Elemento | Efeitos a produzir |
 | --- | --- |
 
 | Encomenda Encantada | Proteção mágica, reação sem dano ao match, impacto válido de especial e liberação |
-| Tinteiro | Estados de dano, rachaduras, ruptura, respingos e aplicação no grid |
 | Fita | Fixação sobre conteúdo, tensão, dano, rasgo/descolamento e liberação |
-| Cofre | Estados de proteção, reação sem dano, impactos metálicos, remoção das proteções e abertura/coleta |
 
 Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando aplicável e integração com editor/objetivos. Reaproveitar o voo de cartas e a fragmentação existentes quando adequados; efeito compartilhado não comprova mecânica pronta.
-
-**Dependência adicional do Tinteiro:** a antiga Tinta Mágica foi substituída pela Grama (`Tinta_Magica.md`); `InkFloorLayer` usa atualmente o desfolhar da grama. Antes de produzir a ruptura, decidir se o Tinteiro volta a criar um piso próprio de Tinta ou terá outro resultado. Mantendo tinta, faltam também estados do piso, aplicação, limpeza, partículas, áudio e regra da meta. Esse é um pacote adicional aos quatro elementos a produzir. A proposta original espalha tinta ao quebrar o Tinteiro; não prevê automaticamente propagação por jogada.
 
 ### Progressão proposta
 
@@ -76,7 +75,7 @@ Cada pacote inclui áudio, estados de arte, animação, ícone de meta quando ap
 | 61–80 | Poções na 61: matches por cor e especiais pela linha/coluna atingida |
 | 81–100 | Bolsa do carteiro na 81: gerador fixo de pergaminhos; consolidar as primeiras 100 |
 | 101–120 | Encomenda Encantada na 101: planejar especiais |
-| 121–140 | Tinteiro na 121, condicionado à definição do piso gerado |
+| 121–140 | Faixa reservada para um elemento ainda a redefinir |
 | 141–160 | Fita na 141: bloqueio e liberação de conteúdos compatíveis |
 | 161–180 | Cofre na 161: especiais e resistência progressiva |
 | 181–200 | Domínio do conjunto; alternar combinações, respiros e desafios até o fechamento |
@@ -97,11 +96,11 @@ Reservar pelo menos duas fases de reforço após cada estreia antes de combinaç
 1. Concluir aceite em Play dos cinco elementos existentes e suas fases de ensino.
 2. Ovo mágico, Poções e Bolsa do carteiro concluídos e aceitos.
 3. Encomenda Encantada, incluindo feedback de impacto inválido.
-4. Fechar Tinteiro/Tinta e validar aplicação e metas antes da arte final.
+4. Redefinir o elemento da faixa 121–140 antes da arte final.
 5. Fita e conteúdos compatíveis; depois Cofre, reutilizando o filtro de dano da Encantada.
 6. Integrar e balancear a campanha até 200, com metas possíveis e reinício consistente.
 
-Próxima entrega: **Encomenda Encantada**. Bolsa do carteiro concluída por aceite do usuário em 23/10/2026. A inserção na campanha segue etapa própria. Maior risco de retrabalho: **Tinteiro/Tinta**.
+Próxima entrega: **Encomenda Encantada**. Bolsa do carteiro concluída por aceite do usuário em 23/10/2026. A inserção na campanha segue etapa própria.
 
 ## Escopo e situação atual (plano original de 100 fases)
 
@@ -181,14 +180,12 @@ Implementar nesta ordem para respeitar as estreias. Reutilizar o aprendizado de 
 
 **Entrega:** alvos móveis estáveis durante cascatas e teleporte, filtragem por cor validada e fases de estreia/reforço dos três elementos.
 
-## Etapa 4 — Encomenda Encantada e Tinteiro
+## Etapa 4 — Encomenda Encantada e elemento a redefinir
 
 | Elemento / estreia | Regra do guia | Decisões e protótipo | Design e aceite específico |
 | --- | --- | --- | --- |
 | Encantada / fase 61 | Só recebe dano de power-ups | Definir vida, posição fixa/móvel, lista de especiais/ferramentas válidos e coleta. Proposta inicial: um impacto válido; confirmar antes da arte | Pacote com glifo e proteção; reação ineficaz ao match, impacto válido e liberação. Reação ineficaz não pode parecer dano |
-| Tinteiro / fase 71 | Cinco estados; ao quebrar espalha Tinta | Confirmar cinco impactos ou outra correspondência entre estados e vida; fontes de dano, geometria, prioridade, nível aplicado e tratamento de tinta existente. Usar máscara/alcance configuráveis | Cinco estados com rachaduras, ruptura e aplicação de tinta no grid. Preservar peças e excluir células inelegíveis |
-
-**Aceite adicional do Tinteiro:** resolver aplicação antes de verificar vitória; definir se a tinta gerada passa a fazer parte da meta. Testar bordas, buracos, overlays, obstáculos e vários tinteiros na mesma resolução. Se não houver destino elegível, terminar sem travar.
+| Elemento a redefinir | Regra removida para nova concepção | Definir mecânica, fontes de dano, objetivo e integração antes da arte | Aguardando nova direção |
 
 ## Etapa 5 — Fita e Cofre
 
@@ -233,7 +230,7 @@ Automatizar verificações de regras quando houver lógica nova de deduplicaçã
 
 Pilha de Encomendas: quatro estados de pacote fechado aplicados e validados pelo usuário no laboratório. Efeitos visuais e quatro sons próprios integrados; o áudio ainda precisa de escuta no Play. A meta conta apenas a conclusão da remoção.
 
-Grama (substitui a direção visual de Tinta Mágica neste piso): regras validadas em laboratório isolado, com uma ou duas camadas, objetivo por célula limpa e composição com pacote. Direção mais recente segue a referência anexada: tapete quadrado fechado de folhas pequenas arredondadas, inicial claro e seguinte escuro, com encaixe pelos limites visíveis para preencher a célula inteira e ícone sincronizado. Desfolhar integrado aos dois danos, com folhas arredondadas em giro/dispersão e contagem final após a animação; controles de velocidade/dispersão no painel. Aceite visual em Play e som ainda pendentes. Regras e instruções em `Docs/Grama.md`. A relação futura com o Tinteiro será definida na etapa correspondente.
+Grama (substitui a direção visual de Tinta Mágica neste piso): regras validadas em laboratório isolado, com uma ou duas camadas, objetivo por célula limpa e composição com pacote. Direção mais recente segue a referência anexada: tapete quadrado fechado de folhas pequenas arredondadas, inicial claro e seguinte escuro, com encaixe pelos limites visíveis para preencher a célula inteira e ícone sincronizado. Desfolhar integrado aos dois danos, com folhas arredondadas em giro/dispersão e contagem final após a animação; controles de velocidade/dispersão no painel. Aceite visual em Play e som ainda pendentes. Regras e instruções em `Docs/Grama.md`.
 
 Escaninho/Armário postal: laboratório 2×2 criado em 14/10/2026. Revisão visual e mecânica: dois nichos amplos, seis cartas por nicho e cinco impactos totais — primeiro remove as portas sem coleta; os quatro seguintes enviam três cartas por hit (dois hits para esvaziar cada nicho); o armário quebra após a última entrega. Meta automática: 12 cartas por armário. Instruções em `Docs/Escaninho.md`.
 

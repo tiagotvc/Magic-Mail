@@ -1,0 +1,925 @@
+fileFormatVersion: 2
+guid: 23e512eb2c5487a44bea8eb95422fc5b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4600635468462591517
+    second: bag-opening_0
+  - first:
+      213: -7467572358425506023
+    second: bag-opening_1
+  - first:
+      213: -4089600499178678256
+    second: bag-opening_2
+  - first:
+      213: 2080670733742017474
+    second: bag-opening_3
+  - first:
+      213: -7180866083996987512
+    second: bag-opening_4
+  - first:
+      213: -3653365605696340863
+    second: bag-opening_5
+  - first:
+      213: -6284865305620037878
+    second: bag-opening_6
+  - first:
+      213: -4057341102598647151
+    second: bag-opening_7
+  - first:
+      213: 8352545554516437097
+    second: bag-opening_8
+  - first:
+      213: -4969087881099035626
+    second: bag-opening_9
+  - first:
+      213: -1596098245745016858
+    second: bag-opening_10
+  - first:
+      213: 4926318167201744464
+    second: bag-opening_11
+  - first:
+      213: 76065258272044605
+    second: bag-opening_12
+  - first:
+      213: 5456873924675537685
+    second: bag-opening_13
+  - first:
+      213: 9160664694374578902
+    second: bag-opening_14
+  - first:
+      213: 2394301277946137419
+    second: bag-opening_15
+  - first:
+      213: 5890540107813764215
+    second: bag-opening_16
+  - first:
+      213: 1562101410657047992
+    second: bag-opening_17
+  - first:
+      213: 5586250409491776789
+    second: bag-opening_18
+  - first:
+      213: 9086607943354899275
+    second: bag-opening_19
+  - first:
+      213: 7792151661806428798
+    second: bag-opening_20
+  - first:
+      213: -8560061649662685676
+    second: bag-opening_21
+  - first:
+      213: -3736103436207318578
+    second: bag-opening_22
+  - first:
+      213: -2940525467894383685
+    second: bag-opening_23
+  - first:
+      213: -4162867406955295691
+    second: bag-opening_24
+  - first:
+      213: 6558157583552131623
+    second: bag-opening_25
+  - first:
+      213: 5154776737855529860
+    second: bag-opening_26
+  - first:
+      213: 3327359222215130727
+    second: bag-opening_27
+  - first:
+      213: -5711945293142329672
+    second: bag-opening_28
+  - first:
+      213: 3672880786236025105
+    second: bag-opening_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bag-opening_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 908
+        width: 316
+        height: 336
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e17939aa624720c0800000000000000
+      internalID: -4600635468462591517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 918
+        width: 12
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91f8581418add5890800000000000000
+      internalID: -7467572358425506023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_2
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 641
+        width: 627
+        height: 287
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 018d13d7302de37c0800000000000000
+      internalID: -4089600499178678256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_3
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 926
+        width: 944
+        height: 303
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cb8e3b220700ec10800000000000000
+      internalID: 2080670733742017474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_4
+      rect:
+        serializedVersion: 2
+        x: 889
+        y: 930
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88f85bba750785c90800000000000000
+      internalID: -7180866083996987512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_5
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 644
+        width: 310
+        height: 285
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18cf6d58653ac4dc0800000000000000
+      internalID: -3653365605696340863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_6
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 900
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0f375d9d4ca7c8a0800000000000000
+      internalID: -6284865305620037878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 643
+        width: 312
+        height: 252
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 192140f83cd61b7c0800000000000000
+      internalID: -4057341102598647151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 335
+        width: 310
+        height: 291
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 968683b9de33ae370800000000000000
+      internalID: 8352545554516437097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 310
+        height: 298
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61cb46546e04a0bb0800000000000000
+      internalID: -4969087881099035626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_10
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 296
+        width: 10
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6ef7ebb1a1589d9e0800000000000000
+      internalID: -1596098245745016858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_11
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 294
+        width: 45
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0560d96b54ccd5440800000000000000
+      internalID: 4926318167201744464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_12
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 264
+        width: 646
+        height: 366
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d36bd0b03fc3e0100800000000000000
+      internalID: 76065258272044605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_13
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 621
+        height: 267
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51b80683ce5babb40800000000000000
+      internalID: 5456873924675537685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_14
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 284
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6dab8a61108312f70800000000000000
+      internalID: 9160664694374578902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_15
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 301
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4b4e35a3544a3120800000000000000
+      internalID: 2394301277946137419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_16
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 293
+        width: 7
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77c3e65c4076fb150800000000000000
+      internalID: 5890540107813764215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_17
+      rect:
+        serializedVersion: 2
+        x: 598
+        y: 292
+        width: 7
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b59955e4f2bda510800000000000000
+      internalID: 1562101410657047992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_18
+      rect:
+        serializedVersion: 2
+        x: 760
+        y: 282
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51543247629568d40800000000000000
+      internalID: 5586250409491776789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_19
+      rect:
+        serializedVersion: 2
+        x: 859
+        y: 309
+        width: 23
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4b59e418cd1a1e70800000000000000
+      internalID: 9086607943354899275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_20
+      rect:
+        serializedVersion: 2
+        x: 879
+        y: 305
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7221fdd6a8432c60800000000000000
+      internalID: 7792151661806428798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_21
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 299
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41e4964684d843980800000000000000
+      internalID: -8560061649662685676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_22
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 307
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec91fb038b1b62cc0800000000000000
+      internalID: -3736103436207318578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_23
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 262
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbb7a21aaa72137d0800000000000000
+      internalID: -2940525467894383685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_24
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 0
+        width: 315
+        height: 265
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53cc06136268a36c0800000000000000
+      internalID: -4162867406955295691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_25
+      rect:
+        serializedVersion: 2
+        x: 950
+        y: 335
+        width: 311
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 722b8ac5391430b50800000000000000
+      internalID: 6558157583552131623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_26
+      rect:
+        serializedVersion: 2
+        x: 1059
+        y: 275
+        width: 56
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4836354c122798740800000000000000
+      internalID: 5154776737855529860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_27
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 303
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 76eb04065972d2e20800000000000000
+      internalID: 3327359222215130727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_28
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 294
+        width: 11
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b679c1e4081bb0b0800000000000000
+      internalID: -5711945293142329672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bag-opening_29
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 282
+        width: 38
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 119a4f58d91b8f230800000000000000
+      internalID: 3672880786236025105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bag-opening_0: -4600635468462591517
+      bag-opening_1: -7467572358425506023
+      bag-opening_10: -1596098245745016858
+      bag-opening_11: 4926318167201744464
+      bag-opening_12: 76065258272044605
+      bag-opening_13: 5456873924675537685
+      bag-opening_14: 9160664694374578902
+      bag-opening_15: 2394301277946137419
+      bag-opening_16: 5890540107813764215
+      bag-opening_17: 1562101410657047992
+      bag-opening_18: 5586250409491776789
+      bag-opening_19: 9086607943354899275
+      bag-opening_2: -4089600499178678256
+      bag-opening_20: 7792151661806428798
+      bag-opening_21: -8560061649662685676
+      bag-opening_22: -3736103436207318578
+      bag-opening_23: -2940525467894383685
+      bag-opening_24: -4162867406955295691
+      bag-opening_25: 6558157583552131623
+      bag-opening_26: 5154776737855529860
+      bag-opening_27: 3327359222215130727
+      bag-opening_28: -5711945293142329672
+      bag-opening_29: 3672880786236025105
+      bag-opening_3: 2080670733742017474
+      bag-opening_4: -7180866083996987512
+      bag-opening_5: -3653365605696340863
+      bag-opening_6: -6284865305620037878
+      bag-opening_7: -4057341102598647151
+      bag-opening_8: 8352545554516437097
+      bag-opening_9: -4969087881099035626
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

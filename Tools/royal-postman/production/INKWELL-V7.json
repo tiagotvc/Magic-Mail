@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-03",
+  "revision": "V7 centered visible inkwell, registered stages and matching effect origins",
+  "testedSourcesMatch": {
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": true,
+    "Assets/RoyalAves/Scripts/Effects/StoneShatterEffect.cs": true,
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": true
+  },
+  "sourceHashes": {
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": "1f3d7fb36fa351d7137ec238024f34d2b549b3fb6e16283e2897440705253416",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": "ae42fde711f264c7df1842a1ab8c7357c62bb10d94c1a8c6d5b7da302e9f2c0f",
+    "Assets/RoyalAves/Scripts/Effects/StoneShatterEffect.cs": "539d44560a54cc177bf57af13870752143240aa4aad4e815f8ddfed9f764dce8",
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": "07153a18ea441f77e6d51402253edd259dc8955b0f8468075f130b7ea512e1e2"
+  },
+  "intactPivotPixels": [
+    288,
+    240.5
+  ],
+  "pixelsPerUnit": 210,
+  "scaleChanged": false,
+  "productionAssetChange": "only existing sprite pivots; no scene, level, prefab or catalog rewritten",
+  "checks": {
+    "inkwell-size-verification.result": "PASS: visible alpha height/cell pitch=0,939; pixelsPerUnit=210; visibleCenterOffset=(0.00, 0.00).",
+    "inkwell-registration-verification.result": "PASS: measured gold-foot centers/support lines coincide in all five standing states; rubble support also aligned; common centered placement and all frame scales preserved.\nstage=0; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(288.00, 240.50); ppu=210\nstage=1; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(255.50, 240.50); ppu=210\nstage=2; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(224.00, 240.50); ppu=210\nstage=3; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(287.50, 272.50); ppu=210\nstage=4; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(252.50, 272.50); ppu=210\nstage=5; foot=(0.00, -0.92); driftPixels=0,0000; pivot=(230.00, 279.50); ppu=210\n",
+    "inkwell-native-verification.result": "PASS: real swap/match resolver damages adjacent jar and emits visible liquid flight; five emitted/landed splashes; intermediate/full wet fill; imported prefab/sprites/material/shader; diagonal/duplicate rejection; four neighbors then center; goal decremented once; independent piece/floor ownership. Swap initiated by API, not physical pointer; remaining four hits diagnostic. No full victory/Continue or device claim.",
+    "inkwell-porcelain-verification.result": "PASS: four intermediate chip bursts; fifth emits 22 thin purple/white/gold solids plus one original-scale textured crown-wall fragment; motion/mesh present; no static rubble sprite displayed; stone default still 30 original-style chunks."
+  }
+}

@@ -13,6 +13,7 @@ namespace RoyalAves.Effects
         public Sprite flaskArtwork;
         public Texture2D breakSheet;
         public bool interactivePreview;
+        public bool soft3D;
         [System.NonSerialized] public bool metaballsPreview;
         [System.NonSerialized] public Shader metaballsShader;
         [System.NonSerialized] public bool drawnLiquidPreview;
@@ -69,6 +70,7 @@ namespace RoyalAves.Effects
             }
             var preview = GetComponent<SpriteRenderer>();
             if (preview != null) preview.enabled = false;
+            if(soft3D){BuildSoft3D();return;}
             var sheet = breakSheet != null ? breakSheet : Resources.Load<Texture2D>("RouteCentral/CM_frasco_quebra_sheet");
             if (sheet != null)
             {
@@ -174,7 +176,7 @@ namespace RoyalAves.Effects
         public bool BreakFlask(int index)
         {
             if (index < 0 || index >= 4 || flasks[index] == null || !flasks[index].enabled || breaking[index]) return false;
-            if (burstFrames.Count != 16)
+            if (!soft3D && burstFrames.Count != 16)
             {
                 Debug.LogError("Poções: spritesheet de quebra ausente.", this);
                 return false;
@@ -191,6 +193,15 @@ namespace RoyalAves.Effects
         IEnumerator AnimateBottleBreak(int index)
         {
             var renderer = flasks[index];
+            if(soft3D)
+            {
+                var scale=renderer.transform.localScale;
+                for(float elapsed=0;elapsed<.08f;elapsed+=Time.deltaTime){float pulse=Mathf.Sin(elapsed/.08f*Mathf.PI)*.08f;renderer.transform.localScale=Vector3.Scale(scale,new Vector3(1+pulse,1-pulse,1));yield return null;}
+                renderer.transform.localScale=scale;
+                Soft3DElementEffect.Burst(renderer,new Color(.69f,.85f,.94f),8);
+                Soft3DElementEffect.Burst(renderer,inks[index],15,1,true);
+                renderer.enabled=false;BreakStandIfEmpty();yield break;
+            }
             bool useMetaballs = metaballsPreview && metaballsShader != null && metaballsShader.isSupported;
             bool useDrawn = drawnLiquidPreview && drawnLiquidSheet != null;
             if (useDrawn) useMetaballs = false;
@@ -238,13 +249,31 @@ namespace RoyalAves.Effects
             for (int i = 0; i < flasks.Length; i++)
                 if (!breaking[i] || flasks[i] == null || flasks[i].enabled) return;
             standBroken = true;
-            FallingBoardDebris.ShatterWood(standRenderer, 1);
+            if(soft3D)Soft3DElementEffect.Burst(standRenderer,new Color(.55f,.25f,.72f),18);
+            else FallingBoardDebris.ShatterWood(standRenderer, 1);
             ParcelSoundEffects.Play(1);
-            ParcelSparkEffect.Play(standRenderer, true);
+            if(!soft3D)ParcelSparkEffect.Play(standRenderer, true);
             standRenderer.enabled = false;
         }
 
         public float SpillDuration(int index) => metaballsPreview || drawnLiquidPreview ? 4f : 1.6f;
+
+        void BuildSoft3D()
+        {
+            var material=Resources.Load<Material>("Soft3D/Sprite");
+            var stand=new GameObject("IntactPotionStand");stand.transform.SetParent(transform,false);
+            standRenderer=stand.AddComponent<SpriteRenderer>();
+            var s=Sprite.Create(standArtwork.texture,standArtwork.rect,Vector2.one*.5f,standArtwork.rect.width/CanvasSize,0,SpriteMeshType.FullRect);owned.Add(s);
+            standRenderer.sprite=s;standRenderer.sharedMaterial=Resources.Load<Material>("Soft3D/Sprite_potion-rack");standRenderer.sortingLayerName=PowerUpEffectOrder.SortingLayer;standRenderer.sortingOrder=9;
+            var rect=flaskArtwork.rect;float w=rect.width/2,h=rect.height/2;
+            for(int i=0;i<4;i++)
+            {
+                var node=new GameObject("Potion"+i);node.transform.SetParent(transform,false);
+                node.transform.localPosition=new Vector3((i%2==0?-.58f:.58f)/2.65f*CanvasSize,(i<2?.50f:-.62f)/2.65f*CanvasSize,-.01f);intactPositions[i]=node.transform.localPosition;
+                var sprite=Sprite.Create(flaskArtwork.texture,new Rect(rect.x+i%2*w,rect.y+(1-i/2)*h,w,h),Vector2.one*.5f,Mathf.Max(w,h)/(CanvasSize*1.05f/2.65f),0,SpriteMeshType.FullRect);owned.Add(sprite);
+                var r=node.AddComponent<SpriteRenderer>();r.sprite=sprite;r.sharedMaterial=Resources.Load<Material>("Soft3D/Sprite_potion-bottles");r.sortingLayerName=PowerUpEffectOrder.SortingLayer;r.sortingOrder=10;flasks[i]=r;intactSprites[i]=sprite;
+            }
+        }
 
         void RemoveSpill(GameObject root)
         {

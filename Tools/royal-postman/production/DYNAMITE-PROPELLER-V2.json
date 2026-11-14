@@ -1,0 +1,29 @@
+{
+  "version": "dynamite-propeller-v2",
+  "date": "2026-11-11",
+  "status": "implemented-native-play-pass-user-visual-review-pending",
+  "reference": "../../previews/dynamite-propeller-v2/references/dinamite+helice.webp",
+  "reference_sha256": "509cb52cbd063b3a2a228b320da44f62b8d6e20fcda43459cc633b8d8cb65fe6",
+  "changes": [
+    "compact orbital side-by-side dynamite/propeller choreography",
+    "low flight arc, convergence and 0.32s burning fuse at arrival",
+    "one normal radius-2 local blast; no detonation at takeoff",
+    "guided lab landing at column 6 row 7 shows full 5x5 area"
+  ],
+  "tests": [
+    "seven orbit side changes, visible cargo",
+    "one delivered explosion, 25 selected cells, no early package blast",
+    "gravity released",
+    "orbital rocket and triple propeller regression pass"
+  ],
+  "limits": [
+    "scripted real swaps; no physical pointer",
+    "no audio/device/full victory-flow validation",
+    "no exact pixel/timing/layout equivalence to reference"
+  ],
+  "sha256": {
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "92e83a2ffd108f18751160243842c8cd14f8021b1fec73b243b2ce94e92ec661",
+    "Assets/RoyalAves/Scripts/Gameplay/ExplosivePackageLaboratory.cs": "433e9a22641875415ce235900306a8a00b1e810039a6a080afe36a3242955260",
+    "Assets/RoyalAves/Editor/ExplosivePackageLaboratoryTools.cs": "9e3da77a5621e240b312dbe78160d24501a12e54eaffcd9d052052cdcdbab480"
+  }
+}

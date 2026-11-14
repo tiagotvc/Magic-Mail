@@ -64,8 +64,13 @@ namespace RoyalAves.EditorTools
                 prototype.standArtwork = ImportLayer("CM_central_estante.png");
                 prototype.flaskArtwork = ImportLayer("CM_central_frascos.png");
                 prototype.breakSheet = ImportLayer("CM_frasco_quebra_sheet.png").texture;
+                if(Soft3DProductionTools.IsInstalled)
+                {
+                    prototype.artwork=Resources.Load<Sprite>("Soft3D/Sprites/potions-00");prototype.standArtwork=Resources.Load<Sprite>("Soft3D/Sprites/potion-rack-00");prototype.flaskArtwork=Resources.Load<Sprite>("Soft3D/Sprites/potion-bottles-00");prototype.soft3D=true;
+                }
                 var preview = root.AddComponent<SpriteRenderer>();
                 preview.sprite = prototype.artwork;
+                if(prototype.soft3D)preview.sharedMaterial=Resources.Load<Material>("Soft3D/Sprite_potions");
                 preview.sortingLayerName = PowerUpEffectOrder.SortingLayer;
                 preview.sortingOrder = 10;
                 Directory.CreateDirectory("Assets/RoyalAves/Prefabs/Elements");

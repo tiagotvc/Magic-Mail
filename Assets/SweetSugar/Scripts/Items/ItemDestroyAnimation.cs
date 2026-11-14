@@ -1,4 +1,4 @@
-// // ©2015 - Present Candy Smith
+// // Â©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -11,6 +11,7 @@
 // // THE SOFTWARE.
 
 using System.Collections;
+using System.Linq;
 using RoyalAves.Effects;
 using SweetSugar.Scripts.Blocks;
 using SweetSugar.Scripts.Core;
@@ -24,67 +25,112 @@ namespace SweetSugar.Scripts.Items
     /// </summary>
     public class ItemDestroyAnimation : MonoBehaviour
     {
-        public const int BlastRadius = 3;
-        private Item item;
-        private bool started;
-        private RoyalAves.Gameplay.ImpactBarrierSnapshot barriers;
-
-        private void Start()
+        // Standalone reach stays local; a merged pair hits every playable cell.
+        public const int BlastRadius = 2;
+        public const float ImpactPause = .28f;
+        bool started;
+        DynamiteFuseEffect fuse;
+        SpriteRenderer mainVisual, incomingVisual;
+        Vector3 mainScale, incomingScale, incomingPosition;
+        int mainOrder, incomingOrder, mainLayer, incomingLayer;
+        Item primary, absorbed;
+        static AudioClip explosionSound;
+#if UNITY_EDITOR
+        public static event global::System.Action<Square,int,bool> BlastApplied;
+#endif
+        public void DestroyPackage(Item source) => Begin(source,null);
+        public void DestroyCombined(Item source,Item other) => Begin(source,other);
+        void Begin(Item source,Item other)
         {
-            item = GetComponent<Item>();
-        }
-
-        public void DestroyPackage(Item item1)
-        {
-            if (started) return;
-            started = true;
-            barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(item1.square.field);
-            var thisItem = GetComponent<Item>();
-
-            var animator = GetComponent<Animator>();
-            if (animator != null && animator.runtimeAnimatorController != null) animator.SetTrigger("Explode");
-
-            GameObject go = Instantiate(Resources.Load("Prefabs/Effects/_ExplosionAround") as GameObject);//LevelManager.THIS.GetExplAroundPool();
-            if (go != null)
+            if(started || source==null || source.square==null)return;
+            started=true;primary=source;absorbed=other;
+            primary.destroying=true;if(absorbed!=null)absorbed.destroying=true;
+            if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+            mainVisual=primary.GetSpriteRenderer();mainScale=mainVisual.transform.localScale;mainOrder=mainVisual.sortingOrder;mainLayer=mainVisual.sortingLayerID;
+            mainVisual.sortingLayerName=PowerUpEffectOrder.SortingLayer;mainVisual.sortingOrder=PowerUpEffectOrder.Value+8;
+            if(primary.anim!=null)primary.anim.enabled=false;
+            if(absorbed!=null)
             {
-                go.transform.position = transform.position;
-                // Correio Mágico: regra geral dos power-ups (ver RoyalAves.Effects.PowerUpEffectOrder) - a explosão
-                // da bomba tem que ficar acima do efeito de match comum, não empatada com ele.
-                PowerUpEffectOrder.Raise(go);
-                var explosionAround = go.GetComponent<ExplAround>();
-                explosionAround.item = thisItem;
-                explosionAround.barriers = barriers;
-                go.SetActive(true);
+                incomingVisual=absorbed.GetSpriteRenderer();incomingScale=incomingVisual.transform.localScale;
+                incomingPosition=incomingVisual.transform.position;incomingOrder=incomingVisual.sortingOrder;incomingLayer=incomingVisual.sortingLayerID;
+                incomingVisual.sortingOrder=PowerUpEffectOrder.Value+7;
+                if(absorbed.anim!=null)absorbed.anim.enabled=false;
             }
-
-            var square = item1.square;
-            square.Item = item1;
-
-            StartCoroutine(OnPackageAnimationFinished(item1));
+            fuse=DynamiteFuseEffect.Attach(mainVisual,absorbed!=null?.90f:.32f,primary.GetSpriteRenderers());
+            StartCoroutine(Sequence());
         }
-
-        private IEnumerator OnPackageAnimationFinished(Item item1)
+        IEnumerator Sequence()
         {
-            var square = item1.square;
-            yield return new WaitForSeconds(.35f);
-            DestroyItems(item1, square);
-            yield return new WaitForSeconds(0.2f);
-            item.HideSprites(true);
-            yield return new WaitForSeconds(0.5f);
-            item.DestroyBehaviour();
-            started = false;
+            var manager=LevelManager.THIS;var data=manager.levelData;var cell=primary.square;
+            bool combined=absorbed!=null;
+            float anticipation=combined ? .90f : .32f;
+            for(float time=0;time<anticipation;time+=Time.deltaTime)
+            {
+                if(manager==null || manager.levelData!=data || cell==null)yield break;
+                float t=Mathf.Clamp01(time/anticipation);
+                if(combined)
+                {
+                    float pull=Mathf.SmoothStep(0,1,Mathf.Clamp01(t/.35f));
+                    if(incomingVisual!=null)
+                    {
+                        incomingVisual.transform.position=Vector3.Lerp(incomingPosition,mainVisual.transform.position,pull);
+                        incomingVisual.transform.localScale=incomingScale*Mathf.Lerp(1,.12f,pull);
+                        if(pull>=.98f)incomingVisual.enabled=false;
+                    }
+                    float grow=Mathf.Clamp01((t-.13f)/.5f);
+                    float scale=Mathf.Lerp(1,2.12f,1-Mathf.Pow(1-grow,3));
+                    float squeeze=Mathf.SmoothStep(.78f,1,t)*.12f;
+                    mainVisual.transform.localScale=Vector3.Scale(mainScale,new Vector3(scale*(1+squeeze),scale*(1-squeeze),1));
+                }
+                else
+                {
+                    float pulse=Mathf.Sin(t*Mathf.PI);
+                    mainVisual.transform.localScale=Vector3.Scale(mainScale,new Vector3(1+.14f*pulse,1-.08f*pulse,1));
+                }
+                yield return null;
+            }
+            if(manager==null || manager.levelData!=data || cell==null)yield break;
+            int radius=combined?cell.field.squaresArray.Where(s=>s!=null).Max(s=>Mathf.Max(Mathf.Abs(s.col-cell.col),Mathf.Abs(s.row-cell.row))):BlastRadius;
+            var barriers=RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(cell.field);
+            var blast=DynamiteBlastEffect.Play(cell.transform.position,cell.field.squareWidth,radius,combined);
+            if(explosionSound==null)explosionSound=Resources.Load<AudioClip>("Audio/explosao-som");
+            SoundBase.Instance?.PlayLimitSound(explosionSound);
+            primary.HideSprites(true);if(absorbed!=null)absorbed.HideSprites(true);
+#if UNITY_EDITOR
+            BlastApplied?.Invoke(cell,radius,combined);
+#endif
+            if(fuse!=null)Destroy(fuse.gameObject);
+            var affected=combined
+                ? cell.field.squaresArray.Where(s=>s!=null && !s.IsNone()).Distinct().ToList()
+                : manager.GetSquaresAroundSquare(cell,barriers,radius);
+            if(affected.Any(square=>square.type==SquareTypes.JellyBlock))
+                manager.levelData.GetTargetObject().CheckSquares(affected.ToArray());
+            if(combined)
+            {
+                // Snapshot before activation: secondary specials may change the board.
+                var items=affected.Select(s=>s.Item).Where(i=>i!=null && i!=primary && i!=absorbed).Distinct().ToArray();
+                foreach(var item in items)
+                    if(item!=null && (item.Combinable || item.Explodable))item.DestroyItem(true,true,primary);
+                foreach(var square in affected)if(square!=null)square.DestroyBlock();
+            }
+            else cell.field.DestroyItemsAround(cell,primary,barriers,radius);
+            if(absorbed!=null)manager.levelData.GetTargetObject().CheckItems(new[]{primary,absorbed});
+            yield return new WaitForSeconds(ImpactPause);
+            while(blast!=null && blast.IsEmphasizing)yield return null;
+            if(manager==null || manager.levelData!=data)yield break;
+            if(absorbed!=null)absorbed.DestroyBehaviour();
+            primary.DestroyBehaviour();
         }
-
-        private void DestroyItems(Item item1, Square square)
+        void OnDisable()
         {
-            square.field.DestroyItemsAround(square, item, barriers, BlastRadius);
-            var sqList = LevelManager.THIS.GetSquaresAroundSquare(square, barriers, BlastRadius);
-            square.DestroyBlock();
-            if(square.type == SquareTypes.JellyBlock)
-                LevelManager.THIS.levelData.GetTargetObject().CheckSquares(sqList.ToArray());
-            item1.destroying = false;
-            item.square.Item = null;
+            if(mainVisual!=null){mainVisual.transform.localScale=mainScale;mainVisual.sortingOrder=mainOrder;mainVisual.sortingLayerID=mainLayer;}
+            if(incomingVisual!=null)
+            {
+                incomingVisual.transform.localScale=incomingScale;incomingVisual.transform.position=incomingPosition;
+                incomingVisual.sortingOrder=incomingOrder;incomingVisual.sortingLayerID=incomingLayer;
+            }
+            if(fuse!=null)Destroy(fuse.gameObject);
+            started=false;primary=absorbed=null;mainVisual=incomingVisual=null;
         }
     }
 }
-

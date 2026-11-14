@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-12",
+  "tool": "built-in image_gen",
+  "status": "visual-proposal-user-review-pending",
+  "prompt": "Precise localized edit of the supplied image. Remove the ENTIRE circular red-and-gold envelope medallion from the top center of BOTH wooden cabinets. Fill the former medallion areas with continuous matching warm chestnut wood grain and the existing recessed wooden header, naturally joining the surrounding wooden arched trim. Leave a plain wooden header, with NO envelope icon, NO circular badge, NO red disk, NO replacement symbol or ornament. Preserve the arched silhouette; do not flatten or remove the wooden arch. Keep everything else as close to the input as possible: same two side-by-side closed/open cabinet states, same proportions and positions, honey/chestnut wood color and gentle grain, door panels, thin gold inlays, brass knobs, shelves and exactly the existing envelope stacks inside the open cabinet. The ivory envelopes INSIDE the shelves must stay unchanged. Maintain the polished cartoon 2.5D mobile game finish and transparent background. Do not add text, scenes, extra objects or alter the layout. Change only the two top medallion areas.",
+  "source": "../escaninho-madeira-v1/escaninho-madeira.png",
+  "output": "escaninho-madeira-sem-emblema.png",
+  "notes": [
+    "Removed upper envelope medallions in both states; retained wooden arches.",
+    "Preview only; generated edit is not pixel-identical.",
+    "No Unity/prefab/gameplay changes."
+  ]
+}

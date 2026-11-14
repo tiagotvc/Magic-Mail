@@ -33,6 +33,9 @@ namespace RoyalAves.Gameplay
         readonly HashSet<int> matches = new HashSet<int>();
         SpriteRenderer body;
         Square cell;
+        Coroutine impact;
+        Vector3 restingScale;
+        Quaternion restingRotation;
 
         void Start()
         {
@@ -59,6 +62,8 @@ namespace RoyalAves.Gameplay
             position.x = 0;
             position.y = -height * .43f / Mathf.Abs(parentScale.y);
             transform.localPosition = position;
+            restingScale=transform.localScale;
+            restingRotation=transform.localRotation;
         }
 
         public void HandleHit(Square origin)
@@ -72,7 +77,42 @@ namespace RoyalAves.Gameplay
                 id = origin.Item.combinationID;
                 if (id != -1 && matches.Contains(id)) return;
             }
-            if (PlayOpening(true) && id != -1) matches.Add(id);
+            if (PlayOpening(true))
+            {
+                if(id!=-1)matches.Add(id);
+                if(origin!=cell)PlayImpact(origin.col<=cell.col?-1f:1f);
+            }
+        }
+
+        void PlayImpact(float direction)
+        {
+            if(impact!=null)StopCoroutine(impact);
+            RestoreImpact();
+            impact=StartCoroutine(Impact(direction));
+        }
+
+        IEnumerator Impact(float direction)
+        {
+            // The registered bottom pivot keeps the bag planted while the body rocks.
+            const float duration=.36f;
+            for(float elapsed=0;elapsed<duration;elapsed+=Time.deltaTime*Mathf.Max(.25f,PlaybackSpeed))
+            {
+                float t=elapsed/duration;
+                float decay=Mathf.Exp(-3f*t);
+                float rock=Mathf.Sin(t*Mathf.PI*3)*decay;
+                float squash=Mathf.Sin(t*Mathf.PI)*decay;
+                transform.localRotation=restingRotation*Quaternion.Euler(0,0,direction*10f*rock);
+                transform.localScale=Vector3.Scale(restingScale,new Vector3(1+.065f*squash,1-.055f*squash,1));
+                yield return null;
+            }
+            RestoreImpact();impact=null;
+        }
+
+        void RestoreImpact()
+        {
+            if(body==null)return;
+            transform.localRotation=restingRotation;
+            transform.localScale=restingScale;
         }
 
         public bool PlayOpening(bool count = true)
@@ -108,6 +148,7 @@ namespace RoyalAves.Gameplay
             float width = frames[0].bounds.size.x * Mathf.Abs(transform.lossyScale.x);
             scroll = new GameObject("CollectibleScroll");
             var visual = scroll.AddComponent<SpriteRenderer>();
+            if(Soft3DElementStyle.Has(this))visual.sharedMaterial=Resources.Load<Material>("Soft3D/Sprite_scroll-opening");
             visual.sprite = scrollFrames[0];
             visual.sortingLayerName = PowerUpEffectOrder.SortingLayer;
             visual.sortingOrder = PowerUpEffectOrder.Value + 10;
@@ -123,7 +164,7 @@ namespace RoyalAves.Gameplay
             }
             var gui = FindObjectsByType<TargetGUI>(FindObjectsSortMode.None).FirstOrDefault(g => g.subTargetContainer == deliveryTarget && g.image != null);
             var start=scroll.transform.position;
-            overlay=MailDeliveryOverlay.Create(visual,gui);
+            overlay=MailDeliveryOverlay.Create(visual,gui,!Soft3DElementStyle.Has(this));
             for (float elapsed=0; elapsed<flightDuration; elapsed+=Time.deltaTime*Mathf.Max(.25f,PlaybackSpeed))
             {
                 float t=Mathf.Clamp01(elapsed/flightDuration);
@@ -131,7 +172,7 @@ namespace RoyalAves.Gameplay
                 Vector3 control=(start+end)*.5f + Vector3.up*width*2 + Vector3.right*(start.x>0?-1:1)*width;
                 scroll.transform.position=(1-t)*(1-t)*start+2*(1-t)*t*control+t*t*end;
                 visual.sprite=scrollFrames[Mathf.Min(15,Mathf.FloorToInt(t/.36f*16))];
-                scroll.transform.rotation=Quaternion.Euler(0,0,360*Mathf.SmoothStep(0,1,Mathf.InverseLerp(.25f,.9f,t)));
+                scroll.transform.rotation=Quaternion.Euler(0,0,Soft3DElementStyle.Has(this)?-18*Mathf.Sin(t*Mathf.PI):360*Mathf.SmoothStep(0,1,Mathf.InverseLerp(.25f,.9f,t)));
                 // Cropped frames have different widths: preserve the closed roll's
                 // world width with uniform scaling, allowing the paper to grow vertically.
                 scroll.transform.localScale=Vector3.one*(width*.65f/visual.sprite.bounds.size.x);
@@ -146,6 +187,7 @@ namespace RoyalAves.Gameplay
 
         void PlayOpeningGlow(Vector3 mouth,float width)
         {
+            if(Soft3DElementStyle.Has(this))return;
             var prefab=Resources.Load<GameObject>("Particles/Casual/Prefabs/Hyper Casual FX/HCFX_Flash_01");
             if (prefab == null) return;
             var glowTexture=Resources.Load<Texture2D>("Effects/BagOpeningGlow");
@@ -214,6 +256,13 @@ namespace RoyalAves.Gameplay
         IEnumerator Animate()
         {
             const float durationScale = .9f / 1.73f;
+            if(Soft3DElementStyle.Has(this))
+            {
+                for(int i=0;i<=7;i++){body.sprite=frames[i];yield return new WaitForSeconds(durationScale/(framesPerSecond*Mathf.Max(.25f,PlaybackSpeed)));}
+                StartCoroutine(Deliver());while(!delivered)yield return null;
+                for(int i=10;i<16;i++){body.sprite=frames[i];yield return new WaitForSeconds(durationScale/(framesPerSecond*Mathf.Max(.25f,PlaybackSpeed)));}
+                body.sprite=frames[0];Release();if(manager!=null&&manager.levelData==data)manager.CheckWinLose();yield break;
+            }
             // Anchor positions are encoded in each sprite pivot; frame geometry
             // can change without shifting the pouch's lower edge.
             for (int i=0;i<frames.Length;i++)
@@ -233,7 +282,7 @@ namespace RoyalAves.Gameplay
             if(manager != null && manager.levelData == data) manager.CheckWinLose();
         }
 
-        void OnDisable() {StopAllCoroutines();Release(); if(body != null && frames.Length>0) body.sprite=frames[0];}
+        void OnDisable() {StopAllCoroutines();impact=null;RestoreImpact();Release(); if(body != null && frames.Length>0) body.sprite=frames[0];}
     }
 }
 

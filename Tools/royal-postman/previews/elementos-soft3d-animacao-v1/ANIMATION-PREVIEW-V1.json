@@ -1,0 +1,33 @@
+{
+  "scope": "Six-element isolated animation style preview; no production replacement",
+  "nativeFrames": 168,
+  "fps": 24,
+  "size": [
+    1200,
+    800
+  ],
+  "duration": 7,
+  "reset": "PASS: first and last native frame byte-identical",
+  "assets": {
+    "bag-opening.png": "bc6efab0ac4c8f69eecb5bbfaf0e3a381ece5ffcb69d535d5cae3df296107b56",
+    "crate-states.png": "22bd78a0ae09b9f507e1d5687b2ba78bf6568d943c46106717885b34f504bd59",
+    "inkwell-states.png": "a29504bb52e2d9ceaf9f7b90644863ea3b0396fc8d8e917696921862b8433d91",
+    "potion-bottles.png": "f73007b1ecfa1a096a3d5a5d6d9224035fef3895bdf716e501d5ade01955a3e2",
+    "potion-rack.png": "01bf9933fe6530b320f5f52c9f406b8a5b1dd6f2d9d4b6ec0fb47ec8a642946f",
+    "previa.png": "ed531801b906e7e98ef8deca22e262fb641d9762b8981fc751a17ac102812d3b",
+    "scroll-opening.png": "bedcd3808e00c079e7aeccea46003e06fac88df4c25be83689a88a2fcf98edc6",
+    "sequencia.png": "6e7c30c27c9bdb6d2a0030c208106eceff69eded4bc949ff2da0b96a29f97294"
+  },
+  "sources": {
+    "Assets\\RoyalAves\\Editor\\Soft3DAnimationLaboratory.cs": "a845d8addeb3b85e27160e5f16d0df331a8470f7ebde3aeb8e724a9324b2be9a",
+    "Assets\\RoyalAves\\Shaders\\Soft3DPreviewLens.shader": "bed7478238f043d90dc126af0e623fe26a35506f5ccb9718e8e6714128491921",
+    "Assets\\RoyalAves\\Shaders\\Soft3DPreviewSolid.shader": "5d46c977d25419faae1ab96f4d117b11fd043dccf7e4b8182e33998fcf0fc0e4"
+  },
+  "limits": [
+    "Art preview only",
+    "No physical pointer, device, audio or campaign validation",
+    "Existing production prefabs unchanged"
+  ],
+  "mainEditor": "RENDERED: isolated native preview window opened in existing workspace; no physical controls validation",
+  "compile": "runtime/editor zero errors"
+}

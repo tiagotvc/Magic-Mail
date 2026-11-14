@@ -1,0 +1,35 @@
+﻿{
+    "animation":  "procedural extruded fragments and ballistic coins; no flipbook",
+    "economyChanged":  false,
+    "nativeValidation":  "Unity 6000.6.0f1; isolated minimal project Logs/SafeAnimationValidation; exit 0",
+    "notTested":  [
+                      "real pointer",
+                      "board integration",
+                      "real special hits",
+                      "goals/victory",
+                      "audio",
+                      "device",
+                      "full game flow"
+                  ],
+    "coinCount":  18,
+    "capture":  {
+                    "size":  "640x640",
+                    "frames":  144,
+                    "fps":  20
+                },
+    "date":  "2026-11-09",
+    "states":  5,
+    "hashes":  {
+                   "Assets/RoyalAves/Scripts/Effects/SafeDebrisEffect.cs":  "98A4E0664F819D379B27C68E08BFFB112DC8B9A766AEAAC01E51C0359299CF61",
+                   "Assets/RoyalAves/Art/Obstacles/Safe/SafeStatesReference.png":  "FDAFD4B88D83C655CE467AE0498CED8DF7B7A9099B5E6CF0697C06CC867A8499",
+                   "Assets/RoyalAves/Shaders/SafePaint.shader":  "DD2CB288820295E77DBA80BD8C5A7A32BA9FD9C387743DAA708C3D28D18B1504",
+                   "Assets/RoyalAves/Editor/SafeAnimationPreview.cs":  "91143F7A2A32F4D47A7E56A3A8C2852E824AC888C073481D23F93FCAE90DAADC",
+                   "Assets/RoyalAves/Laboratory/SafeAnimation.prefab":  "F3C058B97FCD414288F525F3D5F9949E4912ABFF716E932EF9094033BFDCC189",
+                   "Assets/RoyalAves/Scripts/Effects/SafeBreakAnimation.cs":  "9DB63411BF6827BFBDF3024442B317A3C2B65379B8F918CFEFDEE3FC90499B20",
+                   "Tools/royal-postman/production/review/safe-v1/cofre-quebra.mp4":  "ADB18000998D88187FDBB17CAC1160B3D4A1AFB6D7DD9B804DC17F5D814974F0",
+                   "Tools/royal-postman/production/review/safe-v1/cofre-quebra.gif":  "D16884322EEA29ADD5CB71A0E67EA36ED277BEB7C4AADFB828BEC1DD1D86A8D5"
+               },
+    "status":  "visual animation implemented; user review pending",
+    "compiler":  "current runtime and editor: zero errors",
+    "hits":  5
+}

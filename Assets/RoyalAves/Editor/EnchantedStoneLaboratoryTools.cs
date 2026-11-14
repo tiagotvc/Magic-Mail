@@ -36,6 +36,10 @@ namespace RoyalAves.EditorTools
         [MenuItem(Menu + "Preparar laboratório")]
         public static void Prepare()
         {
+            bool keep=Soft3DProductionTools.IsInstalled;PrepareLegacy();if(keep)Soft3DProductionTools.Apply();
+        }
+        static void PrepareLegacy()
+        {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Pare o Play antes de preparar.");
             Directory.CreateDirectory("Assets/RoyalAves/Laboratory");
             AssetDatabase.ImportAsset(Art);

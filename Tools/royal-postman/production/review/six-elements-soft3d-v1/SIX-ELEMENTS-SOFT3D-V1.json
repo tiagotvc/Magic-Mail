@@ -1,0 +1,76 @@
+{
+  "scope": [
+    "SolidBlock",
+    "EnchantedStone",
+    "Inkwell",
+    "RoutePotions",
+    "BagOpenings",
+    "SortingSignals"
+  ],
+  "prefabIDs": {
+    "SolidBlock": {
+      "preserved": 22,
+      "added": 3,
+      "sha256": "b3b4856fb4ad9c1754579af422ea3b76859fa9e5831b6d2ebeeb203f5a326280"
+    },
+    "EnchantedStone": {
+      "preserved": 7,
+      "added": 1,
+      "sha256": "d789d1ce1c365e438ee3e5e0bebafdd93d41ea9099a13f60eecfd6c9fb137647"
+    },
+    "Inkwell": {
+      "preserved": 7,
+      "added": 1,
+      "sha256": "287b6f3c9c3b8a7dc42a2520060679728e285bf1a1fb051168f0da5ac4ba64c1"
+    },
+    "RoutePotions": {
+      "preserved": 7,
+      "added": 1,
+      "sha256": "3bd224f7a21715a38588134e3ab517c1ca0ec063677a62fa826133011fea62db"
+    },
+    "BagOpenings": {
+      "preserved": 7,
+      "added": 1,
+      "sha256": "94aa3721e2e4388a03d4a903a4f09b3477cb5b2b75e87a61d5028447882a72ab"
+    },
+    "SortingSignals": {
+      "preserved": 6,
+      "added": 1,
+      "sha256": "49a803f7cd75be0004afa89950a29d5b006f1b7d4ce7ae4b89c29f5837dbbbd3"
+    }
+  },
+  "campaignUnchanged": true,
+  "unrelatedPrefabsUnchanged": true,
+  "targetCatalog": {
+    "count": 19,
+    "orderPreserved": true,
+    "onlySixDefaultIconSetsChanged": true
+  },
+  "nativeTest": "PASS: six normal production families; catalog paint/save/load; two independent potion stands and four bottle colors; signal correct-color match, cycles and three-hit removal; fixed bags deliver only on arrival and respect shared quota; three crate layers counted once; rune ordinary hit rejected/special breaks; five inkwell hits/diagonal rejection/final paint and goal; transient FX and HUD overlays cleaned. API/native render validation, no physical input/device/audio/campaign claim.",
+  "limits": [
+    "API/native validation; no physical pointer/device/audio/full campaign validation"
+  ],
+  "artHashes": {
+    "bag-opening.png": "bc6efab0ac4c8f69eecb5bbfaf0e3a381ece5ffcb69d535d5cae3df296107b56",
+    "crate-states.png": "22bd78a0ae09b9f507e1d5687b2ba78bf6568d943c46106717885b34f504bd59",
+    "crate.png": "25809421976e5c66fe2acc51df3ff924e7f6a7831ba58380760df7c5962ac3a9",
+    "inkwell-states.png": "a29504bb52e2d9ceaf9f7b90644863ea3b0396fc8d8e917696921862b8433d91",
+    "potion-bottles.png": "f73007b1ecfa1a096a3d5a5d6d9224035fef3895bdf716e501d5ade01955a3e2",
+    "potion-rack.png": "01bf9933fe6530b320f5f52c9f406b8a5b1dd6f2d9d4b6ec0fb47ec8a642946f",
+    "potions.png": "09ab7b7d4845445caa2405776e3f64ef83d6beaf0c999f64d69c8a2112c3faf6",
+    "rune.png": "7e3422622779cec92ae1b169229379024dfa2052445908898974d660b7eeb768",
+    "scroll-opening.png": "bedcd3808e00c079e7aeccea46003e06fac88df4c25be83689a88a2fcf98edc6",
+    "signal.png": "893636a8f01a2733a16532d18ac04bca51cb999f22d27b3f8c93868ed6d9c01d"
+  },
+  "sprites": 33,
+  "mainInstall": "PASS: native Unity batch exited0, no exceptions or shader/compile errors",
+  "compile": "runtime/editor zero errors",
+  "sourceHashes": {
+    "Assets\\RoyalAves\\Scripts\\Effects\\Soft3DElementEffect.cs": "32aed9d2cf27aad837fbd17c041472629278538b44a5210b00ae5280f6dc8056",
+    "Assets\\RoyalAves\\Scripts\\Effects\\Soft3DElementStyle.cs": "d4c9e6d209aae3a5c00caec266f9bff8937e33ea2a1587a3c05b8bb254d7b2b0",
+    "Assets\\RoyalAves\\Scripts\\Effects\\Soft3DTargetVisuals.cs": "2a70abf4f95ed560b786a07ea66befdb624e10d499a745a4c9982af64633e8e8",
+    "Assets\\RoyalAves\\Editor\\Soft3DProductionTools.cs": "80452b2bcfbbc94031b3560afcda558ef24f06d2cb82db6b6f33a5946f9d941e",
+    "Assets\\SweetSugar\\Scripts\\TargetScripts\\TargetSystem\\TargetCounter.cs": "5aa7d3271a33e3dbd0e7cd216733874a8b66561df5e34a5e4c954aa3f530ad38",
+    "Assets\\SweetSugar\\Scripts\\Editor\\SquareUtils.cs": "f21e9ecdf574a6e7b63caf443ab06e4488d8362204b6b0157b57421f0732ac39"
+  }
+}

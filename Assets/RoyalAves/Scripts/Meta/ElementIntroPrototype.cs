@@ -1,4 +1,4 @@
-﻿using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,54 +18,76 @@ namespace RoyalAves.Meta
 
         public static void ShowAfterGoals()
         {
-            var manager = LevelManager.THIS;
-            if (manager == null || manager.levelData == null || manager.field == null) return;
-            int level = manager.levelData.levelNum;
-            if (level == 11 || level == 21)
-            {
-                // Use the artwork referenced by the campaign prefab; its cell renderer is a hidden letter.
-                GameObject visual = null;
-                if (level == 11)
-                {
-                    var cabinet = manager.field.GetComponentInChildren<RoyalAves.Gameplay.MailCubbyCell>();
-                    if (cabinet != null) visual = cabinet.visualPrefab;
-                }
-                else
-                {
-                    var machine = manager.field.GetComponentInChildren<RoyalAves.Gameplay.FrankingMachineCell>();
-                    if (machine != null) visual = machine.visualPrefab;
-                }
-                var artwork = visual != null ? visual.GetComponent<RoyalAves.Gameplay.MailCubbyAnimation>() : null;
-                if (artwork != null && artwork.cabinet != null && artwork.cabinet.sprite != null)
-                    Show(artwork.cabinet.sprite,
-                        level == 11 ? "Armário postal!" : "Franqueadora!",
-                        level == 11
-                            ? "Faça combinações ao lado do <color=#AE193F>ARMÁRIO</color>\npara abrir as portas e liberar as <color=#AE193F>CARTAS</color>!"
-                            : "Faça combinações ao lado da <color=#AE193F>MÁQUINA</color>\nou use especiais para produzir <color=#AE193F>CARTAS</color>!");
-                return;
-            }
-            if (level == 4)
-            {
-                var grass = manager.field.GetComponentInChildren<RoyalAves.Gameplay.InkFloorLayer>();
-                if (grass == null) return;
-                var grassRenderer = grass.GetComponent<SpriteRenderer>();
-                if (grassRenderer != null && grassRenderer.sprite != null)
-                    Show(grassRenderer.sprite, "Grama!",
-                        "Faça combinações <color=#AE193F>sobre a GRAMA</color>\n" +
-                        "ou use <color=#AE193F>especiais</color> para removê-la!");
-                return;
-            }
-            if (level < 1 || level > 3) return;
-            var crate = manager.field.GetComponentInChildren<RoyalAves.Gameplay.ParcelStackLayer>();
-            if (crate == null) return;
-            var renderer = crate.GetComponent<SpriteRenderer>();
-            if (renderer != null && renderer.sprite != null) Show(renderer.sprite);
+            CampaignElementIntroductions.ShowCurrent();
         }
 
         public static void Show(Sprite crate)
         {
             Show(crate, "Caixas!", "Faça combinações ao lado das <color=#AE193F>CAIXAS</color>\n" +
                 "ou use <color=#AE193F>especiais</color> para quebrá-las!");
+        }
+
+        // Rune introduction keeps the authored powerups and stones visible on the board.
+        static void ShowStoneBoard()
+        {
+            if (FindFirstObjectByType<ElementIntroPrototype>() != null) return;
+            var root = new GameObject("Apresentação - Pedra rúnica", typeof(RectTransform), typeof(Canvas),
+                typeof(CanvasScaler), typeof(CanvasGroup), typeof(GraphicRaycaster), typeof(ElementIntroPrototype));
+            var view = root.GetComponent<ElementIntroPrototype>();
+            var canvas = root.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 32000;
+            var scaler = root.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1080, 1920);
+            scaler.matchWidthOrHeight = .5f;
+            view.opacity = root.GetComponent<CanvasGroup>();
+            view.opacity.blocksRaycasts = true;
+            view.manager = LevelManager.THIS;
+            view.data = view.manager.levelData;
+            Canvas.ForceUpdateCanvases();
+            var area = (RectTransform)root.transform;
+            var shield = Picture(root.transform, "Bloqueio de entrada", null, area.rect.size, Vector2.zero);
+            shield.color = Color.clear;
+            shield.raycastTarget = true;
+            var camera = view.manager.GetComponent<Camera>();
+            var min = new Vector2(float.MaxValue, float.MaxValue);
+            var max = new Vector2(float.MinValue, float.MinValue);
+            foreach (var square in view.manager.field.GetSquares())
+            {
+                var center = square.transform.position;
+                foreach (var corner in new[] { center - new Vector3(.44f,.44f), center + new Vector3(.44f,.44f) })
+                {
+                    RectTransformUtility.ScreenPointToLocalPointInRectangle(area, camera.WorldToScreenPoint(corner), null, out var point);
+                    min = Vector2.Min(min, point); max = Vector2.Max(max, point);
+                }
+            }
+            min = Vector2.Max(min, area.rect.min); max = Vector2.Min(max, area.rect.max);
+            void Dim(string name, Vector2 low, Vector2 high)
+            {
+                var image = Picture(root.transform, name, null, Vector2.Max(Vector2.zero, high-low), (low+high)*.5f);
+                image.color = new Color(.025f,.02f,.045f,.75f);
+            }
+            Dim("Superior", new Vector2(area.rect.xMin,max.y), area.rect.max);
+            Dim("Inferior", area.rect.min, new Vector2(area.rect.xMax,min.y));
+            Dim("Esquerda", new Vector2(area.rect.xMin,min.y), new Vector2(min.x,max.y));
+            Dim("Direita", new Vector2(max.x,min.y), new Vector2(area.rect.xMax,max.y));
+            view.CreatePanelSprite();
+            float width = Mathf.Min(940, (max.x-min.x)*.94f);
+            float height = width*.24f;
+            var border = Picture(root.transform, "Instrução no tabuleiro", view.panelSprite,
+                new Vector2(width,height), (min+max)*.5f);
+            border.type = Image.Type.Sliced; border.color = new Color(.66f,.035f,.20f);
+            var rim = Picture(border.transform,"Filete dourado",view.panelSprite,new Vector2(width-16,height-16),Vector2.zero);
+            rim.type = Image.Type.Sliced; rim.color = new Color(1,.79f,.40f);
+            var paper = Picture(border.transform,"Fundo creme",view.panelSprite,new Vector2(width-30,height-30),Vector2.zero);
+            paper.type = Image.Type.Sliced; paper.color = new Color(1,.95f,.84f);
+            var label = Label(border.transform,"Use <color=#AE193F>powerups</color> para quebrar\nas pedras rúnicas!",51,
+                new Color(.15f,.13f,.34f),new Vector2(width-64,height-46),Vector2.zero,LobbyFeaturesConfig.Instance);
+            label.enableAutoSizing = true; label.fontSizeMin = 24; label.fontSizeMax = 51;
+            view.paused = true;
+            view.manager.gameStatus = GameState.Pause;
+            view.StartCoroutine(view.Fade());
         }
 
         public static void Show(Sprite element, string heading, string instruction)

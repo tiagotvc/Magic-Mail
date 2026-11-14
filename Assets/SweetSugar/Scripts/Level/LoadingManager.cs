@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -23,6 +23,10 @@ namespace SweetSugar.Scripts.Level
         public static LevelData LoadForPlay(int currentLevel)
         {
 #if UNITY_EDITOR
+            if (RoyalAves.Gameplay.PostalTapeLaboratory.TryLoad(currentLevel, out var tapes)) return tapes;
+            if (RoyalAves.Gameplay.SortingSignalLaboratory.TryLoad(currentLevel, out var signals)) return signals;
+            if (RoyalAves.Gameplay.InkwellLaboratory.TryLoad(currentLevel, out var inkwells)) return inkwells;
+            if (RoyalAves.Gameplay.ExplosivePackageLaboratory.TryLoad(currentLevel, out var explosivePackage)) return explosivePackage;
             if (RoyalAves.Gameplay.LightBallLaboratory.TryLoad(currentLevel, out var lightBall)) return lightBall;
             if (RoyalAves.Gameplay.EnchantedStoneLaboratory.TryLoad(currentLevel, out var stones)) return stones;
             RoyalAves.Gameplay.MailbagLaboratory.ResetActive();

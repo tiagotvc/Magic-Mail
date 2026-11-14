@@ -1,0 +1,119 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using RoyalAves.Gameplay;
+using SweetSugar.Scripts;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Editor;
+using SweetSugar.Scripts.Items;
+using SweetSugar.Scripts.Level;
+using SweetSugar.Scripts.TargetScripts.TargetEditor;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+namespace RoyalAves.EditorTools
+{
+ public static class PostalTapeEditorVerification
+ {
+  const string Key="MagicMail.TapeEditor.Verify";static int step;static double at;static Square blueCell;static Item blueItem;static int before,moves;static PostalTapeLayer first;static bool alive=true;
+  const string Fixture="Assets/SweetSugar/Resources/Levels/Level_1901.asset",Targets="Assets/SweetSugar/Resources/Levels/Targets/TargetLevel1901.asset";
+  static PostalTapeLayer[] Tapes()=>UnityEngine.Object.FindObjectsByType<PostalTapeLayer>(FindObjectsSortMode.None);
+  static int Goal()=>LevelManager.THIS.levelData.TargetCounters.Sum(t=>t.count);
+  static void Require(bool value,string message){if(!value)throw new Exception(message);}
+  [InitializeOnLoadMethod]static void Listen(){EditorApplication.update-=Tick;EditorApplication.update+=Tick;}
+  public static void Run()
+  {
+   Require(Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"),"Isolated project only");
+   PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailTapeEditorV1";
+   string config="Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset",original=File.ReadAllText(config);
+   PostalTapeLaboratoryTools.Prepare();Require(File.ReadAllText(config)==original,"Preparing tape changed the goal catalog");
+   Require(MagicMailEditorCatalog.IsBlock(SquareTypes.PostalTape)&&!MagicMailEditorCatalog.IsTarget("PostalTapes"),"Catalog/goal visibility");
+   var prefab=Resources.Load<GameObject>("Blocks/PostalTape");Require(prefab!=null&&prefab.GetComponent<PostalTapePlacement>().strip!=null,"Independent production prefab");
+   Require(Square.GetBlockPrefab(SquareTypes.PostalTape).Single()==prefab&&SquareUtils.GetBlockPrefab(SquareTypes.PostalTape).Single()==prefab,"Runtime/editor resource mismatch");
+   Require(SquareUtils.GetSquareTexture(SquareTypes.PostalTape).Texture2D!=null,"Missing palette preview");
+   var lab=AssetDatabase.LoadAssetAtPath<LevelContainer>(PostalTapeLaboratory.LevelPath);
+   var data=JsonUtility.FromJson<LevelData>(JsonUtility.ToJson(lab.levelData));data.levelNum=1901;
+   var type=typeof(LevelMakerEditor);var window=ScriptableObject.CreateInstance<LevelMakerEditor>();
+   void Set(string name,object value)=>type.GetField(name,BindingFlags.Instance|BindingFlags.NonPublic).SetValue(window,value);
+   try
+   {
+    Set("levelData",data);Set("subLevelNumber",1);Set("squareType",SquareTypes.PostalTape);
+    var cell=data.GetBlock(2,3);var item=cell.item;PostalTapeAuthoring.Erase(cell);
+    var paint=type.GetMethod("SetSquareType",BindingFlags.Instance|BindingFlags.NonPublic);
+    paint.Invoke(window,new object[]{3,2});paint.Invoke(window,new object[]{3,2});
+    Require(cell.blocks.Count(b=>b.squareType==SquareTypes.PostalTape)==1&&cell.item==item,"Actual brush duplicated tape or replaced piece");
+    var textures=SquareUtils.GetSquareTextures(cell,10);Require(textures.Any(t=>t.order==200),"Tape preview not above starter piece");
+    Set("deleteBlock",true);paint.Invoke(window,new object[]{3,2});Require(!PostalTapeAuthoring.Has(cell)&&cell.item==item,"Actual erase damaged underlying piece");Set("deleteBlock",false);paint.Invoke(window,new object[]{3,2});
+    var bad=new SquareBlocks{block=SquareTypes.EmptySquare,item=new ItemForEditor()};bad.blocks.Add(new SquareTypeLayer{squareType=SquareTypes.IceBlock});string badBefore=JsonUtility.ToJson(bad);
+    Require(!PostalTapeAuthoring.TryPaint(bad,out _)&&JsonUtility.ToJson(bad)==badBefore,"Ice compatibility guard modified cell");
+    var grass=new SquareBlocks{block=SquareTypes.EmptySquare,item=new ItemForEditor()};grass.blocks.Add(new SquareTypeLayer{squareType=SquareTypes.EmptySquare});grass.blocks.Add(new SquareTypeLayer{squareType=SquareTypes.SugarSquare});
+    Require(PostalTapeAuthoring.TryPaint(grass,out _),"Grass floor plus taped piece rejected");PostalTapeAuthoring.Erase(grass);Require(grass.blocks.Any(b=>b.squareType==SquareTypes.SugarSquare),"Erasing tape removed floor");
+   }finally{UnityEngine.Object.DestroyImmediate(window);}
+   var fixture=AssetDatabase.LoadAssetAtPath<LevelContainer>(Fixture);if(fixture==null){fixture=ScriptableObject.CreateInstance<LevelContainer>();AssetDatabase.CreateAsset(fixture,Fixture);}fixture.levelData=data;EditorUtility.SetDirty(fixture);AssetDatabase.SaveAssetIfDirty(fixture);
+   var targets=AssetDatabase.LoadAssetAtPath<TargetLevel>(Targets);if(targets==null){targets=ScriptableObject.CreateInstance<TargetLevel>();AssetDatabase.CreateAsset(targets,Targets);}
+   targets.targets=JsonUtility.FromJson<TargetList>(JsonUtility.ToJson(AssetDatabase.LoadAssetAtPath<TargetLevel>(PostalTapeLaboratory.TargetPath).targets));
+   // Isolated high normal goal keeps the integration test away from campaign result/reward handling.
+   targets.targets[0].CountDrawer.count=1000;EditorUtility.SetDirty(targets);AssetDatabase.SaveAssetIfDirty(targets);
+   AssetDatabase.ForceReserializeAssets(new[]{Fixture,Targets});AssetDatabase.ImportAsset(Fixture,ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
+   foreach(var key in LightBallLaboratory.OtherKeys)SessionState.SetBool(key,false);LightBallLaboratory.Disable();InkwellLaboratory.Disable();PostalTapeLaboratory.Disable();
+   var loaded=LoadingManager.LoadForPlay(1901);Require(loaded.fields[0].levelSquares.Count(PostalTapeAuthoring.Has)==5,"Normal save/load lost tape placements");
+   Require(loaded.TargetCounters.All(t=>t.targetLevel.name!="PostalTapes")&&loaded.TargetCounters.Count==1,"Tape became a goal");
+   Require((int)SquareTypes.PostalTape==(int)SquareTypes.Safe+1,"Enum not append-only");
+   File.WriteAllText("Logs/postal-tape-editor-authoring.result","PASS: real brush and eraser; one layer only; piece/floor preserved; incompatible ice rejected; Resources prefab; preview over pieces; normal disk save/reimport/load; no laboratory override; no goal registration/catalog mutations.");
+   SessionState.SetBool(Key,true);SessionState.SetString(Key+"Deadline",DateTime.UtcNow.AddMinutes(5).ToString("O"));
+   EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/game.unity");EditorApplication.isPlaying=true;
+  }
+  static void Tick()
+  {
+   if(!SessionState.GetBool(Key,false)||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+   try
+   {
+    Require(DateTime.UtcNow<DateTime.Parse(SessionState.GetString(Key+"Deadline",""),null,System.Globalization.DateTimeStyles.RoundtripKind),"Timeout");
+    var manager=LevelManager.THIS;if(!EditorApplication.isPlaying||manager==null)return;
+    if(manager.gameStatus==GameState.Map&&AI.THIS!=null){PlayerPrefs.SetInt("OpenLevel",1901);manager.currentLevel=1901;manager.BoostPackage=manager.BoostColorfullBomb=manager.BoostStriped=0;manager.gameStatus=GameState.PrepareGame;}
+    if(manager.gameStatus==GameState.Tutorial)manager.gameStatus=GameState.Playing;
+    if(manager.gameStatus!=GameState.Playing||EditorApplication.timeSinceStartup<at)return;
+    if(step==0)
+    {
+     if(Tapes().Length!=5)return;
+     Require(!PostalTapeLaboratory.IsActive&&manager.levelData.levelNum==1901,"Runtime depended on laboratory override");Require(manager.levelData.TargetCounters.All(t=>t.targetLevel.name!="PostalTapes"),"Tape in HUD goals");
+     Require(manager.field.GetComponentsInChildren<PostalTapePlacement>().Length==5,"Authored layers missing");
+     foreach(var tape in Tapes()){var item=tape.Cell.Item;tape.Released+=t=>alive &= item!=null&&item.gameObject.activeSelf&&item==t.Cell.Item;Require(tape.Cell.IsItemLocked&&!tape.Cell.CanGoOut(),"Authored tape not holding piece");}
+     PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-editor-initial.png");
+     blueCell=manager.field.GetSquare(1,5);blueItem=blueCell.Item;before=Goal();blueCell.DestroyBlock();blueCell.DestroyBlock();step=1;at=EditorApplication.timeSinceStartup+1.1;return;
+    }
+    if(step==1)
+    {
+     if(Tapes().Any(t=>t.IsPeeling))return;
+     Require(Goal()==before&&Tapes().Length==4&&blueCell.Item==blueItem&&alive,"Peeling tape collected a goal, duplicated damage or destroyed piece");
+     Require(!blueCell.subSquares.Any(s=>s.type==SquareTypes.PostalTape)&&!blueCell.IsItemLocked&&blueCell.CanGoOut(),"Authored layer remained blocked after peel");
+     moves=manager.moveID;first=PostalTapeLayer.For(manager.field.GetSquare(3,2));manager.field.GetSquare(1,2).Item.SwitchDirection(Vector3.left);step=2;at=EditorApplication.timeSinceStartup+2;return;
+    }
+    if(step==2)
+    {
+     if(manager.findMatchesStarted||manager.DragBlocked||Tapes().Any(t=>t.IsPeeling))return;
+     Require(first==null&&manager.moveID==moves+1&&alive,"Authored tape did not respond to real adjacent match");
+     PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-editor-after-match.png");
+     var rocket=manager.field.GetSquare(0,5).Item;Require(rocket!=null&&rocket.currentType==ItemsTypes.HORIZONTAL_STRIPED,"Fixture rocket missing");
+     typeof(LevelManager).GetMethod("ActivateTappedBonus",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(manager,new object[]{rocket});step=3;at=EditorApplication.timeSinceStartup+2;return;
+    }
+    if(step==3)
+    {
+     if(manager.findMatchesStarted||manager.DragBlocked||Tapes().Any(t=>t.IsPeeling))return;
+     Require(alive&&!PostalTapeLayer.Holds(manager.field.GetSquare(3,5)),"Real rocket failed authored tape protection/removal");
+     before=Goal();foreach(var tape in Tapes())tape.Cell.DestroyBlock();step=4;at=EditorApplication.timeSinceStartup+1.1;return;
+    }
+    if(step==4)
+    {
+     if(Tapes().Any(t=>t.IsPeeling))return;
+     Require(Tapes().Length==0&&manager.field.GetComponentsInChildren<PostalTapePlacement>().Length==0,"Tape layer leaked after peel");Require(Goal()==before&&alive&&manager.gameStatus==GameState.Playing,"Tape changed real goal or result state");
+     PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-editor-cleared.png");
+     File.WriteAllText("Logs/postal-tape-editor-native.result","PASS: production Resources prefab, real editor paint/erase/save/reimport and normal level loading with ALL labs disabled; five authored runtime overlays; duplicate hits peel once and preserve piece; direct peeling changes NO real goal; full layer removal restores fall permission; actual swap/match and rocket APIs; final layer cleanup; no tape HUD goal or counter; existing goal/catalog preserved. Not physical pointer/audio/device/full campaign validation.");SessionState.SetBool(Key,false);EditorApplication.Exit(0);
+    }
+   }
+   catch(Exception e){File.WriteAllText("Logs/postal-tape-editor-native.result","FAIL: "+e);Debug.LogException(e);SessionState.SetBool(Key,false);EditorApplication.Exit(1);}
+  }
+ }
+}

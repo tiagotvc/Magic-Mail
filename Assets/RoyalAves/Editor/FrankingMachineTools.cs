@@ -9,6 +9,7 @@ namespace RoyalAves.EditorTools
     {
         public static void Build()
         {
+            if(FrankingMachineSoft3DTools.IsInstalled){FrankingMachineSoft3DTools.Apply();return;}
             const string art = "Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_corpo_v2.png";
             AssetDatabase.ImportAsset(art);
             var importer = (TextureImporter)AssetImporter.GetAtPath(art);

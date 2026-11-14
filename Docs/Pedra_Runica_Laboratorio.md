@@ -81,3 +81,5 @@ A revis?o usa geometria original e mant?m o cinza da runa; n?o extrai sprites do
 O movimento foi aproximado visualmente, sem alega??o de reproduzir a implementa??o original.
 
 Backup do efeito anterior: `Logs/stone-break-v2/StoneShatterEffect-v1.cs`.
+
+Hit comum: nao reproduz animacao nem muda a cor da pedra (ajuste solicitado em 29/10/2026). Mantido apenas o registro de impacto rejeitado. Hit de powerup conserva o efeito StoneShatterEffect e a remocao existentes.

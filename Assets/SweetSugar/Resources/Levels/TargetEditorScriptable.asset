@@ -134,12 +134,8 @@ MonoBehaviour:
       array:
       - sprites:
           array:
-          - icon: {fileID: 21300000, guid: 64ec17b18ed541279382cf948e6eb2fb, type: 3}
+          - icon: {fileID: 21300000, guid: 12be7e4f56084bf4ea2297114001439a, type: 2}
             uiSprite: 1
-          - icon: {fileID: 21300000, guid: c2399cd3164b42c7b83bb3d2c30c6efc, type: 3}
-            uiSprite: 0
-          - icon: {fileID: 21300000, guid: 2886b8b4afff49368567df37b039ce72, type: 3}
-            uiSprite: 0
     prefabs:
     - {fileID: 1793582136509744, guid: 9dbfaa88340224d8eb06d56878decb22, type: 3}
   - name: Stars
@@ -266,16 +262,16 @@ MonoBehaviour:
         text: "Faltaram po\xE7\xF5es"
         index: -1
     collectAction: 0
-    setCount: 0
+    setCount: 1
     CanSwithSublevel: 0
     defaultSprites:
       array:
       - sprites:
           array:
-          - icon: {fileID: 21300000, guid: 358c89574b9c4424a6882a33a85eab51, type: 3}
+          - icon: {fileID: 21300000, guid: 4b7125fb2c7780a4189d01502a60e0af, type: 2}
             uiSprite: 1
     prefabs:
-    - {fileID: 1000, guid: a7adb69fa6a7448c8d24375a03392567, type: 3}
+    - {fileID: 4255003284092574795, guid: 74002ddf7e763db499883ad295e761a9, type: 3}
   - name: Mailbags
     localization:
       description:
@@ -310,7 +306,102 @@ MonoBehaviour:
       array:
       - sprites:
           array:
-          - icon: {fileID: 21300000, guid: 295beb72ef32ab348abef86b9d284c25, type: 2}
+          - icon: {fileID: 21300000, guid: 1ee12a07d3b9c5647b3c61b4a576f1cc, type: 2}
             uiSprite: 1
     prefabs:
     - {fileID: 8698862786519117807, guid: 4ff979b7eb5efec43b184371edcab355, type: 3}
+  - name: EnchantedStone
+    localization:
+      description:
+        text: Quebre as pedras runicas com powerups
+        index: -1
+      failed:
+        text: Ainda faltam pedras runicas
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: bd53b330cd60c1f4797209dd77a6d3ec, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 5312417016004069437, guid: ee4d58449a094749a5743ca3a4aad626, type: 3}
+  - name: Inkwell
+    localization:
+      description:
+        text: Quebre os tinteiros
+        index: -1
+      failed:
+        text: Ainda faltam tinteiros
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: abfbaaa4abd5db9448dda4f63215e73c, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 493656274124278098, guid: ce2248af33d30f94b99cf70c38d7e12e, type: 3}
+  - name: Safe
+    localization:
+      description:
+        text: Quebre os cofres
+        index: -1
+      failed:
+        text: Ainda faltam cofres
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 785a8082d09be1544b1de5e011e4bb9d, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 2403138776997652820, guid: d1bb2f90840da55488679488bdefb470, type: 3}
+  - name: SortingSignals
+    localization:
+      description:
+        text: Quebre os sinalizadores
+        index: -1
+      failed:
+        text: Ainda faltam sinalizadores
+        index: -1
+    collectAction: 0
+    setCount: 1
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: 8de2b5a510324b742b0af5193614ffa8, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 8620130467066546369, guid: f5d3ca16f6db1ce449fad3cbb1703be9, type: 3}
+  - name: PostalTapes
+    localization:
+      description:
+        text: Retire as fitas
+        index: -1
+      failed:
+        text: Ainda faltam fitas
+        index: -1
+    collectAction: 0
+    setCount: 0
+    CanSwithSublevel: 0
+    defaultSprites:
+      array:
+      - sprites:
+          array:
+          - icon: {fileID: 21300000, guid: e3c2d26947fdb3f4bb4e0e60d234c9eb, type: 2}
+            uiSprite: 1
+    prefabs:
+    - {fileID: 113570, guid: 74bed59af10418449aca02d1f8217eac, type: 3}

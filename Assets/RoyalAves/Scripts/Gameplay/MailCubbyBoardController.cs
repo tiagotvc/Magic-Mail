@@ -42,6 +42,7 @@ namespace RoyalAves.Gameplay
             var gui = huds.FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name == "MailCubby" && item.image != null)
                 ?? huds.FirstOrDefault(item => item.subTargetContainer?.targetLevel?.name != "MachineLetters" && item.image != null && (item.image.sprite == sprite ||
                     (item.subTargetContainer?.extraObjects != null && item.subTargetContainer.extraObjects.Contains(sprite))));
+            Animation.collectionTarget = gui;
             if (gui == null)
             {
                 Animation.collectionDestination.position = transform.position + Vector3.up * 2.5f;

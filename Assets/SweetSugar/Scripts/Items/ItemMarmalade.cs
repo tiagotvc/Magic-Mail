@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -49,13 +49,47 @@ namespace SweetSugar.Scripts.Items
 
             item1.destroying = true;
             var switchItemType = item2?.currentType ?? ItemsTypes.NONE;
+            if(switchItemType==ItemsTypes.MARMALADE)
+            {
+                if(destroyStarted || item2.destroying)return;
+                destroyStarted=true;item2.destroying=true;
+                if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+                StartCoroutine(CombinedPropellers(item2));return;
+            }
+            bool carryingDynamite=switchItemType==ItemsTypes.PACKAGE;
+            bool carryingPayload=carryingDynamite || switchItemType==ItemsTypes.HORIZONTAL_STRIPED || switchItemType==ItemsTypes.VERTICAL_STRIPED;
+            if(carryingPayload)
+            {
+                if(item2.destroying || destroyStarted)return;
+                item2.destroying=true;
+                if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+            }
             if(!noMarmaladeLaunch && !destroyStarted)
             {
                 destroyStarted = true;
                 // Each flying propeller owns its sound, so it stops at that propeller's arrival.
+                if(carryingPayload)
+                    foreach(var flyer in marmalades)flyer.PrepareCargo(item2.GetSpriteRenderer().sprite);
                 CreateMarmaladeWithType(switchItemType);
+                if(carryingPayload)
+                {
+                    // Consume the partner once. Its blast belongs at the landing cell, never at launch.
+                    LevelManager.THIS.levelData.GetTargetObject().CheckItems(new[]{item2});
+                    item2.NextType=ItemsTypes.NONE;item2.dontDestroyOnThisMove=item2.dontDestroyForThisCombine=false;
+                    item2.HideSprites(true);item2.DestroyBehaviour();
+                    var origin=GetParentItem().square;
+                    var neighbors=LevelManager.THIS.GetSquaresAroundSquare(origin).Where(c=>c!=origin &&
+                        (c.col==origin.col || c.row==origin.row) && c!=item2.square).ToArray();
+                    foreach(var cell in neighbors)
+                    {
+                        if(cell.type==SquareTypes.JellyBlock)LevelManager.THIS.levelData.GetTargetObject().CheckSquares(new[]{cell});
+                        if(cell.Item!=null)cell.Item.DestroyItem(true,true,this);
+                        cell.DestroyBlock();
+                    }
+                }
             }
-            if (switchItemType == ItemsTypes.MARMALADE)
+            if(carryingPayload) { /* Delivered by the flying cargo. */ }
+            else if (switchItemType == ItemsTypes.MARMALADE)
                 item2?.GetTopItemInterface()?.Destroy(item2, null);
             else if (switchItemType != ItemsTypes.NONE && (item2?.Combinable ?? false))
                 item2?.DestroyItem();
@@ -64,6 +98,76 @@ namespace SweetSugar.Scripts.Items
             else if(noMarmaladeLaunch) DestroyBehaviour();
             GetParentItem().square?.DestroyBlock();
         }
+
+        IEnumerator CombinedPropellers(Item partner)
+        {
+            var manager=LevelManager.THIS;var data=manager.levelData;var origin=GetParentItem().square;
+            var incoming=partner.GetSpriteRenderer();var main=GetSpriteRenderer();
+            var incomingPosition=incoming.transform.position;var incomingScale=incoming.transform.localScale;
+            var incomingLocalPosition=incoming.transform.localPosition;
+            var mainPosition=main.transform.position;var mainLocalPosition=main.transform.localPosition;
+            var mainScale=main.transform.localScale;
+            var mergePoint=(origin.transform.position+partner.square.transform.position)*.5f;
+            mergePoint.z=mainPosition.z;
+            bool animatorWasEnabled=partner.anim!=null && partner.anim.enabled;
+            if(partner.anim!=null)partner.anim.enabled=false;
+            try
+            {
+                for(float time=0;time<.12f;time+=Time.deltaTime)
+                {
+                    if(manager==null || manager.levelData!=data || partner==null)yield break;
+                    float t=Mathf.SmoothStep(0,1,Mathf.Clamp01(time/.12f));
+                    incoming.transform.position=Vector3.Lerp(incomingPosition,mergePoint,t);
+                    main.transform.position=Vector3.Lerp(mainPosition,mergePoint,t);
+                    incoming.transform.localScale=incomingScale*Mathf.Lerp(1,.22f,t);
+                    main.transform.localScale=mainScale*(1+.18f*Mathf.Sin(t*Mathf.PI));
+                    yield return null;
+                }
+                partner.HideSprites(true);
+                incoming.transform.localPosition=incomingLocalPosition;incoming.transform.localScale=incomingScale;
+                main.transform.localPosition=mainLocalPosition;main.transform.localScale=mainScale;
+                if(partner.anim!=null)partner.anim.enabled=animatorWasEnabled;
+                manager.levelData.GetTargetObject().CheckItems(new[]{partner});
+                partner.NextType=ItemsTypes.NONE;partner.dontDestroyOnThisMove=partner.dontDestroyForThisCombine=false;
+                partner.DestroyBehaviour();
+                if(marmalades.Length<3)
+                {
+                    var extra=Instantiate(marmalades[0].gameObject,marmalades[0].transform.parent);
+                    extra.name="Third combined propeller";extra.SetActive(false);
+                    marmalades=marmalades.Concat(new[]{extra.GetComponent<MarmaladeFly>()}).ToArray();
+                }
+                for(int i=0;i<3;i++)
+                {
+                    var fly=marmalades[i];fly.gameObject.SetActive(true);
+                    fly.transform.position=mergePoint;
+                    fly.nextItemType=ItemsTypes.NONE;fly.targets=null;
+                    fly.ConfigurePropellerGroup(i);
+                    fly.SetDirection(new Vector2(i-1,.5f));fly.StartFly();
+                }
+#if UNITY_EDITOR
+                LaunchCount+=3;CombinedPropellersStarted?.Invoke(origin,3);
+#endif
+                var neighbors=manager.GetSquaresAroundSquare(origin).Where(c=>c==origin || c.col==origin.col || c.row==origin.row).Distinct().ToArray();
+                foreach(var cell in neighbors)
+                {
+                    if(cell.type==SquareTypes.JellyBlock)manager.levelData.GetTargetObject().CheckSquares(new[]{cell});
+                    if(cell.Item!=null && cell.Item!=this)cell.Item.DestroyItem(true,true,this);
+                    cell.DestroyBlock();
+                }
+                yield return new WaitWhile(()=>marmalades.Take(3).Any(fly=>fly!=null && fly.gameObject.activeSelf));
+                NextType=ItemsTypes.NONE;dontDestroyOnThisMove=dontDestroyForThisCombine=false;
+                DestroyBehaviour();
+            }
+            finally
+            {
+                if(main!=null){main.transform.localPosition=mainLocalPosition;main.transform.localScale=mainScale;}
+                if(incoming!=null){incoming.transform.localPosition=incomingLocalPosition;incoming.transform.localScale=incomingScale;}
+                if(partner!=null && partner.anim!=null)partner.anim.enabled=animatorWasEnabled;
+            }
+        }
+#if UNITY_EDITOR
+        public static event Action<Square,int> CombinedPropellersStarted;
+#endif
 
         private void CreateMarmaladeWithType(ItemsTypes itemsType)
         {
@@ -148,7 +252,9 @@ namespace SweetSugar.Scripts.Items
             for (int index = 0; index < orderedEnumerable.Length; index++)
             {
                 var spr = orderedEnumerable[index];
-                spr.sortingOrder = i + index;
+                var flight=spr.GetComponent<MarmaladeFly>();
+                if(flight!=null && flight.IsFlying)flight.KeepFlightInFront();
+                else spr.sortingOrder = i + index;
             }
         }
     }

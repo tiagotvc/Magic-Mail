@@ -51,6 +51,10 @@ namespace RoyalAves.EditorTools
         [MenuItem(Menu + "Preparar laboratório no jogo")]
         public static void Prepare()
         {
+            bool keep=Soft3DProductionTools.IsInstalled;PrepareLegacy();if(keep)Soft3DProductionTools.Apply();
+        }
+        static void PrepareLegacy()
+        {
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Pare o Play antes de preparar.");
             RouteCentralPrototypeTools.Build();
             var visual = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/RoyalAves/Prefabs/Elements/RouteCentralVisual.prefab");

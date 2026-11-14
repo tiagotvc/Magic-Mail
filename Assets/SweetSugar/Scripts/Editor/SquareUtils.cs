@@ -22,6 +22,7 @@ namespace SweetSugar.Scripts.Editor
     public static class SquareUtils
     {
         static readonly Dictionary<SpriteRenderer, Texture2D> icePreviews = new Dictionary<SpriteRenderer, Texture2D>();
+        public static void ClearCachedPreviews(){foreach(var value in icePreviews.Values)if(value!=null)UnityEngine.Object.DestroyImmediate(value);icePreviews.Clear();}
 
         static Texture2D IcePreview(SpriteRenderer renderer)
         {
@@ -44,7 +45,7 @@ namespace SweetSugar.Scripts.Editor
                 preview.hideFlags = HideFlags.HideAndDontSave;
                 preview.ReadPixels(new Rect(0, 0, rect.width, rect.height), 0, 0);
                 var pixels = preview.GetPixels();
-                for (int i = 0; i < pixels.Length; i++) pixels[i] *= renderer.color;
+                for (int i = 0; i < pixels.Length; i++){pixels[i] *= renderer.color;if(RoyalAves.Effects.Soft3DElementStyle.Has(renderer))pixels[i].a=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.65f,.92f,pixels[i].a));}
                 preview.SetPixels(pixels);
                 preview.Apply(false, true);
                 icePreviews[renderer] = preview;
@@ -89,8 +90,15 @@ namespace SweetSugar.Scripts.Editor
         // so the editor icon comes from the element art instead.
         static Texture2D PaletteTexture(SquareTypes sqType, GameObject prefab)
         {
-            if (sqType == SquareTypes.IceBlock) return IcePreview(prefab.GetComponent<SpriteRenderer>());
-            string path = sqType == SquareTypes.MailCubby ? "Assets/RoyalAves/Art/Obstacles/MailCubby/CM_armario_base_v1.png"
+            if(sqType==SquareTypes.FrankingMachine)
+            {
+                var machine=prefab.GetComponent<RoyalAves.Gameplay.FrankingMachineCell>();
+                var visual=machine!=null&&machine.visualPrefab!=null?machine.visualPrefab.GetComponent<RoyalAves.Gameplay.MailCubbyAnimation>():null;
+                if(visual!=null&&visual.cabinet!=null)return IcePreview(visual.cabinet);
+            }
+            if(RoyalAves.Effects.Soft3DElementStyle.Has(prefab.transform))return IcePreview(prefab.GetComponent<SpriteRenderer>());
+            if (sqType == SquareTypes.RoutePotions || sqType == SquareTypes.BagOpenings || sqType == SquareTypes.SortingSignals || sqType == SquareTypes.PostalTape || sqType == SquareTypes.IceBlock || sqType == SquareTypes.Inkwell || sqType == SquareTypes.Safe) return IcePreview(prefab.GetComponent<SpriteRenderer>());
+            string path = sqType == SquareTypes.MailCubby ? "Assets/RoyalAves/Art/Obstacles/MailCubby/MM_cubby_wood_body_v6.png"
                 : sqType == SquareTypes.FrankingMachine ? "Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_corpo_v2.png" : null;
             var art = path != null ? UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path) : null;
             return art != null ? art : prefab.GetComponent<SpriteRenderer>()?.sprite?.GetTexture() as Texture2D;
@@ -134,6 +142,7 @@ namespace SweetSugar.Scripts.Editor
                 for (int index = 0; index <= Mathf.Clamp(layer, 0, sqBlock.blocks.Count-1); index++)
                 {
                     var sqBlockBlock = sqBlock.blocks[index];
+                    if (sqBlockBlock.squareType == SquareTypes.RoutePotions && sqBlockBlock.originalPos != sqBlock.position) continue;
                     if (index > 0 && sqBlockBlock.squareType == sqBlock.blocks[index - 1].squareType) typeCounter++;
                     else typeCounter = 0;
                     var blockPrefab = GetBlockPrefab(sqBlockBlock.squareType);
@@ -145,7 +154,7 @@ namespace SweetSugar.Scripts.Editor
                             // Two hits remaining shows intact ice; one shows the same plate cracked.
                             resultList.RemoveAll(t => t.Texture2D != null && icePreviews.Values.Contains(t.Texture2D));
                         }
-                        resultList.Add(new Texture2DSize(PaletteTexture(sqBlockBlock.squareType, blockPrefab[typeCounter]), blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, index, sqBlockBlock.rotate));
+                        resultList.Add(new Texture2DSize(PaletteTexture(sqBlockBlock.squareType, blockPrefab[typeCounter]), sqBlockBlock.squareType == SquareTypes.RoutePotions ? new Vector2Int(2,2) : blockPrefab[typeCounter].GetComponent<Square>().sizeInSquares, sqBlockBlock.squareType == SquareTypes.PostalTape ? 200 : index, sqBlockBlock.rotate));
                     }
                 }
                 if (list1.Any()) listBlocks = list1.ToArray();

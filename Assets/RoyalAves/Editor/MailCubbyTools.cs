@@ -14,8 +14,13 @@ namespace RoyalAves.EditorTools
         [MenuItem("Royal Aves/Elementos/Escaninho/Criar prefab da animação")]
         public static void Build()
         {
-            var cabinetSprite = Import("CM_armario_modelo_base_v2.png", 660);
-            var doorSprite = Import("CM_armario_porta_fechada_v3.png", 660);
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(Prefab) != null)
+            {
+                InstallWoodV6();
+                return;
+            }
+            var cabinetSprite = Import("MM_cubby_wood_body_v6.png", 660);
+            var doorSprite = Import("MM_cubby_wood_door_v6.png", 660);
             const string letterPath = Art + "CM_escaninho_carta_cartoon_v2.png";
             var letterSprite = Import("CM_escaninho_carta_cartoon_v2.png", 2050);
             if (letterSprite == null) throw new System.InvalidOperationException("Envelope original do jogo não encontrado.");
@@ -26,13 +31,15 @@ namespace RoyalAves.EditorTools
             {
                 var animation = root.AddComponent<MailCubbyAnimation>();
                 animation.playbackSpeed = 1f;
-                animation.emissionDuration = .22f;
-                animation.letterStagger = .01f;
+                animation.useCabinetDelivery = true;
+                animation.drawOverHud = true;
+                animation.emissionDuration = .62f;
+                animation.letterStagger = .045f;
                 var cabinet = new GameObject("Cabinet");
                 cabinet.transform.SetParent(root.transform, false);
                 animation.cabinet = cabinet.AddComponent<SpriteRenderer>();
                 animation.cabinet.sprite = cabinetSprite;
-                var bodyBounds = GetVisibleBounds(Art + "CM_armario_modelo_base_v2.png", cabinetSprite);
+                var bodyBounds = GetVisibleBounds(Art + "MM_cubby_wood_body_v6.png", cabinetSprite);
                 animation.cabinetVisibleBounds = bodyBounds;
                 animation.cabinet.sortingLayerName = RoyalAves.Effects.PowerUpEffectOrder.SortingLayer;
                 animation.cabinet.sortingOrder = 30;
@@ -42,7 +49,7 @@ namespace RoyalAves.EditorTools
                 int stackDepth = MailCubbyCell.LettersPerNiche / 3;
                 float letterScale = bodyBounds.width * 0.235f / letterBounds.width;
                 float letterHeight = letterBounds.height * letterScale;
-                var shelfFloors = new[] { bodyBounds.yMin + bodyBounds.height * 0.405f, bodyBounds.yMin + bodyBounds.height * 0.075f };
+                var shelfFloors = new[] { bodyBounds.yMin + bodyBounds.height * 0.52f, bodyBounds.yMin + bodyBounds.height * 0.10f };
                 for (int i = 0; i < animation.letters.Length; i++)
                 {
                     var letter = new GameObject("Letter_" + i);
@@ -64,7 +71,7 @@ namespace RoyalAves.EditorTools
                         depth / (float)Mathf.Max(1, stackDepth - 1) * 0.65f);
                 }
                 animation.doors = new SpriteRenderer[2];
-                var doorBounds = GetVisibleBounds(Art + "CM_armario_porta_fechada_v3.png", doorSprite);
+                var doorBounds = GetVisibleBounds(Art + "MM_cubby_wood_door_v6.png", doorSprite);
                 float doorScale = bodyBounds.width * 0.443f / doorBounds.width;
                 float doorWidth = doorBounds.width * doorScale;
                 for (int i = 0; i < 2; i++)
@@ -75,7 +82,7 @@ namespace RoyalAves.EditorTools
                     // Slight overlap closes the seam between the rounded door edges.
                     float visibleCenterX = bodyBounds.center.x + sign * (doorWidth * 0.5f - bodyBounds.width * 0.005f);
                     door.transform.localPosition = new Vector3(visibleCenterX + sign * doorBounds.center.x * doorScale,
-                        bodyBounds.yMin + bodyBounds.height * 0.39f - doorBounds.center.y * doorScale, -0.02f);
+                        bodyBounds.yMin + bodyBounds.height * 0.48f - doorBounds.center.y * doorScale, -0.02f);
                     door.transform.localScale = Vector3.one * doorScale;
                     var renderer = door.AddComponent<SpriteRenderer>();
                     renderer.sprite = doorSprite;
@@ -106,6 +113,58 @@ namespace RoyalAves.EditorTools
             AssetDatabase.Refresh();
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<GameObject>(Prefab);
             Debug.Log("Armário postal: portas fechadas, corpo ajustado ao 2x2 e 36 cartas em seis pilhas.");
+        }
+
+        // Update existing objects in place: production and laboratory references retain their file IDs.
+        public static void InstallWoodV6()
+        {
+            var body = Import("MM_cubby_wood_body_v6.png", 660);
+            var door = Import("MM_cubby_wood_door_v6.png", 660);
+            var root = PrefabUtility.LoadPrefabContents(Prefab);
+            try
+            {
+                var animation = root.GetComponent<MailCubbyAnimation>();
+                animation.useCabinetDelivery = true;
+                animation.drawOverHud = true;
+                animation.emissionDuration = .62f;
+                animation.letterStagger = .045f;
+                if (animation.letters.Length != MailCubbyCell.LettersPerCabinet || animation.doors.Length != 2)
+                    throw new System.InvalidOperationException("Unexpected cabinet hierarchy; refusing to replace it.");
+                animation.cabinet.sprite = body;
+                var bounds = GetVisibleBounds(Art + "MM_cubby_wood_body_v6.png", body);
+                animation.cabinetVisibleBounds = bounds;
+                var letter = animation.letters[0].sprite;
+                var letterBounds = GetVisibleBounds(AssetDatabase.GetAssetPath(letter), letter);
+                float letterScale = bounds.width * .235f / letterBounds.width;
+                float letterHeight = letterBounds.height * letterScale;
+                for (int i = 0; i < animation.letters.Length; i++)
+                {
+                    int niche = i / MailCubbyCell.LettersPerNiche;
+                    int column = i % 3;
+                    int depth = (i % MailCubbyCell.LettersPerNiche) / 3;
+                    float scale = letterScale * (1f - depth * .035f);
+                    var center = new Vector2(bounds.center.x + (column - 1) * bounds.width * .255f + depth * bounds.width * .008f,
+                        bounds.yMin + bounds.height * (niche == 0 ? .52f : .10f) + letterHeight * (.5f + depth * .12f));
+                    animation.letters[i].transform.localPosition = center - letterBounds.center * scale;
+                    animation.letters[i].transform.localScale = Vector3.one * scale;
+                }
+                var doorBounds = GetVisibleBounds(Art + "MM_cubby_wood_door_v6.png", door);
+                float doorScale = bounds.width * .443f / doorBounds.width;
+                float doorWidth = doorBounds.width * doorScale;
+                for (int i = 0; i < 2; i++)
+                {
+                    float sign = i == 0 ? -1f : 1f;
+                    var renderer = animation.doors[i];
+                    renderer.sprite = door;
+                    renderer.flipX = i == 1;
+                    renderer.transform.localPosition = new Vector3(bounds.center.x + sign * (doorWidth * .5f - bounds.width * .005f)
+                        + sign * doorBounds.center.x * doorScale,
+                        bounds.yMin + bounds.height * .48f - doorBounds.center.y * doorScale, -.02f);
+                    renderer.transform.localScale = Vector3.one * doorScale;
+                }
+                PrefabUtility.SaveAsPrefabAsset(root, Prefab);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
         }
 
         static void GetLetterFit(string path, Sprite sprite, out float scale, out Vector2 offset)

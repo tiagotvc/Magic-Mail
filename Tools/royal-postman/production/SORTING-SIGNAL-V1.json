@@ -1,0 +1,41 @@
+{
+  "existingTargetRecordsPreserved": true,
+  "productionPaletteChanged": false,
+  "notTested": [
+    "physical pointer input",
+    "audio",
+    "device",
+    "full campaign flow"
+  ],
+  "cycle": [
+    "green clover",
+    "red seal",
+    "lilac feather",
+    "blue envelope"
+  ],
+  "campaignChanged": false,
+  "laboratoryMoves": 40,
+  "transition": "OnTurnEnd, one change per moveID, after board resolution",
+  "selectedIcon": "FIRST generated icon, three-leaf clover, original PNG byte-preserved",
+  "status": "test laboratory installed and open in main Unity; user evaluation pending",
+  "mainProject": "existing Unity instance, Playing confirmed; installed board capture inspected",
+  "hitPoints": 3,
+  "targets": 3,
+  "date": "2026-11-09",
+  "nativeValidation": "Unity 6000.6.0f1 isolated InkwellValidationProject exit 0; actual swap/match via API, real rocket via API tap activator, wrong color rejection, cycle, unit goal, completion guard, actual restart",
+  "hashes": {
+    "Assets/RoyalAves/Shaders/SortingSignalLens.shader": "289E46E9EC7B3A8BBA947C5A43B1F3B364723B48F3289554F2DAC62AA74BA3BB",
+    "Assets/RoyalAves/Laboratory/SortingSignalCell.prefab": "0F8B44545959335B4329583FC8436FA5B95910AA535C458F8633C878C32B35C6",
+    "Assets/RoyalAves/Art/Obstacles/SortingSignal/SignalLens.mat": "E9AAC917C4E922DA95662F0D1D564B1A3C310837E702896B00A7DC65FB8B3B15",
+    "Assets/RoyalAves/Art/Obstacles/SortingSignal/SignalMaster.png": "15EAF7DF08A81A0859A953B50EF6B609CA1EE84A0A67C73DB2266623DDEE9677",
+    "Assets/RoyalAves/Scripts/Gameplay/SortingSignalCell.cs": "CEE32CC34DD25E2FB4F8C4E9755FEC157FC65B25FB9E56DDD65DDADCDAF1993D",
+    "Assets/RoyalAves/Laboratory/SortingSignalLevel.asset": "2CA189CB13B906C3CBC91E312B948CF53FF0E679585A862A7B8C0034C2E18944",
+    "Assets/RoyalAves/Scripts/Gameplay/SortingSignalsTarget.cs": "2358F3D546DDD587E6E1183E453BCF4E8933F5757264420C7A1477A90F5B203F",
+    "Assets/RoyalAves/Editor/SortingSignalLaboratoryTools.cs": "3BCDD6BB9744FE3A62A701B48E84F224397C416C8711E03A502B692752C003D2",
+    "Assets/RoyalAves/Scripts/Gameplay/SortingSignalLaboratory.cs": "015ECAA80AA26F22ED8CC81A3FE77676909BB5E94ADB9D98BD09BF200F2BE12E",
+    "Assets/RoyalAves/Laboratory/SortingSignalTargets.asset": "8057636C21DBA5079E7BAB0378E4E71234EC9C09C42EAAD849ECAEFB4BCF1E4C",
+    "Assets/RoyalAves/Editor/SortingSignalNativeVerification.cs": "AB3B9991D8F706CC0EB00D234B36F5E6DA1B28DD532B80170B6DF15D51C70A73",
+    "Assets/RoyalAves/Art/Obstacles/SortingSignal/SignalIcon.asset": "958DFC5A41B07DBB0A61031FE1B5124C5A7DF3ECD77D924EC341934AC5FF35CD"
+  },
+  "installationRepair": "Rebuilt prefab with main-project script references; synchronously reimported shader and repaired existing material; main capture verified with all three signals visible"
+}

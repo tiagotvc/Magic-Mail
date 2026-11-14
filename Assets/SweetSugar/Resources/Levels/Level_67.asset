@@ -13,30 +13,37 @@ MonoBehaviour:
   m_Name: Level_67
   m_EditorClassIdentifier: 
   levelData:
-    Name: Level 67
+    SpawnerExits: 0
     levelNum: 67
     fields:
-    - subLevel: 1
-      maxRows: 9
-      maxCols: 7
+    - maxRows: 9
+      maxCols: 9
       noRegenLevel: 0
+      scrollLevel: 0
       levelSquares:
-      - block: 6
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 0, y: 0}
         direction: {x: 0, y: -1}
-        enterSquare: 1
+        enterSquare: 0
         isEnterTeleport: 0
         teleportCoordinatesLinked: {x: -1, y: -1}
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -45,22 +52,32 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 1, y: 0}
         direction: {x: 0, y: -1}
-        enterSquare: 1
+        enterSquare: 0
         isEnterTeleport: 0
         teleportCoordinatesLinked: {x: -1, y: -1}
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -69,7 +86,17 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -81,19 +108,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -105,19 +142,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -129,19 +176,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -153,19 +210,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -177,10 +244,44 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 435
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 0}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -189,7 +290,51 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 0}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 0}
+          colors: {fileID: 0}
+          Item: {fileID: 0}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -201,10 +346,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -213,31 +358,51 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 1, y: 1}
         direction: {x: 0, y: -1}
-        enterSquare: 0
+        enterSquare: 1
         isEnterTeleport: 0
         teleportCoordinatesLinked: {x: -1, y: -1}
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -249,19 +414,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -273,19 +448,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -297,19 +482,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -321,19 +516,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -345,23 +550,67 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 488
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
-        position: {x: 0, y: 2}
+        position: {x: 7, y: 1}
+        direction: {x: 0, y: -1}
+        enterSquare: 1
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 1}
         direction: {x: 0, y: -1}
         enterSquare: 0
         isEnterTeleport: 0
@@ -369,10 +618,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -381,7 +630,51 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 0, y: 2}
+        direction: {x: 0, y: -1}
+        enterSquare: 1
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -393,19 +686,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -417,19 +720,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -441,19 +754,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -465,19 +788,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -489,19 +822,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -513,21 +856,104 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 541
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 2}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 2}
+        direction: {x: 0, y: -1}
+        enterSquare: 1
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 3}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 0, y: 3}
         direction: {x: 0, y: -1}
@@ -537,10 +963,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -549,9 +975,24 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 3}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 1, y: 3}
         direction: {x: 0, y: -1}
@@ -561,10 +1002,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -573,9 +1014,19 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 2, y: 3}
         direction: {x: 0, y: -1}
@@ -585,21 +1036,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 3, y: 3}
         direction: {x: 0, y: -1}
@@ -609,21 +1070,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 3}
         direction: {x: 0, y: -1}
@@ -633,21 +1104,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 5, y: 3}
         direction: {x: 0, y: -1}
@@ -657,21 +1138,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 6, y: 3}
         direction: {x: 0, y: -1}
@@ -681,21 +1172,104 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 594
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 3}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 3}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 4
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 3}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 0, y: 4}
         direction: {x: 0, y: -1}
@@ -705,10 +1279,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -717,9 +1291,24 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 3}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 1, y: 4}
         direction: {x: 0, y: -1}
@@ -729,10 +1318,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -741,9 +1330,19 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 2, y: 4}
         direction: {x: 0, y: -1}
@@ -753,21 +1352,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 3, y: 4}
         direction: {x: 0, y: -1}
@@ -777,21 +1386,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 4}
         direction: {x: 0, y: -1}
@@ -801,21 +1420,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 5, y: 4}
         direction: {x: 0, y: -1}
@@ -825,21 +1454,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 6, y: 4}
         direction: {x: 0, y: -1}
@@ -849,21 +1488,104 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 647
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 4}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 4
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 4}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 0, y: 5}
         direction: {x: 0, y: -1}
@@ -873,10 +1595,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -885,9 +1607,24 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 1, y: 5}
         direction: {x: 0, y: -1}
@@ -897,10 +1634,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -909,9 +1646,19 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 2, y: 5}
         direction: {x: 0, y: -1}
@@ -921,21 +1668,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 3, y: 5}
         direction: {x: 0, y: -1}
@@ -945,21 +1702,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 4
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 5}
         direction: {x: 0, y: -1}
@@ -969,21 +1736,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 5, y: 5}
         direction: {x: 0, y: -1}
@@ -993,21 +1770,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 6, y: 5}
         direction: {x: 0, y: -1}
@@ -1017,21 +1804,104 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 700
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 5}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 5}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 0, y: 6}
         direction: {x: 0, y: -1}
@@ -1041,10 +1911,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1053,9 +1923,24 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        - squareType: 19
+          anotherSquare: 0
+          originalPos: {x: 0, y: 5}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 0
+        obstacle: 19
         obstacleLayer: 1
         position: {x: 1, y: 6}
         direction: {x: 0, y: -1}
@@ -1065,22 +1950,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
-          ItemType: 1
-          Texture: {fileID: 2800000, guid: 01954c4ea2b65488091af7570dad18f0, type: 3}
+          ItemType: 0
+          Texture: {fileID: 0}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f,
-            type: 3}
+          Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 1
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 2, y: 6}
         direction: {x: 0, y: -1}
@@ -1090,21 +1984,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 3, y: 6}
         direction: {x: 0, y: -1}
@@ -1114,21 +2018,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 4, y: 6}
         direction: {x: 0, y: -1}
@@ -1138,19 +2052,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1162,22 +2086,31 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
-          ItemType: 1
-          Texture: {fileID: 2800000, guid: 01954c4ea2b65488091af7570dad18f0, type: 3}
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 1119664270634208, guid: 78bd779b495fa4b91b9fbb138181790f,
-            type: 3}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 1
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
-        obstacle: 7
+        obstacle: 0
         obstacleLayer: 1
         position: {x: 6, y: 6}
         direction: {x: 0, y: -1}
@@ -1187,19 +2120,97 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 753
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 6}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 1
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 6}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 4
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 98b32921ddcdcc148b9ec27e9c545e95, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1211,10 +2222,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1223,31 +2234,51 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
         position: {x: 1, y: 7}
         direction: {x: 0, y: -1}
-        enterSquare: 0
+        enterSquare: 1
         isEnterTeleport: 0
         teleportCoordinatesLinked: {x: -1, y: -1}
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1259,19 +2290,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1283,19 +2324,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1307,19 +2358,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1331,19 +2392,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1355,10 +2426,78 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 806
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 3
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 7}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 7}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1367,7 +2506,17 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1379,10 +2528,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 3
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1391,7 +2540,17 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1403,10 +2562,10 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 57
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1415,7 +2574,17 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1427,19 +2596,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 111
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 3
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 6a3b754025b661b41baba8dbb434b55e, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1451,19 +2630,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 165
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1475,19 +2664,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 219
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
-          Color: 0
+          Color: 1
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 312205a54976565468e5949d49093b75, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 6
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1499,19 +2698,29 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 273
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
-          Texture: {fileID: 0}
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
           colors: {fileID: 0}
-          Item: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
-      - block: 0
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 1
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 1
         blockLayer: 1
         obstacle: 0
         obstacleLayer: 1
@@ -1523,10 +2732,44 @@ MonoBehaviour:
         teleportCoordinatesLinkedBack: {x: -1, y: -1}
         guiRect:
           serializedVersion: 2
-          x: 327
-          y: 859
-          width: 50
-          height: 50
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 2800000, guid: 28aba4880abe72b48bf6a43857827529, type: 3}
+          colors: {fileID: 0}
+          Item: {fileID: 190504, guid: e83178387e3af4eb8aa2a7236fa058ed, type: 3}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 7, y: 8}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
         item:
           Color: 0
           ItemType: 0
@@ -1535,60 +2778,80 @@ MonoBehaviour:
           Item: {fileID: 0}
           EnableMarmaladeTargets: 0
           TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
+      - blocks:
+        - squareType: 0
+          anotherSquare: 0
+          originalPos: {x: 0, y: 0}
+          rotate: 0
+          size: {x: 1, y: 1}
+        spawners: []
+        block: 0
+        blockLayer: 1
+        obstacle: 0
+        obstacleLayer: 1
+        position: {x: 8, y: 8}
+        direction: {x: 0, y: -1}
+        enterSquare: 0
+        isEnterTeleport: 0
+        teleportCoordinatesLinked: {x: -1, y: -1}
+        teleportCoordinatesLinkedBack: {x: -1, y: -1}
+        guiRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        item:
+          Color: 0
+          ItemType: 0
+          Texture: {fileID: 0}
+          colors: {fileID: 0}
+          Item: {fileID: 0}
+          EnableMarmaladeTargets: 0
+          TargetMarmaladePositions: []
+          order: 0
+        startWithoutItem: 0
+        separatorIndexes: 00000000y
       bombTimer: 15
+      layers: 2
+      switchSublevelNoMatch: 0
+      frankingMachines: []
     target:
-      name: JellyBlock
+      name: RoutePotions
       localization:
         description:
-          text: Spread the jelly everywhere
-          index: 61
+          text: "Quebre as quatro po\xE7\xF5es"
+          index: -1
         failed:
-          text: You didn't spread the jelly
-          index: 62
-      collectAction: 2
+          text: "Faltaram po\xE7\xF5es"
+          index: -1
+      collectAction: 0
       setCount: 1
       CanSwithSublevel: 0
       defaultSprites:
         array:
         - sprites:
             array:
-            - icon: {fileID: 21300000, guid: 6e2aeb1a957644443a91a3a29b9bef43, type: 3}
-              uiSprite: 0
+            - icon: {fileID: 21300000, guid: 4b7125fb2c7780a4189d01502a60e0af, type: 2}
+              uiSprite: 1
       prefabs:
-      - {fileID: 1491958887448974, guid: a30bc3dfa7cc24355a551baa872b9b71, type: 3}
-    targetIndex: 3
+      - {fileID: 4255003284092574795, guid: 74002ddf7e763db499883ad295e761a9, type: 3}
     limitType: 0
-    ingrCountTarget: 0000000000000000
-    limit: 15
+    limit: 27
     colorLimit: 4
-    star1: 1000
-    star2: 2000
-    star3: 3000
+    pieceColors: 01000000030000000000000004000000i
+    star1: 900
+    star2: 1800
+    star3: 2700
     enableMarmalade: 0
     selectedTutorial: 0
     currentSublevelIndex: 0
     subTargetsContainers:
-    - targetPrefab: {fileID: 1491958887448974, guid: a30bc3dfa7cc24355a551baa872b9b71,
-        type: 3}
-      count: 27
-      preCount: 27
+    - targetPrefab: {fileID: 4255003284092574795, guid: 74002ddf7e763db499883ad295e761a9, type: 3}
+      count: 0
+      preCount: 0
       extraObject: {fileID: 0}
-      extraObjects: []
-      color: 0
-      TargetGui: {fileID: 0}
-      targetLevel:
-        name: 
-        localization:
-          description:
-            text: 
-            index: 0
-          failed:
-            text: 
-            index: 0
-        collectAction: 0
-        setCount: 0
-        CanSwithSublevel: 0
-        defaultSprites:
-          array: []
-        prefabs: []
-      collectingAction: 0
+    generateIngredientOnlyFromSpawner: 0

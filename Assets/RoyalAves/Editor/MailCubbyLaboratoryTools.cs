@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using RoyalAves.Gameplay;
@@ -18,6 +18,7 @@ namespace RoyalAves.EditorTools
         const string Request = "Logs/mail-cubby-lab.request";
         const string PreviewKey = "MagicMail.MailCubbyPreview";
         const string VisualPath = "Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab";
+        const string StartingKey = "MagicMail.MailCubbyStarting";
         static double nextPoll;
 
         [MenuItem(Menu + "Teste no tabuleiro 2x2")]
@@ -32,6 +33,7 @@ namespace RoyalAves.EditorTools
         {
             SessionState.SetBool(MailCubbyLaboratory.EnabledKey, false);
             SessionState.SetBool(PreviewKey, false);
+            SessionState.SetBool(StartingKey, false);
             if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;
         }
 
@@ -168,6 +170,17 @@ namespace RoyalAves.EditorTools
                     MailCubbyTestWindow.Open();
                 }
             }
+            if (EditorApplication.isPlaying && SessionState.GetBool(StartingKey, false) && MailCubbyLaboratory.IsActive && LevelManager.THIS != null)
+            {
+                var manager = LevelManager.THIS;
+                if (manager.gameStatus == GameState.Tutorial) manager.gameStatus = GameState.Playing;
+                if (manager.gameStatus == GameState.Playing)
+                {
+                    SessionState.SetBool(StartingKey, false);
+                    foreach (var boost in manager.InGameBoosts) if (boost != null) boost.gameObject.SetActive(false);
+                    File.WriteAllText("Logs/mail-cubby-ready.result", "READY: playable cabinet laboratory, 36 letters, five impacts.");
+                }
+            }
             if (!File.Exists(Request)) return;
             string command = File.ReadAllText(Request).Trim();
             if (command == "status" || command == "hit" || command == "hit-all" || command == "screenshot" || command == "render" || command.StartsWith("hit:"))
@@ -206,6 +219,8 @@ namespace RoyalAves.EditorTools
             try
             {
                 Prepare();
+                LightBallLaboratory.Disable();
+                foreach (var key in LightBallLaboratory.OtherKeys) SessionState.SetBool(key, false);
                 SessionState.SetBool(InkLaboratory.EnabledKey, false);
                 SessionState.SetBool(ParcelStackLaboratory.EnabledKey, false);
                 SessionState.SetBool(FrankingMachineLaboratory.EnabledKey, false);
@@ -214,6 +229,13 @@ namespace RoyalAves.EditorTools
                 File.WriteAllText("Logs/mail-cubby-lab.result", "OK: laboratório preparado; objeto 2x2, seis pilhas, 36 cartas na meta.");
                 if (command == "preview")
                 {
+                    if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().path != "Assets/SweetSugar/Scenes/game.unity")
+                    {
+                        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().isDirty)
+                            throw new InvalidOperationException("Save the current scene before opening the cabinet laboratory.");
+                        UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/game.unity");
+                    }
+                    SessionState.SetBool(StartingKey, true);
                     SessionState.SetBool(PreviewKey, true);
                     EditorApplication.isPlaying = true;
                 }
@@ -250,7 +272,7 @@ namespace RoyalAves.EditorTools
             EditorGUILayout.LabelField("Cartas coletadas", controller.Collected.ToString());
             EditorGUILayout.LabelField("Meta restante", LevelManager.THIS.levelData.TargetCounters.Sum(t => t.count).ToString());
             EditorGUILayout.LabelField("Animação", controller.IsBreaking ? "Quebrando a madeira" : controller.IsCleared ? "Quatro células liberadas" : controller.Animation.IsAnimating ? "Carta em entrega" : "Parado");
-            controller.Animation.emissionDuration = EditorGUILayout.Slider("Duração do voo", controller.Animation.emissionDuration, 0.3f, 1.5f);
+            controller.Animation.emissionDuration = EditorGUILayout.Slider("Duração do voo", controller.Animation.emissionDuration, 0.1f, 1.5f);
             using (new EditorGUI.DisabledScope(!controller.Animation.CanAcceptHit || controller.Animation.IsAnimating || LevelManager.GetGameStatus() != GameState.Playing))
                 if (GUILayout.Button(controller.Animation.DoorsAttached ? "Primeiro impacto — arrancar portas" : "Impacto de teste — esvaziar nicho")) controller.AcceptImpact(true);
             EditorGUILayout.HelpBox("1º impacto: arranca as duas portas, sem coletar. Cada um dos quatro impactos seguintes envia nove cartas, com pirueta e rastro até a meta. Após as 36 entregas, o armário quebra e libera as quatro células.", MessageType.None);

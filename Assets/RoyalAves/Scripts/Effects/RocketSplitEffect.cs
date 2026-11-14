@@ -54,13 +54,27 @@ namespace RoyalAves.Effects
         // destroyed as the rocket passes over them. Returns how long the whole effect takes, or 0 when there's no
         // effect to show (caller then has to handle the cells itself).
         public static float Play(GameObject rocketObject, bool horizontal, Vector3 towardA, Vector3 towardB,
-            IList<Vector3> cells, Action<int> onCellPassed, bool stopAtA = false, bool stopAtB = false)
+            IList<Vector3> cells, Action<int> onCellPassed, bool stopAtA = false, bool stopAtB = false, Vector3? boardOrigin = null)
         {
             var data = Data;
             if (data == null || rocketObject == null) return 0f;
 
-            var origin = rocketObject.transform.position;
-            var spriteToHide = rocketObject.GetComponentInChildren<SpriteRenderer>();
+            var sourceItem = rocketObject.GetComponent<SweetSugar.Scripts.Items.Item>();
+            var origin = boardOrigin ?? (sourceItem != null && sourceItem.square != null
+                ? sourceItem.square.transform.position : rocketObject.transform.position);
+            // All entry points, including visual-only callers, are constrained to the selected grid axis.
+            // An item can still be between cells or have an animated child offset at activation.
+            if (cells != null && cells.Count > 0)
+            {
+                if (horizontal) origin.y = cells[0].y;
+                else origin.x = cells[0].x;
+            }
+            if (horizontal) towardA.y = towardB.y = origin.y;
+            else towardA.x = towardB.x = origin.x;
+            // Board motion is two-dimensional. The item's render depth must not create
+            // a fake second path that reports every cell as passed at the same instant.
+            towardA.z = towardB.z = origin.z;
+            var spriteToHide = sourceItem != null ? sourceItem.GetSpriteRenderer() : null;
             var bodyHeight = spriteToHide != null && spriteToHide.sprite != null
                 ? (horizontal ? spriteToHide.bounds.size.y : spriteToHide.bounds.size.x)
                 : 155f / HalfPixelsPerUnit * RestScale;
@@ -74,9 +88,9 @@ namespace RoyalAves.Effects
             var overshootB = stopAtB ? 0f : ExitOvershoot;
             var durationA = FlightTime(origin, towardA, overshootA);
             var durationB = FlightTime(origin, towardB, overshootB);
-            BuildHalf(root.transform, data.HalfLeft, data.EngineNozzle, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA, false, bodyHeight);
-            BuildHalf(root.transform, data.HalfRight, data.EngineNozzle, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB, true, bodyHeight);
-            ScheduleCells(origin, towardA, towardB, durationA, durationB, cells, onCellPassed, overshootA, overshootB);
+            var halfA = BuildHalf(root.transform, data.HalfLeft, data.EngineNozzle, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA, false, bodyHeight);
+            var halfB = BuildHalf(root.transform, data.HalfRight, data.EngineNozzle, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB, true, bodyHeight);
+            root.AddComponent<RocketAxisPassObserver>().Initialize(origin, horizontal, halfA, halfB, cells, onCellPassed);
 
             var total = Mathf.Max(durationA, durationB);
             UnityEngine.Object.Destroy(root, total + TrailTail);
@@ -86,7 +100,7 @@ namespace RoyalAves.Effects
         // Length of a half's path from origin to its exit point (past the board's edge).
         static float PathLength(Vector3 origin, Vector3 to, float overshoot)
         {
-            var path = to - origin;
+            Vector2 path = to - origin;
             if (path.magnitude < 0.01f) return 0f;
             return (path + path.normalized * overshoot).magnitude;
         }
@@ -96,40 +110,18 @@ namespace RoyalAves.Effects
             return Mathf.Max(MinFlightTime, PathLength(origin, to, overshoot) / FlightSpeed);
         }
 
-        // Mirrors BuildHalf's motion: easeInQuad over the half's duration along its path, so a point at distance d
-        // along it is reached at duration * sqrt(d / pathLength).
-        static void ScheduleCells(Vector3 origin, Vector3 towardA, Vector3 towardB, float durationA, float durationB,
-            IList<Vector3> cells, Action<int> onCellPassed, float overshootA, float overshootB)
-        {
-            var ends = new[] { towardA, towardB };
-            var durations = new[] { durationA, durationB };
-            var overshoots = new[] { overshootA, overshootB };
-            for (var i = 0; i < cells.Count; i++)
-            {
-                var passAt = float.MaxValue;
-                for (var h = 0; h < ends.Length; h++)
-                {
-                    var length = PathLength(origin, ends[h], overshoots[h]);
-                    if (length <= 0f) continue;
-                    var direction = (ends[h] - origin).normalized;
-                    var along = Vector3.Dot(cells[i] - origin, direction);
-                    if (along < -0.01f) continue; // the other half's side
-                    passAt = Mathf.Min(passAt, durations[h] * Mathf.Sqrt(Mathf.Max(along, 0f) / length));
-                }
-                if (passAt == float.MaxValue) passAt = 0f;
-
-                var index = i;
-                if (passAt <= 0f) onCellPassed(index);
-                else LeanTween.delayedCall(passAt, () => onCellPassed(index));
-            }
-        }
-
         const float HalfPixelsPerUnit = 128f; // matches capsule-half-left/right.png's import setting
 
-        static void BuildHalf(Transform parent, Texture2D texture, Texture2D nozzleTexture, Material flameMat, Vector3 from, Vector3 to,
+        static Transform BuildHalf(Transform parent, Texture2D texture, Texture2D nozzleTexture, Material flameMat, Vector3 from, Vector3 to,
             bool horizontal, int sortOrder, float duration, float overshoot, bool rightHalf, float bodyHeight)
         {
-            if (texture == null) return;
+            if (texture == null) return null;
+            // Defensive invariant: never allow a diagonal tween, even with malformed/off-grid endpoints.
+            if (horizontal) to.y = from.y; else to.x = from.x;
+            to.z = from.z;
+            // A rocket launched at an edge still sends its outward half off the board.
+            if (Vector2.Distance(from,to)<.01f)
+                to=from+(horizontal?Vector3.right:Vector3.up)*(rightHalf ? .001f : -.001f);
             var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),
                 new Vector2(0.5f, 0.5f), HalfPixelsPerUnit);
 
@@ -192,6 +184,7 @@ namespace RoyalAves.Effects
             var toOvershot = to + direction * overshoot;
             LeanTween.move(half, toOvershot, duration).setEase(LeanTweenType.easeInQuad)
                 .setOnComplete(() => Arrive(half, sr, ps));
+            return half.transform;
         }
 
         // Reaches the edge: just stops emitting and disappears, instead of sitting there finished-but-visible.

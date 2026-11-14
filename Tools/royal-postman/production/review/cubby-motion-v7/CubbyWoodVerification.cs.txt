@@ -1,0 +1,94 @@
+using System;
+using System.IO;
+using System.Linq;
+using RoyalAves.Gameplay;
+using SweetSugar.Scripts.Core;
+using UnityEditor;
+using UnityEngine;
+namespace RoyalAves.EditorTools {
+public static class CubbyWoodVerification {
+ const string Key="MagicMail.CubbyWoodVerification";
+ static int step; static double at; static MailCubbyBoardController controller;
+ static int Goal()=>LevelManager.THIS.levelData.TargetCounters.Single(t=>t.targetLevel.name=="MailCubby").count;
+ [InitializeOnLoadMethod] static void Listen(){EditorApplication.update-=Tick;EditorApplication.update+=Tick;}
+ public static void Run(){
+  if(!Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"))throw new Exception("Isolated project only");
+  PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailCabinetMotionV7";
+  MailCubbyTools.Build();
+  var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab");
+  AssetDatabase.TryGetGUIDAndLocalFileIdentifier(prefab,out string guid,out long id);
+  Require(id==3885611776136051177L,"Root reference changed");
+  MailCubbyLaboratoryTools.Prepare();
+  foreach(var key in LightBallLaboratory.OtherKeys)SessionState.SetBool(key,false);
+  LightBallLaboratory.Disable();
+  SessionState.SetBool(Key,true);SessionState.SetString(Key+"Deadline",DateTime.UtcNow.AddMinutes(5).ToString("O"));
+  MailCubbyLaboratoryTools.Preview();
+ }
+ static void Tick(){
+  if(!SessionState.GetBool(Key,false)||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+  try {
+   Require(DateTime.UtcNow<DateTime.Parse(SessionState.GetString(Key+"Deadline",""),null,System.Globalization.DateTimeStyles.RoundtripKind),"Timeout");
+   if(!EditorApplication.isPlaying||LevelManager.THIS==null||!MailCubbyLaboratory.IsActive||LevelManager.THIS.gameStatus!=GameState.Playing||Time.time<at)return;
+   if(step==0){controller=UnityEngine.Object.FindAnyObjectByType<MailCubbyBoardController>();if(controller==null)return;
+    Require(controller.Cells.Length==4&&controller.Animation.Remaining==36&&Goal()==36&&controller.Animation.DoorsAttached,"Initial state");
+    Require(controller.Animation.cabinet.sprite.name=="MM_cubby_wood_body_v6","Body sprite");
+    Require(controller.Animation.doors.All(d=>d.sprite.name=="MM_cubby_wood_door_v6"),"Door sprites");
+    var b=controller.Animation.cabinet.bounds;
+    var c=(controller.Cells[0].transform.position+controller.Cells[3].transform.position)*.5f;
+    Require(Vector2.Distance(controller.Animation.transform.TransformPoint(controller.Animation.cabinetVisibleBounds.center),c)<.005f,"Cabinet is not centered on the four cells");
+    Require(controller.Animation.useCabinetDelivery && controller.Animation.drawOverHud,"Cabinet delivery not enabled");
+    Require(controller.Animation.emissionDuration==.62f && controller.Animation.letterStagger==.045f,"Flight tuning");
+    Capture("closed");var recorder=new GameObject("CubbyWoodRecorder").AddComponent<CubbyWoodRecorder>();recorder.Initialize(controller);foreach(var cell in controller.Cells)cell.DestroyBlock();step=1;at=Time.time+.5;return;
+   }
+   if(step==1){if(controller.Animation.IsAnimating)return;
+    Require(!controller.Animation.DoorsAttached&&controller.Animation.Remaining==36&&Goal()==36,"Door hit must not emit letters");Capture("open");
+    controller.Animation.ResetStock();Require(controller.Animation.DoorsAttached&&controller.Animation.Remaining==36&&controller.Animation.doors.All(d=>d.enabled),"Reset");
+    controller.AcceptImpact(true);step=2;at=Time.time+.5;return;
+   }
+   if(step>=2&&step<=5){if(controller.Animation.IsAnimating)return;
+    int expected=36-(step-2)*9;Require(controller.Animation.Remaining==expected&&Goal()==expected&&controller.Collected==36-expected,"Nine-letter batch "+step);
+    if(step==3 || step==5){
+     int first=step==3?0:18;
+     for(int column=0;column<3;column++){
+      Require(Vector3.Distance(controller.Animation.letters[first+9+column].transform.localPosition, controller.Animation.letters[first+column].transform.parent.InverseTransformPoint(controller.Animation.letters[first+column].transform.position))>.001f,"Flight did not leave shelf");
+      var initial=UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>("Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab").GetComponent<MailCubbyAnimation>();
+      for(int rank=0;rank<3;rank++){
+       var actual=controller.Animation.letters[first+9+rank*3+column];var slot=initial.letters[first+rank*3+column];
+       Require(Vector3.Distance(actual.transform.localPosition,slot.transform.localPosition)<.002f,"Letters float above vacated shelf slot");
+       Require(Vector3.Distance(actual.transform.localScale,slot.transform.localScale)<.002f,"Back letters did not grow into front slots");
+      }
+     }
+    }
+    Capture("batch-"+(step-2));controller.AcceptImpact(true);step++;at=Time.time+.7;return;
+   }
+   if(step==6){if(controller.Animation.IsAnimating||controller.IsBreaking||!controller.IsCleared)return;
+    Require(Goal()==0&&controller.Collected==36&&controller.Animation.Remaining==0,"Final stock/goal");
+    Require(controller.Cells.All(c=>c.GetComponent<MailCubbyCell>()==null&&c.GetComponentsInChildren<MailCubbyCell>().Length==0),"Four cells release");
+    Require(LevelManager.THIS.gameStatus==GameState.Playing,"Campaign result leaked");
+    Require(UnityEngine.Object.FindAnyObjectByType<CubbyWoodRecorder>().MaximumBank<26f,"Letters spin during flight");
+    UnityEngine.Object.FindAnyObjectByType<CubbyWoodRecorder>()?.Finish();
+    File.WriteAllText("Logs/cubby-motion-native.result","PASS: cabinet visible bounds centered on four grid cells; .62s smooth readable delivery above HUD; original and compacted shelf slots/scales verified after each half-niche; preserved prefab root ID; new body/two doors; four reserved cells; stock and goal 36; first hit only removes doors; reset restores doors/stock; four batches of nine collect 36; final break releases four cells; no campaign result. Diagnostic API hits, not physical input/audio/device validation. Door speed uses isolated 1.25 multiplier.");
+    SessionState.SetBool(Key,false);EditorApplication.Exit(0);
+   }
+  }catch(Exception e){File.WriteAllText("Logs/cubby-motion-native.result","FAIL: "+e);Debug.LogException(e);SessionState.SetBool(Key,false);EditorApplication.Exit(1);}
+ }
+ static void Capture(string name){typeof(MailCubbyLaboratoryTools).GetMethod("CaptureCabinet",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic).Invoke(null,new object[]{controller});File.Copy("Logs/mail-cubby-model-v2.png","Logs/cubby-motion-"+name+".png",true);}
+ static void Require(bool ok,string text){if(!ok)throw new Exception(text);}
+}}
+
+[DefaultExecutionOrder(32000)]
+public sealed class CubbyWoodRecorder : MonoBehaviour {
+ Camera camera; RenderTexture target;Texture2D pixels;int frame;RoyalAves.Gameplay.MailCubbyAnimation animation;public float MaximumBank {get;private set;}
+ public void Initialize(MailCubbyBoardController controller){
+  animation=controller.Animation;Time.captureFramerate=24;Time.maximumDeltaTime=1f/24;
+  camera=gameObject.AddComponent<Camera>();camera.enabled=false;camera.orthographic=true;
+  var bounds=controller.Animation.cabinet.bounds;
+  camera.orthographicSize=bounds.extents.x*1.75f;
+  camera.transform.position=bounds.center+Vector3.up*bounds.size.y*.10f+Vector3.back*20;
+  camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.08f,.08f,.08f);
+  target=new RenderTexture(640,640,24);pixels=new Texture2D(640,640,TextureFormat.RGBA32,false);camera.targetTexture=target;
+  Directory.CreateDirectory("Logs/cubby-motion-frames");Directory.CreateDirectory("Logs/cubby-motion-screen");
+ }
+ void LateUpdate(){if(camera==null)return;foreach(var letter in animation.letters)MaximumBank=Mathf.Max(MaximumBank,Mathf.Abs(Mathf.DeltaAngle(0f,letter.transform.eulerAngles.z)));if(Time.frameCount%2!=0)return;var sources=UnityEngine.Object.FindObjectsByType<RoyalAves.Effects.MailDeliveryOverlay>(FindObjectsSortMode.None).Select(o=>(SpriteRenderer)typeof(RoyalAves.Effects.MailDeliveryOverlay).GetField("source",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).GetValue(o)).Where(r=>r!=null).ToArray();foreach(var source in sources)source.enabled=true;var previous=RenderTexture.active;camera.Render();foreach(var source in sources)source.enabled=false;RenderTexture.active=target;pixels.ReadPixels(new Rect(0,0,640,640),0,0);pixels.Apply();File.WriteAllBytes("Logs/cubby-motion-frames/"+(frame++).ToString("D4")+".png",pixels.EncodeToPNG());RenderTexture.active=previous;ScreenCapture.CaptureScreenshot("Logs/cubby-motion-screen/"+(frame-1).ToString("D4")+".png");}
+ public void Finish(){LateUpdate();Time.captureFramerate=0;}
+}

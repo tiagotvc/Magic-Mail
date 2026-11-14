@@ -1,0 +1,80 @@
+{
+  "tool": "built-in image_gen",
+  "status": "Six visual proposals completed, not approved or installed. No gameplay, sprites, prefabs or animation states replaced.",
+  "style": "C:/Users/Tiago Carvalho/Magic Mail/Tools/royal-postman/previews/escaninho-madeira-v6/escaninho-bordas-finas.png",
+  "entries": [
+    {
+      "name": "01-caixa",
+      "source": "Assets/RoyalAves/Art/Obstacles/ParcelStack/CM_pilha_estado03_00.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-4695adb2-0321-4aec-9b0e-72d9503e7643.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: one compact square honey-wood crate, closed, with two removable wooden reinforcement planks crossing in an X on its front and four SMALL muted blue round bolt heads. Retain this construction and full resistance state. Use the cabinet's warm softly shaded wood surface, simplified fine joins rather than black seams, thin rounded outer frame, restrained satin blue bolt highlights. No woodgrain lines or extra nails; give the X planks visible thickness through soft light and occlusion. Make it feel like a solid little 3D toy crate, not a thick outlined drawing.",
+      "output": "01-caixa.png",
+      "sha256": "25809421976e5c66fe2acc51df3ff924e7f6a7831ba58380760df7c5962ac3a9",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "name": "02-pedra-runica",
+      "source": "Assets/RoyalAves/Art/Obstacles/EnchantedStone/stone-paw-v1.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-457e6d2c-0893-4cdb-9aa4-06aca6fce83e.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: one rounded near-square cool gray-lilac stone block with the SAME recessed paw rune in its front. Preserve the paw identity and arrangement. Simplify the rock into a few broad softly rounded planes, remove the busy faceted chipped perimeter and gritty surface. Give the stone a gently domed solid face, rounded side depth and soft diffuse clay-like stone finish, not glossy plastic. The paw indentation is shallow and readable with softly shaded bevels and contact occlusion, without a dark drawn outline or dramatic black holes. Keep compact board-piece proportions.",
+      "output": "02-pedra-runica.png",
+      "sha256": "7e3422622779cec92ae1b169229379024dfa2052445908898974d660b7eeb768",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "name": "03-tinteiro",
+      "source": "Assets/RoyalAves/Art/Obstacles/Inkwell/InkwellStages.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-76506179-9037-4635-ab9e-ae6853709bf4.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: ONE INTACT inkwell only, based on the TOP LEFT intact state of image1, not the damage sheet. Short squat rounded purple ceramic ink pot with small purple stopper, restrained warm gold collar and narrow gold foot, small raised GOLD CROWN emblem centered on front. Same purple/gold identity and squat silhouette. Remove ALL heavy purple/black border lines around the bottle, stopper and crown. Make the crown a softly embossed ceramic/metal relief, not a sticker with black outline. Satin purple glazed ceramic with one soft broad reflection, softly rounded gold edges, no outer glow, no neon, no cracks or damage. One intact object only.",
+      "output": "03-tinteiro.png",
+      "sha256": "0d3c623271183255364beaad00b2435d2e0117a56af6318cb96f0aa6b04d5aee",
+      "size": [
+        1312,
+        1199
+      ]
+    },
+    {
+      "name": "04-pocoes",
+      "source": "Assets/RoyalAves/Art/Obstacles/RouteCentral/CM_central_pocoes_prototipo.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-dafe0099-c23c-4a77-9f75-c6354914a6df.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: one compact 2x2 potion stand with EXACTLY FOUR separate squat conical glass bottles: GREEN upper left, PURPLE upper right, RED lower left, BLUE lower right. Each has a plain cork and modest gold neck collar. Retain a slim purple rounded frame with two restrained honey-gold shelves supporting bottle bases. Reduce the frame and gold joints in visual weight, remove heavy white glass contour strokes and exaggerated glossy streaks. Show glass through softly shaded thickness, subtle refraction and gentle broad highlights; keep bright readable colored liquids and visible liquid surfaces. Each bottle stays clearly separate and rests on its shelf. Clean soft toy-like 3D finish matching cabinet craftsmanship; no bubbles, particles or extra ornaments.",
+      "output": "04-pocoes.png",
+      "sha256": "09ab7b7d4845445caa2405776e3f64ef83d6beaf0c999f64d69c8a2112c3faf6",
+      "size": [
+        1254,
+        1254
+      ]
+    },
+    {
+      "name": "05-bolsa",
+      "source": "Assets/RoyalAves/Art/Obstacles/Mailbag/CM_bolsa_carteiro_frontal_v3.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-9a75b15b-a802-441d-917a-d0809637d64d.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: one small FIXED POSTMAN SATCHEL, closed. Preserve the warm golden-ochre orange bag body, broad rounded front flap, small central gold square buckle on a short orange leather tab and tiny turquoise lining visible in the slit below the flap. IMPORTANT: remove the back shoulder strap/handle visible in image1; the approved game bag has NO HANDLE OR SHOULDER STRAP. Simplify the body and buckle into softly padded 3D volumes, satin leather with no realistic pores or stitching. Reduce glaring yellow/white rims and oversized highlights; use warm light from upper left with gentle shadow below the overlapping flap, a clean rounded buckle and natural soft orange gradients. No icon, envelope badge, text or ornaments.",
+      "output": "05-bolsa.png",
+      "sha256": "4494225a10f57cb6dca4c33d48dd0f0ff2fd496121885c772b92cd52fbf2ed9a",
+      "size": [
+        1289,
+        1221
+      ]
+    },
+    {
+      "name": "06-sinalizador",
+      "source": "Assets/RoyalAves/Art/Obstacles/SortingSignal/SignalMaster.png",
+      "generated": "C:\\Users\\Tiago Carvalho\\.codex\\generated_images\\01a1c1c6-891e-7e81-8a2c-2c7211f64111\\exec-907c279d-a6db-417b-b542-a8fdc80b957b.png",
+      "prompt": "Use case: game obstacle visual redesign, soft-3D mobile puzzle sprite. Image 1 is the element identity reference; Image 2 is the APPROVED CABINET and is the authoritative material, lighting and finish reference. Redesign ONLY the element in image 1 to convincingly belong to the same visual family as that cabinet: simplified sculpted rounded forms, soft broad bevels, subtle ambient occlusion in joins, broad diffused upper-left key light, quiet fill light, believable material volume. Replace dark drawn outlines and graphic inner strokes with material transitions and gentle contact shadows. Thin gentle edges, no black/brown ink contours, no harsh white streaks, no realistic noisy grain, no excessive decorative details. This is polished cartoon 3D, not photorealistic, not flat vector, not a line drawing. Keep original recognizability and colors; the cabinet is a FINISH reference, do not turn the subject into a wooden cupboard and do not copy its doors. Front-facing game-board view with a small amount of top depth, centered whole single object on a genuinely transparent background, no ground plane, no backdrop, no external cast shadow, no text, no labels, no sheet, no duplicate views. Leave 8 percent transparent margin. Subject: one small round postal sorting signal appliance on a low pedestal: copper/orange circular housing, luminous green glass face, two modest side pivot caps, and the EXACT SAME original clover glyph shape as image1 centered inside the green lens. Preserve the supplied glyph silhouette, do not correct it or change the number/shape of leaves. Thin the front rim and pedestal, simplify rivets, and replace the hard chrome-like white rim/reflections and dark green edge outline with soft bevels and diffuse lighting. The green lens is softly convex glass with one gentle broad reflection, no neon bloom; copper satin body with subtle orange depth. Clear quiet sculpted 3D like the approved cabinet, no extra symbols or envelope.",
+      "output": "06-sinalizador.png",
+      "sha256": "893636a8f01a2733a16532d18ac04bca51cb999f22d27b3f8c93868ed6d9c01d",
+      "size": [
+        1254,
+        1254
+      ]
+    }
+  ],
+  "review": "Visually inspected all six: softened contours/illumination; four potion colors, intact crown pot, no handle on satchel, original clover identity retained. Generative redraws are not pixel-identical."
+}

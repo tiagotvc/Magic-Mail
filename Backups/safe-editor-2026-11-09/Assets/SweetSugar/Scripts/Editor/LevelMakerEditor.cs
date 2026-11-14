@@ -1,0 +1,4578 @@
+﻿// // ©2015 - Present Candy Smith
+// // All rights reserved
+// // Redistribution of this software is strictly not allowed.
+// // Copy of this software can be obtained from unity asset store only.
+// // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// // FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+// // AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// // THE SOFTWARE.
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using SweetSugar.Scriptable.Rewards;
+using SweetSugar.Scripts.AdsEvents;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.GUI;
+using SweetSugar.Scripts.GUI.Boost;
+using SweetSugar.Scripts.Integrations;
+using SweetSugar.Scripts.Items;
+using SweetSugar.Scripts.Items._Interfaces;
+using SweetSugar.Scripts.Level;
+using SweetSugar.Scripts.Level.ItemsPerLevel.Editor;
+using SweetSugar.Scripts.MapScripts.StaticMap.Editor;
+using SweetSugar.Scripts.System;
+using SweetSugar.Scripts.TargetScripts.TargetEditor;
+using SweetSugar.Scripts.TargetScripts.TargetSystem;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEditor.Sprites;
+using UnityEngine;
+using SweetSugar.Scripts.System.Utils;
+
+namespace SweetSugar.Scripts.Editor
+{
+    [InitializeOnLoad]
+    public class LevelMakerEditor : EditorWindow
+    {
+        static Texture2D verticalRocketPreview;
+        static Sprite verticalRocketSprite;
+
+        static LevelMakerEditor()
+        {
+            AssemblyReloadEvents.beforeAssemblyReload += ClearRocketPreview;
+            EditorApplication.quitting += ClearRocketPreview;
+        }
+
+        static void ClearRocketPreview()
+        {
+            if (verticalRocketPreview != null) DestroyImmediate(verticalRocketPreview);
+            verticalRocketPreview = null;
+            verticalRocketSprite = null;
+        }
+
+        // The vertical prefab rotates its renderer, while both rockets share the same sprite.
+        // Keep this temporary editor image out of ItemForEditor.Texture and serialized levels.
+        public static Texture2D ResolveItemPreviewTexture(ItemForEditor item, int level)
+        {
+            var sprite = ResolveItemPreviewSprite(item.Item, level, item.Color);
+            var texture = sprite != null ? sprite.GetTexture() : item.Tex;
+            if (item.ItemType != ItemsTypes.VERTICAL_STRIPED || sprite == null || texture == null) return texture;
+            if (verticalRocketPreview != null && verticalRocketSprite == sprite) return verticalRocketPreview;
+            ClearRocketPreview();
+            var previous = RenderTexture.active;
+            var buffer = RenderTexture.GetTemporary(texture.width, texture.height, 0, RenderTextureFormat.ARGB32,
+                RenderTextureReadWrite.sRGB);
+            Texture2D readable = null;
+            try
+            {
+                Graphics.Blit(texture, buffer);
+                RenderTexture.active = buffer;
+                readable = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+                readable.ReadPixels(new Rect(0,0,texture.width,texture.height),0,0);
+                readable.Apply();
+                var source = readable.GetPixels32();
+                var rotated = new Color32[source.Length];
+                for (int y=0;y<texture.height;y++) for (int x=0;x<texture.width;x++)
+                    rotated[x*texture.height + texture.height-1-y] = source[y*texture.width+x];
+                verticalRocketPreview = new Texture2D(texture.height,texture.width,TextureFormat.RGBA32,false)
+                {
+                    name="Foguete vertical - previa",hideFlags=HideFlags.HideAndDontSave,
+                    filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp
+                };
+                verticalRocketPreview.SetPixels32(rotated);
+                verticalRocketPreview.Apply();
+                verticalRocketSprite = sprite;
+                return verticalRocketPreview;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(buffer);
+                if (readable != null) DestroyImmediate(readable);
+            }
+        }
+        //private bool groupEnabled;
+        //private bool myBool = true;
+        //private float myFloat = 1.23f;
+        private int levelNumber = 1;
+        private int subLevelNumber = 1;
+
+        public int SubLevelNumber
+        {
+            get { return subLevelNumber; }
+            set
+            {
+                subLevelNumber = value;
+                levelData.currentSublevelIndex = subLevelNumber - 1;
+            }
+        }
+
+        public MenuReference MenuReference
+        {
+            get
+            {
+                if (!menuReference) menuReference = GameObject.FindObjectOfType<MenuReference>();
+                return menuReference;
+            }
+            set { menuReference = value; }
+        }
+
+        private int subLevelNumberTotal = 1;
+
+        private SquareTypes squareType;
+        private ItemForEditor itemBrush;
+        private bool startWithoutItemBrush;
+        private string FileName = "1_1.txt";
+        private Vector2 scrollViewVector;
+        private static int selected;
+        private string[] toolbarStrings = {"Editor", "Settings", "Shop", "In-apps", "Ads", "GUI", "Rate", "About", "Areas", "Effects", "Temporadas"};
+        
+        //Added_feature
+        private string[] sectionsString = {"Blocks", "Items", "Directions", "Teleports", "Spawners", "Random"};
+
+        private static LevelMakerEditor window;
+        private bool life_settings_show;
+        //private bool score_settings;
+        private bool boost_show;
+        private bool failed_settings_show;
+        private bool gems_shop_show;
+        //private bool target_description_show;
+        private IEnumerable<ItemForEditor>[] itemsForEditor;
+        private IEnumerable<ItemForEditor> itemsForEditorFull;
+        private Sprite[] piecePaletteSprites;
+        [SerializeField] private float previewCellPixels = 50f;
+        string levelPath = "Assets/SweetSugar/Resources/Levels/";
+
+        private bool enableGoogleAdsProcessing;
+        private bool enableChartboostAdsProcessing;
+        private List<AdEvents> oldList;
+        private LevelData levelData;
+        private Texture[] arrows = new Texture[6];
+        private Texture[] teleports = new Texture[2];
+        private Texture[] arrows_enter = new Texture[4];
+        private UnityAdsID unityAdsSettings;
+        private LevelPlayID levelPlaySettings;
+
+        //Added_feature
+        private Texture[] spawner = new Texture[10];
+        private Texture[] Rotation = new Texture[10];
+        private Spawners spawnerType;
+        //private bool RemoveFlag = false;
+        //private bool EditFlag = false;
+        private SingleSpawn EditableSpawner;
+        private SpawnerState CurrentSpawnerState;
+        private IEnumerable<SpawnerState> _SpawnerStates;
+
+        private enum SpawnerState
+        {
+            None,
+            Add,
+            Remove,
+            Edit,
+            Clear
+        }
+
+        [MenuItem("Sweet Sugar/Level editor")]
+        public static void Init()
+        {
+            // Get existing open window or if none, make a new one:
+            window = (LevelMakerEditor) GetWindow(typeof(LevelMakerEditor), false, "Level editor");
+            window.Show();
+        }
+
+        [MenuItem("Sweet Sugar/Settings/Game settings")]
+        public static void GameSettings()
+        {
+            Init();
+            selected = 1;
+        }
+
+        [MenuItem("Sweet Sugar/Settings/In-app settings")]
+        public static void InappSettings()
+        {
+            Init();
+            selected = 2;
+        }
+
+        [MenuItem("Sweet Sugar/Settings/Ads settings")]
+        public static void AdsSettings()
+        {
+            Init();
+            selected = 4;
+        }
+
+        public static void ShowHelp()
+        {
+            selected = 7;
+        }
+
+        public static void ShowWindow()
+        {
+            GetWindow(typeof(LevelMakerEditor));
+        }
+
+        private void OnEnable()
+        {
+            titleContent = new GUIContent("Level editor");
+        }
+
+        private void OnFocus()
+        {
+            window = (LevelMakerEditor) GetWindow(typeof(LevelMakerEditor));
+            adsSettings = Resources.Load<AdManagerScriptable>("Scriptable/AdManagerScriptable");
+            sceneSwitcher = Resources.Load<MapSwitcher>("Scriptable/MapSwitcher");
+            targetEditorScriptable =
+                AssetDatabase.LoadAssetAtPath<TargetEditorScriptable>(
+                    "Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset");
+            LoadLevel(levelNumber);
+
+            if (levelData != null)
+            {
+                if (levelData.GetField(subLevelNumber - 1).maxRows <= 0)
+                    levelData.GetField(subLevelNumber - 1).maxRows = 9;
+                if (levelData.GetField(subLevelNumber - 1).maxCols <= 0)
+                    levelData.GetField(subLevelNumber - 1).maxCols = 9;
+                Initialize();
+            }
+
+            customSkin = Resources.Load("SweetSkin") as GUISkin;
+            separateBar =
+                (Texture2D) AssetDatabase.LoadAssetAtPath("Assets/SweetSugar/Textures_png/Items/obstacle-bar.png",
+                    typeof(Texture));
+            arrows[0] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/arrow.png", typeof(Texture));
+            arrows[1] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/arrow_left.png", typeof(Texture));
+            arrows[2] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/arrow_right.png", typeof(Texture));
+            arrows[3] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/arrow_up.png", typeof(Texture));
+            arrows[4] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/circle arrow.png", typeof(Texture));
+            arrows[5] = (Texture) AssetDatabase.LoadAssetAtPath(
+                "Assets/SweetSugar/Textures_png/EditorSprites/circle arrows.png", typeof(Texture));
+
+            teleports[0] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/teleport_icon1.png", typeof(Texture));
+            teleports[1] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/teleport_icon2.png", typeof(Texture));
+
+            arrows_enter[0] =
+                (Texture) AssetDatabase.LoadAssetAtPath("Assets/SweetSugar/Textures_png/EditorSprites/arrow_red.png",
+                    typeof(Texture));
+            arrows_enter[1] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/arrow_red_left.png", typeof(Texture));
+            arrows_enter[2] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/arrow_red_right.png", typeof(Texture));
+            arrows_enter[3] =
+                (Texture) AssetDatabase.LoadAssetAtPath("Assets/SweetSugar/Textures_png/EditorSprites/arrow_red_up.png",
+                    typeof(Texture));
+
+
+            //Added_feature
+            spawner[0] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/Dispenser_Top.png", typeof(Texture));
+            spawner[1] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/Dispenser_Down.png", typeof(Texture));
+            spawner[2] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/Dispenser_Left.png", typeof(Texture));
+            spawner[3] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/Dispenser_Right.png", typeof(Texture));
+
+            Rotation[0] =
+                (Texture) AssetDatabase.LoadAssetAtPath("Assets/SweetSugar/Textures_png/EditorSprites/LeftRotation.png",
+                    typeof(Texture));
+            Rotation[1] =
+                (Texture) AssetDatabase.LoadAssetAtPath(
+                    "Assets/SweetSugar/Textures_png/EditorSprites/RightRotation.png", typeof(Texture));
+
+
+            if (EditorSceneManager.GetActiveScene().name == "game")
+            {
+                MenuReference = FindObjectOfType<MenuReference>();
+
+                LevelManager lm = Camera.main.GetComponent<LevelManager>();
+                InitScript initscript = Camera.main.GetComponent<InitScript>();
+                if (oldList == null)
+                {
+                    oldList = new List<AdEvents>();
+                    oldList.Clear();
+                    for (int i = 0; i < adsSettings.adsEvents.Count; i++)
+                    {
+                        oldList.Add(new AdEvents());
+                        oldList[i].adType = adsSettings.adsEvents[i].adType;
+                        oldList[i].everyLevel = adsSettings.adsEvents[i].everyLevel;
+                        oldList[i].gameEvent = adsSettings.adsEvents[i].gameEvent;
+                    }
+                }
+            }
+
+            //gotFocus = true;
+        }
+
+        private void OnLostFocus()
+        {
+            // Losing focus is not an edit. Saving an unchanged cached level can restore an old generated asset.
+            SaveLevel(levelNumber);
+            //gotFocus = false;
+        }
+
+        private void Initialize()
+        {
+            if (levelData != null)
+                foreach (var field in levelData.fields)
+                    if (RoyalAves.Gameplay.FrankingMachineCell.RestoreGridPlacements(field)) dirtyLevel = true;
+            unityAdsSettings = Resources.Load<UnityAdsID>("Scriptable/UnityAdsID");
+            levelPlaySettings = Resources.Load<LevelPlayID>("Scriptable/LevelPlayID");
+            if (levelPlaySettings == null)
+            {
+                // Create the asset if it doesn't exist
+                levelPlaySettings = CreateInstance<LevelPlayID>();
+                if (!Directory.Exists("Assets/SweetSugar/Resources/Scriptable"))
+                    Directory.CreateDirectory("Assets/SweetSugar/Resources/Scriptable");
+                AssetDatabase.CreateAsset(levelPlaySettings, "Assets/SweetSugar/Resources/Scriptable/LevelPlayID.asset");
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+            var shader = Shader.Find("Hidden/Internal-Colored");
+            mat = new Material(shader);
+            subLevelNumberTotal = GetSubLevelsCount();
+            if (levelNumber < 1)
+                levelNumber = 1;
+            life_settings_show = true;
+            //score_settings = true;
+            boost_show = true;
+            failed_settings_show = true;
+            gems_shop_show = true;
+            //target_description_show = true;
+            var num = 0;
+            var simpleItem = Resources.Load<GameObject>("Items/Item").GetComponent<ItemSimple>();
+            piecePaletteSprites = simpleItem.GetComponent<IColorableComponent>().GetSprites(levelNumber);
+            var simpleitems = piecePaletteSprites
+                .Select(i => new ItemForEditor
+                {
+                    Item = simpleItem.gameObject,
+                    ItemType = simpleItem.currentType,
+                    Tex = i.GetTexture(),
+                    order = 100
+                }).ToList().ForEachY(i =>
+                {
+                    i.Color = num;
+                    num++;
+                });
+            Resources.LoadAll("Items");
+            var bonusitems = Resources.LoadAll<EditorIcon>("Items")
+                .Select(i => (EditorIcon)i)
+                .GroupBy(i => i.GetType())
+                .Select(
+                    i => i)
+                .SelectMany(group => group)
+                .Select(i => new ItemForEditor
+                {
+                    Item = i.gameObject,
+                    Color = color,
+                    ItemType = i.itemType,
+                    colors = i.GetComponent<IColorableComponent>(),
+                    // Get the sprite texture directly to avoid loading the full atlas
+                    Tex = i.GetComponent<Item>().sprRenderer?.FirstOrDefault()?.sprite?.GetTexture(),
+                    order = 100
+                });
+            packageTexture = bonusitems.First(i => i.ItemType == ItemsTypes.PACKAGE).Tex;
+            var l1 = bonusitems.ToList();
+            // for (int i = 0; i < 5; i++)
+            // {
+            //     var item = bonusitems.First(x => x.ItemType == ItemsTypes.PACKAGE);
+            //     l1.Add(item.DeepCopy());
+            // }
+
+            var list = l1.GroupBy(i => i.ItemType).Select(group => group.OrderBy(i => i.Item.name).ToArray()).ToArray()
+                .ForEachY(group =>
+                {
+                    num = 0;
+                    group.ForEachY(i =>
+                    {
+                        i.Color = num;
+                        num++;
+                    });
+                }).SelectMany(i => i).ToArray();
+            // for (int i = 0; i < list.Count(); i++)
+            // {
+            //     if (list[i].ItemType == ItemsTypes.PACKAGE)
+            //     {
+            //         list[i].Texture = list[i].Texture.AlphaBlend(simpleitems.ElementAt(list[i].Color).Texture);
+            //     }
+            // }
+            itemsForEditorFull = simpleitems.Union(list);
+            itemsForEditor = simpleitems.Union(bonusitems.GroupBy(i => i.ItemType).SelectMany(i => i))
+                .Select((x, i) => new {Index = i, Value = x})
+                .GroupBy(i => i.Index / 6)
+                .Select(i => i.Select(x => x.Value))
+                .ToArray();
+            if (levelData.target.prefabs.All(i => i.GetComponent<IColorableComponent>()))
+            {
+                for (var index = 0; index < levelData.subTargetsContainers.Count; index++)
+                {
+                    var levelDataSubTargetsContainer = levelData.subTargetsContainers[index];
+                    levelDataSubTargetsContainer.extraObject = levelDataSubTargetsContainer.targetPrefab
+                        .GetComponent<IColorableComponent>().GetSprite(levelNumber, index);
+                }
+            }
+
+            winReward = Resources.Load<WinReward>("Scriptable/WinReward");
+            
+            _squareTypeItems = EnumUtil.GetValues<SquareTypes>();
+
+            _SpawnerStates = EnumUtil.GetValues<SpawnerState>();
+
+            _squareTypeItems = EnumUtil.GetValues<SquareTypes>();
+            squareTypeGroupped = _squareTypeItems.Select((x, i) => new {Index = i, Value = x}).GroupBy(i => i.Index / 6)
+                .Select(i => i.Select(x => x.Value))
+                .ToArray();
+            var squareTypeItems = _squareTypeItems;
+            var squareTypeses = squareTypeItems as SquareTypes[] ?? squareTypeItems.ToArray();
+            squareTextures = new Texture2DSize[squareTypeses.Count()];
+            for (var index = 0; index < squareTypeses.Length; index++)
+            {
+                SquareTypes squareTypeItem = squareTypeses[index];
+                if (squareTypeItem == SquareTypes.NONE) continue;
+                var squareTexture = SquareUtils.GetSquareTexture(squareTypeItem);
+                squareTextures[index] = squareTexture;
+            }
+            maxColorLimit = simpleItem.GetComponent<IColorableComponent>().GetSprites(levelNumber).Count();
+        }
+
+        private void InitializeSublevel()
+        {
+            levelData.GetField(subLevelNumber - 1).levelSquares =
+                new SquareBlocks[levelData.GetField(subLevelNumber - 1).maxCols *
+                                 levelData.GetField(subLevelNumber - 1).maxRows];
+            for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
+            {
+                SquareBlocks sqBlocks = new SquareBlocks();
+                sqBlocks.block = SquareTypes.EmptySquare;
+                sqBlocks.obstacle = SquareTypes.NONE;
+
+                levelData.GetField(subLevelNumber - 1).levelSquares[i] = sqBlocks;
+            }
+
+            ResetDirection();
+        }
+
+        private void OnGUI()
+        {
+//        GUI.skin = customSkin;
+            if (!levelData.fields.Any())
+            {
+                OnFocus();
+                return;
+            }
+
+            //		if (!gotFocus) return;
+            UnityEngine.GUI.changed = false;
+
+
+            GUILayout.Space(20);
+            GUILayout.BeginHorizontal();
+            int oldSelected = selected;
+            selected = GUILayout.Toolbar(selected, toolbarStrings, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            scrollViewVector =
+                EditorGUILayout.BeginScrollView(scrollViewVector, GUILayout.Width(window.position.width));
+
+            if (oldSelected != selected)
+                scrollViewVector = Vector2.zero;
+
+            if (selected == 0 && levelData.fields.Any())
+            {
+                if (levelData != null)
+                {
+                    //                if (EditorSceneManager.GetActiveScene().name == "game")
+                    {
+                        GUILevelSelector();
+                        GUILayout.Space(10);
+
+
+                        GUILimit();
+                        GUILayout.Space(10);
+
+                        GUIColorLimit();
+                        GUILayout.Space(10);
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Bomb timer", GUILayout.Width(80));
+                        GUILayout.Space(70);
+                        levelData.GetField(subLevelNumber - 1).bombTimer = EditorGUILayout.IntField("",
+                            levelData.GetField(subLevelNumber - 1).bombTimer, GUILayout.Width(50));
+                        GUILayout.EndHorizontal();
+                        
+                        //spawner exits var, enable if any spawner, its handy job
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Spawner Exits", GUILayout.Width(100));
+                        GUILayout.Space(50);
+                        levelData.SpawnerExits = EditorGUILayout.Toggle(levelData.SpawnerExits, GUILayout.Width(30));
+                        GUILayout.Space(5);
+                        GUILayout.Label("<-- Enable only if you set ingredient as spawner.", GUILayout.Width(400));
+                        GUILayout.Space(50);
+                        GUILayout.EndHorizontal();
+                        
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Ingredient Generate Only From Spawner.", GUILayout.Width(230));
+                        GUILayout.Space(50);
+                        levelData.generateIngredientOnlyFromSpawner = EditorGUILayout.Toggle(levelData.generateIngredientOnlyFromSpawner, GUILayout.Width(50));
+                        GUILayout.Space(5);
+                        GUILayout.Label("<-- Enable only if you want to generate ingredient only from spawner.",
+                                GUILayout.Width(400));
+                        GUILayout.Space(50);
+                        GUILayout.EndHorizontal();
+
+                        GUILayout.Space(10);
+
+                        GUIStars();
+                        GUILayout.Space(10);
+
+                        GUILayout.BeginHorizontal();
+                        {
+//                        GUIMamalade();
+                            //                        GUILayout.Space(10);
+
+                            GUINoRegen();
+                            //                        GUILayout.Space(10);
+                        }
+                        GUILayout.EndHorizontal();
+                        GUILayout.Space(10);
+
+                        GUISwitchSubLevel();
+                        GUILayout.Space(10);
+
+                        GUITarget();
+                        GUILayout.Space(10);
+
+                        GUILevelSize();
+                        GUILayout.Space(10);
+
+                        GUISections();
+                        GUILayout.Space(10);
+
+                        if (section == 0)
+                        {
+                            GUIBlocks();
+                            GUILayout.Space(10);
+                        }
+
+                        if (section == 1)
+                        {
+                            GUIItems();
+                            GUILayout.Space(10);
+                        }
+
+                        if (section == 2)
+                        {
+                            GUIDirections();
+                            GUILayout.Space(10);
+                        }
+
+                        if (section == 3)
+                        {
+                            GUITeleport();
+                            GUILayout.Space(10);
+                        }
+
+                        //Added_feature
+                        if (section == 4)
+                        {
+                            GUISpawners();
+                            GUILayout.Space(10);
+                        }
+                        
+                        if (section == 5)
+                        {
+                            GUIRandomGeneration();
+                            GUILayout.Space(10);
+                        }
+                        GUIGameField();
+                    }
+                    //                else
+                    //                    GUIShowWarning();
+                }
+            }
+            else if (selected == 1)
+            {
+                if (EditorSceneManager.GetActiveScene().name == "game" ||
+                    EditorSceneManager.GetActiveScene().name == "gameStatic")
+                    GUISettings();
+                else
+                    GUIShowWarning();
+
+                GUILayout.Space(10);
+                // CheckSeparateLevels();
+            }
+            else if (selected == 2)
+            {
+                if (EditorSceneManager.GetActiveScene().name == "game" ||
+                    EditorSceneManager.GetActiveScene().name == "gameStatic")
+                    GUIShops();
+                else
+                    GUIShowWarning();
+            }
+            else if (selected == 3)
+            {
+                if (EditorSceneManager.GetActiveScene().name == "game" ||
+                    EditorSceneManager.GetActiveScene().name == "gameStatic")
+                    GUIInappSettings();
+                else
+                    GUIShowWarning();
+            }
+            else if (selected == 4)
+            {
+                GUIAds();
+            }
+            else if (selected == 5)
+            {
+                if (EditorSceneManager.GetActiveScene().name == "game" ||
+                    EditorSceneManager.GetActiveScene().name == "gameStatic")
+                    GUIDialogs();
+                else
+                    GUIShowWarning();
+            }
+            else if (selected == 6)
+            {
+                if (EditorSceneManager.GetActiveScene().name == "game" ||
+                    EditorSceneManager.GetActiveScene().name == "gameStatic")
+                    GUIRate();
+                else
+                    GUIShowWarning();
+            }
+            else if (selected == 7)
+            {
+                GUIHelp();
+            }
+            else if (selected == 8)
+            {
+                // Correio Mágico: areas of the lobby (Assets/RoyalAves/Editor/RoyalAvesAreaEditor.cs).
+                RoyalAves.EditorTools.RoyalAvesAreaPanel.DrawTab(window.position.width - 24, window.position.height, Repaint);
+                UnityEngine.GUI.changed = false; // area edits are not scene edits; do not dirty the open scene
+            }
+            else if (selected == 9)
+            {
+                // Correio Mágico: effects (Assets/RoyalAves/Editor/RoyalAvesEffectPanel.cs).
+                RoyalAves.EditorTools.RoyalAvesEffectPanel.DrawTab(window.position.width - 24, Repaint);
+                UnityEngine.GUI.changed = false;
+            }
+            else if (selected == 10)
+            {
+                // Correio Mágico: seasons and their loading screen (Assets/RoyalAves/Editor/RoyalAvesSeasonEditor.cs).
+                RoyalAves.EditorTools.RoyalAvesSeasonPanel.DrawTab(window.position.width - 24, window.position.height, Repaint);
+                UnityEngine.GUI.changed = false;
+            }
+
+
+            EditorGUILayout.EndScrollView();
+            if (UnityEngine.GUI.changed && selected == 0 && !EditorApplication.isPlaying)
+                dirtyLevel = true;
+            if (UnityEngine.GUI.changed && !EditorApplication.isPlaying)
+                EditorSceneManager.MarkAllScenesDirty();
+
+            if (enableGoogleAdsProcessing)
+                RunOnceGoogle();
+
+            if (enableChartboostAdsProcessing)
+                RunOnceChartboost();
+        }
+
+        private void GUISwitchSubLevel()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(new GUIContent("Switch sub level if no match", "Switch sub level if no match"),
+                    GUILayout.Width(150));
+                bool switchSublevelNoMatch = false;
+                switchSublevelNoMatch = EditorGUILayout.Toggle(levelData.GetField().switchSublevelNoMatch, GUILayout.Width(50));
+                if (switchSublevelNoMatch != levelData.GetField().switchSublevelNoMatch)
+                {
+                    levelData.GetField().switchSublevelNoMatch = switchSublevelNoMatch;
+                    dirtyLevel = true;
+                    // SaveLevel();
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void CheckSeparateLevels()
+        {
+            // if (GUILayout.Button("Re-generate separate levels", GUILayout.Width(300)))
+            // {
+            //     var ls = Resources.Load("Levels/LevelScriptable") as LevelScriptable;
+            //     for (int i = 0; i < ls.levels.Count(); i++)
+            //     {
+            //         ScriptableLevelManager.CreateFileLevel( i+1, ls.levels[i]);
+            //     }
+            // }
+        }
+
+
+        private void GUIShowWarning()
+        {
+            GUILayout.Space(100);
+            GUILayout.Label("CAUTION!", EditorStyles.boldLabel, GUILayout.Width(600));
+            GUILayout.Label("Please open scene - game ( Assets/SweetSugar/Scenes/game.unity )", EditorStyles.boldLabel,
+                GUILayout.Width(600));
+        }
+
+
+        #region GUIRate
+
+        private void GUIRate()
+        {
+            InitScript initscript = Camera.main.GetComponent<InitScript>();
+
+            GUILayout.Label("Rate settings:", EditorStyles.boldLabel, GUILayout.Width(150));
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            initscript.ShowRateEvery = EditorGUILayout.IntField("Show Rate every ", initscript.ShowRateEvery,
+                GUILayout.Width(220), GUILayout.MaxWidth(220));
+            GUILayout.Label(" level (0 = disable)", EditorStyles.label, GUILayout.Width(150));
+            GUILayout.EndHorizontal();
+            initscript.RateURL =
+                EditorGUILayout.TextField("URL", initscript.RateURL, GUILayout.Width(220), GUILayout.MaxWidth(220));
+            initscript.RateURLIOS = EditorGUILayout.TextField("URL iOS", initscript.RateURLIOS, GUILayout.Width(220),
+                GUILayout.MaxWidth(220));
+        }
+
+        #endregion
+
+        #region GUIDialogs
+
+        private void GUIDialogs()
+        {
+            GUILayout.Label("GUI elements:", EditorStyles.boldLabel, GUILayout.Width(150));
+            GUILayout.Space(10);
+            ShowMenuButton("Menu Play", "MenuPlay");
+            ShowMenuButton("Menu Complete", "MenuComplete");
+            ShowMenuButton("Menu Failed", "MenuFailed");
+            ShowMenuButton("PreFailed", "PreFailed");
+//        ShowMenuButton("Pause", "MenuPause");
+            ShowMenuButton("Boost Shop", "BoostShop");
+            ShowMenuButton("Live Shop", "LiveShop");
+            ShowMenuButton("Gems Shop", "GemsShop");
+//        ShowMenuButton("Boost Info", "BoostInfo");
+            ShowMenuButton("Settings", "Settings");
+            ShowMenuButton("Reward", "Reward");
+//        ShowMenuButton("Tutorial", "Tutorial");
+        }
+
+        private void ShowMenuButton(string label, string name)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label, EditorStyles.label, GUILayout.Width(100));
+            GameObject obj = MenuReference.transform.Find(name).gameObject;
+            if (GUILayout.Button(obj.activeSelf ? "hide" : "show", GUILayout.Width(100)))
+            {
+                EditorGUIUtility.PingObject(obj);
+                Selection.activeGameObject = obj;
+                obj.SetActive(!obj.activeSelf);
+            }
+
+            GUILayout.EndHorizontal();
+        }
+
+        public static void SetSearchFilter(string filter, int filterMode)
+        {
+            SearchableEditorWindow[] windows =
+                (SearchableEditorWindow[]) Resources.FindObjectsOfTypeAll(typeof(SearchableEditorWindow));
+            SearchableEditorWindow hierarchy = null;
+            foreach (SearchableEditorWindow window in windows)
+            {
+                if (window.GetType().ToString() == "UnityEditor.SceneHierarchyWindow")
+                {
+                    hierarchy = window;
+                    break;
+                }
+            }
+
+            if (hierarchy == null)
+                return;
+
+            MethodInfo setSearchType =
+                typeof(SearchableEditorWindow).GetMethod("SetSearchFilter",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+            object[] parameters = {filter, filterMode, false};
+
+            setSearchType.Invoke(hierarchy, parameters);
+        }
+
+        #endregion
+
+        #region ads_settings
+
+        private void RunOnceGoogle()
+        {
+            if (Directory.Exists("Assets/PlayServicesResolver"))
+            {
+                Debug.Log("assets try reimport");
+#if GOOGLE_MOBILE_ADS && UNITY_ANDROID
+//            GooglePlayServices.PlayServicesResolver.MenuResolve();//2.1.2
+            Debug.Log("assets reimorted");
+            enableGoogleAdsProcessing = false;
+#endif
+            }
+        }
+
+        private void RunOnceChartboost()
+        {
+            enableChartboostAdsProcessing = false;
+        }
+
+
+        private void GUIAds()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+            InitScript initscript = Camera.main.GetComponent<InitScript>();
+
+            GUILayout.Label("Ads settings:", EditorStyles.boldLabel, GUILayout.Width(150));
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Label("Unity ads", EditorStyles.boldLabel, GUILayout.Width(150)); //1.6.1
+            // GUILayout.Label("Install: Windows->\n Services->Ads - OFF", GUILayout.Width(130));
+            if (GUILayout.Button("Help", GUILayout.Width(80)))
+            {
+                Application.OpenURL("https://docs.candy-smith.com/main/general-info/unity-ads-integration-guide");
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+            //		}
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUI.BeginChangeCheck();
+            unityAdsSettings.enable =
+                EditorGUILayout.Toggle("Enable Unity ads ", unityAdsSettings.enable, GUILayout.Width(220));
+            GUILayout.EndHorizontal();
+            if (EditorGUI.EndChangeCheck())
+            {
+                // if (unityAdsSettings.enable) DefineSymbolsUtils.AddSymbol("UNITY_ADS");
+                // else DefineSymbolsUtils.DeleteSymbol("UNITY_ADS");
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            EditorGUI.BeginChangeCheck();
+            unityAdsSettings.androidID =
+                EditorGUILayout.TextField("Android ID ", unityAdsSettings.androidID, GUILayout.Width(220));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            unityAdsSettings.iOSID = EditorGUILayout.TextField("iOS ID", unityAdsSettings.iOSID, GUILayout.Width(220));
+            
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            unityAdsSettings.unityRewardedAndroid = EditorGUILayout.TextField("Android rewarded ad unit ID", unityAdsSettings.unityRewardedAndroid, GUILayout.Width(320));
+            
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            unityAdsSettings.unityInterstitialAndroid = EditorGUILayout.TextField("Android interstitial ad unit ID", unityAdsSettings.unityInterstitialAndroid, GUILayout.Width(320));
+
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            unityAdsSettings.unityRewardediOS = EditorGUILayout.TextField("iOS rewarded ad unit ID", unityAdsSettings.unityRewardediOS, GUILayout.Width(320));
+            
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            unityAdsSettings.unityInterstitialiOS = EditorGUILayout.TextField("iOS interstitial ad unit ID", unityAdsSettings.unityInterstitialiOS, GUILayout.Width(320));
+
+            if (EditorGUI.EndChangeCheck())
+                EditorUtility.SetDirty(unityAdsSettings);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            if (initscript != null)
+            {
+                initscript.rewardedGems = EditorGUILayout.IntField("Rewarded gems count", initscript.rewardedGems,
+                    GUILayout.Width(200), GUILayout.MaxWidth(200));
+            }
+
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            if (adsSettings != null)
+            {
+                EditorGUI.BeginChangeCheck();
+                adsSettings.enableRewardedBoosterAds = EditorGUILayout.Toggle(
+                    "Enable booster Watch Ad", adsSettings.enableRewardedBoosterAds,
+                    GUILayout.Width(220));
+                if (EditorGUI.EndChangeCheck())
+                    EditorUtility.SetDirty(adsSettings);
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+
+#if GOOGLE_MOBILE_ADS
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Label("Google mobile ads", EditorStyles.boldLabel, GUILayout.Width(150)); //1.6.1
+            if (GUILayout.Button("Install", GUILayout.Width(100)))
+            {
+                Application.OpenURL("https://github.com/googleads/googleads-mobile-unity/releases"); //1.6.1
+            }
+
+            if (GUILayout.Button("Help", GUILayout.Width(80)))
+            {
+                Application.OpenURL(
+                    "https://docs.candy-smith.com/main/general-info/google-mobile-ads-integration");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            adsSettings.admobUIDAndroid = EditorGUILayout.TextField("Admob Interstitial ID Android ",
+                adsSettings.admobUIDAndroid, GUILayout.Width(220), GUILayout.MaxWidth(220));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            adsSettings.admobUIDIOS = EditorGUILayout.TextField("Admob Interstitial ID iOS", adsSettings.admobUIDIOS,
+                GUILayout.Width(220), GUILayout.MaxWidth(220));
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();//2.2
+            GUILayout.Space(20);
+            adsSettings.admobRewardedUIDAndroid =
+ EditorGUILayout.TextField("Admob Rewarded ID Android ", adsSettings.admobRewardedUIDAndroid, new GUILayoutOption[] {
+                GUILayout.Width (220),
+                GUILayout.MaxWidth (220)
+            });
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            adsSettings.admobRewardedUIDIOS =
+ EditorGUILayout.TextField("Admob Rewarded ID iOS", adsSettings.admobRewardedUIDIOS, new GUILayoutOption[] {
+                GUILayout.Width (220),
+                GUILayout.MaxWidth (220)
+            });
+            GUILayout.EndHorizontal();
+            // adsSettings.admobRewardedPriority = EditorGUILayout.Toggle("show admob rewarded first ", adsSettings.admobRewardedPriority);
+            // GUILayout.Space(10);
+#endif
+
+            // LevelPlay Ads
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("LevelPlay (IronSource)", EditorStyles.boldLabel, GUILayout.Width(150));
+            if (GUILayout.Button("Install", GUILayout.Width(100)))
+            {
+                Application.OpenURL("https://developers.unity.com/levelplay");
+            }
+            if (GUILayout.Button("Help", GUILayout.Width(80)))
+            {
+                Application.OpenURL("https://docs.candy-smith.com/main/sweet-candy-sugar-match-3/levelplay-mediation-ads-setup");
+            }
+            GUILayout.EndHorizontal();
+            
+            GUILayout.Space(10);
+            
+            if (levelPlaySettings == null)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                if (GUILayout.Button("Create LevelPlay Settings", GUILayout.Width(200)))
+                {
+                    levelPlaySettings = CreateInstance<LevelPlayID>();
+                    if (!Directory.Exists("Assets/SweetSugar/Resources/Scriptable"))
+                        Directory.CreateDirectory("Assets/SweetSugar/Resources/Scriptable");
+                    AssetDatabase.CreateAsset(levelPlaySettings, "Assets/SweetSugar/Resources/Scriptable/LevelPlayID.asset");
+                    AssetDatabase.SaveAssets();
+                    AssetDatabase.Refresh();
+                }
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                EditorGUI.BeginChangeCheck();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.enable = EditorGUILayout.Toggle("Enable LevelPlay", levelPlaySettings.enable, GUILayout.Width(220));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.androidAppKey = EditorGUILayout.TextField("Android App Key", levelPlaySettings.androidAppKey, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.iOSAppKey = EditorGUILayout.TextField("iOS App Key", levelPlaySettings.iOSAppKey, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.androidInterstitialId = EditorGUILayout.TextField("Android Interstitial ID", levelPlaySettings.androidInterstitialId, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.androidRewardedId = EditorGUILayout.TextField("Android Rewarded ID", levelPlaySettings.androidRewardedId, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.iOSInterstitialId = EditorGUILayout.TextField("iOS Interstitial ID", levelPlaySettings.iOSInterstitialId, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                levelPlaySettings.iOSRewardedId = EditorGUILayout.TextField("iOS Rewarded ID", levelPlaySettings.iOSRewardedId, GUILayout.Width(320));
+                GUILayout.EndHorizontal();
+                
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorUtility.SetDirty(levelPlaySettings);
+                }
+            
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                EditorGUI.BeginChangeCheck();
+                levelPlaySettings.testMode = EditorGUILayout.Toggle("Test Mode Suite overlay", levelPlaySettings.testMode, GUILayout.Width(220));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    EditorUtility.SetDirty(levelPlaySettings);
+                }
+                GUILayout.EndHorizontal();
+            }
+            
+            GUILayout.Space(10);
+
+            //CHARTBOOST ADS
+//        GUILayout.BeginHorizontal();
+//        bool oldenableChartboostAds = initscript.enableChartboostAds;
+//        //		initscript.enableChartboostAds = EditorGUILayout.Toggle ("Enable Chartboost Ads", initscript.enableChartboostAds, new GUILayoutOption[] {//1.6.1
+//        //			GUILayout.Width (50),
+//        //			GUILayout.MaxWidth (200)
+//        //		});
+//        GUILayout.Label("Chartboost ads", EditorStyles.boldLabel, GUILayout.Width(150)); //1.6.1
+//        if (GUILayout.Button("Install", GUILayout.Width(100)))
+//        {
+//            Application.OpenURL("http://www.chartboo.st/sdk/unity"); //1.6.1
+//        }
+//
+//        if (GUILayout.Button("Help", GUILayout.Width(80)))
+//        {
+//            Application.OpenURL("https://docs.candy-smith.com/main/sweet-candy-sugar-match-3/ads-editor");
+//        }
+//
+//        GUILayout.EndHorizontal();
+//
+//        GUILayout.Space(10);
+//        //		if (oldenableChartboostAds != initscript.enableChartboostAds) {//1.6.1
+//        //			SetScriptingDefineSymbols ();
+//        //			if (initscript.enableChartboostAds) {
+//        //				enableChartboostAdsProcessing = true;
+//        //			}
+//        //
+//        //		}
+//        if (initscript.enableChartboostAds)
+//        {
+//            GUILayout.BeginHorizontal();
+//            GUILayout.Space(20);
+//            EditorGUILayout.LabelField("menu Chartboost->Edit settings", GUILayout.Width(50), GUILayout.MaxWidth(200));
+//            GUILayout.EndHorizontal();
+//            GUILayout.BeginHorizontal();
+//            GUILayout.Space(20);
+//            EditorGUILayout.LabelField("Put ad ID to appropriate platform to prevent crashing!", EditorStyles.boldLabel,
+//                GUILayout.Width(100), GUILayout.MaxWidth(400));
+//            GUILayout.EndHorizontal();
+//
+//            GUILayout.Space(10);
+//        }
+
+
+            GUILayout.Space(10);
+
+            GUILayout.Label("Ads controller:", EditorStyles.boldLabel, GUILayout.Width(150));
+
+            EditorGUILayout.Space();
+
+            GUILayout.Label("Event:               Status:                            Show every:",
+                GUILayout.Width(350));
+
+            foreach (AdEvents item in adsSettings.adsEvents)
+            {
+                EditorGUILayout.BeginHorizontal();
+                item.gameEvent = (GameState) EditorGUILayout.EnumPopup(item.gameEvent, GUILayout.Width(100));
+                item.adType = (AdType) EditorGUILayout.EnumPopup(item.adType, GUILayout.Width(150));
+                item.everyLevel = EditorGUILayout.IntPopup(item.everyLevel, new[]
+                {
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10"
+                }, new[]
+                {
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10
+                }, GUILayout.Width(100));
+
+                EditorGUILayout.EndHorizontal();
+            }
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Add"))
+            {
+                AdEvents adevent = new AdEvents();
+                adevent.everyLevel = 1;
+                adsSettings.adsEvents.Add(adevent);
+            }
+
+            if (GUILayout.Button("Delete"))
+            {
+                if (adsSettings.adsEvents.Count > 0)
+                    adsSettings.adsEvents.Remove(adsSettings.adsEvents[adsSettings.adsEvents.Count - 1]);
+            }
+
+
+            GUILayout.Space(10);
+
+            if (GUILayout.Button("Save"))
+            {
+                EditorUtility.SetDirty(adsSettings);
+                AssetDatabase.SaveAssets();
+            }
+            
+            GUILayout.EndHorizontal();
+        }
+
+        private string PendingItemDrawer(Rect position, string itemValue)
+        {
+            // Text fields do not like null values!
+            if (itemValue == null)
+                itemValue = "";
+
+            position.width -= 50;
+            itemValue = EditorGUI.TextField(position, itemValue);
+
+            position.x = position.xMax + 5;
+            position.width = 45;
+            if (UnityEngine.GUI.Button(position, "Info"))
+            {
+            }
+
+            return itemValue;
+        }
+
+        private void DrawEmpty()
+        {
+            GUILayout.Label("No items in list.", EditorStyles.miniLabel);
+        }
+
+        #endregion
+
+        #region inapps_settings
+
+        private void GUIInappSettings()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+
+            GUILayout.Label("In-apps settings:", EditorStyles.boldLabel, GUILayout.Width(150));
+
+            if (GUILayout.Button("Reset to default", GUILayout.Width(150)))
+            {
+                ResetInAppsSettings();
+            }
+
+
+            GUILayout.Space(10);
+            bool oldenableInApps = lm.enableInApps;
+
+            GUILayout.BeginHorizontal();
+            //		lm.enableInApps = EditorGUILayout.Toggle ("Enable In-apps", lm.enableInApps, new GUILayoutOption[] {//1.6.1
+            //			GUILayout.Width (180)
+            //		});
+            if (GUILayout.Button("How to setup", GUILayout.Width(120)))
+            {
+                Application.OpenURL(
+                    "https://docs.candy-smith.com/main/general-info/unity-in-apps-integration-guide");
+            }
+
+            GUILayout.EndHorizontal();
+
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(20);
+            GUILayout.Label("Install: Windows->Services->\n In-app Purchasing - ON->Import", GUILayout.Width(400));
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+
+            //		if (oldenableInApps != lm.enableInApps) {1.6.1
+            //			SetScriptingDefineSymbols ();
+            //		}
+
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(30);
+            GUILayout.BeginVertical();
+            for (int i = 0; i < lm.InAppIDs.Length; i++)
+            {
+                lm.InAppIDs[i] = EditorGUILayout.TextField("Product id " + (i + 1), lm.InAppIDs[i],
+                    GUILayout.Width(300),
+                    GUILayout.MaxWidth(300));
+            }
+
+            GUILayout.Space(10);
+
+            GUILayout.Label("Android:", EditorStyles.boldLabel, GUILayout.Width(150));
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(30);
+
+            GUILayout.BeginVertical();
+            GUILayout.Space(10);
+            //GUILayout.Label(" Put Google license key into the field \n from the google play account ", EditorStyles.label, new GUILayoutOption[] { GUILayout.Width(300) });
+            //GUILayout.Space(10);
+
+            //lm.GoogleLicenseKey = EditorGUILayout.TextField("Google license key", lm.GoogleLicenseKey, new GUILayoutOption[] {
+            //    GUILayout.Width (300),
+            //    GUILayout.MaxWidth (300)
+            //});
+
+            GUILayout.Space(10);
+            if (GUILayout.Button("Android account help", GUILayout.Width(400)))
+            {
+                Application.OpenURL("http://developer.android.com/google/play/billing/billing_admin.html");
+            }
+
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(30);
+            GUILayout.BeginVertical();
+
+            GUILayout.Space(10);
+            GUILayout.Label("iOS:", EditorStyles.boldLabel, GUILayout.Width(150));
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(30);
+
+            GUILayout.BeginVertical();
+
+            //GUILayout.Label(" StoreKit library must be added \n to the XCode project, generated by Unity ", EditorStyles.label, new GUILayoutOption[] { GUILayout.Width(300) });
+            GUILayout.Space(10);
+            if (GUILayout.Button("iOS account help", GUILayout.Width(400)))
+            {
+                Application.OpenURL("https://developer.apple.com/library/ios/qa/qa1329/_index.html");
+            }
+
+            GUILayout.EndVertical();
+
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+
+        private void ResetInAppsSettings()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+            lm.InAppIDs[0] = "gems10";
+            lm.InAppIDs[1] = "gems50";
+            lm.InAppIDs[2] = "gems100";
+            lm.InAppIDs[3] = "gems150";
+        }
+
+        #endregion
+
+        private void GUIHelp()
+        {
+            GUILayout.Label("Sweet Sugar Match 3 Complete Project + EDITOR v " + Application.version, EditorStyles.boldLabel,
+                GUILayout.Width(400));
+            GUILayout.Label("Please read our documentation:", EditorStyles.boldLabel, GUILayout.Width(200));
+            if (GUILayout.Button("DOCUMENTATION", GUILayout.Width(150)))
+            {
+                Application.OpenURL(
+                    "https://docs.candy-smith.com/main/sweet-candy-sugar-match-3");
+            }
+
+            GUILayout.Space(10);
+            GUILayout.Label(
+                "To get support you should provide \n ORDER NUMBER (asset store) \n or NICKNAME and DATE of purchase (other stores):",
+                EditorStyles.boldLabel, GUILayout.Width(350));
+            GUILayout.Space(10);
+            GUILayout.TextArea("https://discord.gg/BV3PgaWmVM", EditorStyles.boldLabel, GUILayout.Width(350));
+        }
+
+        #region settings
+
+        private bool share_settings;
+        private bool target_settings;
+
+        private void GUISettings()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>(); //TODO: move all game settings to scriptabble
+            InitScript initscript = Camera.main.GetComponent<InitScript>();
+            GUILayout.Label("Game settings:", EditorStyles.boldLabel, GUILayout.Width(150));
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Reset to default", GUILayout.Width(150)))
+            {
+                ResetSettings();
+            }
+
+            if (GUILayout.Button("Clear player prefs", GUILayout.Width(150)))
+            {
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
+                Debug.Log("Player prefs cleared");
+            }
+
+            if (GUILayout.Button("Open all levels", new GUILayoutOption[] {GUILayout.Width(150)}))
+            {
+                for (int i = 1; i < 1000; i++)
+                {
+                    SaveLevelStarsCount(i, 3);
+                }
+            }
+
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10);
+
+            bool oldFacebookEnable = lm.FacebookEnable;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Facebook", EditorStyles.boldLabel, GUILayout.Width(150)); //1.6.1
+            if (GUILayout.Button("Install", GUILayout.Width(70)))
+            {
+                Application.OpenURL("https://developers.facebook.com/docs/unity/downloads");
+            }
+
+            if (GUILayout.Button("Account", GUILayout.Width(70)))
+            {
+                Application.OpenURL("https://developers.facebook.com");
+            }
+
+            if (GUILayout.Button("How to setup", GUILayout.Width(120)))
+            {
+                Application.OpenURL(
+                    "https://docs.candy-smith.com/main/general-info/how-to-setup-facebook-and-leadboard");
+            }
+
+            GUILayout.EndHorizontal();
+
+#if GAMESPARKS
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Space(150);
+//                if (GUILayout.Button("Create game", GUILayout.Width(100)))
+//                {
+//                    GamesparksConfiguration window = CreateInstance<GamesparksConfiguration>();
+//                    window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 200);
+//                    window.ShowPopup();
+//                }
+
+            }
+            GUILayout.EndHorizontal();
+#endif
+//#if FACEBOOK
+//        share_settings = EditorGUILayout.Foldout(share_settings, "Share settings:");
+//        if (share_settings)
+//        {
+//            GUILayout.BeginHorizontal();
+//            GUILayout.Space(30);
+//            GUILayout.BeginVertical();
+//            {
+//                lm.androidSharingPath =
+// EditorGUILayout.TextField("Android path", lm.androidSharingPath, GUILayout.MaxWidth(500));
+//                lm.iosSharingPath =
+// EditorGUILayout.TextField("iOS path", lm.iosSharingPath, GUILayout.MaxWidth(500));
+//            }
+//            GUILayout.EndVertical();
+//            GUILayout.EndHorizontal();
+//
+//            GUILayout.Space(10);
+//        }
+//#endif
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Leadboard Gamesparks", EditorStyles.boldLabel, GUILayout.Width(150)); //1.6.1
+            if (GUILayout.Button("Install", GUILayout.Width(70)))
+            {
+                Application.OpenURL("https://docs.gamesparks.com/sdk-center/unity.html");
+            }
+
+            if (GUILayout.Button("Account", GUILayout.Width(70)))
+            {
+                Application.OpenURL("https://portal.gamesparks.net");
+            }
+
+            if (GUILayout.Button("How to setup", GUILayout.Width(120)))
+            {
+                Application.OpenURL("https://docs.candy-smith.com/main/general-info/how-to-setup-facebook-and-leadboard");
+            }
+
+            GUILayout.EndHorizontal();
+
+
+            //		if (oldFacebookEnable != lm.FacebookEnable) {//1.6.1
+            //			SetScriptingDefineSymbols ();
+            //		}
+            if (lm.FacebookEnable)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(20);
+                GUILayout.Label("menu Facebook-> Edit settings", GUILayout.Width(300));
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Space(30);
+            var lastRect = GUILayoutUtility.GetLastRect();
+            lm.fallingCurve = EditorGUI.CurveField(new Rect(lastRect.x + 3, lastRect.y + 30, position.width - 50, 25),
+                "Falling curve", lm.fallingCurve);
+            GUILayout.Space(30);
+
+            lm.waitAfterFall = EditorGUILayout.FloatField("Delay after fall", lm.waitAfterFall, GUILayout.Width(50),
+                GUILayout.MaxWidth(200));
+            GUILayout.Space(10);
+
+//        score_settings = EditorGUILayout.Foldout(score_settings, "Score settings:");
+//        if (score_settings)
+//        {
+//            GUILayout.Space(10);
+//            GUILayout.BeginHorizontal();
+//            GUILayout.Space(30);
+//            GUILayout.BeginVertical();
+//            lm.scoreForItem = EditorGUILayout.IntField("Score for item", lm.scoreForItem, GUILayout.Width(50),
+//                GUILayout.MaxWidth(200));
+//            lm.scoreForBlock = EditorGUILayout.IntField("Score for block", lm.scoreForBlock, GUILayout.Width(50),
+//                GUILayout.MaxWidth(200));
+//            lm.scoreForWireBlock = EditorGUILayout.IntField("Score for wire block", lm.scoreForWireBlock,
+//                GUILayout.Width(50), GUILayout.MaxWidth(200));
+//            lm.scoreForSolidBlock = EditorGUILayout.IntField("Score for solid block", lm.scoreForSolidBlock,
+//                GUILayout.Width(50), GUILayout.MaxWidth(200));
+//            lm.scoreForThrivingBlock = EditorGUILayout.IntField("Score for thriving block", lm.scoreForThrivingBlock,
+//                GUILayout.Width(50), GUILayout.MaxWidth(200));
+//            GUILayout.Space(10);
+//
+//            lm.showPopupScores = EditorGUILayout.Toggle("Show popup scores", lm.showPopupScores, GUILayout.Width(50),
+//                GUILayout.MaxWidth(200));
+//            GUILayout.Space(10);
+//
+//            lm.scoresColors[0] = EditorGUILayout.ColorField("Score color item 1", lm.scoresColors[0],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColors[1] = EditorGUILayout.ColorField("Score color item 2", lm.scoresColors[1],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColors[2] = EditorGUILayout.ColorField("Score color item 3", lm.scoresColors[2],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColors[3] = EditorGUILayout.ColorField("Score color item 4", lm.scoresColors[3],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColors[4] = EditorGUILayout.ColorField("Score color item 5", lm.scoresColors[4],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColors[5] = EditorGUILayout.ColorField("Score color item 6", lm.scoresColors[5],
+//                GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            GUILayout.Space(10);
+//
+//            lm.scoresColorsOutline[0] = EditorGUILayout.ColorField("Score color outline item 1",
+//                lm.scoresColorsOutline[0], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColorsOutline[1] = EditorGUILayout.ColorField("Score color outline item 2",
+//                lm.scoresColorsOutline[1], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColorsOutline[2] = EditorGUILayout.ColorField("Score color outline item 3",
+//                lm.scoresColorsOutline[2], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColorsOutline[3] = EditorGUILayout.ColorField("Score color outline item 4",
+//                lm.scoresColorsOutline[3], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColorsOutline[4] = EditorGUILayout.ColorField("Score color outline item 5",
+//                lm.scoresColorsOutline[4], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            lm.scoresColorsOutline[5] = EditorGUILayout.ColorField("Score color outline item 6",
+//                lm.scoresColorsOutline[5], GUILayout.Width(200), GUILayout.MaxWidth(200));
+//            GUILayout.EndVertical();
+//            GUILayout.EndHorizontal();
+//        }
+//
+//        GUILayout.Space(20);
+
+            life_settings_show = EditorGUILayout.Foldout(life_settings_show, "Lifes settings:");
+            if (life_settings_show)
+            {
+                GUILayout.Space(10);
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(30);
+                GUILayout.BeginVertical();
+
+
+                initscript.CapOfLife = EditorGUILayout.IntField("Max of lifes", initscript.CapOfLife,
+                    GUILayout.Width(200),
+                    GUILayout.MaxWidth(200));
+                GUILayout.Space(10);
+
+                GUILayout.Label("Total time for refill lifes:", EditorStyles.label);
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(30);
+                GUILayout.Label("Hour", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label("Min", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Label("Sec", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(30);
+                initscript.TotalTimeForRestLifeHours =
+                    EditorGUILayout.FloatField("", initscript.TotalTimeForRestLifeHours, GUILayout.Width(50));
+                initscript.TotalTimeForRestLifeMin =
+                    EditorGUILayout.FloatField("", initscript.TotalTimeForRestLifeMin, GUILayout.Width(50));
+                initscript.TotalTimeForRestLifeSec =
+                    EditorGUILayout.FloatField("", initscript.TotalTimeForRestLifeSec, GUILayout.Width(50));
+                GUILayout.EndHorizontal();
+                GUILayout.Space(10);
+
+
+                lm.lifeShop.CostIfRefill = EditorGUILayout.IntField("Cost of refilling lifes", lm.lifeShop.CostIfRefill,
+                    GUILayout.Width(200), GUILayout.MaxWidth(200));
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Space(20);
+
+            initscript.FirstGems = EditorGUILayout.IntField("Start gems", initscript.FirstGems, GUILayout.Width(200),
+                GUILayout.MaxWidth(200));
+            GUILayout.Space(20);
+
+            EditorGUI.BeginChangeCheck();
+            winReward.winRewardAmount = EditorGUILayout.IntField("Win reward gems", winReward.winRewardAmount,
+                GUILayout.Width(200),
+                GUILayout.MaxWidth(200));
+            if (EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(winReward);
+                AssetDatabase.SaveAssets();
+            }
+
+            GUILayout.Space(20);
+
+            initscript.losingLifeEveryGame = EditorGUILayout.Toggle("Losing a life every game",
+                initscript.losingLifeEveryGame, GUILayout.Width(200), GUILayout.MaxWidth(200));
+            GUILayout.Space(20);
+
+
+            failed_settings_show = EditorGUILayout.Foldout(failed_settings_show, "Failed settings:");
+            if (failed_settings_show)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Space(30);
+                GUILayout.BeginVertical();
+
+                lm.FailedCost =
+                    EditorGUILayout.IntField(new GUIContent("Cost of continue", "Cost of continue after failed"),
+                        lm.FailedCost, GUILayout.Width(200), GUILayout.MaxWidth(200));
+                lm.ExtraFailedMoves = EditorGUILayout.IntField(
+                    new GUIContent("Extra moves", "Extra moves after continue"),
+                    lm.ExtraFailedMoves, GUILayout.Width(200), GUILayout.MaxWidth(200));
+                lm.ExtraFailedSecs =
+                    EditorGUILayout.IntField(new GUIContent("Extra seconds", "Extra seconds after continue"),
+                        lm.ExtraFailedSecs, GUILayout.Width(200), GUILayout.MaxWidth(200));
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Space(20);
+
+            //  EditorUtility.SetDirty(lm);
+        }
+
+        private void ResetSettings()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+            lm.showPopupScores = false;
+            lm.scoresColors[0] = new Color(251f / 255f, 80 / 255f, 1 / 255f);
+            lm.scoresColors[1] = new Color(255 / 255f, 193 / 255f, 22 / 255f);
+            lm.scoresColors[2] = new Color(237 / 255f, 13 / 255f, 233 / 255f);
+            lm.scoresColors[3] = new Color(41 / 255f, 157 / 255f, 255 / 255f);
+            lm.scoresColors[4] = new Color(255 / 255f, 255 / 255f, 38 / 255f);
+            lm.scoresColors[5] = new Color(37 / 255f, 219 / 255f, 0 / 255f);
+
+            lm.scoresColorsOutline[0] = new Color(138 / 255f, 1 / 255f, 0 / 255f);
+            lm.scoresColorsOutline[1] = new Color(184 / 255f, 77 / 255f, 1 / 255f);
+            lm.scoresColorsOutline[2] = new Color(128 / 255f, 0 / 255f, 128 / 255f);
+            lm.scoresColorsOutline[3] = new Color(0 / 255f, 64 / 255f, 182 / 255f);
+            lm.scoresColorsOutline[4] = new Color(174 / 255f, 104 / 255f, 0 / 255f);
+            lm.scoresColorsOutline[5] = new Color(19 / 255f, 111 / 255f, 0 / 255f);
+
+            InitScript initscript = Camera.main.GetComponent<InitScript>();
+            initscript.CapOfLife = 5;
+            initscript.TotalTimeForRestLifeHours = 0;
+            initscript.TotalTimeForRestLifeMin = 15;
+            initscript.TotalTimeForRestLifeSec = 0;
+            lm.lifeShop.CostIfRefill = 12;
+            lm.FailedCost = 12;
+            lm.ExtraFailedMoves = 5;
+            lm.ExtraFailedSecs = 30;
+            EditorUtility.SetDirty(lm);
+        }
+
+        #endregion
+
+        public void SaveLevelStarsCount(int level, int starsCount)
+        {
+            Debug.Log(string.Format("Stars count {0} of level {1} saved.", starsCount, level));
+            PlayerPrefs.SetInt(GetLevelKey(level), starsCount);
+        }
+
+        private string GetLevelKey(int number)
+        {
+            return string.Format("Level.{0:000}.StarsCount", number);
+        }
+
+        #region shop
+
+        private void GUIShops()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+
+            GUILayout.Label("Shop settings:", EditorStyles.boldLabel, GUILayout.Width(150));
+
+            if (GUILayout.Button("Reset to default", GUILayout.Width(150)))
+            {
+                ResetShops();
+            }
+
+            GUILayout.Space(10);
+            gems_shop_show = EditorGUILayout.Foldout(gems_shop_show, "Gems shop settings:");
+            if (gems_shop_show)
+            {
+                int i = 1;
+                foreach (GemProduct item in lm.gemsProducts)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.BeginVertical();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(30);
+                    GUILayout.Label("Gems count", GUILayout.Width(100));
+                    GUILayout.Label("Price $", GUILayout.Width(100));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Space(30);
+                    item.count =
+                        EditorGUILayout.IntField("", item.count, GUILayout.Width(100), GUILayout.MaxWidth(100));
+                    item.price =
+                        EditorGUILayout.FloatField("", item.price, GUILayout.Width(100), GUILayout.MaxWidth(100));
+                    GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+                    GUILayout.EndHorizontal();
+                    i++;
+                }
+            }
+
+            GUILayout.Space(10);
+            boost_show = EditorGUILayout.Foldout(boost_show, "Boosts shop settings:");
+            if (boost_show)
+            {
+                BoostShop bs = MenuReference.BoostShop.GetComponent<BoostShop>();
+                List<BoostProduct> bp = bs.boostProducts;
+                foreach (BoostProduct item in bp)
+                {
+                    GUILayout.BeginVertical();
+                    {
+                        item.boostType = (BoostType) EditorGUILayout.EnumPopup(item.boostType, GUILayout.Width(93));
+
+                        GUILayout.BeginHorizontal();
+                        {
+                            GUILayout.Label("Description");
+                            item.description =
+                                EditorGUILayout.TextField("", item.description, GUILayout.Width(400),
+                                    GUILayout.MaxWidth(400));
+                        }
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        {
+                            GUILayout.Label("Localization ref", GUILayout.Width(110));
+                            item.descriptionLocalizationRefrence =
+                                EditorGUILayout.IntField("", item.descriptionLocalizationRefrence, GUILayout.Width(30),
+                                    GUILayout.MaxWidth(30));
+                        }
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                        {
+                            GUILayout.Label(item.icon ? item.icon.GetTexture() : null, GUILayout.Width(50), GUILayout.Height(50));
+                            GUILayout.BeginVertical();
+                            {
+                                GUILayout.BeginHorizontal();
+                                {
+                                    GUILayout.Label("Count", EditorStyles.label, GUILayout.Width(80));
+                                    GUILayout.Label("Price(gem)", EditorStyles.label, GUILayout.Width(80));
+                                }
+                                GUILayout.EndHorizontal();
+
+                                GUILayout.BeginHorizontal();
+                                {
+                                    item.count = EditorGUILayout.IntField("", item.count, GUILayout.Width(80),
+                                        GUILayout.MaxWidth(80));
+                                    item.GemPrices =
+                                        EditorGUILayout.IntField("", item.GemPrices, GUILayout.Width(80),
+                                            GUILayout.MaxWidth(80));
+                                }
+                                GUILayout.EndHorizontal();
+                            }
+                            GUILayout.EndVertical();
+                        }
+                        GUILayout.EndHorizontal();
+                    }
+                    GUILayout.EndVertical();
+                }
+            }
+        }
+
+        private void ResetShops()
+        {
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+
+            lm.gemsProducts[0].count = 10;
+            lm.gemsProducts[0].price = 0.99f;
+            lm.gemsProducts[1].count = 50;
+            lm.gemsProducts[1].price = 4.99f;
+            lm.gemsProducts[2].count = 100;
+            lm.gemsProducts[2].price = 9.99f;
+            lm.gemsProducts[3].count = 150;
+            lm.gemsProducts[3].price = 14.99f;
+
+            BoostShop bs = MenuReference.BoostShop.GetComponent<BoostShop>();
+            bs.boostProducts[0].description = "Gives you the 5 extra moves";
+            bs.boostProducts[1].description = "Place this special item in game";
+            bs.boostProducts[2].description = "Place this special item in game";
+            bs.boostProducts[3].description = "Gives you the 30 extra seconds";
+            bs.boostProducts[4].description = "Destroy the item";
+            bs.boostProducts[5].description = "Place this special item in game";
+            bs.boostProducts[6].description = "Switch to item that don't match";
+            bs.boostProducts[7].description = "Replace the near items color";
+
+            for (int i = 0; i < 8; i++)
+            {
+                bs.boostProducts[i].count = 3;
+
+                bs.boostProducts[i].GemPrices = 5;
+            }
+
+            EditorUtility.SetDirty(lm);
+            EditorUtility.SetDirty(bs);
+        }
+
+        #endregion
+
+        #region leveleditor
+
+        private void TestLevel(bool playNow = true, bool testByPlay = true)
+        {
+            dirtyLevel = true;
+            SaveLevel(levelNumber);
+            if (EditorSceneManager.GetActiveScene().name != sceneSwitcher.GetSceneName())
+                EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/" + sceneSwitcher.GetSceneName() + ".unity");
+            LevelManager lm = Camera.main.GetComponent<LevelManager>();
+            PlayerPrefs.SetInt("OpenLevelTest", levelNumber);
+            PlayerPrefs.SetInt("OpenLevel", levelNumber);
+            PlayerPrefs.Save();
+
+            if (playNow)
+            {
+                if (EditorApplication.isPlaying)
+                    EditorApplication.isPlaying = false;
+                else
+                    EditorApplication.isPlaying = true;
+            }
+        }
+
+
+        private void GUILevelSelector()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Level editor", GUILayout.Width(150));
+                if (GUILayout.Button("Test level", GUILayout.Width(158)))
+                {
+                    TestLevel();
+                }
+
+                if (GUILayout.Button("Save", GUILayout.Width(50)))
+                {
+                    dirtyLevel = true;
+                    SaveLevel(levelNumber);
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Level", GUILayout.Width(50));
+                GUILayout.Space(100);
+                if (GUILayout.Button("<<", GUILayout.Width(50)))
+                {
+                    PreviousLevel();
+                    OpenTarget();
+                }
+
+                string changeLvl = GUILayout.TextField(" " + levelNumber, GUILayout.Width(50));
+                try
+                {
+                    if (int.Parse(changeLvl) != levelNumber)
+                    {
+                        subLevelNumber = 1;
+                        if (LoadLevel(int.Parse(changeLvl)))
+                        {
+                            levelNumber = int.Parse(changeLvl);
+                            OpenTarget();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+                if (GUILayout.Button(">>", GUILayout.Width(50)))
+                {
+                    NextLevel();
+                    OpenTarget();
+                }
+
+                if (GUILayout.Button(new GUIContent("+", "add level"), GUILayout.Width(20)))
+                {
+                    AddLevel();
+                }
+
+                if (GUILayout.Button(new GUIContent("- ", "remove current level"), GUILayout.Width(20)))
+                {
+                    RemoveLevel();
+                }
+
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5);
+
+            //Sub Level
+
+            GUILayout.BeginHorizontal();
+            {
+//            GUILayout.Space(60);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Sub Level", GUILayout.Width(80));
+                GUILayout.Space(70);
+                if (GUILayout.Button("<<", GUILayout.Width(50)))
+                {
+                    PreviousSubLevel();
+                }
+
+                GUILayout.Label(" " + SubLevelNumber + " / " + subLevelNumberTotal, GUILayout.Width(50));
+
+                if (GUILayout.Button(">>", GUILayout.Width(50)))
+                {
+                    NextSubLevel();
+                }
+
+                if (GUILayout.Button(new GUIContent("+", "add sublevel"), GUILayout.Width(20)))
+                {
+                    AddSubLevel();
+                }
+
+                if (GUILayout.Button(new GUIContent("- ", "remove current sublevel"), GUILayout.Width(20)))
+                {
+                    RemoveSubLevel();
+                }
+
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void GUILevelSize()
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+            int oldValue = levelData.GetField(subLevelNumber - 1).maxRows +
+                           levelData.GetField(subLevelNumber - 1).maxCols;
+            GUILayout.Label("Columns", GUILayout.Width(50));
+            GUILayout.Space(100);
+            levelData.GetField(subLevelNumber - 1).maxCols = EditorGUILayout.IntField("",
+                levelData.GetField(subLevelNumber - 1).maxCols, GUILayout.Width(50));
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Rows", GUILayout.Width(50));
+            GUILayout.Space(100);
+            levelData.GetField(subLevelNumber - 1).maxRows = EditorGUILayout.IntField("",
+                levelData.GetField(subLevelNumber - 1).maxRows, GUILayout.Width(50));
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+
+            if (levelData.GetField(subLevelNumber - 1).maxRows < 3)
+                levelData.GetField(subLevelNumber - 1).maxRows = 3;
+            if (levelData.GetField(subLevelNumber - 1).maxCols < 3)
+                levelData.GetField(subLevelNumber - 1).maxCols = 3;
+            // if (levelData.GetField(subLevelNumber - 1).maxRows > 11)
+            //     levelData.GetField(subLevelNumber - 1).maxRows = 11;
+            if (levelData.GetField(subLevelNumber - 1).maxCols > 11)
+                levelData.GetField(subLevelNumber - 1).maxCols = 11;
+            if (oldValue != levelData.GetField(subLevelNumber - 1).maxRows +
+                levelData.GetField(subLevelNumber - 1).maxCols)
+            {
+                Initialize();
+                InitializeSublevel();
+                ClearLevel();
+                dirtyLevel = true;
+                // SaveLevel();
+            }
+        }
+
+        private void GUILimit()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Limit", EditorStyles.label, GUILayout.Width(50));
+                GUILayout.Space(100);
+                LIMIT limitTypeSave = levelData.limitType;
+                int oldLimit = levelData.limit;
+                levelData.limitType = (LIMIT) EditorGUILayout.EnumPopup(levelData.limitType, GUILayout.Width(93));
+                if (levelData.limitType == LIMIT.MOVES)
+                    levelData.limit = EditorGUILayout.IntField(levelData.limit, GUILayout.Width(50));
+                else
+                {
+                    GUILayout.BeginHorizontal();
+                    int limitMin = EditorGUILayout.IntField(levelData.limit / 60, GUILayout.Width(30));
+                    GUILayout.Label(":", GUILayout.Width(10));
+                    int limitSec =
+                        EditorGUILayout.IntField(levelData.limit - (levelData.limit / 60) * 60, GUILayout.Width(30));
+                    levelData.limit = limitMin * 60 + limitSec;
+                    GUILayout.EndHorizontal();
+                }
+
+                if (levelData.limit <= 0)
+                    levelData.limit = 1;
+                if (limitTypeSave != levelData.limitType || oldLimit != levelData.limit)
+                    dirtyLevel = true;
+                // 	SaveLevel();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void GUIColorLimit()
+        {
+            if (piecePaletteSprites == null || piecePaletteSprites.Length == 0) return;
+            var chosen = levelData.GetPieceColors(piecePaletteSprites.Length).ToList();
+            GUILayout.Label($"Peças desta fase — {chosen.Count} selecionadas", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Marque quais peças entram no tabuleiro e nas reposições. Mantenha ao menos três. Peças iniciais desmarcadas serão substituídas por uma das selecionadas.", MessageType.Info);
+            for (int row = 0; row < piecePaletteSprites.Length; row += 4)
+            {
+                GUILayout.BeginHorizontal();
+                for (int i = row; i < Mathf.Min(row + 4, piecePaletteSprites.Length); i++)
+                {
+                    var sprite = piecePaletteSprites[i];
+                    bool enabled = chosen.Contains(i);
+                    GUILayout.BeginVertical(GUILayout.Width(86));
+                    using (new EditorGUI.DisabledScope(enabled && chosen.Count <= Mathf.Min(3, piecePaletteSprites.Length)))
+                    {
+                        bool next = GUILayout.Toggle(enabled, new GUIContent(sprite != null ? sprite.GetTexture() : null,
+                            sprite != null ? sprite.name : $"Peça {i + 1}"), "Button", GUILayout.Width(72), GUILayout.Height(64));
+                        if (next != enabled)
+                        {
+                            if (next) chosen.Add(i); else chosen.Remove(i);
+                            SetPiecePalette(chosen);
+                        }
+                    }
+                    GUILayout.Label(PieceDisplayName(sprite, i), EditorStyles.miniLabel, GUILayout.Width(86));
+                    GUILayout.EndVertical();
+                }
+                GUILayout.EndHorizontal();
+            }
+            var goals = GetTargetLevel();
+            bool disabledGoal = goals != null && goals.targets != null && goals.targets.Any(goal =>
+                goal.CountDrawer != null && goal.CountDrawer.count > 0 && goal.sprites != null &&
+                goal.sprites.Any(s => Array.IndexOf(piecePaletteSprites, s.icon) is int index && index >= 0 && !chosen.Contains(index)));
+            if (disabledGoal) EditorGUILayout.HelpBox("Uma meta pede uma peça desmarcada. Marque essa peça ou altere a meta antes de testar a fase.", MessageType.Warning);
+        }
+
+        static string PieceDisplayName(Sprite sprite, int index)
+        {
+            switch (sprite != null ? sprite.name : "")
+            {
+                case "envelope": return "Envelope rosa";
+                case "bow": return "Envelope azul";
+                case "gift": return "Presente";
+                case "key": return "Chave";
+                case "stamp": return "Selo";
+                case "quill": return "Pena";
+                case "ink": return "Tinteiro";
+                default: return sprite != null ? sprite.name : $"Peça {index + 1}";
+            }
+        }
+
+        void SetPiecePalette(List<int> chosen)
+        {
+            levelData.pieceColors = chosen.OrderBy(c => c).ToList();
+            levelData.colorLimit = chosen.Count;
+            foreach (var field in levelData.fields)
+                foreach (var cell in field.levelSquares)
+                {
+                    var item = cell.item;
+                    if (item == null || item.ItemType != ItemsTypes.NONE || chosen.Contains(item.Color)) continue;
+                    // A default ItemForEditor with no art/prefab means random fill, not a painted piece.
+                    if (item.Texture == null && item.Item == null && item.colors == null) continue;
+                    item.Color = chosen[0];
+                    item.Texture = piecePaletteSprites[item.Color]?.GetTexture();
+                }
+            if (itemBrush != null && itemBrush.ItemType == ItemsTypes.NONE && !chosen.Contains(itemBrush.Color))
+            {
+                itemBrush = null;
+                color = chosen[0];
+            }
+            dirtyLevel = true;
+        }
+
+
+        private void GUIStars()
+        {
+            GUILayout.BeginHorizontal();
+//        GUILayout.Space(35);
+
+            //GUILayout.BeginVertical();
+
+            GUILayout.Label("Stars", GUILayout.Width(30));
+
+            GUILayout.Space(120);
+            GUILayout.BeginHorizontal();
+            int s = 0;
+            s = EditorGUILayout.IntField("", levelData.star1, GUILayout.Width(50));
+            if (s != levelData.star1)
+            {
+                levelData.star1 = s;
+                dirtyLevel = true;
+                // SaveLevel();
+            }
+
+            if (levelData.star1 <= 0)
+                levelData.star1 = 100;
+            s = EditorGUILayout.IntField("", levelData.star2, GUILayout.Width(50));
+            if (s != levelData.star2)
+            {
+                levelData.star2 = s;
+                dirtyLevel = true;
+                // SaveLevel();
+            }
+
+            if (levelData.star2 < levelData.star1)
+                levelData.star2 = levelData.star1 + 10;
+            s = EditorGUILayout.IntField("", levelData.star3, GUILayout.Width(50));
+            if (s != levelData.star3)
+            {
+                levelData.star3 = s;
+                dirtyLevel = true;
+                // SaveLevel();
+            }
+
+            if (levelData.star3 < levelData.star2)
+            {
+                levelData.star3 = levelData.star2 + 10;
+                dirtyLevel = true;
+                // SaveLevel();
+            }
+
+            GUILayout.EndHorizontal();
+            //GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+        }
+
+        private void GUIMamalade()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Space(30);
+
+                GUILayout.Label("Marmalade", GUILayout.Width(70));
+                bool s = false;
+                s = EditorGUILayout.Toggle(levelData.enableMarmalade, GUILayout.Width(50));
+                if (s != levelData.enableMarmalade)
+                {
+                    levelData.enableMarmalade = s;
+                    dirtyLevel = true;
+                    // SaveLevel();
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void GUINoRegen()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label(new GUIContent("Don't Regen", "Don't regenerate if no matches possible"),
+                    GUILayout.Width(80));
+                bool s = false;
+                GUILayout.Space(70);
+                s = EditorGUILayout.Toggle(levelData.GetField().noRegenLevel, GUILayout.Width(50));
+                if (s != levelData.GetField().noRegenLevel)
+                {
+                    levelData.GetField().noRegenLevel = s;
+                    dirtyLevel = true;
+                    // SaveLevel();
+                }
+
+                GUILayout.Label(new GUIContent("Scroll", "Scroll level to hide squares with no target items"),
+                    GUILayout.Width(80));
+                //bool scroll = false;
+                GUILayout.Space(70);
+                levelData.GetField().scrollLevel =
+                    EditorGUILayout.Toggle(levelData.GetField().scrollLevel, GUILayout.Width(50));
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        void SaveTargetChanges(TargetLevel targetLevel)
+        {
+            var primary = targetLevel.targets.FirstOrDefault(t =>
+                targetEditorScriptable.targets[t.targetType.type].name != "Stars") ?? targetLevel.targets.FirstOrDefault();
+            if (primary != null) levelData.SetTarget(primary.targetType.type);
+            dirtyLevel = true;
+            SaveLevel(levelNumber);
+            targetLevel.saveData();
+            Repaint();
+        }
+
+        void ShowAddTargetMenu(TargetLevel targetLevel)
+        {
+            var menu = new GenericMenu();
+            for (int type = 0; type < targetEditorScriptable.targets.Count; type++)
+            {
+                int selected = type;
+                var definition = targetEditorScriptable.targets[type];
+                if (definition.name == "Stars" || targetLevel.targets.Any(t => t.targetType.type == type)) continue;
+                var label = SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(definition.name);
+                menu.AddItem(new GUIContent(label), false, () =>
+                {
+                    Undo.RecordObject(targetLevel, "Adicionar meta");
+                    targetLevel.AddTargetType(selected, targetEditorScriptable);
+                    SaveTargetChanges(targetLevel);
+                });
+            }
+            if (menu.GetItemCount() == 0) menu.AddDisabledItem(new GUIContent("Todas as metas já foram adicionadas"));
+            menu.ShowAsContext();
+        }
+
+        private void GUITarget()
+        {
+            GUILayout.Space(5);
+            var targetLevel = PrepareTargetLevel();
+            if (targetLevel.targets == null) targetLevel.targets = new TargetList();
+            var groups = targetLevel.targets.GroupBy(t => t.targetType.type).ToArray();
+            bool hasGoals = groups.Any(g => targetEditorScriptable.targets[g.Key].name != "Stars");
+            if (hasGoals) groups = groups.Where(g => targetEditorScriptable.targets[g.Key].name != "Stars").ToArray();
+            Action edit = null;
+            EditorGUILayout.LabelField("Metas da fase", EditorStyles.boldLabel);
+            foreach (var group in groups)
+            {
+                int type = group.Key;
+                var definition = targetEditorScriptable.targets[type];
+                var choices = Enumerable.Range(0, targetEditorScriptable.targets.Count)
+                    .Where(i => i == type || (targetEditorScriptable.targets[i].name != "Stars" &&
+                        !targetLevel.targets.Any(t => t.targetType.type == i))).ToArray();
+                var labels = choices.Select(i => SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils
+                    .DisplayName(targetEditorScriptable.targets[i].name)).ToArray();
+                EditorGUILayout.BeginHorizontal();
+                int selected = EditorGUILayout.IntPopup(type, labels, choices, GUILayout.Width(220));
+                if (selected != type)
+                    edit = () => { Undo.RecordObject(targetLevel, "Alterar meta");
+                        targetLevel.ReplaceTargetType(type, selected, targetEditorScriptable); SaveTargetChanges(targetLevel); };
+                if (GUILayout.Button(new GUIContent("+", "Adicionar outra meta à fase"), GUILayout.Width(28)))
+                    ShowAddTargetMenu(targetLevel);
+                using (new EditorGUI.DisabledScope(groups.Length <= 1))
+                    if (GUILayout.Button(new GUIContent("−", "Remover esta meta"), GUILayout.Width(28)))
+                        edit = () => { Undo.RecordObject(targetLevel, "Remover meta");
+                            targetLevel.RemoveTargetType(type); SaveTargetChanges(targetLevel); };
+                EditorGUILayout.EndHorizontal();
+                if (definition.setCount == SetCount.Manually)
+                {
+                    foreach (var entry in group)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        var icon = entry.sprites.FirstOrDefault(s => s.uiSprite)?.icon ?? entry.sprites.FirstOrDefault()?.icon;
+                        if (icon != null) GUILayout.Label(icon.texture, GUILayout.Width(24), GUILayout.Height(24));
+                        EditorGUILayout.LabelField(definition.name == "BagOpenings" ? "Pergaminhos" : definition.name == "MachineLetters" ? "Cartas" : "Quantidade", GUILayout.Width(90));
+                        EditorGUI.BeginChangeCheck();
+                        int count = Mathf.Max(0, EditorGUILayout.IntField(entry.CountDrawer.count, GUILayout.Width(60)));
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            Undo.RecordObject(targetLevel, "Quantidade da meta");
+                            entry.CountDrawer.count = count;
+                            edit = () => SaveTargetChanges(targetLevel);
+                        }
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+                else EditorGUILayout.LabelField(definition.name == "IceBlock"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.IceLayer.CountCells(levelData)}"
+                    : definition.name == "EnchantedStone"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.EnchantedStone.CountCells(levelData)}"
+                    : definition.name == "Inkwell"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.InkwellCell.CountCells(levelData)}"
+                    : definition.name == "MailCubby"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData)}" +
+                      $" ({RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData) / RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} armário(s) x {RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} cartas)"
+                    : "Quantidade automática pelo tabuleiro", EditorStyles.miniLabel);
+                GUILayout.Space(5);
+            }
+            if (groups.Length == 0 && GUILayout.Button("+ Adicionar meta", GUILayout.Width(220))) ShowAddTargetMenu(targetLevel);
+            if (GUILayout.Button("Target editor", GUILayout.Width(160))) OpenTarget();
+            if (groups.Any(g => targetEditorScriptable.targets[g.Key].name == "MachineLetters"))
+                EditorGUILayout.HelpBox("Cartas da franqueadora: defina a quantidade e pinte as máquinas dentro do grid.", MessageType.Info);
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Tutorial", GUILayout.ExpandWidth(false));
+            GUILayout.Space(103);
+            int tutorial = EditorGUILayout.Popup(levelData.selectedTutorial, GetTutorialNames(),
+                GUILayout.Width(160), GUILayout.ExpandWidth(false));
+            if (tutorial != levelData.selectedTutorial) { levelData.selectedTutorial = tutorial; dirtyLevel = true; }
+            GUILayout.EndHorizontal();
+            if (pendingMachineTarget)
+            {
+                pendingMachineTarget = false;
+                EnsureFrankingMachineTarget(targetLevel);
+            }
+            if (pendingCubbyTarget)
+            {
+                pendingCubbyTarget = false;
+                EnsureBoardTarget(targetLevel, "MailCubby", "Meta de cartas do armario postal adicionada.");
+            }
+            if (pendingFlyingTarget)
+            {
+                pendingFlyingTarget = false;
+                EnsureBoardTarget(targetLevel, "FlyingLetters", "Meta de ovos mágicos adicionada.");
+            }
+            if (pendingStoneTarget)
+            {
+                pendingStoneTarget = false;
+                EnsureBoardTarget(targetLevel, "EnchantedStone", "Meta de pedras rúnicas adicionada.");
+            }
+            if (pendingInkwellTarget)
+            {
+                pendingInkwellTarget = false;
+                EnsureBoardTarget(targetLevel, "Inkwell", "Meta de tinteiros adicionada.");
+            }
+            edit?.Invoke();
+        }
+
+        string[] GetTutorialNames() => new[]
+        {
+            "Disabled", "SIMPLE", ItemsTypes.HORIZONTAL_STRIPED.ToString(), ItemsTypes.PACKAGE.ToString(),
+            ItemsTypes.TimeBomb.ToString()
+        };
+
+        private void OpenTarget()
+        {
+            var asset = PrepareTargetLevel();
+
+            Selection.activeObject = asset;
+        }
+
+        private TargetLevel PrepareTargetLevel()
+        {
+            var asset = GetTargetLevel();
+            if (asset == null)
+            {
+                asset = CreateInstance<TargetLevel>();
+                asset.name = "Level" + levelNumber;
+                string assetPathAndName =
+                    AssetDatabase.GenerateUniqueAssetPath("Assets/SweetSugar/Resources/Levels/Targets/TargetLevel" +
+                                                          levelNumber + ".asset");
+                AssetDatabase.CreateAsset(asset, assetPathAndName);
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+
+            return asset;
+        }
+
+        private TargetLevel GetTargetLevel()
+        {
+            var asset = Resources.Load<TargetLevel>("Levels/Targets/TargetLevel" + levelNumber);
+            return asset;
+        }
+
+
+        private bool HideAnotherTargetBlock(string blockName)
+        {
+            var targets = levelData.GetTargetsNames();
+            var currentTarget = levelData.target.name;
+            if (IsBlockTarget(blockName, targets) && !blockName.Contains(currentTarget) &&
+                (blockName.Contains("Jelly") || blockName.Contains("Sugar")))
+                return true;
+            return false;
+        }
+
+        private bool IsBlockTarget(string blockName, string[] targets)
+        {
+            var list = targets.Where(i => blockName.Contains(i));
+            return list.Count() > 0;
+        }
+
+        private void GUISections()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                var saveSetion = section;
+                section = GUILayout.Toolbar(section, sectionsString, GUILayout.Width(450));
+                //if (section != saveSetion && section == 3) squareBlockSelected = null;
+                //Add_feature
+                if (section != saveSetion && (section == 3 || section == 4 || section == 5)) squareBlockSelected = null;
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void GUITeleport()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                //GUILayout.Space(30);
+                GUILayout.BeginVertical();
+                {
+                    if (GUILayout.Button(new GUIContent("Clear", "clear all teleports"), GUILayout.Width(50),
+                        GUILayout.Height(50)))
+                    {
+                        squareBlockSelected = null;
+                        for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
+                        {
+                            levelData.GetField(subLevelNumber - 1).levelSquares[i].isEnterTeleport = false;
+                            levelData.GetField(subLevelNumber - 1).levelSquares[i].teleportCoordinatesLinkedBack =
+                                Vector2Int.one * -1;
+                            levelData.GetField(subLevelNumber - 1).levelSquares[i].teleportCoordinatesLinked =
+                                Vector2Int.one * -1;
+                        }
+
+                        dirtyLevel = true;
+                        // SaveLevel();
+                    }
+
+                    GUILayout.Space(10);
+
+                    GUILayout.Label("Click to the field, once for enter then for exit.", EditorStyles.boldLabel);
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+        
+        //Added_feature
+        private int Column, Row = -1;
+
+        private void GUISpawners()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label("Spawners:", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                    {
+                        UnityEngine.GUI.color = new Color(1, 1, 1, 1f);
+                        foreach (SpawnerState States in _SpawnerStates)
+                        {
+                            if (CurrentSpawnerState == States && (CurrentSpawnerState != SpawnerState.None &&
+                                                                  CurrentSpawnerState != SpawnerState.Clear))
+                                UnityEngine.GUI.backgroundColor = Color.gray;
+                            if (GUILayout.Button(
+                                new GUIContent(States.ToString() + "", "changes to " + States.ToString() + " State"),
+                                GUILayout.Width(80), GUILayout.Height(50)))
+                            {
+                                CurrentSpawnerState = States;
+                                //Debug.Log("" + CurrentSpawnerState);
+
+                                switch (CurrentSpawnerState)
+                                {
+                                    case SpawnerState.Add:
+                                    {
+                                    }
+                                        break;
+                                    case SpawnerState.Clear:
+                                    {
+                                        for (int i = 0;
+                                            i < levelData.GetField(subLevelNumber - 1).levelSquares.Length;
+                                            i++)
+                                        {
+                                            levelData.GetField(subLevelNumber - 1).levelSquares[i].spawners =
+                                                new List<SingleSpawn>();
+                                        }
+
+                                        dirtyLevel = true;
+                                    }
+                                        break;
+                                    case SpawnerState.Edit:
+                                    {
+                                    }
+                                        break;
+                                    case SpawnerState.None:
+                                    {
+                                    }
+                                        break;
+                                    case SpawnerState.Remove:
+                                    {
+                                    }
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                                Column = Row = -1;
+                            }
+
+                            UnityEngine.GUI.backgroundColor = Color.white;
+                        }
+
+                        UnityEngine.GUI.color = new Color(1, 1, 1, 1f);
+                    }
+                    GUILayout.EndHorizontal();
+
+                    if (CurrentSpawnerState == SpawnerState.Edit)
+                        if (Column >= 0 && Row >= 0)
+                        {
+                            SquareBlocks squareBlock = levelData.GetBlock(Row, Column);
+                            if (squareBlock != null)
+                            {
+                                if (squareBlock.spawners.Count > 0)
+                                {
+                                    GUILayout.BeginHorizontal(GUILayout.Width(100));
+                                    {
+                                        //Dispenser Rotating Option
+                                        GUILayout.BeginHorizontal(GUILayout.Width(100));
+                                        {
+                                            GUILayout.Label(" " + squareBlock.spawners[0].SpawnId,
+                                                GUILayout.Width(100));
+                                            if (GUILayout.Button(new GUIContent(Rotation[0], " Rotate Left"),
+                                                GUILayout.Width(50), GUILayout.Height(50)))
+                                            {
+                                                squareBlock.spawners[0].rotationType =
+                                                    CheckForRotation(squareBlock.spawners[0].rotationType, true);
+                                            }
+
+                                            if (GUILayout.Button(new GUIContent(Rotation[1], " Rotate right"),
+                                                GUILayout.Width(50), GUILayout.Height(50)))
+                                            {
+                                                squareBlock.spawners[0].rotationType =
+                                                    CheckForRotation(squareBlock.spawners[0].rotationType, false);
+                                            }
+                                        }
+                                        GUILayout.EndHorizontal();
+
+                                        //Selecting Spawner Type and selecting persentage of spawning
+
+                                        GUILayout.BeginVertical(GUILayout.Width(100));
+                                        {
+                                            //make sure only one ingredient Dispenser
+                                            if (squareBlock.spawners[0].SpawnersType == Spawners.Ingredient)
+                                            {
+                                                if (squareBlock.spawners[0].SpawnersType_2 == Spawners.Ingredient)
+                                                    squareBlock.spawners[0].SpawnersType_2 = Spawners.None;
+                                                else if (squareBlock.spawners[0].IngredentSpawner_01.Ingredient_01 &&
+                                                         squareBlock.spawners[0].IngredentSpawner_01.Ingredient_02)
+                                                {
+                                                    squareBlock.spawners[0].SpawnersType_2 = Spawners.None;
+                                                }
+                                            }
+
+                                            //First spawner
+                                            squareBlock.spawners[0].SpawnersType =
+                                                (Spawners) EditorGUILayout.EnumPopup(
+                                                    squareBlock.spawners[0].SpawnersType, GUILayout.Width(250));
+                                            if (squareBlock.spawners[0].SpawnersType != Spawners.Ingredient)
+                                            {
+                                                GUILayout.BeginVertical(GUILayout.Width(100));
+                                                {
+                                                    squareBlock.spawners[0].SpawnPersentage =
+                                                        EditorGUILayout.FloatField(" Persentage ",
+                                                            squareBlock.spawners[0].SpawnPersentage,
+                                                            GUILayout.Width(300));
+                                                }
+                                                GUILayout.EndVertical();
+                                            }
+                                            else
+                                            {
+                                                //for ingredient
+                                                GUILayout.BeginHorizontal(GUILayout.Width(100));
+                                                {
+                                                    GUILayout.Label(" Ingredient_01 ", GUILayout.Width(100));
+                                                    squareBlock.spawners[0].IngredentSpawner_01.Ingredient_01 =
+                                                        EditorGUILayout.Toggle(
+                                                            squareBlock.spawners[0].IngredentSpawner_01.Ingredient_01,
+                                                            GUILayout.Width(100));
+                                                    GUILayout.Label(" Ingredient_02 ", GUILayout.Width(100));
+                                                    squareBlock.spawners[0].IngredentSpawner_01.Ingredient_02 =
+                                                        EditorGUILayout.Toggle(
+                                                            squareBlock.spawners[0].IngredentSpawner_01.Ingredient_02,
+                                                            GUILayout.Width(100));
+                                                }
+                                                GUILayout.EndHorizontal();
+
+                                                GUILayout.Label(
+                                                    " (!) This dispenser spawn ingredient one after another  ",
+                                                    GUILayout.Width(700));
+                                                
+                                                
+                                                GUILayout.Label(
+                                                    " (!) Do not place the ingredients in field manually. (!)",
+                                                    GUILayout.Width(700));
+                                            }
+
+                                            //second spawner
+                                            squareBlock.spawners[0].SpawnersType_2 =
+                                                (Spawners) EditorGUILayout.EnumPopup(
+                                                    squareBlock.spawners[0].SpawnersType_2, GUILayout.Width(250));
+                                            if (squareBlock.spawners[0].SpawnersType_2 != Spawners.Ingredient)
+                                            {
+                                                GUILayout.BeginVertical(GUILayout.Width(100));
+                                                {
+                                                    squareBlock.spawners[0].SpawnPersentage_2 =
+                                                        EditorGUILayout.FloatField(" Persentage ",
+                                                            squareBlock.spawners[0].SpawnPersentage_2,
+                                                            GUILayout.Width(300));
+                                                }
+                                                GUILayout.EndVertical();
+                                            }
+                                            else
+                                            {
+                                                //for ingredient
+                                                GUILayout.BeginHorizontal(GUILayout.Width(100));
+                                                {
+                                                    GUILayout.Label(" Ingredient_01 ", GUILayout.Width(100));
+                                                    squareBlock.spawners[0].IngredentSpawner_02.Ingredient_01 =
+                                                        EditorGUILayout.Toggle(
+                                                            squareBlock.spawners[0].IngredentSpawner_02.Ingredient_01,
+                                                            GUILayout.Width(50));
+                                                    GUILayout.Label(" Ingredient_02 ", GUILayout.Width(100));
+                                                    squareBlock.spawners[0].IngredentSpawner_02.Ingredient_02 =
+                                                        EditorGUILayout.Toggle(
+                                                            squareBlock.spawners[0].IngredentSpawner_02.Ingredient_02,
+                                                            GUILayout.Width(50));
+                                                }
+                                                GUILayout.EndHorizontal();
+
+                                                GUILayout.Label(
+                                                    " (!) This dispenser spawn ingredient one after another  ",
+                                                    GUILayout.Width(700));
+                                            }
+                                        }
+                                        GUILayout.EndVertical();
+
+                                        //GUILayout.BeginVertical(GUILayout.Width(100));
+                                        //{
+
+                                        //}
+                                        //GUILayout.EndVertical();
+                                    }
+                                    GUILayout.EndHorizontal();
+                                }
+                            }
+                        }
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        ////Added_feature
+        //private void SetSpawnerData(SingleSpawn Spawner)
+        //{
+        //    levelData.GetField(SubLevelNumber - 1).Spawners[Spawner.position.x].Spawns[Spawner.position.y] = Spawner;
+        //}
+
+
+        private int arrow_index;
+        private int selectDirectionType;
+
+        private void GUIDirections()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                //GUILayout.Space(30);
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label("Tools:", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                    {
+                        if (GUILayout.Button(new GUIContent(arrows_enter[0], "enter point on/off"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            selectDirectionType = 1;
+                        }
+
+                        if (GUILayout.Button(new GUIContent(arrows[4], "rotate one arrow"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            selectDirectionType = 0;
+                        }
+
+                        if (GUILayout.Button(new GUIContent(arrows[5], "rotate all"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            arrow_index = (int) Mathf.Repeat(arrow_index + 1, 4);
+                            var squares = levelData.GetField(subLevelNumber - 1).levelSquares;
+                            foreach (var item in squares)
+                            {
+                                item.direction = GetDirectionByIndex(arrow_index);
+                            }
+
+                            SetEnterPoint(GetDirectionByIndex(arrow_index));
+                        }
+
+                        if (GUILayout.Button(new GUIContent("Default", "default all direction"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            arrow_index = 0;
+                            ResetDirection();
+                            // SaveLevel();
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void ResetDirection()
+        {
+            var squares = levelData.GetField(subLevelNumber - 1).levelSquares;
+            foreach (var item in squares)
+            {
+                item.direction = GetDirectionByIndex(arrow_index);
+            }
+
+            SetEnterPoint(GetDirectionByIndex(arrow_index));
+            dirtyLevel = true;
+        }
+
+        private void SetEnterPoint(Vector2 direction)
+        {
+            levelData.GetField(subLevelNumber - 1).levelSquares.ToList().ForEach(i => i.enterSquare = false);
+            if (direction == Vector2.down)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    var squareBlocks = levelData.GetBlock(0, col);
+                    if (squareBlocks.teleportCoordinatesLinkedBack == Vector2Int.one * -1)
+                        squareBlocks.enterSquare = true;
+                }
+            }
+
+            if (direction == Vector2.up)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    var squareBlocks = levelData.GetBlock(levelData.GetField(subLevelNumber - 1).maxRows - 1, col);
+                    if (squareBlocks.teleportCoordinatesLinkedBack == Vector2Int.one * -1)
+                        squareBlocks.enterSquare = true;
+                }
+            }
+
+            if (direction == Vector2.left)
+            {
+                for (int row = 0; row < levelData.GetField(subLevelNumber - 1).maxRows; row++)
+                {
+                    var squareBlocks = levelData.GetBlock(row, levelData.GetField(subLevelNumber - 1).maxCols - 1);
+                    if (squareBlocks.teleportCoordinatesLinkedBack == Vector2Int.one * -1)
+                        squareBlocks.enterSquare = true;
+                }
+            }
+
+            if (direction == Vector2.right)
+            {
+                for (int row = 0; row < levelData.GetField(subLevelNumber - 1).maxRows; row++)
+                {
+                    var squareBlocks = levelData.GetBlock(row, 0);
+                    if (squareBlocks.teleportCoordinatesLinkedBack == Vector2Int.one * -1)
+                        squareBlocks.enterSquare = true;
+                }
+            }
+        }
+
+        private int GetIndexByDirection(Vector2 direction)
+        {
+            if (direction == Vector2.right)
+                return 3;
+            if (direction == Vector2.left)
+                return 1;
+            if (direction == Vector2.up)
+                return 2;
+            return 0;
+        }
+
+        private Vector2 GetDirectionByIndex(int index)
+        {
+            if (index == 0) return Vector2.down;
+            if (index == 1) return Vector2.left;
+            if (index == 2) return Vector2.up;
+            if (index == 3) return Vector2.right;
+            return Vector2.down;
+        }
+
+        private Texture GetArrowByAngle(float angle)
+        {
+            return arrows[(int) (angle % 90)];
+        }
+
+        private Texture GetArrowByVector(Vector2 direction, bool enterPoint)
+        {
+            var arr = arrows;
+            if (enterPoint) arr = arrows_enter;
+            if (direction == Vector2.up)
+                return arr[3];
+            if (direction == Vector2.left)
+                return arr[1];
+            if (direction == Vector2.right)
+                return arr[2];
+            return arr[0];
+        }
+
+        private void GUIItems()
+        {
+            DrawInkwellBrushAccess();
+            EditorGUILayout.HelpBox("Peças fixas são peças colocadas manualmente na fase. Use Apagar peça e clique na célula para removê-las; o chão e os obstáculos permanecem.", MessageType.Info);
+            startWithoutItemBrush = GUILayout.Toggle(startWithoutItemBrush,
+                new GUIContent("Iniciar sem peça", "Clique nas células para marcar/desmarcar. Preserva grama e obstáculos; peças podem cair normalmente depois."),
+                "Button", GUILayout.Width(180));
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Gramas sem peça", GUILayout.Width(160)))
+            {
+                foreach (var square in GetField().levelSquares)
+                    if (square.block == SquareTypes.SugarSquare || square.blocks.Any(b => b.squareType == SquareTypes.SugarSquare))
+                        square.startWithoutItem = true;
+                dirtyLevel = true;
+            }
+            if (GUILayout.Button("Limpar marcações", GUILayout.Width(160)))
+            {
+                foreach (var square in GetField().levelSquares) square.startWithoutItem = false;
+                dirtyLevel = true;
+            }
+            GUILayout.EndHorizontal();
+            EditorGUILayout.HelpBox("Vazia = sem peça no início. Para preencher só após quebrar as caixas, mantenha as entradas de peças acima da barreira, na aba Directions.", MessageType.Info);
+            GUILayout.BeginHorizontal();
+            {
+                //GUILayout.Space(30);
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label("Tip: right click to change sprite for level", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                    {
+                        if (GUILayout.Button(new GUIContent("Apagar fixas", "Apagar todas as peças iniciais deste subnível; preservar obstáculos"), GUILayout.Width(95),
+                            GUILayout.Height(50)))
+                        {
+                            ClearItems();
+                            // SaveLevel();
+                        }
+
+                        GUILayout.BeginVertical();
+                        {
+                            foreach (var val in itemsForEditor)
+                            {
+                                GUILayout.BeginHorizontal();
+                                {
+                                    foreach (var item in val)
+                                    {
+                                        GameObject item1 = item.Item;
+                                        if (!item1) continue;
+                                        if (item.ItemType == ItemsTypes.NONE && !levelData.IsPieceColorEnabled(item.Color)) continue;
+                                        if (item.ItemType != ItemsTypes.NONE)
+                                            item.SetColor(color, levelNumber);
+                                        var texture = item.ItemType == ItemsTypes.HORIZONTAL_STRIPED || item.ItemType == ItemsTypes.VERTICAL_STRIPED
+                                            ? ResolveItemPreviewTexture(item, levelNumber) : item.Tex;
+                                        // The custom dynamite sprite is complete; no CPU texture blend is needed.
+
+                                        if (itemBrush != null && (itemBrush.ItemType == item.ItemType &&
+                                                                  item.ItemType == ItemsTypes.NONE &&
+                                                                  color == item.Color && itemBrush
+                                                                      .Tex == item.Tex))
+                                            UnityEngine.GUI.backgroundColor = Color.gray;
+                                        else if (itemBrush != null && (itemBrush.ItemType == item.ItemType &&
+                                                                       item.ItemType != ItemsTypes.NONE && itemBrush
+                                                                           .Tex == item.Tex))
+                                            UnityEngine.GUI.backgroundColor = Color.gray;
+                                        if (GUILayout.Button(new GUIContent(texture, item.ItemType == ItemsTypes.FLYING_LETTER ? "Ovo mágico" : item1.name),
+                                            GUILayout.Width(50), GUILayout.Height(50)))
+                                        {
+                                            Event current = Event.current;
+                                            if (current.button == 1)
+                                            {
+                                                dirtyLevel = true;
+                                                SaveLevel(levelNumber);
+                                                ItemsPerLevelEditor.ShowWindow(item1, levelNumber);
+                                            }
+                                            else
+                                            {
+                                                itemBrush = item.DeepCopy();
+                                                startWithoutItemBrush = false;
+                                                if (item.ItemType == ItemsTypes.NONE) color = itemBrush.Color;
+                                            }
+                                        }
+
+                                        UnityEngine.GUI.backgroundColor = Color.white;
+                                    }
+                                }
+                                if (val == itemsForEditor.Last())
+                                {
+                                    if (GUILayout.Button(new GUIContent("Apagar peça", "Apagar a peça fixa da célula, inclusive sob uma caixa"), GUILayout.Width(95),
+                                        GUILayout.Height(50)))
+                                    {
+                                        itemBrush = null;
+                                        startWithoutItemBrush = false;
+                                    }
+                                }
+
+                                GUILayout.EndHorizontal();
+                            }
+                        }
+                        GUILayout.EndVertical();
+                    }
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void ClearItems()
+        {
+            for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
+            {
+                levelData.GetField(subLevelNumber - 1).levelSquares[i].item = null;
+                levelData.GetField(subLevelNumber - 1).levelSquares[i].startWithoutItem = false;
+            }
+
+            dirtyLevel = true;
+        }
+
+        internal Rect InkwellBrushAccessRect { get; private set; }
+
+        private void SelectBlockBrush(SquareTypes type)
+        {
+            section = 0;
+            squareType = type;
+            deleteBlock = false;
+            separateBarBrush = false;
+            startWithoutItemBrush = false;
+            squareBlockSelected = null;
+        }
+
+        private void DrawInkwellBrushAccess()
+        {
+            var texture = SquareUtils.GetSquareTexture(SquareTypes.Inkwell)?.Texture2D;
+            var rect = GUILayoutUtility.GetRect(150, 42, GUILayout.Width(150), GUILayout.Height(42));
+            if (Event.current.type == EventType.Repaint)
+                InkwellBrushAccessRect = rect;
+            var style = new GUIStyle(UnityEngine.GUI.skin.button)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontStyle = FontStyle.Bold,
+                padding = new RectOffset(44, 6, 4, 4)
+            };
+            var previousColor = UnityEngine.GUI.backgroundColor;
+            if (section == 0 && squareType == SquareTypes.Inkwell && !deleteBlock && !separateBarBrush)
+                UnityEngine.GUI.backgroundColor = Color.gray;
+            if (UnityEngine.GUI.Button(rect, new GUIContent("Tinteiro", "Selecione e clique nas células do nível para colocar o tinteiro."), style))
+                SelectBlockBrush(SquareTypes.Inkwell);
+            UnityEngine.GUI.backgroundColor = previousColor;
+            if (texture != null)
+                UnityEngine.GUI.DrawTexture(new Rect(rect.x + 5, rect.y + 4, 34, 34), texture, ScaleMode.ScaleToFit, true);
+        }
+
+        private void DrawBlockPalette()
+        {
+            // Read the enum again so an existing window also sees newly registered blocks.
+            var types = EnumUtil.GetValues<SquareTypes>()
+                .Where(type => type != SquareTypes.NONE && SquareUtils.GetSquareTexture(type)?.Texture2D != null)
+                .ToArray();
+            var columns = Mathf.Clamp(Mathf.FloorToInt((position.width - 60f) / 54f), 1, 8);
+            for (var first = 0; first < types.Length; first += columns)
+            {
+                GUILayout.BeginHorizontal();
+                for (var index = first; index < Mathf.Min(first + columns, types.Length); index++)
+                {
+                    var type = types[index];
+                    var previousColor = UnityEngine.GUI.backgroundColor;
+                    if (squareType == type && !deleteBlock && !separateBarBrush)
+                        UnityEngine.GUI.backgroundColor = Color.gray;
+                    if (GUILayout.Button(new GUIContent(SquareUtils.GetSquareTexture(type).Texture2D,
+                            SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(type.ToString())), GUILayout.Width(50), GUILayout.Height(50)))
+                        SelectBlockBrush(type);
+                    UnityEngine.GUI.backgroundColor = previousColor;
+                }
+                GUILayout.EndHorizontal();
+            }
+        }
+
+        private void GUIBlocks()
+        {
+            DrawInkwellBrushAccess();
+            if (GUILayout.Button("Borracha de peças fixas", GUILayout.Width(190)))
+            {
+                section = 1;
+                itemBrush = null;
+                startWithoutItemBrush = false;
+            }
+            GUILayout.BeginHorizontal();
+            {
+                //GUILayout.Space(30);
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label("Blocos / obstáculos", EditorStyles.boldLabel);
+                    DrawBlockPalette();
+                    GUILayout.BeginHorizontal();
+                    {
+                        if (separateBarBrush)
+                            UnityEngine.GUI.backgroundColor = Color.gray;
+                        if (GUILayout.Button(
+                            new GUIContent(separateBar, "Separate bar prevent items from falling or moving through"),
+                            GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            squareType = SquareTypes.NONE;
+                            separateBarBrush = !separateBarBrush;
+                        }
+
+                        UnityEngine.GUI.backgroundColor = Color.white;
+
+                        if (GUILayout.Button(new GUIContent("Clear", "clear all field"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            ClearLevel();
+                            // SaveLevel();
+                        }
+
+                        if (GUILayout.Button(new GUIContent("X", "Clear block"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            squareType = SquareTypes.NONE;
+                            separateBarBrush = false;
+                        }
+
+                        if (GUILayout.Button(
+                            new GUIContent("Fill+", "Fill with selected block, second click change or clear filling"),
+                            GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            FillLevel();
+                        }
+
+                        if (deleteBlock)
+                            UnityEngine.GUI.backgroundColor = Color.gray;
+                        if (GUILayout.Button(new GUIContent("-1", "to Delete a block from layer"), GUILayout.Width(50),
+                            GUILayout.Height(50)))
+                        {
+                            deleteBlock = !deleteBlock;
+                            separateBarBrush = false;
+                        }
+
+                        UnityEngine.GUI.backgroundColor = Color.white;
+                    }
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void ClearLevel()
+        {
+            layers = 1;
+            layer = 0;
+            foreach (var squareBlocks in levelData.GetField(subLevelNumber - 1).levelSquares)
+            {
+                squareBlocks.blocks.Clear();
+                squareBlocks.block = SquareTypes.EmptySquare;
+                squareBlocks.blockLayer = 1;
+                squareBlocks.obstacle = SquareTypes.NONE;
+                squareBlocks.obstacleLayer = 1;
+                squareBlocks.blocks.Add(new SquareTypeLayer {squareType = squareBlocks.block});
+                squareBlocks.separatorIndexes = new bool[4];
+            }
+
+            dirtyLevel = true;
+        }
+
+        private void FillLevel()
+        {
+            for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
+            {
+                var squareBlocks = levelData.GetField(subLevelNumber - 1).levelSquares[i];
+                var tempType = squareType;
+                if ((squareBlocks.block == squareType && SquareUtils.GetLayersCount(squareType) == squareBlocks.blockLayer)
+                    || (squareBlocks.obstacle == squareType &&
+                        SquareUtils.GetLayersCount(squareType) == squareBlocks.obstacleLayer))
+                {
+                    var sqPos = squareBlocks.position;
+                    squareType = SquareTypes.EmptySquare;
+                    SetSquareType(sqPos.x, sqPos.y);
+                    squareType = tempType;
+                }
+                else if (squareBlocks.block == SquareTypes.EmptySquare ||
+                         (squareBlocks.block == squareType || squareBlocks.obstacle == squareType))
+                {
+                    var sqPos = squareBlocks.position;
+                    SetSquareType(sqPos.x, sqPos.y);
+                }
+            }
+
+            dirtyLevel = true;
+        }
+
+        private SquareBlocks squareBlockSelected; //for teleport linking
+
+        class RectTexture
+        {
+            public Texture2DSize square;
+            public Rect rect;
+        }
+
+        private void GUIGameField()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Layers " + (layer + 1) + " / " + layers, EditorStyles.label, GUILayout.Width(100));
+                GUILayout.Space(0);
+                layer = (int) GUILayout.HorizontalSlider(layer, layers - 1, 0, GUILayout.Width(100));
+                GUILayout.Space(50);
+                rotateBig = GUILayout.Toggle(rotateBig, new GUIContent("rotate", "rotate big object"),
+                    GUILayout.Width(100));
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Zoom do tabuleiro", GUILayout.Width(125));
+            previewCellPixels = GUILayout.HorizontalSlider(previewCellPixels, 50f, 100f, GUILayout.Width(140));
+            GUILayout.Label($"{previewCellPixels / 50f:P0}", GUILayout.Width(55));
+            GUILayout.EndHorizontal();
+            List<RectTexture> rects = new List<RectTexture>();
+            GUILayout.BeginVertical();
+            for (int row = 0; row < GetField().maxRows; row++)
+            {
+                GUILayout.BeginHorizontal();
+
+                for (int col = 0; col < GetField().maxCols; col++)
+                {
+                    Color squareColor = new Color(0.8f, 0.8f, 0.8f);
+                    var imageButton = new object();
+                    SquareBlocks squareBlock = levelData.GetBlock(row, col);
+                    
+                    squareBlock.position = new Vector2Int(col, row);
+                    
+                    //GUILayout.Label("c-"+ col + " & r-"+row);
+                    
+                    Vector2Int size = Vector2Int.one;
+                    var blockTextures = SquareUtils.GetSquareTextures(squareBlock, layer);
+                    
+                    var blockTexturesArray = new List<Texture2DSize>();
+                    var itemTextures = new Texture2D[2];
+                    if (squareBlock.block == SquareTypes.NONE)
+                    {
+                        imageButton = "X";
+                        squareColor = new Color(0.8f, 0.8f, 0.8f);
+                    }
+                    else
+                    {
+                        imageButton = blockTextures?[0];
+                        squareColor = Color.white;
+                    }
+
+                    blockTexturesArray = blockTextures.ToList();
+                    if (section == 0 || section == 1 || section == 5)
+                    {
+                        if (squareBlock.block != SquareTypes.NONE)
+                        {
+                            //                        imageButton = squareBlock.item?.Texture;
+                            if (!squareBlock.startWithoutItem && squareBlock.item != null && squareBlock.item.Item != null &&
+                                squareBlock.item?.ItemType != ItemsTypes.INGREDIENT)
+                            {
+                                blockTexturesArray.Add(new Texture2DSize(StarterPieceTexture(squareBlock.item),
+                                    Vector2Int.one, squareBlock.item.order, rotateBig));
+                            }
+                            else
+                            {
+                                var t = SquareUtils.GetSquareTexture(SquareTypes.EmptySquare);
+                                if (!blockTexturesArray.Any(i => i.Texture2D != null && t.Texture2D != null && i.Texture2D.name == t.Texture2D.name))
+                                    blockTexturesArray.Insert(0,
+                                        new Texture2DSize(t.Texture2D, Vector2Int.one, t.order, rotateBig));
+                                if (!squareBlock.startWithoutItem && squareBlock.item?.Tex != null)
+                                    blockTexturesArray.Add(new Texture2DSize(StarterPieceTexture(squareBlock.item), Vector2Int.one,
+                                        squareBlock.item.order, rotateBig));
+                            }
+
+                            if (squareBlock.separatorIndexes.Any(i => i))
+                            {
+                                blockTexturesArray.AddRange(squareBlock.GetSeparatorTexture(separateBar));
+                            }
+                        }
+
+                        // Item previews above already draw the complete dynamite sprite.
+                        // Blending it again reads non-readable imported textures and aborts the grid GUI.
+                    }
+
+                    if (section == 2)
+                    {
+                        imageButton = GetArrowByVector(squareBlock.direction, squareBlock.enterSquare);
+                    }
+
+                    if (section == 3)
+                    {
+                        if (squareBlock.teleportCoordinatesLinkedBack != Vector2Int.one * -1)
+                        {
+                            imageButton = teleports[1];
+                        }
+
+                        if (squareBlock.isEnterTeleport)
+                            imageButton = teleports[0];
+                    }
+                    
+                    if (section == 4)
+                    {
+                        if (squareBlock.spawners.Count > 0)
+                        {
+                            imageButton = GetRotatedSpawnerTexture(squareBlock.spawners[0].rotationType);
+                        }
+                    }
+
+                    UnityEngine.GUI.color = squareColor;
+                    if (GUILayout.Button(imageButton as Texture, GUILayout.Width(previewCellPixels), GUILayout.Height(previewCellPixels)))
+                    {
+                        if (section == 0)
+                        {
+                            /*if (squareType == SquareTypes.Cake)
+                            {
+                                var squarePrototype = Square.GetLayersCount(squareType);
+                                for (var i = 0; i < squarePrototype; i++)
+                                    SetSquareType(col, row);
+                            }
+                            else
+                            {*/
+                                SetSquareType(col, row);
+                            //}
+                        }
+                        if (section == 1)
+                            SetItem(col, row);
+                        else if (section == 2)
+                        {
+                            if (selectDirectionType == 0)
+                                SetArrow(col, row);
+                            else if (selectDirectionType == 1)
+                                levelData.GetBlock(row, col).enterSquare = !levelData.GetBlock(row, col).enterSquare;
+                        }
+                        else if (section == 3)
+                        {
+                            if (squareBlock.isEnterTeleport ||
+                                squareBlock.teleportCoordinatesLinkedBack != Vector2Int.one * -1)
+                            {
+                                squareBlockSelected = null;
+                                squareBlock.isEnterTeleport = false;
+                                squareBlock.teleportCoordinatesLinkedBack = Vector2Int.one * -1;
+                                squareBlock.teleportCoordinatesLinked = Vector2Int.one * -1;
+                            }
+                            else if (squareBlockSelected == null)
+                            {
+                                squareBlockSelected = squareBlock;
+                                squareBlockSelected.isEnterTeleport = true;
+                            }
+                            else
+                            {
+                                levelData.GetBlock(row, col).enterSquare = false;
+                                squareBlock.teleportCoordinatesLinkedBack = squareBlockSelected.position;
+                                squareBlockSelected.teleportCoordinatesLinked = squareBlock.position;
+                                squareBlockSelected = null;
+                            }
+                        }
+                        
+                        //Added_feature
+                        else if (section == 4)
+                        {
+                            switch (CurrentSpawnerState)
+                            {
+                                case SpawnerState.Add:
+                                {
+                                    SetSpawnerType(col, row);
+                                    levelData.GetBlock(row, col).enterSquare = true;
+                                    Column = -1;
+                                    Row = -1;
+                                }
+                                    break;
+                                case SpawnerState.Edit:
+                                {
+                                    Column = col;
+                                    Row = row;
+                                    //Debug.Log("Edit Selected");
+                                }
+                                    break;
+                                case SpawnerState.Remove:
+                                {
+                                    RemoveSpawnerTyps(col, row);
+                                    levelData.GetBlock(row, col).enterSquare = false;
+                                    Column = -1;
+                                    Row = -1;
+                                }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+
+                    var lastRect = GUILayoutUtility.GetLastRect();
+                    var texture2DSizes = blockTexturesArray.WhereNotNull().OrderByDescending(i => i.order).ToArray();
+                    foreach (var texture2DSiz in texture2DSizes)
+                    {
+                        if (texture2DSiz.Texture2D)
+                        {
+                            var rectTexture = new RectTexture() {square = texture2DSiz, rect = lastRect};
+                            rects.Add(rectTexture);
+                        }
+                    }
+
+                    if (lastRect != Rect.zero && lastRect.position != Vector2.zero)
+                        squareBlock.guiRect = lastRect;
+                    // if (section != 2 && section != 3)
+                    //     DrawLayeredTextures(rectTexture);
+                }
+
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndVertical();
+            if (section != 2 && section != 3 && section != 4)
+            {
+                var orderedEnumerable = rects.OrderBy(i => i.square.order);
+                foreach (var rectTexture in orderedEnumerable)
+                {
+                    DrawTexture(rectTexture.square, rectTexture.rect);
+                }
+            }
+
+            SetupArrows();
+            if (section == 1)
+            {
+                foreach (var square in GetField().levelSquares.Where(s => s.startWithoutItem && s.block != SquareTypes.NONE))
+                {
+                    var rect = new Rect(square.guiRect.x + 3, square.guiRect.y + 3, 44, 18);
+                    EditorGUI.DrawRect(rect, new Color(0.12f, 0.22f, 0.34f, 0.88f));
+                    var style = new GUIStyle(EditorStyles.miniBoldLabel) { alignment = TextAnchor.MiddleCenter };
+                    style.normal.textColor = Color.white;
+                    UnityEngine.GUI.Label(rect, new GUIContent("Vazia", "Esta célula inicia sem peça, mas aceita queda e reposição normalmente."), style);
+                }
+            }
+            DrawLines();
+        }
+
+        //Added_feature
+        private Texture GetRotatedSpawnerTexture(RotationType rotationType)
+        {
+            Texture res = null;
+
+            switch (rotationType)
+            {
+                case RotationType.Top:
+                    return spawner[0];
+                case RotationType.Bottom:
+                    return spawner[1];
+                case RotationType.Left:
+                    return spawner[2];
+                case RotationType.right:
+                    return spawner[3];
+                default:
+                    break;
+            }
+
+            return res;
+        }
+
+        RotationType CheckForRotation(RotationType type, bool LeftRotation)
+        {
+            RotationType res = type;
+
+            switch (res)
+            {
+                case RotationType.Top:
+                    if (LeftRotation)
+                        return RotationType.Left;
+                    return RotationType.right;
+                case RotationType.Left:
+                    if (LeftRotation)
+                        return RotationType.Bottom;
+                    return RotationType.Top;
+                case RotationType.Bottom:
+                    if (LeftRotation)
+                        return RotationType.right;
+                    return RotationType.Left;
+                case RotationType.right:
+                    if (LeftRotation)
+                        return RotationType.Top;
+                    return RotationType.Bottom;
+                default:
+                    break;
+            }
+
+            return res;
+        }
+        
+        private FieldData GetField() => levelData.GetField(subLevelNumber - 1);
+
+        private void DrawTexture(Texture2DSize texture2DSize, Rect lastRect)
+        {
+            if (Event.current.type != EventType.Repaint) return;
+            var texture2D = texture2DSize.Texture2D;
+            if (texture2D != null)
+            {
+                float zoom = previewCellPixels / 50f;
+                float bodyPixels = 40f * zoom;
+                var origin = lastRect.position + (Vector2.one * 4f + texture2DSize.offset) * zoom;
+                var rect = new Rect(origin.x, origin.y, texture2DSize.size.x * bodyPixels * texture2DSize
+                        .sizeMod.x, texture2DSize.size.y * bodyPixels * texture2DSize.sizeMod.y);
+                if (texture2DSize.size.magnitude >= 2 && texture2DSize.rotate && texture2D.width < 2048)
+                {
+                    rect = new Rect(origin.x, origin.y, texture2DSize.size.y * bodyPixels,
+                        texture2DSize.size.x * bodyPixels);
+                }
+                if (!texture2DSize.rotate)
+                {
+                    UnityEngine.GUI.DrawTexture(rect, texture2D);
+                    return;
+                }
+
+                // Rotate only the preview. CPU pixel reads fail for non-readable imports,
+                // and creating rotated textures on every repaint leaks native memory.
+                var previousMatrix = UnityEngine.GUI.matrix;
+                try
+                {
+                    GUIUtility.RotateAroundPivot(-90f, rect.center);
+                    var drawRect = new Rect(rect.center.x - rect.height * 0.5f,
+                        rect.center.y - rect.width * 0.5f, rect.height, rect.width);
+                    UnityEngine.GUI.DrawTexture(drawRect, texture2D);
+                }
+                finally { UnityEngine.GUI.matrix = previousMatrix; }
+            }
+        }
+
+        private void DrawLines()
+        {
+            if (section != 1) return;
+            var marmalades = levelData.GetField().levelSquares
+                .Where(i => i.item != null && i.item.EnableMarmaladeTargets);
+            Handles.color = Color.red;
+            foreach (var marmalade in marmalades)
+            {
+                //            Handles.BeginGUI();
+                foreach (var targetPosition in marmalade.item.TargetMarmaladePositions)
+                {
+                    Handles.DrawLine(marmalade.guiRect.center, levelData.GetBlock(targetPosition).guiRect.center);
+                    RotateGizmo(marmalade.guiRect.center, levelData.GetBlock(targetPosition).guiRect.center, 20f);
+                    RotateGizmo(marmalade.guiRect.center, levelData.GetBlock(targetPosition).guiRect.center, -20f);
+                }
+                //            Handles.EndGUI();
+            }
+        }
+
+        private void RotateGizmo(Vector3 square, Vector3 pivot, float angle)
+        {
+            var rightPoint = Vector3.zero;
+            var dir = (square - pivot) * 0.1f;
+            dir = Quaternion.AngleAxis(angle, Vector3.back) * dir;
+            rightPoint = dir + pivot;
+            Handles.DrawLine(pivot, rightPoint);
+        }
+
+        private void SetItem(int col, int row)
+        {
+            SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            // Erasing a painted starter piece is valid even when a crate covers the cell.
+            if (!startWithoutItemBrush && itemBrush == null)
+            {
+                squareBlock.item = null;
+                dirtyLevel = true;
+                return;
+            }
+            if (startWithoutItemBrush)
+            {
+                if (squareBlock.block == SquareTypes.NONE) return;
+                squareBlock.startWithoutItem = !squareBlock.startWithoutItem;
+                dirtyLevel = true;
+                return;
+            }
+            if (squareBlock.blocks.Any(i =>
+                i.squareType == SquareTypes.SolidBlock || i.squareType == SquareTypes.EnchantedStone || i.squareType == SquareTypes.Inkwell || i.squareType == SquareTypes.UndestrBlock ||
+                i.squareType == SquareTypes.NONE)) return;
+            squareBlock.startWithoutItem = false;
+            dirtyLevel = true;
+            ItemForEditor itemTemp = squareBlock.item;
+            if (itemTemp == null)
+                itemTemp = itemBrush?.DeepCopy();
+            else if (itemBrush?.ItemType != ItemsTypes.NONE ||
+                     (itemTemp.ItemType == ItemsTypes.NONE && itemBrush?.ItemType == ItemsTypes.NONE))
+                itemTemp = itemBrush?.DeepCopy();
+            else if (itemBrush.ItemType == ItemsTypes.NONE && itemTemp.ItemType != ItemsTypes.NONE)
+                itemTemp.Color = itemBrush.Color;
+            //        if (itemTemp.ItemType != ItemsTypes.NONE)
+            if (itemTemp != null && itemBrush != null && itemsForEditorFull.First(i => i.ItemType == itemTemp.ItemType)
+                .Item.GetComponent<IColorableComponent>()?.GetSprites(levelNumber).Count() > 1)
+                itemTemp.Tex =
+                    itemsForEditorFull.FirstOrDefault(i => i.ItemType == itemTemp.ItemType).Item
+                        .GetComponent<IColorableComponent>().GetSprites(levelNumber)[color].texture;
+            
+            squareBlock.item = itemTemp;
+            if (itemTemp?.ItemType == ItemsTypes.FLYING_LETTER) pendingFlyingTarget = true;
+        }
+
+        Texture2D StarterPieceTexture(ItemForEditor item)
+        {
+            // Template levels serialized the old candy/heart Texture as well as its color.
+            // Resolve normal pieces through today's palette instead of displaying that stale image.
+            if (item.ItemType == ItemsTypes.NONE && piecePaletteSprites != null && piecePaletteSprites.Length > 0)
+            {
+                int index = levelData.IsPieceColorEnabled(item.Color) ? item.Color : levelData.GetPieceColors()[0];
+                if (index >= 0 && index < piecePaletteSprites.Length)
+                    return piecePaletteSprites[index]?.GetTexture();
+            }
+            return ResolveItemPreviewTexture(item, levelNumber);
+        }
+
+        public static Sprite ResolveItemPreviewSprite(GameObject prefab, int level, int color)
+        {
+            if (prefab == null) return null;
+            var colors = prefab.GetComponent<IColorableComponent>();
+            // A movable obstacle such as the egg has one sprite and no color component.
+            return colors != null ? colors.GetSprite(level, color)
+                : prefab.GetComponentInChildren<SpriteRenderer>()?.sprite;
+        }
+
+        private void SetupArrows()
+        {
+            for (int row = 0; row < levelData.GetField(subLevelNumber - 1).maxRows; row++)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    SquareBlocks squareBlock = levelData.GetBlock(row, col);
+                    if (section == 2 || section == 3)
+                    {
+                        if (squareBlock.teleportCoordinatesLinkedBack != Vector2Int.one * -1)
+                        {
+                            Handles.BeginGUI();
+                            Handles.color = Color.red;
+                            Vector2 position1 = squareBlock.guiRect.center;
+                            Vector2 position2 = levelData.GetBlock(squareBlock.teleportCoordinatesLinkedBack).guiRect
+                                .center;
+                            Handles.DrawLine(position1, position2);
+                            float angle = AngleInDeg(position1, position2);
+                            Handles.ArrowHandleCap(0, position2,
+                                Quaternion.AngleAxis(angle, Vector3.forward) * Quaternion.Euler(new Vector3(0, -95, 0)),
+                                50,
+                                EventType.Repaint);
+                            Handles.EndGUI();
+                        }
+                    }
+                }
+            }
+        }
+
+        //This returns the angle in radians
+        public static float AngleInRad(Vector3 vec1, Vector3 vec2)
+        {
+            return Mathf.Atan2(vec2.y - vec1.y, vec2.x - vec1.x);
+        }
+
+        //This returns the angle in degress
+        public static float AngleInDeg(Vector3 vec1, Vector3 vec2)
+        {
+            return AngleInRad(vec1, vec2) * 180 / Mathf.PI;
+        }
+
+
+        private void SetArrow(int col, int row)
+        {
+            SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            int index = GetIndexByDirection(squareBlock.direction);
+            index = (int) Mathf.Repeat(index + 1, 4);
+            // if (squareBlock.block != SquareTypes.NONE)
+            // {
+            squareBlock.direction = GetDirectionByIndex(index);
+            // }
+        }
+
+
+        private void SaveLevel(int _levelNumber)
+        {
+            squareBlockSelected = null;
+            if (dirtyLevel)
+            {
+                var currentRevision = LevelRevision(_levelNumber);
+                if (loadedRevisionLevel == _levelNumber && !string.IsNullOrEmpty(loadedLevelRevision) &&
+                    currentRevision != loadedLevelRevision)
+                {
+                    // Preserve the editor draft, but never overwrite a newer file with a stale window copy.
+                    var drafts = "Logs/level-editor-conflicts";
+                    Directory.CreateDirectory(drafts);
+                    var draft = Path.Combine(drafts, $"Level_{_levelNumber}_{DateTime.UtcNow.Ticks}.json");
+                    File.WriteAllText(draft, JsonUtility.ToJson(levelData, true));
+                    dirtyLevel = false;
+                    LoadLevel(_levelNumber);
+                    Debug.LogWarning($"[Level editor] A fase {_levelNumber} mudou no disco e foi recarregada. " +
+                        $"A cópia anterior da janela foi preservada em {draft}.");
+                    return;
+                }
+                ValidateMailCubbyGroups();
+                ValidateMailCubbyTarget();
+                ValidateFrankingMachineTargets();
+                if (!FileName.Contains(".txt"))
+                    FileName += ".txt";
+                SaveToScriptable(_levelNumber);
+                loadedRevisionLevel = _levelNumber;
+                loadedLevelRevision = LevelRevision(_levelNumber);
+                // SaveCommonValues();
+                // SaveField();
+                dirtyLevel = false;
+            }
+        }
+
+        private void AddLevel()
+        {
+            squareBlockSelected = null;
+            SaveLevel(levelNumber);
+            levelNumber = GetLastLevel() + 1;
+            SubLevelNumber = 1;
+            ScriptableLevelManager.CreateFileLevel(levelNumber, levelData);
+            levelData = ScriptableLevelManager.LoadLevel(levelNumber, "Levels/Level_");
+            Initialize();
+            ClearLevel();
+            ClearItems();
+            SaveLevel(levelNumber);
+            PrepareTargetLevel();
+            subLevelNumberTotal = GetSubLevelsCount();
+        }
+
+        private int GetLastLevel()
+        {
+            int lastLevel = LoadingManager.GetLastLevelNum();
+            return lastLevel;
+        }
+
+        private void AddSubLevel()
+        {
+            squareBlockSelected = null;
+            SaveLevel(levelNumber);
+            levelData.AddNewField();
+            SubLevelNumber = GetSubLevelsCount();
+            Initialize();
+            InitializeSublevel();
+            SaveLevel(levelNumber);
+            subLevelNumberTotal = GetSubLevelsCount();
+        }
+
+        private void RemoveSubLevel()
+        {
+            if (GetSubLevelsCount() > 1)
+            {
+                SaveLevel(levelNumber);
+                levelData.RemoveField();
+                SubLevelNumber = GetSubLevelsCount();
+                Initialize();
+                // InitializeSublevel();
+                SaveLevel(levelNumber);
+                subLevelNumberTotal = GetSubLevelsCount();
+            }
+        }
+
+        private int GetSubLevelsCount()
+        {
+            return levelData.fields.Count; //GetSublevelsScriptable();
+        }
+
+        private void RemoveLevel()
+        {
+            PreviousLevel();
+            File.Delete(levelPath + "Level_" + (levelNumber + 1) + ".asset");
+            File.Delete(levelPath + "Targets/" + "TargetLevel" + (levelNumber + 1) + ".asset");
+            AssetDatabase.Refresh();
+        }
+
+        private void NextLevel()
+        {
+            SaveLevel(levelNumber);
+            if (levelNumber + 1 <= GetLastLevel())
+            {
+                levelNumber++;
+                SubLevelNumber = 1;
+                LoadLevel(levelNumber);
+            }
+        }
+
+        private void PreviousLevel()
+        {
+            SaveLevel(levelNumber);
+            levelNumber--;
+            SubLevelNumber = 1;
+            if (levelNumber < 1)
+                levelNumber = 1;
+            if (!LoadLevel(levelNumber))
+            {
+                levelNumber++;
+                LoadLevel(levelNumber);
+            }
+        }
+
+        private void NextSubLevel()
+        {
+            if (SubLevelNumber + 1 <= GetSubLevelsCount())
+            {
+                SaveLevel(levelNumber);
+                SubLevelNumber++;
+            }
+
+            // if (!LoadLevel(levelNumber, SubLevelNumber))
+            // 	SubLevelNumber--;
+        }
+
+        private void PreviousSubLevel()
+        {
+            SaveLevel(levelNumber);
+            SubLevelNumber--;
+            if (SubLevelNumber < 1)
+                SubLevelNumber = 1;
+            // if (!LoadLevel(levelNumber, SubLevelNumber))
+            // SubLevelNumber++;
+        }
+
+        private bool dirtyLevel;
+        [SerializeField] private string loadedLevelRevision;
+        [SerializeField] private int loadedRevisionLevel;
+
+        private static string LevelRevision(int number)
+        {
+            var path = $"Assets/SweetSugar/Resources/Levels/Level_{number}.asset";
+            if (!File.Exists(path)) return null;
+            using (var hash = global::System.Security.Cryptography.SHA256.Create())
+                return Convert.ToBase64String(hash.ComputeHash(File.ReadAllBytes(path)));
+        }
+        private int section;
+        //private bool gotFocus;
+        private static Material mat;
+        private int color;
+        private Texture2D packageTexture;
+        private GUISkin customSkin;
+        private MenuReference menuReference;
+        private AdManagerScriptable adsSettings;
+        private int selectedTutorial;
+        private TargetEditorScriptable targetEditorScriptable;
+        private Texture2DSize[] squareTextures;
+        private MapSwitcher sceneSwitcher;
+        private WinReward winReward;
+
+        private int layers
+        {
+            get => GetField().layers;
+            set => GetField().layers = value;
+        }
+
+        private int layer;
+        private IEnumerable<SquareTypes> _squareTypeItems;
+        private IEnumerable<SquareTypes>[] squareTypeGroupped;
+        private bool deleteBlock;
+        private bool rotateBig;
+        private Texture2D separateBar;
+        private bool separateBarBrush;
+        private int m_separateIndex;
+        private SquareBlocks m_squareBlock;
+        private int maxColorLimit;
+        
+        // Random generation variables
+        private float randomFillPercentage = 0.85f;
+        private SquareTypes[] randomSquareTypes = { SquareTypes.EmptySquare, SquareTypes.SugarSquare, SquareTypes.WireBlock, SquareTypes.SolidBlock };
+        private bool[] enableRandomTypes = { true, true, false, false };
+        private bool symmetricalGeneration = true;
+        private bool addItemsToField = false;
+        private float itemPlacementPercentage = 0.4f;
+        private ItemForEditor selectedRandomItem;
+        
+        private void GUIRandomGeneration()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.BeginVertical();
+                {
+                    GUILayout.Label("Random Grid Generation:", EditorStyles.boldLabel);
+                    
+                    GUILayout.Space(10);
+                    
+                    // Fill percentage slider
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(new GUIContent("Fill Percentage:", "Percentage of grid squares to fill with blocks"), GUILayout.Width(120));
+                    randomFillPercentage = EditorGUILayout.Slider(randomFillPercentage, 0f, 1f);
+                    GUILayout.Label($"{(randomFillPercentage * 100):F0}%", GUILayout.Width(50));
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.Space(10);
+                    
+                    // Square type selection with visual display
+                    GUILayout.Label("Square Types to Use:", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                    {
+                        for (int i = 0; i < randomSquareTypes.Length; i++)
+                        {
+                            GUILayout.BeginVertical();
+                            {
+                                // Get square texture for visual display
+                                var squareTexture = SquareUtils.GetSquareTexture(randomSquareTypes[i]);
+                                
+                                // Toggle for enabling/disabling this square type
+                                if (enableRandomTypes[i])
+                                    UnityEngine.GUI.backgroundColor = Color.green;
+                                else
+                                    UnityEngine.GUI.backgroundColor = Color.white;
+                                
+                                if (squareTexture.Texture2D != null)
+                                {
+                                    if (GUILayout.Button(new GUIContent(squareTexture.Texture2D, randomSquareTypes[i].ToString()), 
+                                        GUILayout.Width(50), GUILayout.Height(50)))
+                                    {
+                                        enableRandomTypes[i] = !enableRandomTypes[i];
+                                    }
+                                }
+                                else
+                                {
+                                    if (GUILayout.Button(randomSquareTypes[i].ToString().Substring(0, Math.Min(4, randomSquareTypes[i].ToString().Length)), 
+                                        GUILayout.Width(50), GUILayout.Height(50)))
+                                    {
+                                        enableRandomTypes[i] = !enableRandomTypes[i];
+                                    }
+                                }
+                                
+                                UnityEngine.GUI.backgroundColor = Color.white;
+                                
+                                // Label below button
+                                GUILayout.Label(randomSquareTypes[i].ToString().Substring(0, Math.Min(8, randomSquareTypes[i].ToString().Length)), 
+                                    GUILayout.Width(50));
+                            }
+                            GUILayout.EndVertical();
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.Space(15);
+                    
+                    // Item selection section
+                    GUILayout.Label("Items to Place (Optional):", EditorStyles.boldLabel);
+                    GUILayout.BeginHorizontal();
+                    addItemsToField = EditorGUILayout.Toggle(new GUIContent("Add Items to Squares:", "Places selected items on generated squares"), addItemsToField);
+                    GUILayout.EndHorizontal();
+                    
+                    if (addItemsToField)
+                    {
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label(new GUIContent("Item Placement %:", "Percentage of filled squares that will have items"), GUILayout.Width(120));
+                        itemPlacementPercentage = EditorGUILayout.Slider(itemPlacementPercentage, 0f, 1f);
+                        GUILayout.Label($"{(itemPlacementPercentage * 100):F0}%", GUILayout.Width(50));
+                        GUILayout.EndHorizontal();
+                        
+                        // Item selection buttons (all items like in Items panel)
+                        if (itemsForEditor != null && itemsForEditor.Length > 0)
+                        {
+                            GUILayout.Label("Select Item Type:", EditorStyles.miniLabel);
+                            GUILayout.BeginVertical();
+                            {
+                                foreach (var val in itemsForEditor)
+                                {
+                                    GUILayout.BeginHorizontal();
+                                    {
+                                        foreach (var item in val)
+                                        {
+                                            GameObject item1 = item.Item;
+                                            if (!item1) continue;
+                                            if (item.ItemType != ItemsTypes.NONE)
+                                                item.SetColor(color, levelNumber);
+                                            
+                                            var texture = item.ItemType == ItemsTypes.HORIZONTAL_STRIPED || item.ItemType == ItemsTypes.VERTICAL_STRIPED
+                                                ? ResolveItemPreviewTexture(item, levelNumber) : item.Tex;
+                                            // Use the complete sprite directly, including for dynamite.
+                                            
+                                            if (selectedRandomItem != null && selectedRandomItem.ItemType == item.ItemType && selectedRandomItem.Tex == item.Tex)
+                                                UnityEngine.GUI.backgroundColor = Color.green;
+                                            else
+                                                UnityEngine.GUI.backgroundColor = Color.white;
+                                            
+                                            if (GUILayout.Button(new GUIContent(texture, item1.name),
+                                                GUILayout.Width(40), GUILayout.Height(40)))
+                                            {
+                                                selectedRandomItem = item.DeepCopy();
+                                                if (item.ItemType == ItemsTypes.NONE) color = selectedRandomItem.Color;
+                                            }
+                                            
+                                            UnityEngine.GUI.backgroundColor = Color.white;
+                                        }
+                                    }
+                                    
+                                    if (val == itemsForEditor.Last())
+                                    {
+                                        // Clear selection button
+                                        if (GUILayout.Button(new GUIContent("X", "Clear item selection"), GUILayout.Width(40), GUILayout.Height(40)))
+                                        {
+                                            selectedRandomItem = null;
+                                        }
+                                    }
+                                    
+                                    GUILayout.EndHorizontal();
+                                }
+                            }
+                            GUILayout.EndVertical();
+                            
+                            if (selectedRandomItem != null)
+                            {
+                                GUILayout.Label($"Selected: {selectedRandomItem.Item.name}", EditorStyles.helpBox);
+                                
+                                // Generate Items button right next to item selection
+                                GUILayout.Space(5);
+                                if (GUILayout.Button(new GUIContent("Generate Items", "Places selected items on existing squares"), GUILayout.Height(20), GUILayout.Width(100)))
+                                {
+                                    GenerateRandomItems();
+                                }
+                            }
+                            else
+                            {
+                                GUILayout.Label("No item selected - will place empty squares", EditorStyles.helpBox);
+                            }
+                        }
+                    }
+                    
+                    GUILayout.Space(10);
+                    
+                    // Symmetrical generation toggle
+                    GUILayout.BeginHorizontal();
+                    symmetricalGeneration = EditorGUILayout.Toggle(new GUIContent("Symmetrical Generation:", "Generate a horizontally mirrored pattern"), symmetricalGeneration);
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.Space(10);
+                    
+                    // Generation buttons
+                    GUILayout.BeginHorizontal();
+                    {
+                        if (GUILayout.Button(new GUIContent("Generate Random Grid", "Creates random squares based on settings"), GUILayout.Height(40), GUILayout.Width(150)))
+                        {
+                            GenerateRandomGrid();
+                        }
+                        
+                        if (GUILayout.Button(new GUIContent("Clear Grid", "Sets all squares to NONE (empty/void)"), GUILayout.Height(40), GUILayout.Width(100)))
+                        {
+                            ClearGrid();
+                        }
+                        
+                        if (GUILayout.Button(new GUIContent("Fill All Empty", "Sets all NONE squares to EmptySquare"), GUILayout.Height(40), GUILayout.Width(120)))
+                        {
+                            FillAllEmpty();
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndHorizontal();
+        }
+        
+        private void GenerateRandomGrid()
+        {
+            if (levelData?.GetField(subLevelNumber - 1)?.levelSquares == null) return;
+            
+            var enabledTypes = new List<SquareTypes>();
+            for (int i = 0; i < randomSquareTypes.Length; i++)
+            {
+                if (enableRandomTypes[i])
+                    enabledTypes.Add(randomSquareTypes[i]);
+            }
+            
+            if (enabledTypes.Count == 0)
+            {
+                Debug.LogWarning("No square types enabled for random generation!");
+                return;
+            }
+            
+            var maxRows = levelData.GetField(subLevelNumber - 1).maxRows;
+            var maxCols = levelData.GetField(subLevelNumber - 1).maxCols;
+            
+            if (symmetricalGeneration)
+            {
+                // Generate for half the grid and mirror
+                var halfCols = (maxCols + 1) / 2;
+                
+                for (int row = 0; row < maxRows; row++)
+                {
+                    for (int col = 0; col < halfCols; col++)
+                    {
+                        SquareTypes selectedType;
+                        if (UnityEngine.Random.value < randomFillPercentage)
+                        {
+                            selectedType = enabledTypes[UnityEngine.Random.Range(0, enabledTypes.Count)];
+                        }
+                        else
+                        {
+                            selectedType = SquareTypes.NONE;
+                        }
+                        
+                        // Set the square type
+                        squareType = selectedType;
+                        SetSquareType(col, row);
+                        
+                        // Clear any existing items
+                        var squareBlock = levelData.GetBlock(row, col);
+                        squareBlock.item = null;
+                        
+                        // Mirror to the right side
+                        var mirrorCol = maxCols - 1 - col;
+                        if (mirrorCol != col) // Avoid setting the same square twice in odd-width grids
+                        {
+                            SetSquareType(mirrorCol, row);
+                            
+                            // Clear any existing items from mirrored square
+                            var mirrorSquareBlock = levelData.GetBlock(row, mirrorCol);
+                            mirrorSquareBlock.item = null;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Normal random generation
+                for (int row = 0; row < maxRows; row++)
+                {
+                    for (int col = 0; col < maxCols; col++)
+                    {
+                        if (UnityEngine.Random.value < randomFillPercentage)
+                        {
+                            var randomType = enabledTypes[UnityEngine.Random.Range(0, enabledTypes.Count)];
+                            squareType = randomType;
+                            SetSquareType(col, row);
+                            
+                            // Clear any existing items
+                            var squareBlock = levelData.GetBlock(row, col);
+                            squareBlock.item = null;
+                        }
+                        else
+                        {
+                            squareType = SquareTypes.NONE;
+                            SetSquareType(col, row);
+                            
+                            // Clear items from NONE squares
+                            var squareBlock = levelData.GetBlock(row, col);
+                            squareBlock.item = null;
+                        }
+                    }
+                }
+            }
+            
+            dirtyLevel = true;
+        }
+        
+        private void ClearGrid()
+        {
+            if (levelData?.GetField(subLevelNumber - 1)?.levelSquares == null) return;
+            
+            squareType = SquareTypes.NONE;
+            for (int row = 0; row < levelData.GetField(subLevelNumber - 1).maxRows; row++)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    SetSquareType(col, row);
+                    // Also clear any items
+                    var squareBlock = levelData.GetBlock(row, col);
+                    squareBlock.item = null;
+                }
+            }
+            
+            dirtyLevel = true;
+        }
+        
+        private void FillAllEmpty()
+        {
+            if (levelData?.GetField(subLevelNumber - 1)?.levelSquares == null) return;
+            
+            for (int row = 0; row < levelData.GetField(subLevelNumber - 1).maxRows; row++)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    var squareBlock = levelData.GetBlock(row, col);
+                    if (squareBlock.block == SquareTypes.NONE)
+                    {
+                        squareType = SquareTypes.EmptySquare;
+                        SetSquareType(col, row);
+                        // Clear any items from squares that were NONE
+                        squareBlock.item = null;
+                    }
+                }
+            }
+            
+            dirtyLevel = true;
+        }
+        
+        private void GenerateRandomItems()
+        {
+            if (levelData?.GetField(subLevelNumber - 1)?.levelSquares == null || selectedRandomItem == null) return;
+            
+            var maxRows = levelData.GetField(subLevelNumber - 1).maxRows;
+            var maxCols = levelData.GetField(subLevelNumber - 1).maxCols;
+            
+            for (int row = 0; row < maxRows; row++)
+            {
+                for (int col = 0; col < maxCols; col++)
+                {
+                    var squareBlock = levelData.GetBlock(row, col);
+                    // Only place items on non-NONE squares
+                    if (squareBlock.block != SquareTypes.NONE && UnityEngine.Random.value < itemPlacementPercentage)
+                    {
+                        PlaceItemOnSquare(col, row);
+                    }
+                }
+            }
+            
+            dirtyLevel = true;
+        }
+
+        private void PlaceItemOnSquare(int col, int row)
+        {
+            if (selectedRandomItem == null) return;
+            
+            try
+            {
+                var squareBlock = levelData.GetBlock(row, col);
+                squareBlock.item = selectedRandomItem.DeepCopy();
+                dirtyLevel = true;
+            }
+            catch (global::System.Exception e)
+            {
+                Debug.LogWarning($"Could not place item at {col},{row}: {e.Message}");
+            }
+        }
+
+        private bool pendingMachineTarget;
+        private bool pendingCubbyTarget;
+        private bool pendingFlyingTarget;
+        private bool pendingStoneTarget;
+        private bool pendingInkwellTarget;
+
+        // The cabinet goal follows its cells like grass and ice do: the count comes from the board,
+        // four letters per cabinet, so the designer only paints the furniture.
+        private void EnsureBoardTarget(TargetLevel targetLevel, string goalName, string notification)
+        {
+            if (targetEditorScriptable == null || targetLevel == null) return;
+            int type = targetEditorScriptable.targets.FindIndex(i => i.name == goalName);
+            if (type < 0) return;
+            if (targetLevel.targets != null && targetLevel.targets.Any(i => i.targetType.type == type)) return;
+            Undo.RecordObject(targetLevel, "Adicionar meta");
+            targetLevel.AddTargetType(type, targetEditorScriptable);
+            SaveTargetChanges(targetLevel);
+            ShowNotification(new GUIContent(notification));
+        }
+
+        // Painting a franking machine brings its goal along, the way grass and ice goals follow their
+        // cells. The difference is the count: the machine's letters are typed by the designer instead
+        // of being read from the board, so the goal starts at the default and stays editable.
+        private void EnsureFrankingMachineTarget(TargetLevel targetLevel)
+        {
+            EnsureBoardTarget(targetLevel, "MachineLetters", "Meta de cartas da franqueadora adicionada.");
+        }
+
+        private const int MailCubbySize = 2;
+
+        private bool IsInsideField(int col, int row)
+        {
+            var field = GetField();
+            return col >= 0 && row >= 0 && col < field.maxCols && row < field.maxRows;
+        }
+
+        private bool HasMailCubby(int col, int row)
+        {
+            if (!IsInsideField(col, row)) return false;
+            return levelData.GetBlock(row, col).blocks.Any(i => i.squareType == SquareTypes.MailCubby);
+        }
+
+        private bool IsMailCubbyAnchor(int col, int row)
+        {
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                    if (!HasMailCubby(col + x, row + y)) return false;
+            return true;
+        }
+
+        // The group this cell belongs to, or the cell itself when it is a leftover single cell.
+        private Vector2Int MailCubbyOrigin(int col, int row)
+        {
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                    if (IsMailCubbyAnchor(col - x, row - y)) return new Vector2Int(col - x, row - y);
+            return new Vector2Int(col, row);
+        }
+
+        private void RemoveMailCubbyCell(int col, int row)
+        {
+            if (!HasMailCubby(col, row)) return;
+            var block = levelData.GetBlock(row, col);
+            block.blocks.RemoveAll(i => i.squareType == SquareTypes.MailCubby);
+            if (block.obstacle == SquareTypes.MailCubby)
+            {
+                block.obstacle = SquareTypes.NONE;
+                block.obstacleLayer = 1;
+            }
+            if (block.blocks.Count == 0)
+                block.blocks.Add(new SquareTypeLayer {squareType = SquareTypes.EmptySquare});
+            block.MergeEmptySquares();
+        }
+
+        // Clicking any cell of an existing cabinet clears that cabinet; clicking a free cell
+        // stamps a new one anchored there. Nothing is written when the 2x2 does not fit.
+        private void MailCubbyBrush(int col, int row)
+        {
+            if (HasMailCubby(col, row))
+            {
+                var origin = MailCubbyOrigin(col, row);
+                for (int y = 0; y < MailCubbySize; y++)
+                    for (int x = 0; x < MailCubbySize; x++)
+                        RemoveMailCubbyCell(origin.x + x, origin.y + y);
+                var remaining = levelData.GetField(subLevelNumber - 1).levelSquares.Max(i => i.blocks.Count);
+                layers = Mathf.Max(1, remaining);
+                layer = Mathf.Clamp(layer, 0, layers - 1);
+                dirtyLevel = true;
+                return;
+            }
+
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                {
+                    if (!IsInsideField(col + x, row + y))
+                    {
+                        ShowNotification(new GUIContent("O armario ocupa 2x2 e nao cabe nesta borda."));
+                        return;
+                    }
+                    if (HasMailCubby(col + x, row + y))
+                    {
+                        ShowNotification(new GUIContent("Ja existe um armario encostado aqui."));
+                        return;
+                    }
+                    if (levelData.GetBlock(row + y, col + x).block == SquareTypes.NONE)
+                    {
+                        ShowNotification(new GUIContent("O armario 2x2 nao pode cobrir um buraco."));
+                        return;
+                    }
+                }
+
+            var prototype = SquareUtils.GetBlockPrefab(SquareTypes.MailCubby).Last().GetComponent<Square>();
+            for (int y = 0; y < MailCubbySize; y++)
+                for (int x = 0; x < MailCubbySize; x++)
+                {
+                    var block = levelData.GetBlock(row + y, col + x);
+                    block.obstacle = SquareTypes.MailCubby;
+                    block.obstacleLayer = 1;
+                    AddBlock(block, prototype);
+                }
+            pendingCubbyTarget = true;
+            dirtyLevel = true;
+        }
+
+        // Levels painted before the 2x2 brush can still hold single cabinet cells, which load as
+        // invisible walls. Warn on save instead of shipping an unplayable board.
+        private void ValidateMailCubbyGroups()
+        {
+            var orphans = new List<string>();
+            for (int sub = 0; sub < levelData.fields.Count; sub++)
+            {
+                var field = levelData.fields[sub];
+                for (int index = 0; index < field.levelSquares.Length; index++)
+                {
+                    var block = field.levelSquares[index];
+                    if (!block.blocks.Any(i => i.squareType == SquareTypes.MailCubby)) continue;
+                    int blockCol = index % field.maxCols, blockRow = index / field.maxCols;
+                    bool grouped = false;
+                    for (int y = 0; y < MailCubbySize && !grouped; y++)
+                        for (int x = 0; x < MailCubbySize && !grouped; x++)
+                        {
+                            bool full = true;
+                            for (int gy = 0; gy < MailCubbySize && full; gy++)
+                                for (int gx = 0; gx < MailCubbySize && full; gx++)
+                                {
+                                    int c = blockCol - x + gx, r = blockRow - y + gy;
+                                    full = c >= 0 && r >= 0 && c < field.maxCols && r < field.maxRows &&
+                                           field.levelSquares[r * field.maxCols + c].blocks
+                                               .Any(i => i.squareType == SquareTypes.MailCubby);
+                                }
+                            grouped = full;
+                        }
+                    if (!grouped) orphans.Add("subfase " + (sub + 1) + " (" + blockCol + "," + blockRow + ")");
+                }
+            }
+            if (orphans.Count == 0) return;
+            ShowNotification(new GUIContent("Armario incompleto: " + orphans.Count + " celula(s) solta(s)."));
+            Debug.LogWarning("Armario postal incompleto neste nivel. Cada armario precisa de um quadrado 2x2 inteiro. " +
+                             "Celulas soltas viram bloqueios invisiveis em: " + string.Join(", ", orphans));
+        }
+
+        // The franking machine only reacts while the level has a MachineLetters goal with a count left
+        // (FrankingMachineCell.AcceptImpact). Without it the machine is painted but completely inert.
+        // A level saved before the goal followed the brush still gets it, so the cabinet always counts.
+        private void ValidateMailCubbyTarget()
+        {
+            if (targetEditorScriptable == null) return;
+            bool hasCubby = levelData.fields.Any(f => f.levelSquares != null && f.levelSquares
+                .Any(b => b.blocks.Any(i => i.squareType == SquareTypes.MailCubby)));
+            if (!hasCubby) return;
+            var targetLevel = GetTargetLevel();
+            bool hasGoal = targetLevel != null && targetLevel.targets != null && targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MailCubby");
+            if (!hasGoal) pendingCubbyTarget = true;
+        }
+
+        private void ValidateFrankingMachineTargets()
+        {
+            bool hasMachine = levelData.fields.Any(f => f.levelSquares != null && f.levelSquares
+                .Any(b => b.blocks.Any(i => i.squareType == SquareTypes.FrankingMachine)));
+            if (!hasMachine || targetEditorScriptable == null) return;
+            var targetLevel = GetTargetLevel();
+            bool hasGoal = targetLevel != null && targetLevel.targets != null && targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MachineLetters" &&
+                t.CountDrawer != null && t.CountDrawer.count > 0);
+            if (hasGoal) return;
+            // Levels painted before the goal followed the brush: bring the goal in on the next repaint
+            // instead of only complaining. Without it the machine never emits a letter.
+            bool missingEntirely = targetLevel == null || targetLevel.targets == null || !targetLevel.targets.Any(t =>
+                t.targetType.type >= 0 && t.targetType.type < targetEditorScriptable.targets.Count &&
+                targetEditorScriptable.targets[t.targetType.type].name == "MachineLetters");
+            if (missingEntirely)
+            {
+                pendingMachineTarget = true;
+                ShowNotification(new GUIContent("Meta de cartas da franqueadora adicionada."));
+                return;
+            }
+            ShowNotification(new GUIContent("Meta de cartas da franqueadora esta zerada."));
+            Debug.LogWarning("Esta fase tem franqueadora e a meta \"Colete cartas da franqueadora\" esta em zero. " +
+                             "Com a meta zerada a maquina nao emite carta nenhuma. Defina a quantidade no painel " +
+                             "\"Metas da fase\" do editor de niveis.");
+        }
+
+        private void SetSquareType(int col, int row)
+        {
+            dirtyLevel = true;
+            SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            m_squareBlock = squareBlock;
+            if (separateBarBrush)
+            {
+                GenericMenu menu = new GenericMenu();
+                AddMenuItem(menu, "LEFT", 0, squareBlock);
+                AddMenuItem(menu, "RIGHT", 1, squareBlock);
+                AddMenuItem(menu, "UP", 2, squareBlock);
+                AddMenuItem(menu, "DOWN", 3, squareBlock);
+                AddMenuItem(menu, "NONE", 4, squareBlock);
+                menu.ShowAsContext();
+                return;
+            }
+
+            // Magic Mail: a machine on the board is useless without its letters goal, so painting one
+            // adds the goal (count typed in the goals panel) on the next repaint.
+            if (squareType == SquareTypes.FrankingMachine && !deleteBlock) pendingMachineTarget = true;
+            if (squareType == SquareTypes.EnchantedStone && !deleteBlock) pendingStoneTarget = true;
+            if (squareType == SquareTypes.Inkwell && !deleteBlock) pendingInkwellTarget = true;
+
+            // Magic Mail: the mail cabinet is a single 2x2 object built by the top-left cell.
+            // A lone cell would load as an invisible blocking square, so the brush always
+            // stamps or clears the whole group.
+            if (squareType == SquareTypes.MailCubby && !deleteBlock)
+            {
+                MailCubbyBrush(col, row);
+                return;
+            }
+
+            if (squareType == SquareTypes.EmptySquare || squareType == SquareTypes.NONE)
+            {
+                squareBlock.blocks.Clear();
+                squareBlock.blocks.Add(new SquareTypeLayer {squareType = squareType});
+                squareBlock.block = squareType;
+                squareBlock.blockLayer = 1;
+                squareBlock.obstacle = SquareTypes.NONE;
+                squareBlock.obstacleLayer = 1;
+            }
+            else
+            {
+                Square squarePrototype = SquareUtils.GetBlockPrefab(squareType).Last().GetComponent<Square>();
+                if (!deleteBlock)
+                {
+                    if (!squarePrototype.IsObstacle() && squareType != SquareTypes.EmptySquare &&
+                        squareType != SquareTypes.NONE)
+                    {
+                        if (squareBlock.block == squareType)
+                        {
+                            squareBlock.blockLayer =
+                                (int) Mathf.Repeat(squareBlock.blockLayer, SquareUtils.GetLayersCount(squareType)) + 1;
+                        }
+                        else
+                        {
+                            squareBlock.blockLayer = 1;
+                        }
+                        squareBlock.block = squareType;
+                    }
+                    else if (squarePrototype.IsObstacle())
+                    {
+                        if (squareBlock.obstacle == squareType)
+                        {
+                            squareBlock.obstacleLayer = (int) Mathf.Repeat(squareBlock.obstacleLayer,
+                                SquareUtils.GetLayersCount(squareType)) + 1;
+                        }
+                        else
+                        {
+                            squareBlock.obstacleLayer = 1;
+                        }
+                        squareBlock.obstacle = squareType;
+                    }
+                    
+                    AddBlock(squareBlock, squarePrototype);
+                }
+                else if (layer > 0)
+                {
+                    DeleteBlock(squareBlock, squarePrototype);
+                }
+            }
+
+            // update = true;
+            // SaveLevel();
+            // GetSquare(col, row).type = (int) squareType;
+        }
+
+        //Add_feature
+        private void SetSpawnerType(int col, int row)
+        {
+            dirtyLevel = true;
+            SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            if (!(squareBlock.spawners.Count > 0))
+            {
+                SingleSpawn NewSingleSpawn = new SingleSpawn()
+                {
+                    SpawnId = " Spawner" + "_" + UnityEngine.Random.Range(1000, 9999) + " ",
+                    SpawnersType = Spawners.None,
+                    SpawnersType_2 = Spawners.None,
+                    SpawnPersentage = 0,
+                    SpawnPersentage_2 = 0,
+                    rotationType = RotationType.Top
+                };
+                squareBlock.spawners.Add(NewSingleSpawn);
+            }
+        }
+
+
+        void AddMenuItem(GenericMenu menu, string menuPath, int index, SquareBlocks squareBlocks)
+        {
+            bool squareBlocksSeparatorIndex = false;
+            if (index < squareBlocks.separatorIndexes.Length)
+                squareBlocksSeparatorIndex = squareBlocks.separatorIndexes[index];
+            menu.AddItem(new GUIContent(menuPath), squareBlocksSeparatorIndex, OnSeparateSelected, index);
+        }
+
+        private void OnSeparateSelected(object userdata)
+        {
+            m_separateIndex = (int) userdata;
+            if (m_squareBlock.separatorIndexes.Length > m_separateIndex)
+                m_squareBlock.separatorIndexes[m_separateIndex] = !m_squareBlock.separatorIndexes[m_separateIndex];
+            else
+            {
+                for (int i = 0; i < m_squareBlock.separatorIndexes.Length; i++)
+                {
+                    m_squareBlock.separatorIndexes[i] = false;
+                }
+            }
+        }
+
+        //Add_feature
+        private void RemoveSpawnerTyps(int col, int row)
+        {
+            dirtyLevel = true;
+            SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            squareBlock.spawners.Clear();
+        }
+        
+        private void DeleteBlock(SquareBlocks squareBlock, Square squarePrototype)
+        {
+            var index = Mathf.Min(layer, squareBlock.blocks.Count - 1);
+            if (index < 0) return;
+            if (squareBlock.blocks[index].squareType == SquareTypes.BigBlock)
+            {
+                var originalPos = squareBlock.blocks[index].originalPos;
+                var size = squareBlock.blocks[index].size;
+                for (int x = originalPos.x; x < originalPos.x + size.x; x++)
+                {
+                    for (int y = originalPos.y; y < originalPos.y + size.y; y++)
+                    {
+                        var originalBlock = levelData.GetBlock(y, x);
+                        originalBlock.blocks.RemoveAt(index);
+                        originalBlock.MergeEmptySquares();
+                    }
+                }
+            }
+            else
+                squareBlock.blocks.RemoveAt(index);
+            var sum = levelData.GetField().levelSquares.Max(i => i.blocks.Count);
+            if (sum < layers)
+                layers = sum;
+            if (layer >= layers) layer = layers - 1;
+        }
+
+        private void  AddBlock(SquareBlocks squareBlock, Square squarePrototype)
+        {
+            // layer++;
+            var list = new List<SquareBlocks>();
+            var xMax = squarePrototype.sizeInSquares.x;
+            var yMax = squarePrototype.sizeInSquares.y;
+            if (rotateBig)
+            {
+                yMax = squarePrototype.sizeInSquares.x;
+                xMax = squarePrototype.sizeInSquares.y;
+            }
+            for (int x = 0; x < xMax; x++)
+            {
+                for (int y = 0; y < yMax; y++)
+                {
+                    list.Add(levelData.GetBlock(squareBlock.position.y + y, squareBlock.position.x + x));
+                }
+            }
+            int[] layersCount = new int[list.Count];
+            for (var index = 0; index < list.Count; index++)
+            {
+                var squareBlockse = list[index];
+                /*if (squarePrototype.type == SquareTypes.Cake)
+                {
+                    layersCount[index] = Mathf.Min(layer, squareBlockse.blocks.Count - 1) + 12;
+                }
+                else
+                {*/
+                    layersCount[index] = Mathf.Min(layer, squareBlockse.blocks.Count - 1) + 1;
+                //}
+            }
+
+            var currentlayer = layersCount.Max();
+
+            foreach (var squareBlockse in list)
+            {
+                ExpandBlocksList(squareBlockse, currentlayer);
+                var squareTypeLayer = new SquareTypeLayer {squareType = squareType};
+                if (squareBlock != squareBlockse)
+                    squareTypeLayer.anotherSquare = true;
+                
+                /*if (squareType == SquareTypes.Cake)
+                    squareTypeLayer.anotherSquare = false;*/
+                
+                squareTypeLayer.rotate = rotateBig;
+                squareTypeLayer.originalPos = squareBlock.position;
+                squareTypeLayer.size = new Vector2Int(xMax, yMax);
+                squareBlockse.blocks.Insert(currentlayer, squareTypeLayer);
+            }
+            
+            SquareUtils.GetSquareTextures(squareBlock, layer);
+
+            if (squareBlock.blocks.Count() > layers)
+                layers = squareBlock.blocks.Count;
+            if (currentlayer > layer) layer = currentlayer;
+            layer = Mathf.Clamp(layer, 0, layers - 1);
+        }
+
+        private void ExpandBlocksList(SquareBlocks sqBlock, int maxLayer)
+        {
+            var blocksCount = sqBlock.blocks.Count;
+            if (maxLayer >= blocksCount)
+            {
+                for (int i = 0; i < maxLayer - blocksCount; i++)
+                {
+                    sqBlock.blocks.Add(new SquareTypeLayer {squareType = SquareTypes.EmptySquare});
+                }
+            }
+        }
+
+        private void SaveToScriptable(int _levelNumber)
+        {
+            levelData.InitTargetObjects();
+            SquareBlocks[] levelSquares = levelData.GetField(subLevelNumber - 1).levelSquares;
+            for (int i = 0; i < levelSquares.Length; i++)
+            {
+                var item = levelSquares[i];
+                var dir = item.direction;
+
+                if (dir == Vector2.zero) item.direction = Vector2.down;
+            }
+
+            bool enterSquaresExist = levelSquares.Any(i => i.enterSquare);
+            if (!enterSquaresExist)
+            {
+                for (int col = 0; col < levelData.GetField(subLevelNumber - 1).maxCols; col++)
+                {
+                    levelData.GetBlock(0, col).enterSquare = true;
+                }
+            }
+
+            ScriptableLevelManager.SaveLevel(levelPath, _levelNumber, levelData);
+        }
+
+        private bool LoadLevel(int currentLevel)
+        {
+            var revision = LevelRevision(currentLevel);
+            if (revision != null && (loadedRevisionLevel != currentLevel || revision != loadedLevelRevision))
+                AssetDatabase.ImportAsset($"Assets/SweetSugar/Resources/Levels/Level_{currentLevel}.asset",
+                    ImportAssetOptions.ForceUpdate | ImportAssetOptions.ForceSynchronousImport);
+            levelData = LoadingManager.LoadlLevel(currentLevel, "Levels/Level_");
+            loadedRevisionLevel = currentLevel;
+            loadedLevelRevision = LevelRevision(currentLevel);
+            squareBlockSelected = null;
+            layer = layers - 1;
+
+            // PlayerPrefs.SetInt("OpenLevelTest", currentLevel);
+            // PlayerPrefs.Save();
+
+            if (levelData != null)
+            {
+                Initialize();
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+    }
+
+    static class SpriteExtensions
+    {
+        public static Texture2D GetTexture(this Sprite sprite)
+        {
+            return SpriteUtility.GetSpriteTexture(sprite, false);
+        }
+    }
+}

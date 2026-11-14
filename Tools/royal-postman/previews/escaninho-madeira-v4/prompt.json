@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-12",
+  "tool": "built-in image_gen",
+  "status": "visual-study-user-review-pending",
+  "prompt": "Use case: style-transfer edit. Image 1 is the EDIT TARGET: the two-state honey-wood and teal postal cabinet. Images 2 (turquoise safe) and 3 (wooden crate) are ONLY the project's established rendering/style references, not object or color replacements. Redraw the cabinet from image 1 in the SAME clear simplified CARTOON MOBILE PUZZLE style as those project assets. The current cabinet is far too realistic: eliminate the realistic woodgrain, brushed paint streaks, microtexture, furniture-product rendering and dull bronze. Use large soft rounded/chamfered forms, saturated warm caramel/orange-brown wood faces with at most two or three broad stylized curved grain marks, dark warm brown edge separation as on the crate, clean painted highlights and simple broad light/shadow planes. Teal door insets should be brighter turquoise/petrol teal with smooth toy-like painted shading, not textured planks. Pull tabs rounded chunky golden bronze with one clean highlight, readable at tiny game-board size. Ivory envelopes should be plump rounded cartoon envelopes with bright red rounded wax seals, like the project's other pieces. Keep the chosen compact square cabinet design: thick FLAT rounded top slab, no arch, no legs, two closed doors at LEFT and exactly two open horizontal compartments at RIGHT, three neat letter stacks per shelf. Keep honey wood + teal family but make it cheerful and vividly cartoon, consistent with the game's safe and crate. Both views same scale and exact same cabinet model. No circular top badge, no envelope icon on top, no purple, no extra knobs or shelves, no characters, no background scene, no text, no labels. Transparent background, fully contained two side-by-side states, clean margins. Preserve design and layout while changing the rendering/material language; it must read as a match-3 game obstacle rather than a real wooden cupboard.",
+  "source": "../escaninho-madeira-v3/escaninho-mel-petroleo.png",
+  "style_references": [
+    "Assets/RoyalAves/Art/Obstacles/Safe/SafeStatesReference.png",
+    "Assets/RoyalAves/Art/Obstacles/ParcelStack/CM_pilha_estado01_00.png"
+  ],
+  "output": "escaninho-cartoon.png",
+  "notes": [
+    "Simplified cartoon finish following project safe/crate assets; no realistic grain.",
+    "Approved safe/crate assets used as references only, unchanged.",
+    "No runtime/prefab/mechanics changes."
+  ]
+}

@@ -1,0 +1,23 @@
+using System;
+using System.IO;
+using UnityEditor;
+using UnityEngine;
+using RoyalAves.Gameplay;
+namespace RoyalAves.EditorTools
+{
+ public static class DoubleLightballAuditEntry
+ {
+  const string Key="MagicMail.DoubleLightball.Native";
+  public static void Run()
+  {
+   if(!Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"))throw new Exception("Isolated only");
+   PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailDoubleLightball";
+   foreach(var key in LightBallLaboratory.OtherKeys)SessionState.SetBool(key,false);LightBallLaboratory.Disable();InkwellLaboratory.Disable();
+   if(File.Exists("Logs/multicolor-audit.result"))File.Delete("Logs/multicolor-audit.result");
+   UnityEditor.SceneManagement.EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/game.unity");
+   SessionState.SetBool(Key,true);MulticolorSequenceAudit.Request();
+  }
+  [InitializeOnLoadMethod]static void Listen()=>EditorApplication.update+=Poll;
+  static void Poll(){if(!SessionState.GetBool(Key,false)||!File.Exists("Logs/multicolor-audit.result"))return;var result=File.ReadAllText("Logs/multicolor-audit.result");if(!result.StartsWith("PASS")&&!result.StartsWith("FAIL"))return;SessionState.SetBool(Key,false);EditorApplication.Exit(result.StartsWith("PASS")?0:1);}
+ }
+}

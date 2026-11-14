@@ -15,7 +15,7 @@ namespace RoyalAves.Effects
         Action onComplete;
         SpriteRenderer visual;
         Quaternion restRotation;
-        bool cabinet;
+        bool cabinet,soft3D;
         float playbackSpeed = 1f;
 
         public static void Play(SpriteRenderer source, LevelManager manager, Action onComplete, bool cabinet = false, float playbackSpeed = 1f)
@@ -34,6 +34,7 @@ namespace RoyalAves.Effects
         void Initialize(SpriteRenderer source, LevelManager owner, Action callback)
         {
             manager = owner;
+            soft3D=Soft3DElementStyle.Has(source);
             onComplete = callback;
             restRotation = transform.localRotation;
             // Keep the short completion barrier, independent of decorative falling wood.
@@ -69,10 +70,11 @@ namespace RoyalAves.Effects
                 {
                     burstStarted = true;
                     transform.localRotation = restRotation;
-                    if (cabinet) FallingBoardDebris.ShatterCabinet(visual);
+                    if(soft3D)Soft3DElementEffect.Burst(visual,new Color(.77f,.43f,.16f));
+                    else if (cabinet) FallingBoardDebris.ShatterCabinet(visual);
                     else FallingBoardDebris.ShatterWood(visual, 1);
                     if (cabinet) ParcelSoundEffects.Play(1);
-                    ParcelSparkEffect.Play(visual, true);
+                    if(!soft3D)ParcelSparkEffect.Play(visual, true);
                     visual.enabled = false;
                 }
                 yield return null;

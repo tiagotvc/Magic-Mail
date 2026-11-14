@@ -1,0 +1,9 @@
+PASS: eight real Play cases including off-grid horizontal/vertical launches; no diagonal or depth movement; impacts follow actual moving halves, no falling during the sweep, impact pause before refill. No physical-pointer/full-victory/audio test.
+PASS vertical-stones: 9 impacts over 0,584s; gravity held until 0,289s after last impact.
+PASS horizontal-mixed: 8 impacts over 0,516s; gravity held until 0,270s after last impact.
+PASS vertical-pieces: 9 impacts over 0,600s; gravity held until 0,284s after last impact.
+PASS horizontal-pieces: 8 impacts over 0,516s; gravity held until 0,302s after last impact.
+PASS two-rockets: 15 impacts over 0,595s; gravity held until 0,286s after last impact.
+PASS rocket-dynamite: 38 impacts over 0,882s; gravity held until 0,283s after last impact.
+PASS horizontal-offset: 8 impacts over 0,148s; gravity held until 0,300s after last impact.
+PASS vertical-offset: 9 impacts over 0,619s; gravity held until 0,268s after last impact.

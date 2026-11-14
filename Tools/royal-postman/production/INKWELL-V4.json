@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-03",
+  "revision": "V4 enlarged icon and production level-editor registration",
+  "sourcesMatchNativeTest": {
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": true,
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": true,
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellTarget.cs": true,
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs": true,
+    "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs": true,
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetEditor/Editor/TargetEditorUtils.cs": true,
+    "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs": true,
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": true,
+    "Assets/SweetSugar/Scripts/Level/LevelData.cs": true,
+    "Assets/SweetSugar/Resources/Blocks/Inkwell.prefab": true,
+    "Assets/RoyalAves/Art/Obstacles/Inkwell/InkwellStages.png.meta": true
+  },
+  "hashes": {
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "034d505a6496d9c93c9ba122fe1e6995098814ef55b03cba8b4ecd90fbc39fcd",
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": "27f5f116993cd28a7522021f9289928470d3cd01f3b405ba95560c6f2549685c",
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": "0f5a8403dd40370ddcbcf4c3b81b70f76671120230e81a1b3c51d84c5a7a3985",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": "4a8c92363daf84d8b8f4f50af5099bd2eec0379b593730954d08c8de1ce7ffc0",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": "6f3cf9a65f0b4e86d3b17d9e84f1b5d096711ebf118fe495f15c62ca99bd29a0",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellTarget.cs": "472402d86655b9cc9a671b7af815519034e7441c56253b9812df44af8eda1a79",
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs": "752d42daff407059059c4537f6bae20b98707a7fe81557c4a4e45efcb49e0080",
+    "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs": "b3e6abeaff76923131e5387b04185adc20d2dab8a6b2949b06ca21928a1fb846",
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetEditor/Editor/TargetEditorUtils.cs": "2ccb3c85f2f311dfae03a63c09e9e0cf7e540197c814897675af7350fda1febf",
+    "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs": "de8af2fce3b7a6104420f06c1e94945c6d48a4c7d6edee2a47044a9c3aa9a3bc",
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": "5d7a8f5b988704b0a9ab28041ccd1a20633d153216861dc82d9641eed62f22fa",
+    "Assets/SweetSugar/Scripts/Level/LevelData.cs": "ddf601da0f07d4f766e23d892a5a6f6a0d465b54a5184f95a3363454adf193b7",
+    "Assets/SweetSugar/Resources/Blocks/Inkwell.prefab": "4f2a719fcb1f70043a93407c125338b7d9fb6091bb3b00b5c7a90d5ffddb672f",
+    "Assets/RoyalAves/Art/Obstacles/Inkwell/InkwellStages.png.meta": "4e3eda9efcf5077f62a61a8b41bd79fe5570c59fe7094fddc0d10a8e4190b704"
+  },
+  "installationAudit": {
+    "catalogPrefixBytePreserved": true,
+    "oldTargetNames": [
+      "CollectItems",
+      "Ingredients",
+      "SugarSquare",
+      "JellyBlock",
+      "SolidBlock",
+      "Stars",
+      "Marshmello",
+      "MachineLetters",
+      "IceBlock",
+      "MailCubby",
+      "FlyingLetters",
+      "RoutePotions",
+      "Mailbags",
+      "BagOpenings",
+      "EnchantedStone"
+    ],
+    "newTargetIndex": 15,
+    "enumValue": 16,
+    "pixelsPerUnit": 210,
+    "files": [
+      "Assets/SweetSugar/Resources/Blocks/Inkwell.prefab",
+      "Assets/RoyalAves/Laboratory/InkwellCell.prefab",
+      "Assets/RoyalAves/Laboratory/InkwellLevel.asset",
+      "Assets/RoyalAves/Laboratory/InkwellTargets.asset"
+    ],
+    "campaignLevelAssetsWritten": [],
+    "prefabCreated": "Assets/SweetSugar/Resources/Blocks/Inkwell.prefab"
+  },
+  "nativeChecks": {
+    "inkwell-authoring-verification.result": "PASS: enum append-only 16, independent resource prefab/BindLayer, one appended objective, separate cropped palette icon, real level-editor brush/save-load and automatic target request; crates preserved. In-memory test only; campaign layouts not saved.",
+    "inkwell-size-verification.result": "PASS: visible alpha height/cell pitch=0,939; pixelsPerUnit=210.",
+    "inkwell-native-verification.result": "PASS: real swap/match resolver damages adjacent jar and emits visible liquid flight; five emitted/landed splashes; intermediate/full wet fill; imported prefab/sprites/material/shader; diagonal/duplicate rejection; four neighbors then center; goal decremented once; independent piece/floor ownership. Swap initiated by API, not physical pointer; remaining four hits diagnostic. No full victory/Continue or device claim."
+  },
+  "pending": [
+    "physical pointer in level editor/game",
+    "full victory/Continue flow",
+    "device/audio",
+    "user visual acceptance"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "package": "unityunreal.com_Mesh Explosion Mesh explode System Mesh Slicing Framework v1.0.unitypackage",
+  "package_sha256": "bb2319f0b9b4c6e623dd187c6f9db46274bc7486b698d92e53fd62ad3f285328",
+  "source_assets": [
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Prefab/Explosion.prefab",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Prefab\\Explosion.prefab",
+      "sha256": "98f4fa0df26d7c352bb98a547103661012649b00f643e056b2e6857a754c8abe"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Script/DeactivateAfterTime.cs",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Script\\DeactivateAfterTime.cs",
+      "sha256": "aa1306f987b159e663fde0e34180413e3c4d8bf5daaf3cdfe9231d6e8a0a69d2"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Material/VFX/Circle2.mat",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Material\\VFX\\Circle2.mat",
+      "sha256": "c01ac2aecc324ede3b8d1c48294ac093937a612a09a7f658d366f2edd2221763"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Texture/Smoke.psd",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Texture\\Smoke.psd",
+      "sha256": "442aa905a909d8a757c923c21607b412b3905faae05f3c8fde6e0b93ed5962c9"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Material/VFX/Glow.mat",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Material\\VFX\\Glow.mat",
+      "sha256": "b89eca65112c62377930afe1b378e9b498a3faafdc74b57fed794ff5e3f64ba2"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Material/VFX/Circle.mat",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Material\\VFX\\Circle.mat",
+      "sha256": "5dacd5613486c9eeec57dff9ceb07adeee98e8daa2563f56b9b93f6e5bc13c70"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Material/VFX/Wave.mat",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Material\\VFX\\Wave.mat",
+      "sha256": "ddee1efa4939b3319ee880b153f6c512328fd989f4b48d9a4a9ad16fc57aeebe"
+    },
+    {
+      "source": "Assets/GolemKin/Mesh Explosion/Demo/Texture/wave3.png",
+      "destination": "Assets\\ThirdParty\\GolemKinMeshExplosion\\Demo\\Texture\\wave3.png",
+      "sha256": "5c1833803ee4ec95a08649cf5c2ea7f33ca37d82d9d6ba24f78bf8dfe587ae56"
+    }
+  ],
+  "adapted_prefab": "Assets/RoyalAves/Resources/Effects/ExplosivePackageBlast.prefab",
+  "notes": "Only original explosion VFX dependencies imported. Mesh slicing framework not imported. Source bytes unchanged; adapted prefab/materials kept separately.",
+  "status": "Rejected by user; inactive. Replaced by explosion-tif manifest."
+}

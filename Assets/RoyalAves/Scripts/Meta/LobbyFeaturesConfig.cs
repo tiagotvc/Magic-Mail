@@ -55,6 +55,7 @@ namespace RoyalAves.Meta
         public Sprite card;
         public Sprite buttonGreen;
         public Sprite buttonBlue;
+        public Sprite bonusSkipButton;
         public Sprite pill;
         public Sprite darkBox;
         public Sprite barBackground;

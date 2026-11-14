@@ -49,6 +49,9 @@ namespace SweetSugar.Scripts.Items
         Sprite restingSprite;
         Vector3 spinRestScale, spinRestPosition;
         bool spinPoseSaved, spinAnimatorWasEnabled;
+        float combinationScale=1f;
+        const float DoubleCombinationScale=1.3f;
+        const int DoubleMarkBatchSize=16;
         readonly List<Lightning> electricArcs = new List<Lightning>();
         MulticolorSpinTrail sourceTrail;
         bool appearing;
@@ -165,10 +168,16 @@ namespace SweetSugar.Scripts.Items
             sequenceManager = LevelManager.THIS;
             var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(square.field);
             bool doubleBomb = partner != null && partner.currentType == ItemsTypes.MULTICOLOR;
+            bool dynamitePair=partner!=null && partner.currentType==ItemsTypes.PACKAGE;
+            if(dynamitePair)
+                color=field.GetItems().Where(i=>i!=null && i.currentType==ItemsTypes.NONE && !i.destroying &&
+                    !i.IsMulticolorReserved && i.square!=null && !i.square.IsItemLocked)
+                    .GroupBy(i=>i.color).OrderByDescending(g=>g.Count()).ThenBy(g=>g.Key)
+                    .Select(g=>g.Key).DefaultIfEmpty(color).First();
             IEnumerable<Item> candidates = doubleBomb ? (IEnumerable<Item>)field.GetItems() : field.GetItemsByColor(color);
-            var items = barriers.FilterItems(square, candidates.Where(i => i != this && i != partner &&
-                !i.IsMulticolorReserved && !i.destroying && (doubleBomb || i.currentType == ItemsTypes.NONE)))
-                .Distinct().ToList();
+            var eligible=candidates.Where(i=>i!=this && i!=partner && !i.IsMulticolorReserved && !i.destroying &&
+                (doubleBomb || i.currentType==ItemsTypes.NONE) && (!dynamitePair || !i.square.IsItemLocked));
+            var items=(dynamitePair?eligible:barriers.FilterItems(square,eligible)).Distinct().ToList();
             if (partner != null && partner != this && !partner.IsMulticolorReserved) items.Add(partner);
             TargetCount = items.Count;
             MarkedCount = 0;
@@ -178,7 +187,8 @@ namespace SweetSugar.Scripts.Items
             sequenceBarrier = gameObject.AddComponent<AnimateItems>();
             sequenceBarrier.target = true;
             sequenceManager.animateItems.Add(sequenceBarrier);
-            BeginSpin();
+            BeginSpin(doubleBomb?DoubleCombinationScale:1f);
+            if(pairedMulticolor is ItemMulticolor paired)paired.BeginSpin(DoubleCombinationScale);
             Trace("Begin");
             var convertTo = partner != null && !doubleBomb ? partner.currentType : ItemsTypes.NONE;
             SoundBase.Instance?.PlayOneShot(SoundBase.Instance.colorBombExpl);
@@ -205,7 +215,8 @@ namespace SweetSugar.Scripts.Items
             bool completed = false;
             try
             {
-                foreach (var original in items)
+                if(doubleBomb)yield return MarkDoubleTargets(items);
+                else foreach (var original in items)
                 {
                     var item = original;
                     if (item == null || !item.gameObject.activeSelf) continue;
@@ -222,21 +233,19 @@ namespace SweetSugar.Scripts.Items
                     }
                     CreateLightning(transform.position, item.transform.position, item.transform, true);
                     yield return new WaitForSeconds(Lightning.TravelTime);
-                    var highlight = MakeHighlight(item);
-                    activeHighlights.Add(highlight);
-                    markedTargets.Add(new MarkedTarget { Item = item, Highlight = highlight,
-                        Charge = ElectricChargeParticles.Charge(item.transform, field.squareWidth) });
-                    MarkedCount++;
-                    Trace("Marked", item);
-                    if (selectionPulse == null) selectionPulse = StartCoroutine(PulseOutlines(activeHighlights));
+                    MarkTarget(item);
                     yield return new WaitForSeconds(BeamStepDelay - Lightning.TravelTime);
                 }
                 Phase = SequencePhase.Charged;
                 Trace("AllMarked");
+                if(pairedMulticolor is ItemMulticolor spinningPartner)spinningPartner.finishSpinCycle=true;
                 yield return FinishMarkingSpin();
+                if(pairedMulticolor is ItemMulticolor finishingPartner)
+                    while(finishingPartner.spinRoutine!=null)yield return null;
 
                 // Hard boundary: no beam, spinning frame or orbiting charge survives into detonation.
                 EndSpin();
+                if(pairedMulticolor is ItemMulticolor finishedPartner)finishedPartner.EndSpin();
                 foreach (var target in markedTargets)
                 {
                     if (target.Charge != null) { target.Charge.Clear(); target.Charge = null; }
@@ -299,6 +308,7 @@ namespace SweetSugar.Scripts.Items
         void ClearSelection()
         {
             EndSpin();
+            if(pairedMulticolor is ItemMulticolor paired && paired!=this)paired.EndSpin();
             if (selectionPulse != null) StopCoroutine(selectionPulse);
             selectionPulse = null;
             foreach (var target in markedTargets)
@@ -353,6 +363,27 @@ namespace SweetSugar.Scripts.Items
         }
 
         const float BeamStepDelay = 0.08f;
+
+        IEnumerator MarkDoubleTargets(List<Item> items)
+        {
+            // Broad simultaneous waves mark the board quickly; only beam travel separates waves.
+            for(int start=0;start<items.Count;start+=DoubleMarkBatchSize)
+            {
+                int end=Mathf.Min(start+DoubleMarkBatchSize,items.Count);
+                for(int i=start;i<end;i++)if(items[i]!=null&&items[i].gameObject.activeSelf)
+                    CreateLightning(transform.position,items[i].transform.position,items[i].transform,true);
+                yield return new WaitForSeconds(Lightning.TravelTime);
+                for(int i=start;i<end;i++)if(items[i]!=null&&items[i].gameObject.activeSelf)MarkTarget(items[i]);
+            }
+        }
+
+        void MarkTarget(Item item)
+        {
+            var highlight=MakeHighlight(item);activeHighlights.Add(highlight);
+            markedTargets.Add(new MarkedTarget{Item=item,Highlight=highlight,Charge=ElectricChargeParticles.Charge(item.transform,field.squareWidth)});
+            MarkedCount++;Trace("Marked",item);
+            if(selectionPulse==null)selectionPulse=StartCoroutine(PulseOutlines(activeHighlights));
+        }
 
         static Color ElectricPieceColor(int color)
         {
@@ -502,7 +533,7 @@ namespace SweetSugar.Scripts.Items
 
         // The bomb spins fast for as long as it's active (from the moment it's touched until it explodes). Started once
         // per activation; EndSpin runs right before the bomb destroys itself, on every path that does so.
-        private void BeginSpin()
+        private void BeginSpin(float scaleMultiplier=1f)
         {
             EndAppearance();
             if(iconRenderer==null) iconRenderer=GetSpriteRenderer();
@@ -513,6 +544,8 @@ namespace SweetSugar.Scripts.Items
                 spinPoseSaved=true;
                 if(anim!=null) {spinAnimatorWasEnabled=anim.enabled;anim.enabled=false;}
             }
+            combinationScale=scaleMultiplier;
+            if(iconRenderer!=null&&spinPoseSaved)iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(combinationScale,combinationScale,1));
             ElectricChargeParticles.Flash(transform.position, field.squareWidth);
             if (sourceTrail == null) sourceTrail = MulticolorSpinTrail.Rent(iconRenderer!=null?iconRenderer.transform:transform, field.squareWidth,
                 Mathf.Max(1,SpinFrames != null ? SpinFrames.Length : 12)*SpinFrameTime);
@@ -546,6 +579,7 @@ namespace SweetSugar.Scripts.Items
             }
             if(spinPoseSaved && anim!=null)anim.enabled=spinAnimatorWasEnabled;
             spinPoseSaved=false;
+            combinationScale=1f;
         }
 
         public static Vector2 SpinScaleAt(float age)
@@ -572,7 +606,7 @@ namespace SweetSugar.Scripts.Items
                 {
                     iconRenderer.sprite=SpinFrames[Mathf.FloorToInt(phase*SpinFrames.Length)%SpinFrames.Length];
                     var scale=SpinScaleAt(age);
-                    iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(scale.x,scale.y,1));
+                    iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(scale.x*combinationScale,scale.y*combinationScale,1));
                     // Convert board-cell lift into the sprite parent's coordinates; never move the logical cell.
                     float parentY=iconRenderer.transform.parent!=null?Mathf.Abs(iconRenderer.transform.parent.lossyScale.y):1;
                     float lift=field.squareWidth*.09f*Mathf.SmoothStep(0,1,Mathf.Clamp01((age-.09f)/.13f));

@@ -1,0 +1,18 @@
+{
+  "source": "C:\\Users\\Tiago Carvalho\\Downloads\\Explosion.tif",
+  "sha256": "d02e3ed5dd70ee4c5a0859f4f97bec71cae4df59385d307fcf62fb3ecac6e303",
+  "destination": "Assets\\RoyalAves\\Art\\Effects\\PackageExplosion\\Explosion.tif",
+  "atlas": [
+    6,
+    6
+  ],
+  "size": [
+    2048,
+    2048
+  ],
+  "source_mode": "RGB without alpha",
+  "scope": "Explosive package only; prior GolemKin effect and procedural pressure no longer used",
+  "runtime_texture": "Assets\\RoyalAves\\Art\\Effects\\PackageExplosion\\Explosion.png",
+  "runtime_texture_sha256": "b3fc322aa879eaa8d039943e890fd964acec99482f7b4d5165813d473363f878",
+  "conversion": "Lossless TIFF RGB to PNG; decoded RGB pixels verified identical."
+}

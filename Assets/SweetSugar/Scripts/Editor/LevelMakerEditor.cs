@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using RoyalAves.EditorTools;
 using SweetSugar.Scriptable.Rewards;
 using SweetSugar.Scripts.AdsEvents;
 using SweetSugar.Scripts.Blocks;
@@ -41,6 +42,63 @@ namespace SweetSugar.Scripts.Editor
     [InitializeOnLoad]
     public class LevelMakerEditor : EditorWindow
     {
+        static Texture2D verticalRocketPreview;
+        static Sprite verticalRocketSprite;
+
+        static LevelMakerEditor()
+        {
+            AssemblyReloadEvents.beforeAssemblyReload += ClearRocketPreview;
+            EditorApplication.quitting += ClearRocketPreview;
+        }
+
+        static void ClearRocketPreview()
+        {
+            if (verticalRocketPreview != null) DestroyImmediate(verticalRocketPreview);
+            verticalRocketPreview = null;
+            verticalRocketSprite = null;
+        }
+
+        // The vertical prefab rotates its renderer, while both rockets share the same sprite.
+        // Keep this temporary editor image out of ItemForEditor.Texture and serialized levels.
+        public static Texture2D ResolveItemPreviewTexture(ItemForEditor item, int level)
+        {
+            var sprite = ResolveItemPreviewSprite(item.Item, level, item.Color);
+            var texture = sprite != null ? sprite.GetTexture() : item.Tex;
+            if (item.ItemType != ItemsTypes.VERTICAL_STRIPED || sprite == null || texture == null) return texture;
+            if (verticalRocketPreview != null && verticalRocketSprite == sprite) return verticalRocketPreview;
+            ClearRocketPreview();
+            var previous = RenderTexture.active;
+            var buffer = RenderTexture.GetTemporary(texture.width, texture.height, 0, RenderTextureFormat.ARGB32,
+                RenderTextureReadWrite.sRGB);
+            Texture2D readable = null;
+            try
+            {
+                Graphics.Blit(texture, buffer);
+                RenderTexture.active = buffer;
+                readable = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+                readable.ReadPixels(new Rect(0,0,texture.width,texture.height),0,0);
+                readable.Apply();
+                var source = readable.GetPixels32();
+                var rotated = new Color32[source.Length];
+                for (int y=0;y<texture.height;y++) for (int x=0;x<texture.width;x++)
+                    rotated[x*texture.height + texture.height-1-y] = source[y*texture.width+x];
+                verticalRocketPreview = new Texture2D(texture.height,texture.width,TextureFormat.RGBA32,false)
+                {
+                    name="Foguete vertical - previa",hideFlags=HideFlags.HideAndDontSave,
+                    filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp
+                };
+                verticalRocketPreview.SetPixels32(rotated);
+                verticalRocketPreview.Apply();
+                verticalRocketSprite = sprite;
+                return verticalRocketPreview;
+            }
+            finally
+            {
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(buffer);
+                if (readable != null) DestroyImmediate(readable);
+            }
+        }
         //private bool groupEnabled;
         //private bool myBool = true;
         //private float myFloat = 1.23f;
@@ -361,7 +419,8 @@ namespace SweetSugar.Scripts.Editor
             //     }
             // }
             itemsForEditorFull = simpleitems.Union(list);
-            itemsForEditor = simpleitems.Union(bonusitems.GroupBy(i => i.ItemType).SelectMany(i => i))
+            itemsForEditor = simpleitems.Union(bonusitems.Where(i => MagicMailEditorCatalog.IsItemPrefab(i.Item, i.ItemType))
+                .GroupBy(i => i.ItemType).SelectMany(i => i))
                 .Select((x, i) => new {Index = i, Value = x})
                 .GroupBy(i => i.Index / 6)
                 .Select(i => i.Select(x => x.Value))
@@ -378,11 +437,11 @@ namespace SweetSugar.Scripts.Editor
 
             winReward = Resources.Load<WinReward>("Scriptable/WinReward");
             
-            _squareTypeItems = EnumUtil.GetValues<SquareTypes>();
+            _squareTypeItems = MagicMailEditorCatalog.Blocks;
 
             _SpawnerStates = EnumUtil.GetValues<SpawnerState>();
 
-            _squareTypeItems = EnumUtil.GetValues<SquareTypes>();
+            _squareTypeItems = MagicMailEditorCatalog.Blocks;
             squareTypeGroupped = _squareTypeItems.Select((x, i) => new {Index = i, Value = x}).GroupBy(i => i.Index / 6)
                 .Select(i => i.Select(x => x.Value))
                 .ToArray();
@@ -456,14 +515,19 @@ namespace SweetSugar.Scripts.Editor
 
                         GUIColorLimit();
                         GUILayout.Space(10);
+                        if (MagicMailEditorCatalog.HasLegacyTimer(levelData))
+                        {
                         GUILayout.BeginHorizontal();
-                        GUILayout.Label("Bomb timer", GUILayout.Width(80));
+                        GUILayout.Label("Temporizador (legado)", GUILayout.Width(150));
                         GUILayout.Space(70);
                         levelData.GetField(subLevelNumber - 1).bombTimer = EditorGUILayout.IntField("",
                             levelData.GetField(subLevelNumber - 1).bombTimer, GUILayout.Width(50));
                         GUILayout.EndHorizontal();
+                        }
                         
                         //spawner exits var, enable if any spawner, its handy job
+                        if (MagicMailEditorCatalog.HasLegacyIngredients(levelData))
+                        {
                         GUILayout.BeginHorizontal();
                         GUILayout.Label("Spawner Exits", GUILayout.Width(100));
                         GUILayout.Space(50);
@@ -482,6 +546,7 @@ namespace SweetSugar.Scripts.Editor
                                 GUILayout.Width(400));
                         GUILayout.Space(50);
                         GUILayout.EndHorizontal();
+                        }
 
                         GUILayout.Space(10);
 
@@ -2119,7 +2184,7 @@ namespace SweetSugar.Scripts.Editor
             {
                 int selected = type;
                 var definition = targetEditorScriptable.targets[type];
-                if (definition.name == "Stars" || targetLevel.targets.Any(t => t.targetType.type == type)) continue;
+                if (!MagicMailEditorCatalog.IsTarget(definition.name) || definition.name == "Stars" || targetLevel.targets.Any(t => t.targetType.type == type)) continue;
                 var label = SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(definition.name);
                 menu.AddItem(new GUIContent(label), false, () =>
                 {
@@ -2146,7 +2211,7 @@ namespace SweetSugar.Scripts.Editor
             {
                 int type = group.Key;
                 var definition = targetEditorScriptable.targets[type];
-                var choices = Enumerable.Range(0, targetEditorScriptable.targets.Count)
+                var choices = MagicMailEditorCatalog.TargetChoices(targetEditorScriptable, type)
                     .Where(i => i == type || (targetEditorScriptable.targets[i].name != "Stars" &&
                         !targetLevel.targets.Any(t => t.targetType.type == i))).ToArray();
                 var labels = choices.Select(i => SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils
@@ -2182,8 +2247,16 @@ namespace SweetSugar.Scripts.Editor
                         EditorGUILayout.EndHorizontal();
                     }
                 }
-                else EditorGUILayout.LabelField(definition.name == "IceBlock"
+                else EditorGUILayout.LabelField(definition.name == "RoutePotions" ? $"Quantidade automatica: {RoyalAves.Gameplay.PendingElementCounts.Potions(levelData)}"
+                    : definition.name == "SortingSignals" ? $"Quantidade automatica: {RoyalAves.Gameplay.PendingElementCounts.Signals(levelData)}"
+                    : definition.name == "IceBlock"
                     ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.IceLayer.CountCells(levelData)}"
+                    : definition.name == "EnchantedStone"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.EnchantedStone.CountCells(levelData)}"
+                    : definition.name == "Safe"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.SafeFootprint.Count(levelData)} cofre(s) 2×2"
+                    : definition.name == "Inkwell"
+                    ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.InkwellCell.CountCells(levelData)}"
                     : definition.name == "MailCubby"
                     ? $"Quantidade automática pelo tabuleiro: {RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData)}" +
                       $" ({RoyalAves.Gameplay.MailCubbyCell.CountLetters(levelData) / RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} armário(s) x {RoyalAves.Gameplay.MailCubbyCell.LettersPerCabinet} cartas)"
@@ -2198,7 +2271,9 @@ namespace SweetSugar.Scripts.Editor
             GUILayout.BeginHorizontal();
             GUILayout.Label("Tutorial", GUILayout.ExpandWidth(false));
             GUILayout.Space(103);
-            int tutorial = EditorGUILayout.Popup(levelData.selectedTutorial, GetTutorialNames(),
+            var tutorialChoices = levelData.selectedTutorial > 3 ? new[] { 0, 1, 2, 3, levelData.selectedTutorial } : new[] { 0, 1, 2, 3 };
+            int tutorial = EditorGUILayout.IntPopup(levelData.selectedTutorial, tutorialChoices.Select(i =>
+                i < 4 ? GetTutorialNames()[i] : "Tutorial antigo (legado)").ToArray(), tutorialChoices,
                 GUILayout.Width(160), GUILayout.ExpandWidth(false));
             if (tutorial != levelData.selectedTutorial) { levelData.selectedTutorial = tutorial; dirtyLevel = true; }
             GUILayout.EndHorizontal();
@@ -2217,13 +2292,30 @@ namespace SweetSugar.Scripts.Editor
                 pendingFlyingTarget = false;
                 EnsureBoardTarget(targetLevel, "FlyingLetters", "Meta de ovos mágicos adicionada.");
             }
+            if (pendingStoneTarget)
+            {
+                pendingStoneTarget = false;
+                EnsureBoardTarget(targetLevel, "EnchantedStone", "Meta de pedras rúnicas adicionada.");
+            }
+            if (pendingInkwellTarget)
+            {
+                pendingInkwellTarget = false;
+                EnsureBoardTarget(targetLevel, "Inkwell", "Meta de tinteiros adicionada.");
+            }
+            if (pendingSafeTarget)
+            {
+                pendingSafeTarget = false;
+                EnsureBoardTarget(targetLevel, "Safe", "Meta de cofres adicionada.");
+            }
+            if (pendingPotionTarget) { pendingPotionTarget = false; EnsureBoardTarget(targetLevel,"RoutePotions","Meta de pocoes adicionada."); }
+            if (pendingBagTarget) { pendingBagTarget = false; EnsureBoardTarget(targetLevel,"BagOpenings","Defina a quantidade de entregas da bolsa."); }
+            if (pendingSignalTarget) { pendingSignalTarget = false; EnsureBoardTarget(targetLevel,"SortingSignals","Meta de sinalizadores adicionada."); }
             edit?.Invoke();
         }
 
         string[] GetTutorialNames() => new[]
         {
-            "Disabled", "SIMPLE", ItemsTypes.HORIZONTAL_STRIPED.ToString(), ItemsTypes.PACKAGE.ToString(),
-            ItemsTypes.TimeBomb.ToString()
+            "Desativado", "Combinações", "Foguete", "Dinamite"
         };
 
         private void OpenTarget()
@@ -2438,9 +2530,7 @@ namespace SweetSugar.Scripts.Editor
                                             }
 
                                             //First spawner
-                                            squareBlock.spawners[0].SpawnersType =
-                                                (Spawners) EditorGUILayout.EnumPopup(
-                                                    squareBlock.spawners[0].SpawnersType, GUILayout.Width(250));
+                                            squareBlock.spawners[0].SpawnersType = MagicMailEditorCatalog.DrawGenerator(squareBlock.spawners[0].SpawnersType);
                                             if (squareBlock.spawners[0].SpawnersType != Spawners.Ingredient)
                                             {
                                                 GUILayout.BeginVertical(GUILayout.Width(100));
@@ -2481,9 +2571,7 @@ namespace SweetSugar.Scripts.Editor
                                             }
 
                                             //second spawner
-                                            squareBlock.spawners[0].SpawnersType_2 =
-                                                (Spawners) EditorGUILayout.EnumPopup(
-                                                    squareBlock.spawners[0].SpawnersType_2, GUILayout.Width(250));
+                                            squareBlock.spawners[0].SpawnersType_2 = MagicMailEditorCatalog.DrawGenerator(squareBlock.spawners[0].SpawnersType_2);
                                             if (squareBlock.spawners[0].SpawnersType_2 != Spawners.Ingredient)
                                             {
                                                 GUILayout.BeginVertical(GUILayout.Width(100));
@@ -2692,6 +2780,7 @@ namespace SweetSugar.Scripts.Editor
 
         private void GUIItems()
         {
+            DrawInkwellBrushAccess();
             EditorGUILayout.HelpBox("Peças fixas são peças colocadas manualmente na fase. Use Apagar peça e clique na célula para removê-las; o chão e os obstáculos permanecem.", MessageType.Info);
             startWithoutItemBrush = GUILayout.Toggle(startWithoutItemBrush,
                 new GUIContent("Iniciar sem peça", "Clique nas células para marcar/desmarcar. Preserva grama e obstáculos; peças podem cair normalmente depois."),
@@ -2700,7 +2789,7 @@ namespace SweetSugar.Scripts.Editor
             if (GUILayout.Button("Gramas sem peça", GUILayout.Width(160)))
             {
                 foreach (var square in GetField().levelSquares)
-                    if (square.block == SquareTypes.SugarSquare || square.blocks.Any(b => b.squareType == SquareTypes.SugarSquare))
+                    if (!RoyalAves.Gameplay.PostalTapeAuthoring.Has(square) && (square.block == SquareTypes.SugarSquare || square.blocks.Any(b => b.squareType == SquareTypes.SugarSquare)))
                         square.startWithoutItem = true;
                 dirtyLevel = true;
             }
@@ -2736,10 +2825,12 @@ namespace SweetSugar.Scripts.Editor
                                     {
                                         GameObject item1 = item.Item;
                                         if (!item1) continue;
+                                        if (!MagicMailEditorCatalog.IsItemPrefab(item1, item.ItemType)) continue;
                                         if (item.ItemType == ItemsTypes.NONE && !levelData.IsPieceColorEnabled(item.Color)) continue;
                                         if (item.ItemType != ItemsTypes.NONE)
                                             item.SetColor(color, levelNumber);
-                                        var texture = item.Tex;
+                                        var texture = item.ItemType == ItemsTypes.HORIZONTAL_STRIPED || item.ItemType == ItemsTypes.VERTICAL_STRIPED
+                                            ? ResolveItemPreviewTexture(item, levelNumber) : item.Tex;
                                         // The custom dynamite sprite is complete; no CPU texture blend is needed.
 
                                         if (itemBrush != null && (itemBrush.ItemType == item.ItemType &&
@@ -2751,7 +2842,7 @@ namespace SweetSugar.Scripts.Editor
                                                                        item.ItemType != ItemsTypes.NONE && itemBrush
                                                                            .Tex == item.Tex))
                                             UnityEngine.GUI.backgroundColor = Color.gray;
-                                        if (GUILayout.Button(new GUIContent(texture, item.ItemType == ItemsTypes.FLYING_LETTER ? "Ovo mágico" : item1.name),
+                                        if (GUILayout.Button(new GUIContent(texture, MagicMailEditorCatalog.ItemLabel(item.ItemType)),
                                             GUILayout.Width(50), GUILayout.Height(50)))
                                         {
                                             Event current = Event.current;
@@ -2805,8 +2896,75 @@ namespace SweetSugar.Scripts.Editor
             dirtyLevel = true;
         }
 
+        internal Rect InkwellBrushAccessRect { get; private set; }
+
+        private void SelectBlockBrush(SquareTypes type)
+        {
+            if (!MagicMailEditorCatalog.IsBlock(type)) return;
+            section = 0;
+            squareType = type;
+            deleteBlock = false;
+            separateBarBrush = false;
+            startWithoutItemBrush = false;
+            squareBlockSelected = null;
+        }
+
+        private void DrawInkwellBrushAccess()
+        {
+            var texture = SquareUtils.GetSquareTexture(SquareTypes.Inkwell)?.Texture2D;
+            var rect = GUILayoutUtility.GetRect(150, 42, GUILayout.Width(150), GUILayout.Height(42));
+            if (Event.current.type == EventType.Repaint)
+                InkwellBrushAccessRect = rect;
+            var style = new GUIStyle(UnityEngine.GUI.skin.button)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fontStyle = FontStyle.Bold,
+                padding = new RectOffset(44, 6, 4, 4)
+            };
+            var previousColor = UnityEngine.GUI.backgroundColor;
+            if (section == 0 && squareType == SquareTypes.Inkwell && !deleteBlock && !separateBarBrush)
+                UnityEngine.GUI.backgroundColor = Color.gray;
+            if (UnityEngine.GUI.Button(rect, new GUIContent("Tinteiro", "Selecione e clique nas células do nível para colocar o tinteiro."), style))
+                SelectBlockBrush(SquareTypes.Inkwell);
+            UnityEngine.GUI.backgroundColor = previousColor;
+            if (texture != null)
+                UnityEngine.GUI.DrawTexture(new Rect(rect.x + 5, rect.y + 4, 34, 34), texture, ScaleMode.ScaleToFit, true);
+        }
+
+        private void DrawBlockPalette()
+        {
+            // Read the enum again so an existing window also sees newly registered blocks.
+            var types = MagicMailEditorCatalog.Blocks
+                .Where(type => type != SquareTypes.NONE && SquareUtils.GetSquareTexture(type)?.Texture2D != null)
+                .ToArray();
+            var columns = Mathf.Clamp(Mathf.FloorToInt((position.width - 60f) / 54f), 1, 8);
+            for (var first = 0; first < types.Length; first += columns)
+            {
+                GUILayout.BeginHorizontal();
+                for (var index = first; index < Mathf.Min(first + columns, types.Length); index++)
+                {
+                    var type = types[index];
+                    var previousColor = UnityEngine.GUI.backgroundColor;
+                    if (squareType == type && !deleteBlock && !separateBarBrush)
+                        UnityEngine.GUI.backgroundColor = Color.gray;
+                    if (GUILayout.Button(new GUIContent(SquareUtils.GetSquareTexture(type).Texture2D,
+                            MagicMailEditorCatalog.BlockLabel(type)), GUILayout.Width(50), GUILayout.Height(50)))
+                        SelectBlockBrush(type);
+                    UnityEngine.GUI.backgroundColor = previousColor;
+                }
+                GUILayout.EndHorizontal();
+            }
+        }
+
         private void GUIBlocks()
         {
+            EditorGUILayout.HelpBox("Poções e Bolsa do carteiro: disponíveis nos laboratórios, ainda sem pincel próprio nesta paleta.", MessageType.Info);
+            DrawInkwellBrushAccess();
+            var safeIcon = SquareUtils.GetSquareTexture(SquareTypes.Safe)?.Texture2D;
+            if (safeIcon != null && GUILayout.Button(new GUIContent("Cofre 2×2", safeIcon,
+                    "Selecione e clique no canto superior esquerdo das quatro células reservadas ao cofre."),
+                    GUILayout.Width(150), GUILayout.Height(42)))
+                SelectBlockBrush(SquareTypes.Safe);
             if (GUILayout.Button("Borracha de peças fixas", GUILayout.Width(190)))
             {
                 section = 1;
@@ -2818,33 +2976,8 @@ namespace SweetSugar.Scripts.Editor
                 //GUILayout.Space(30);
                 GUILayout.BeginVertical();
                 {
-                    GUILayout.Label("Tools:", EditorStyles.boldLabel);
-                    GUILayout.BeginHorizontal();
-                    {
-                        UnityEngine.GUI.color = new Color(1, 1, 1, 1f);
-                        foreach (SquareTypes squareTypeItem in _squareTypeItems)
-                        {
-//                                if (HideAnotherTargetBlock(squareTypeItem.ToString())) continue;
-                            if (squareTypeItem == SquareTypes.NONE) continue;
-                            var squareTexture = SquareUtils.GetSquareTexture(squareTypeItem);
-                            if (squareType == squareTypeItem)
-                                UnityEngine.GUI.backgroundColor = Color.gray;
-                            if (squareTexture.Texture2D != null && GUILayout.Button(
-                                    new GUIContent(squareTexture.Texture2D,
-                                        SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(squareTypeItem.ToString())),
-                                    GUILayout.Width(50), GUILayout.Height(50)))
-                            {
-                                squareType = squareTypeItem;
-                                deleteBlock = false;
-                                separateBarBrush = false;
-                            }
-
-                            UnityEngine.GUI.backgroundColor = Color.white;
-                        }
-
-                        UnityEngine.GUI.color = new Color(1, 1, 1, 1f);
-                    }
-                    GUILayout.EndHorizontal();
+                    GUILayout.Label("Blocos / obstáculos", EditorStyles.boldLabel);
+                    DrawBlockPalette();
                     GUILayout.BeginHorizontal();
                     {
                         if (separateBarBrush)
@@ -2920,6 +3053,36 @@ namespace SweetSugar.Scripts.Editor
 
         private void FillLevel()
         {
+            if(squareType==SquareTypes.RoutePotions)
+            {
+                var field=GetField();for(int y=0;y<field.maxRows-1;y+=2)for(int x=0;x<field.maxCols-1;x+=2)
+                    if(RoyalAves.Gameplay.PotionFootprint.TryPaint(field,x,y,out _))pendingPotionTarget=true;
+                layers=Mathf.Max(layers,field.levelSquares.Max(c=>c.blocks.Count));layer=layers-1;dirtyLevel=true;return;
+            }
+            if (squareType == SquareTypes.PostalTape)
+            {
+                foreach (var cell in GetField().levelSquares)
+                {
+                    if (deleteBlock) RoyalAves.Gameplay.PostalTapeAuthoring.Erase(cell);
+                    else RoyalAves.Gameplay.PostalTapeAuthoring.TryPaint(cell, out _);
+                }
+                layers = Mathf.Max(layers, GetField().levelSquares.Max(c => c.blocks.Count)); layer = layers - 1; dirtyLevel = true;
+                return;
+            }
+            if (squareType == SquareTypes.Safe)
+            {
+                var field = GetField();
+                bool clear = field.levelSquares.Any(b => b.blocks.Any(l => l.squareType == SquareTypes.Safe));
+                for (int row = 0; row < field.maxRows; row++)
+                    for (int col = 0; col < field.maxCols; col++)
+                        if (clear) RoyalAves.Gameplay.SafeFootprint.Erase(field, col, row);
+                        else if (row % 2 == 0 && col % 2 == 0)
+                            RoyalAves.Gameplay.SafeFootprint.TryPaint(field, col, row, out _);
+                pendingSafeTarget = !clear;
+                layers = Mathf.Max(1, field.levelSquares.Max(b => b.blocks.Count));
+                layer = layers - 1; dirtyLevel = true;
+                return;
+            }
             for (int i = 0; i < levelData.GetField(subLevelNumber - 1).levelSquares.Length; i++)
             {
                 var squareBlocks = levelData.GetField(subLevelNumber - 1).levelSquares[i];
@@ -3306,7 +3469,10 @@ namespace SweetSugar.Scripts.Editor
 
         private void SetItem(int col, int row)
         {
+            if (itemBrush != null && !MagicMailEditorCatalog.IsItemPrefab(itemBrush.Item, itemBrush.ItemType)) return;
             SquareBlocks squareBlock = levelData.GetBlock(row, col);
+            if (RoyalAves.Gameplay.PostalTapeAuthoring.Has(squareBlock) && (startWithoutItemBrush || itemBrush != null && !RoyalAves.Gameplay.PostalTapeAuthoring.CompatibleItem(itemBrush.ItemType)))
+            { ShowNotification(new GUIContent("A fita precisa de uma peca comum ou power-up.")); return; }
             // Erasing a painted starter piece is valid even when a crate covers the cell.
             if (!startWithoutItemBrush && itemBrush == null)
             {
@@ -3322,7 +3488,7 @@ namespace SweetSugar.Scripts.Editor
                 return;
             }
             if (squareBlock.blocks.Any(i =>
-                i.squareType == SquareTypes.SolidBlock || i.squareType == SquareTypes.UndestrBlock ||
+                i.squareType == SquareTypes.RoutePotions || i.squareType == SquareTypes.BagOpenings || i.squareType == SquareTypes.SortingSignals || i.squareType == SquareTypes.SolidBlock || i.squareType == SquareTypes.EnchantedStone || i.squareType == SquareTypes.Inkwell || i.squareType == SquareTypes.Safe || i.squareType == SquareTypes.UndestrBlock ||
                 i.squareType == SquareTypes.NONE)) return;
             squareBlock.startWithoutItem = false;
             dirtyLevel = true;
@@ -3355,8 +3521,7 @@ namespace SweetSugar.Scripts.Editor
                 if (index >= 0 && index < piecePaletteSprites.Length)
                     return piecePaletteSprites[index]?.GetTexture();
             }
-            var sprite = ResolveItemPreviewSprite(item.Item, levelNumber, item.Color);
-            return sprite != null ? sprite.GetTexture() : item.Tex;
+            return ResolveItemPreviewTexture(item, levelNumber);
         }
 
         public static Sprite ResolveItemPreviewSprite(GameObject prefab, int level, int color)
@@ -3447,7 +3612,7 @@ namespace SweetSugar.Scripts.Editor
                 ValidateFrankingMachineTargets();
                 if (!FileName.Contains(".txt"))
                     FileName += ".txt";
-                SaveToScriptable(_levelNumber);
+                if (!SaveToScriptable(_levelNumber)) return;
                 loadedRevisionLevel = _levelNumber;
                 loadedLevelRevision = LevelRevision(_levelNumber);
                 // SaveCommonValues();
@@ -3608,8 +3773,8 @@ namespace SweetSugar.Scripts.Editor
         
         // Random generation variables
         private float randomFillPercentage = 0.85f;
-        private SquareTypes[] randomSquareTypes = { SquareTypes.EmptySquare, SquareTypes.SugarSquare, SquareTypes.WireBlock, SquareTypes.SolidBlock };
-        private bool[] enableRandomTypes = { true, true, false, false };
+        private SquareTypes[] randomSquareTypes = { SquareTypes.EmptySquare, SquareTypes.SugarSquare, SquareTypes.SolidBlock };
+        private bool[] enableRandomTypes = { true, true, false };
         private bool symmetricalGeneration = true;
         private bool addItemsToField = false;
         private float itemPlacementPercentage = 0.4f;
@@ -3617,6 +3782,8 @@ namespace SweetSugar.Scripts.Editor
         
         private void GUIRandomGeneration()
         {
+            if (selectedRandomItem != null && !MagicMailEditorCatalog.IsItemPrefab(selectedRandomItem.Item, selectedRandomItem.ItemType))
+                selectedRandomItem = null;
             GUILayout.BeginHorizontal();
             {
                 GUILayout.BeginVertical();
@@ -3653,7 +3820,7 @@ namespace SweetSugar.Scripts.Editor
                                 
                                 if (squareTexture.Texture2D != null)
                                 {
-                                    if (GUILayout.Button(new GUIContent(squareTexture.Texture2D, randomSquareTypes[i].ToString()), 
+                                    if (GUILayout.Button(new GUIContent(squareTexture.Texture2D, MagicMailEditorCatalog.BlockLabel(randomSquareTypes[i])),
                                         GUILayout.Width(50), GUILayout.Height(50)))
                                     {
                                         enableRandomTypes[i] = !enableRandomTypes[i];
@@ -3661,7 +3828,7 @@ namespace SweetSugar.Scripts.Editor
                                 }
                                 else
                                 {
-                                    if (GUILayout.Button(randomSquareTypes[i].ToString().Substring(0, Math.Min(4, randomSquareTypes[i].ToString().Length)), 
+                                    if (GUILayout.Button(MagicMailEditorCatalog.BlockLabel(randomSquareTypes[i]),
                                         GUILayout.Width(50), GUILayout.Height(50)))
                                     {
                                         enableRandomTypes[i] = !enableRandomTypes[i];
@@ -3671,7 +3838,7 @@ namespace SweetSugar.Scripts.Editor
                                 UnityEngine.GUI.backgroundColor = Color.white;
                                 
                                 // Label below button
-                                GUILayout.Label(randomSquareTypes[i].ToString().Substring(0, Math.Min(8, randomSquareTypes[i].ToString().Length)), 
+                                GUILayout.Label(MagicMailEditorCatalog.BlockLabel(randomSquareTypes[i]),
                                     GUILayout.Width(50));
                             }
                             GUILayout.EndVertical();
@@ -3709,10 +3876,12 @@ namespace SweetSugar.Scripts.Editor
                                         {
                                             GameObject item1 = item.Item;
                                             if (!item1) continue;
+                                            if (!MagicMailEditorCatalog.IsItemPrefab(item1, item.ItemType)) continue;
                                             if (item.ItemType != ItemsTypes.NONE)
                                                 item.SetColor(color, levelNumber);
                                             
-                                            var texture = item.Tex;
+                                            var texture = item.ItemType == ItemsTypes.HORIZONTAL_STRIPED || item.ItemType == ItemsTypes.VERTICAL_STRIPED
+                                                ? ResolveItemPreviewTexture(item, levelNumber) : item.Tex;
                                             // Use the complete sprite directly, including for dynamite.
                                             
                                             if (selectedRandomItem != null && selectedRandomItem.ItemType == item.ItemType && selectedRandomItem.Tex == item.Tex)
@@ -3720,7 +3889,7 @@ namespace SweetSugar.Scripts.Editor
                                             else
                                                 UnityEngine.GUI.backgroundColor = Color.white;
                                             
-                                            if (GUILayout.Button(new GUIContent(texture, item1.name),
+                                            if (GUILayout.Button(new GUIContent(texture, MagicMailEditorCatalog.ItemLabel(item.ItemType)),
                                                 GUILayout.Width(40), GUILayout.Height(40)))
                                             {
                                                 selectedRandomItem = item.DeepCopy();
@@ -3961,6 +4130,7 @@ namespace SweetSugar.Scripts.Editor
             try
             {
                 var squareBlock = levelData.GetBlock(row, col);
+                if (RoyalAves.Gameplay.PostalTapeAuthoring.Has(squareBlock) && !RoyalAves.Gameplay.PostalTapeAuthoring.CompatibleItem(selectedRandomItem.ItemType)) return;
                 squareBlock.item = selectedRandomItem.DeepCopy();
                 dirtyLevel = true;
             }
@@ -3973,6 +4143,10 @@ namespace SweetSugar.Scripts.Editor
         private bool pendingMachineTarget;
         private bool pendingCubbyTarget;
         private bool pendingFlyingTarget;
+        private bool pendingStoneTarget;
+        private bool pendingInkwellTarget;
+        private bool pendingSafeTarget;
+        private bool pendingPotionTarget, pendingBagTarget, pendingSignalTarget;
 
         // The cabinet goal follows its cells like grass and ice do: the count comes from the board,
         // four letters per cabinet, so the designer only paints the furniture.
@@ -4175,6 +4349,7 @@ namespace SweetSugar.Scripts.Editor
 
         private void SetSquareType(int col, int row)
         {
+            if (squareType != SquareTypes.NONE && !MagicMailEditorCatalog.IsBlock(squareType)) return;
             dirtyLevel = true;
             SquareBlocks squareBlock = levelData.GetBlock(row, col);
             m_squareBlock = squareBlock;
@@ -4190,9 +4365,60 @@ namespace SweetSugar.Scripts.Editor
                 return;
             }
 
+            var potionField = GetField();
+            if (squareType == SquareTypes.RoutePotions)
+            {
+                if (RoyalAves.Gameplay.PotionFootprint.Has(potionField,col,row)) RoyalAves.Gameplay.PotionFootprint.Erase(potionField,col,row);
+                else if (!deleteBlock)
+                {
+                    if (!RoyalAves.Gameplay.PotionFootprint.TryPaint(potionField,col,row,out var potionError)) ShowNotification(new GUIContent(potionError));
+                    else pendingPotionTarget = true;
+                }
+                layers = Mathf.Max(layers,potionField.levelSquares.Max(c=>c.blocks.Count));layer=layers-1;return;
+            }
+            if (squareType != SquareTypes.PostalTape && RoyalAves.Gameplay.PotionFootprint.Has(potionField,col,row))
+            {
+                RoyalAves.Gameplay.PotionFootprint.Erase(potionField,col,row);
+                if (deleteBlock) return;
+            }
+            if (!deleteBlock && squareType == SquareTypes.BagOpenings) pendingBagTarget=true;
+            if (!deleteBlock && squareType == SquareTypes.SortingSignals) pendingSignalTarget=true;
+            if (squareType == SquareTypes.PostalTape)
+            {
+                if (deleteBlock) RoyalAves.Gameplay.PostalTapeAuthoring.Erase(squareBlock);
+                else if (!RoyalAves.Gameplay.PostalTapeAuthoring.TryPaint(squareBlock, out var tapeError)) ShowNotification(new GUIContent(tapeError));
+                layers = Mathf.Max(layers, squareBlock.blocks.Count); layer = layers - 1;
+                return;
+            }
+            if (!deleteBlock && RoyalAves.Gameplay.PostalTapeAuthoring.Has(squareBlock) && squareType != SquareTypes.EmptySquare && squareType != SquareTypes.NONE && squareType != SquareTypes.SugarSquare)
+            { ShowNotification(new GUIContent("Remova a fita antes de colocar outro obstaculo.")); return; }
+            // A safe is atomic: erase/replace from any quadrant clears all four references.
+            var safeField = GetField();
+            if (RoyalAves.Gameplay.SafeFootprint.Has(safeField, col, row))
+            {
+                RoyalAves.Gameplay.SafeFootprint.Erase(safeField, col, row);
+                dirtyLevel = true;
+                if (squareType == SquareTypes.Safe || deleteBlock) return;
+            }
+            if (squareType == SquareTypes.Safe)
+            {
+                if (deleteBlock) return;
+                if (!RoyalAves.Gameplay.SafeFootprint.TryPaint(safeField, col, row, out var safeError))
+                    ShowNotification(new GUIContent(safeError));
+                else
+                {
+                    pendingSafeTarget = true;
+                    layers = Mathf.Max(layers, safeField.levelSquares.Max(b => b.blocks.Count));
+                    layer = layers - 1;
+                }
+                return;
+            }
+
             // Magic Mail: a machine on the board is useless without its letters goal, so painting one
             // adds the goal (count typed in the goals panel) on the next repaint.
             if (squareType == SquareTypes.FrankingMachine && !deleteBlock) pendingMachineTarget = true;
+            if (squareType == SquareTypes.EnchantedStone && !deleteBlock) pendingStoneTarget = true;
+            if (squareType == SquareTypes.Inkwell && !deleteBlock) pendingInkwellTarget = true;
 
             // Magic Mail: the mail cabinet is a single 2x2 object built by the top-left cell.
             // A lone cell would load as an invisible blocking square, so the brush always
@@ -4311,6 +4537,8 @@ namespace SweetSugar.Scripts.Editor
         
         private void DeleteBlock(SquareBlocks squareBlock, Square squarePrototype)
         {
+            if (RoyalAves.Gameplay.PotionFootprint.Has(GetField(),squareBlock.position.x,squareBlock.position.y))
+            { RoyalAves.Gameplay.PotionFootprint.Erase(GetField(),squareBlock.position.x,squareBlock.position.y); return; }
             var index = Mathf.Min(layer, squareBlock.blocks.Count - 1);
             if (index < 0) return;
             if (squareBlock.blocks[index].squareType == SquareTypes.BigBlock)
@@ -4405,8 +4633,22 @@ namespace SweetSugar.Scripts.Editor
             }
         }
 
-        private void SaveToScriptable(int _levelNumber)
+        private bool SaveToScriptable(int _levelNumber)
         {
+            foreach(var potionField in levelData.fields)
+                if(!RoyalAves.Gameplay.PotionFootprint.Validate(potionField,out var potionError)) { ShowNotification(new GUIContent(potionError)); return false; }
+            if(levelData.fields.Any(f=>f.levelSquares.Any(c=>c.blocks.Any(b=>b.squareType==SquareTypes.RoutePotions))))EnsureBoardTarget(GetTargetLevel(),"RoutePotions","Meta de pocoes adicionada.");
+            if(levelData.fields.Any(f=>f.levelSquares.Any(c=>c.blocks.Any(b=>b.squareType==SquareTypes.BagOpenings))))EnsureBoardTarget(GetTargetLevel(),"BagOpenings","Meta da bolsa adicionada.");
+            if(levelData.fields.Any(f=>f.levelSquares.Any(c=>c.blocks.Any(b=>b.squareType==SquareTypes.SortingSignals))))EnsureBoardTarget(GetTargetLevel(),"SortingSignals","Meta de sinalizadores adicionada.");
+            foreach (var safeField in levelData.fields)
+                if (!RoyalAves.Gameplay.SafeFootprint.Validate(safeField, out var safeError))
+                {
+                    ShowNotification(new GUIContent(safeError));
+                    Debug.LogError("Não foi salvo: " + safeError);
+                    return false;
+                }
+            if (RoyalAves.Gameplay.SafeFootprint.Count(levelData) > 0)
+                EnsureBoardTarget(GetTargetLevel(), "Safe", "Meta de cofres adicionada.");
             levelData.InitTargetObjects();
             SquareBlocks[] levelSquares = levelData.GetField(subLevelNumber - 1).levelSquares;
             for (int i = 0; i < levelSquares.Length; i++)
@@ -4427,6 +4669,7 @@ namespace SweetSugar.Scripts.Editor
             }
 
             ScriptableLevelManager.SaveLevel(levelPath, _levelNumber, levelData);
+            return true;
         }
 
         private bool LoadLevel(int currentLevel)

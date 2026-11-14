@@ -1,4 +1,4 @@
-﻿// // ©2015 - Present Candy Smith
+// // ©2015 - Present Candy Smith
 // // All rights reserved
 // // Redistribution of this software is strictly not allowed.
 // // Copy of this software can be obtained from unity asset store only.
@@ -268,6 +268,8 @@ namespace SweetSugar.Scripts.Level
 
         public void SetSquareTarget(GameObject gameObject, SquareTypes _sqType, GameObject prefabLink)
         {
+            if (gameObject.GetComponent<RoyalAves.Gameplay.RouteCentralCell>() != null || gameObject.GetComponent<RoyalAves.Gameplay.BagOpeningStation>() != null || gameObject.GetComponent<RoyalAves.Gameplay.SortingSignalCell>() != null) return; // Custom completion handlers own these goals.
+            if (_sqType == SquareTypes.PostalTape) return; // Tape is a blocker, never an objective.
             // A parcel is one objective. Its extra wrapping states are protection, not collectibles.
             var parcel = gameObject.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>();
             if (parcel != null && !parcel.CountsAsObjective) return;
@@ -285,7 +287,7 @@ namespace SweetSugar.Scripts.Level
                 {
                     // Ice and the mail cabinet set their own count in InitTarget, from the level data.
                     if (subTargetContainer.targetLevel.setCount == SetCount.FromLevel &&
-                        _sqType != SquareTypes.IceBlock && _sqType != SquareTypes.MailCubby)
+                        _sqType != SquareTypes.IceBlock && _sqType != SquareTypes.MailCubby && _sqType != SquareTypes.Inkwell && _sqType != SquareTypes.Safe)
                         subTargetContainer.changeCount(1);
                     var targetComponent = gameObject.AddCachedComponent<TargetComponent>();
                     targetComponent.field = gameObject.GetComponent<Square>().field;

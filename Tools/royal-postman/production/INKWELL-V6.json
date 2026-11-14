@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-03",
+  "revision": "V6 animated porcelain chips and final fracture instead of static rubble",
+  "sourceHashes": {
+    "Assets/RoyalAves/Scripts/Effects/StoneShatterEffect.cs": "c2b994b7ac5e995877e9cc2075959bca42a4a9f7b93e5baf86ca1b7f2086a05b",
+    "Assets/RoyalAves/Scripts/Effects/PorcelainBadgeDebris.cs": "4721e35d6b06c5301cef7529ccbcdd92507ca152c39333f668d567f3b048752b",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": "48ba6ba194a26537dae325d68065363508ca42f963ad785c9f7eeb88e194d7b3",
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": "4ef7494d32ee189942c04659e0cc6d0692669b94a2cb5b29496ea3b971052b63"
+  },
+  "testedSourcesMatch": {
+    "Assets/RoyalAves/Scripts/Effects/StoneShatterEffect.cs": true,
+    "Assets/RoyalAves/Scripts/Effects/PorcelainBadgeDebris.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": true,
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": true
+  },
+  "porcelainVerification": "PASS: four intermediate chip bursts; fifth emits 22 thin purple/white/gold solids plus one original-scale textured crown-wall fragment; motion/mesh present; no static rubble sprite displayed; stone default still 30 original-style chunks.",
+  "nativeVerification": "PASS: real swap/match resolver damages adjacent jar and emits visible liquid flight; five emitted/landed splashes; intermediate/full wet fill; imported prefab/sprites/material/shader; diagonal/duplicate rejection; four neighbors then center; goal decremented once; independent piece/floor ownership. Swap initiated by API, not physical pointer; remaining four hits diagnostic. No full victory/Continue or device claim.",
+  "productionAssetWrites": [],
+  "pending": [
+    "physical pointer input",
+    "full victory/Continue flow",
+    "user visual approval",
+    "audio/device"
+  ]
+}

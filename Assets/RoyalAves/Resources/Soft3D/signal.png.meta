@@ -1,0 +1,925 @@
+fileFormatVersion: 2
+guid: 5a6e1d8192dac614ab6f9d642165f66b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6906252930508981219
+    second: signal_0
+  - first:
+      213: -4249161947878090043
+    second: signal_1
+  - first:
+      213: -4207831094521744006
+    second: signal_2
+  - first:
+      213: -3461443027376237327
+    second: signal_3
+  - first:
+      213: 7285128104352132687
+    second: signal_4
+  - first:
+      213: -7372516438798814329
+    second: signal_5
+  - first:
+      213: -5089546112641141050
+    second: signal_6
+  - first:
+      213: 4213873936238943643
+    second: signal_7
+  - first:
+      213: 5461188901310041886
+    second: signal_8
+  - first:
+      213: -5631216498420616780
+    second: signal_9
+  - first:
+      213: -5577008497268610597
+    second: signal_10
+  - first:
+      213: 628650908042057434
+    second: signal_11
+  - first:
+      213: -7675626798472627901
+    second: signal_12
+  - first:
+      213: 869409517650427248
+    second: signal_13
+  - first:
+      213: 7743298317701665940
+    second: signal_14
+  - first:
+      213: 4365157559816604163
+    second: signal_15
+  - first:
+      213: 7567658346568464110
+    second: signal_16
+  - first:
+      213: -5889423364928046126
+    second: signal_17
+  - first:
+      213: 3114887768954000749
+    second: signal_18
+  - first:
+      213: 3299793914962903461
+    second: signal_19
+  - first:
+      213: 1672054619690700731
+    second: signal_20
+  - first:
+      213: -1264182884675897552
+    second: signal_21
+  - first:
+      213: -4904992345772986568
+    second: signal_22
+  - first:
+      213: -8714641066513666401
+    second: signal_23
+  - first:
+      213: -3052224306895025340
+    second: signal_24
+  - first:
+      213: 4850482297513355167
+    second: signal_25
+  - first:
+      213: 51486417024960857
+    second: signal_26
+  - first:
+      213: 4536481641557245368
+    second: signal_27
+  - first:
+      213: -2056452684869970701
+    second: signal_28
+  - first:
+      213: 2290455735039200569
+    second: signal_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: signal_0
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 1223
+        width: 19
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1cf204fc8f0820a0800000000000000
+      internalID: -6906252930508981219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_1
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 1221
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca9e9fa8b1f705c0800000000000000
+      internalID: -4249161947878090043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1236
+        height: 1216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a753030e9e7ca95c0800000000000000
+      internalID: -4207831094521744006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_3
+      rect:
+        serializedVersion: 2
+        x: 729
+        y: 1178
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f49cf6f7eb76ffc0800000000000000
+      internalID: -3461443027376237327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_4
+      rect:
+        serializedVersion: 2
+        x: 754
+        y: 1138
+        width: 51
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f4eaf13a969f91560800000000000000
+      internalID: 7285128104352132687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_5
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 1164
+        width: 18
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7833ba43c5f8fa990800000000000000
+      internalID: -7372516438798814329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_6
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 1162
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c6fd00b6cc4e59b0800000000000000
+      internalID: -5089546112641141050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_7
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 1132
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9d9cc9d400ba7a30800000000000000
+      internalID: 4213873936238943643
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_8
+      rect:
+        serializedVersion: 2
+        x: 866
+        y: 1104
+        width: 24
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1f04e10f5a0acb40800000000000000
+      internalID: 5461188901310041886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_9
+      rect:
+        serializedVersion: 2
+        x: 809
+        y: 1110
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b1f15e1e66e9d1b0800000000000000
+      internalID: -5631216498420616780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_10
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 899
+        width: 12
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd928fae15c7a92b0800000000000000
+      internalID: -5577008497268610597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_11
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 863
+        width: 114
+        height: 168
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad6d29d8baa69b800800000000000000
+      internalID: 628650908042057434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_12
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 867
+        width: 57
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349f1901812ba7590800000000000000
+      internalID: -7675626798472627901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_13
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 841
+        width: 27
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07db5e79953c01c00800000000000000
+      internalID: 869409517650427248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_14
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 840
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 494dc705bc8b57b60800000000000000
+      internalID: 7743298317701665940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_15
+      rect:
+        serializedVersion: 2
+        x: 1074
+        y: 837
+        width: 21
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 30aca7d4ca7249c30800000000000000
+      internalID: 4365157559816604163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_16
+      rect:
+        serializedVersion: 2
+        x: 1083
+        y: 827
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee6bbb8cb29b50960800000000000000
+      internalID: 7567658346568464110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_17
+      rect:
+        serializedVersion: 2
+        x: 1222
+        y: 722
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dbf39137a0944ea0800000000000000
+      internalID: -5889423364928046126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_18
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 724
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6556b72ced4a3b20800000000000000
+      internalID: 3114887768954000749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_19
+      rect:
+        serializedVersion: 2
+        x: 1085
+        y: 613
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a10c5525193bcd20800000000000000
+      internalID: 3299793914962903461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_20
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 590
+        width: 17
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bbf07b351d4543710800000000000000
+      internalID: 1672054619690700731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_21
+      rect:
+        serializedVersion: 2
+        x: 1066
+        y: 548
+        width: 18
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 037b3c34d58b47ee0800000000000000
+      internalID: -1264182884675897552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_22
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 554
+        width: 17
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83fe0340377fdebb0800000000000000
+      internalID: -4904992345772986568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_23
+      rect:
+        serializedVersion: 2
+        x: 1148
+        y: 393
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9eeb654f106f0780800000000000000
+      internalID: -8714641066513666401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_24
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 307
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44b85bc0a2254a5d0800000000000000
+      internalID: -3052224306895025340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_25
+      rect:
+        serializedVersion: 2
+        x: 506
+        y: 120
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f97aa9c53ff505340800000000000000
+      internalID: 4850482297513355167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_26
+      rect:
+        serializedVersion: 2
+        x: 940
+        y: 119
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 959c78d9f9ae6b000800000000000000
+      internalID: 51486417024960857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_27
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 103
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bdb9178402d4fe30800000000000000
+      internalID: 4536481641557245368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_28
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 105
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f45decbd230673e0800000000000000
+      internalID: -2056452684869970701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: signal_29
+      rect:
+        serializedVersion: 2
+        x: 715
+        y: 55
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93d84cc0b5559cf10800000000000000
+      internalID: 2290455735039200569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      signal_0: -6906252930508981219
+      signal_1: -4249161947878090043
+      signal_10: -5577008497268610597
+      signal_11: 628650908042057434
+      signal_12: -7675626798472627901
+      signal_13: 869409517650427248
+      signal_14: 7743298317701665940
+      signal_15: 4365157559816604163
+      signal_16: 7567658346568464110
+      signal_17: -5889423364928046126
+      signal_18: 3114887768954000749
+      signal_19: 3299793914962903461
+      signal_2: -4207831094521744006
+      signal_20: 1672054619690700731
+      signal_21: -1264182884675897552
+      signal_22: -4904992345772986568
+      signal_23: -8714641066513666401
+      signal_24: -3052224306895025340
+      signal_25: 4850482297513355167
+      signal_26: 51486417024960857
+      signal_27: 4536481641557245368
+      signal_28: -2056452684869970701
+      signal_29: 2290455735039200569
+      signal_3: -3461443027376237327
+      signal_4: 7285128104352132687
+      signal_5: -7372516438798814329
+      signal_6: -5089546112641141050
+      signal_7: 4213873936238943643
+      signal_8: 5461188901310041886
+      signal_9: -5631216498420616780
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -11,6 +11,7 @@
 // // THE SOFTWARE.
 
 using System.Linq;
+using RoyalAves.EditorTools;
 using SweetSugar.Scripts.System;
 using SweetSugar.Scripts.TargetScripts.TargetEditor;
 using SweetSugar.Scripts.TargetScripts.TargetEditor.Editor;
@@ -27,7 +28,10 @@ namespace Sweet_sugar.Assets.SweetSugar.Scripts.TargetScripts.TargetEditor
             EditorGUI.BeginProperty(position, label, property);
             EditorGUI.BeginChangeCheck();
             var targetType = property.FindPropertyRelative("type");
-            targetType.intValue = EditorGUI.Popup(position, targetType.intValue, GetTargetsNames());
+            var catalog = TargetEditorUtils.TargetEditorScriptable;
+            var choices = MagicMailEditorCatalog.TargetChoices(catalog, targetType.intValue);
+            targetType.intValue = EditorGUI.IntPopup(position, targetType.intValue,
+                choices.Select(i => TargetEditorUtils.DisplayName(catalog.targets[i].name)).ToArray(), choices);
             if (EditorGUI.EndChangeCheck())
             {
                 var targetsEditor = TargetEditorUtils.TargetEditorScriptable;
@@ -46,7 +50,8 @@ namespace Sweet_sugar.Assets.SweetSugar.Scripts.TargetScripts.TargetEditor
 
         public string[] GetTargetsNames()
         {
-            return TargetEditorUtils.TargetEditorScriptable.targets.Select(i => TargetEditorUtils.DisplayName(i.name)).ToArray();
+            return TargetEditorUtils.TargetEditorScriptable.targets.Where(i => MagicMailEditorCatalog.IsTarget(i.name))
+                .Select(i => TargetEditorUtils.DisplayName(i.name)).ToArray();
         }
     }
 }

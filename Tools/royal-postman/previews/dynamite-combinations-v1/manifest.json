@@ -1,0 +1,99 @@
+{
+  "date": "2026-11-10",
+  "source": "native Unity isolated Play board camera",
+  "fps": 24,
+  "audio": false,
+  "capture": "scripted swap, no physical pointer",
+  "entries": [
+    {
+      "mode": 1,
+      "name": "01-duas-dinamites",
+      "title": "Dinamite + dinamite",
+      "frames": 144,
+      "seconds": 6.0,
+      "storyboard_frames": [
+        12,
+        38,
+        50,
+        56
+      ]
+    },
+    {
+      "mode": 2,
+      "name": "02-foguete-horizontal",
+      "title": "Dinamite + foguete horizontal",
+      "frames": 144,
+      "seconds": 6.0,
+      "storyboard_frames": [
+        12,
+        35,
+        49,
+        62
+      ]
+    },
+    {
+      "mode": 5,
+      "name": "03-foguete-vertical",
+      "title": "Dinamite + foguete vertical",
+      "frames": 144,
+      "seconds": 6.0,
+      "storyboard_frames": [
+        12,
+        35,
+        49,
+        62
+      ]
+    },
+    {
+      "mode": 3,
+      "name": "04-helice",
+      "title": "Dinamite + h\u00e9lice",
+      "frames": 192,
+      "seconds": 8.0,
+      "storyboard_frames": [
+        12,
+        34,
+        45,
+        66
+      ]
+    },
+    {
+      "mode": 4,
+      "name": "05-bola-de-luz",
+      "title": "Dinamite + bola de luz",
+      "frames": 288,
+      "seconds": 12.0,
+      "storyboard_frames": [
+        12,
+        55,
+        132,
+        160
+      ]
+    }
+  ],
+  "sha256": {
+    "01-duas-dinamites.gif": "1debed9c454d6492a2f3bfcea6155011652a18b8192f22c733d3bb895f450e47",
+    "01-duas-dinamites.mp4": "bb6cca058c84f516517dc9fe4491b2ddda3f491bdec0dfead1e0314c9e5b47a2",
+    "01-duas-dinamites.png": "e0a17d34836926ba6149978a6e7b36b1615c2b6863d8a8e6109f88f799c0a2c7",
+    "02-foguete-horizontal.gif": "3eaa232e8277fb421c4e844bd2b57f12e337ab1ce3cb8ad765447234531b6d7a",
+    "02-foguete-horizontal.mp4": "616211e535ed1f1636c426cca4e108eca9c488d58083bd597d07bf51f89346be",
+    "02-foguete-horizontal.png": "15708b7c6a9037a03ade696a7a177d74607938a9efd0b82bda505196adc21808",
+    "03-foguete-vertical.gif": "3fc9ba87ff3f0aced6a064e5628fca4490a0a5a1e61f89d3d4f08ad8f30104e1",
+    "03-foguete-vertical.mp4": "4a96251a87de784ac8ada24d0d9db0508f33fd3b9fa919e0332a44a8769610ca",
+    "03-foguete-vertical.png": "2a6e3a9b3e307e133433c5d6f93a5c0e46a6b4adea0a800d8c7d0934b45345a2",
+    "04-helice.gif": "8d4cdf050e938993561919a24dc214931ce533557a32d5acae37121b372c3e6d",
+    "04-helice.mp4": "0b49c5fa39b69156708a5aec1b9582d36979e12d1b60b3b899e8f3da4bc949f9",
+    "04-helice.png": "99e9d67ac046bb9192d2aa31d149dd98b4d6631e6bb12d0520c2e810a721cc81",
+    "05-bola-de-luz.gif": "0e9b9b298d928a9cdcc4167e11665311526bad2850c8f70cb6710d2d03d6b173",
+    "05-bola-de-luz.mp4": "18112009251807592df8326f8f7de3b1d0abb1709faa3483c47c81823c1f4172",
+    "05-bola-de-luz.png": "f2d932140c4008a602f8ba228aff18257f18df7a4776b731ec8827bfbf550769",
+    "todas-combinacoes.png": "17bab24bfcb7aec3742cf28b2f0c954681428e61eca55cd021bda5f3e9c97979"
+  },
+  "gameplay_rules_changed": false,
+  "runtime_visual_fix": "Propeller cargo uses the visible dynamite renderer and is placed below the full spinning body bounds; original cargo was occluded.",
+  "runtime_sha256": {
+    "Assets/SweetSugar/Scripts/Items/ItemMarmalade.cs": "f3598af84c9c70a3dac50f73cab03477cfca5b23c8ff072295714aeea0526813",
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "fff3af9d68e410ffb60a89551a86e9734c8303f7c47a7a14d75866d3b518f70a"
+  },
+  "validation": "Five real Play captures, 24 fps; representative frames visually inspected. Runtime/editor compile zero errors after cargo visibility fix. No audio, physical pointer or full victory-flow validation."
+}

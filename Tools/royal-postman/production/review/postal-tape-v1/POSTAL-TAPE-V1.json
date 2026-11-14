@@ -1,0 +1,49 @@
+{
+  "version": "POSTAL-TAPE-V1",
+  "date": "2026-11-13",
+  "status": "playable laboratory installed; native API validation PASS; pending user evaluation; no normal level-editor brush",
+  "hashes": {
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeMaster.png": "0c4b9671c00f4941af4f55415cf1182c15700c48febe1e1ac9b2fde405275147",
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeMaster.png.meta": "f59855db374f6f5a5de75dc2a0f4ee4c544bcdcab5cdcec5784bb87b4c838c9a",
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeStrip.asset": "4d487ec81afd22d629b82cebdbf27c2dd9b242f8cf7d4762d56cf9b8fe5658ef",
+    "Assets/RoyalAves/Art/Obstacles/PostalTape/TapeStrip.asset.meta": "38e44e28673a655bfcff3bdd76f01088232539306f6c21ef82946763b13d1eb1",
+    "Assets/RoyalAves/Editor/PostalTapeLaboratoryTools.cs": "cca7fdc9d9eeb5f3b6ca714f27cc691b65dcbffe495072e525f90aa3108ea962",
+    "Assets/RoyalAves/Editor/PostalTapeLaboratoryTools.cs.meta": "5aad0b4b1f22f73ec9af838710ab223e21d8b1ba8601720f69936b380dd81dc9",
+    "Assets/RoyalAves/Laboratory/PostalTapeLevel.asset": "b3c534fd530e5fea73bc8cd63fdfe7f6176d2a075b9078abfb0c71ecdf5fb093",
+    "Assets/RoyalAves/Laboratory/PostalTapeLevel.asset.meta": "41f44cac0c4492d43abe6cc67120d878aca34deb6d558098e11ccc975a1114fc",
+    "Assets/RoyalAves/Laboratory/PostalTapeTargets.asset": "a92568672e88dcf78e76187584ccbebeb4420bcc9e9ce68f9ac13c4809d71098",
+    "Assets/RoyalAves/Laboratory/PostalTapeTargets.asset.meta": "53bb047f6166b7823f6be07db9192cf649aaa92b8e306f299132279d7341c04d",
+    "Assets/RoyalAves/Scripts/Gameplay/LightBallLaboratory.cs": "6423b63c8f93bf6a5fb3e7a80c807e317ab79f619a7cd1c2bd5676ef3a8a5a2d",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeLaboratory.cs": "f3a069c6888c3e553eb1b9b065ba04888475493076194979857c0b4a3876dcd1",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeLaboratory.cs.meta": "91338529b240693c701fd06f7e6fab72684868001a727226062eae25798d8469",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeLayer.cs": "7e84444df22f669eb29cd05a0dd32237f376b473c56ac926f86598df8be82dd4",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapeLayer.cs.meta": "00430e3c48fb71e47a7b1d9b44d54b3f80fd2b1d0641401113a98fff4df4e012",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapesTarget.cs": "0f42518daae40f6098f571f2465c6c62d0c444746329a83939ffde28048b61b1",
+    "Assets/RoyalAves/Scripts/Gameplay/PostalTapesTarget.cs.meta": "a571e88ba7b5d2de5b88e093fdc002672160d139ea9c637e2559b0ccd467a837",
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "0f9467f524782183bcce2d1faa8b4ff2a8ee6d547b8cab8c694b5fe5471040aa",
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": "532e99574edecebfa02a14b3968170c881236b76059acee2f4b7975fa8daa936",
+    "Assets/SweetSugar/Scripts/Level/LoadingManager.cs": "2091a33a2bd43306fa35c45190d33de73f4b671972ffa637c0a09d0d3a1edde2",
+    "Assets\\SweetSugar\\Resources\\Levels\\TargetEditorScriptable.asset": "5c9ab8bd69275722eebcb01b15e897673ba1330e8a68bfe5923c351e0208d2a1"
+  },
+  "goalAppendOnly": true,
+  "priorGoalsPreserved": 18,
+  "legacyWireBlockUnchanged": true,
+  "campaignEdits": false,
+  "resistance": 1,
+  "tapePairs": 5,
+  "peelSeconds": 0.44,
+  "peelMeshSegmentsPerStrip": 18,
+  "validation": "PASS: five independent tapes/goal; swap and fall locks; taped rocket tap rejected without move cost; diagonal rejected; real match via swap API removes adjacent tape with cascade-aware accounting; protected piece survives; real rocket via tap API peels two row tapes without consuming trapped rocket; repeated hits count once, goal only after peel; all released; no campaign result; real restart restores all. Diagnostic APIs, not physical pointer/audio/device/full campaign.",
+  "compilerErrors": {
+    "runtime": 0,
+    "editor": 0
+  },
+  "limits": [
+    "No physical pointer validation",
+    "No audible sound/device/full campaign validation",
+    "Ice and other obstacle compatibility not validated",
+    "Fall check verifies movement gate and blocked fall API, not a physical cascade into a prepared empty hole"
+  ],
+  "mainEditor": "Opened in existing main Unity; ready marker confirms Playing startup and five attached tapes; main physical input/render not claimed",
+  "masterImageBytePreserved": true
+}

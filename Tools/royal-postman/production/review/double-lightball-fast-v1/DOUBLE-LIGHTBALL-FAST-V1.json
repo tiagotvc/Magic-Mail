@@ -1,0 +1,13 @@
+{
+  "source": "Assets\\SweetSugar\\Scripts\\Items\\ItemMulticolor.cs",
+  "sha256": "4b097a4097763f714c8d5cc7c03c3df4d2f68d512999df0d68e36ef1070dc48b",
+  "doubleScaleMultiplier": 1.3,
+  "doubleBatchSize": 4,
+  "nativeMarked": "80/80",
+  "nativeMarkingSeconds": 1.5565,
+  "compile": "runtime/editor zero errors",
+  "native": "PASS: 3 focused real Play scenarios: double multicolor, cancellation/pool reuse, ordinary match arrival/pending-flight cleanup. Every detonation follows all marks, completed spin and zero visible arcs.",
+  "limits": [
+    "Native API fixture, no physical pointer/device/audio test"
+  ]
+}

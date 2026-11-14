@@ -1,0 +1,26 @@
+{
+  "version": "POSTAL-TAPE-PEEL-V2",
+  "date": "2026-11-13",
+  "status": "installed, native API validation PASS, user animation evaluation pending",
+  "source": "Assets\\RoyalAves\\Scripts\\Gameplay\\PostalTapeLayer.cs",
+  "sha256": "7e07f2a690667e47e8bea3b5720211cb87a3e62b91facba9cff3f87ee2ce6427",
+  "durationSeconds": 1.08,
+  "segmentsPerStrip": 36,
+  "upperStripLeadsSeconds": 0.22,
+  "stripPeelSeconds": 0.64,
+  "detachedTailExitSeconds": 0.18,
+  "geometry": "stationary adhered section, moving contact line, rounded 150-degree fold and visible full-length loose tail; opacity held until fully detached",
+  "artUnchanged": true,
+  "rulesUnchanged": true,
+  "campaignEdits": false,
+  "compilerErrors": {
+    "runtime": 0,
+    "editor": 0
+  },
+  "validation": "PASS: five independent tapes/goal; swap and fall locks; taped rocket tap rejected without move cost; diagonal rejected; real match via swap API removes adjacent tape with cascade-aware accounting; protected piece survives; real rocket via tap API peels two row tapes without consuming trapped rocket; repeated hits count once, goal only after peel; all released; no campaign result; real restart restores all. Diagnostic APIs, not physical pointer/audio/device/full campaign.",
+  "limitations": [
+    "diagnostic APIs, not physical pointer input",
+    "no audible audio/device/full campaign validation"
+  ],
+  "mainEditor": "Restarted in existing Unity; fresh ready marker after runtime compilation confirms startup with five attached tapes"
+}

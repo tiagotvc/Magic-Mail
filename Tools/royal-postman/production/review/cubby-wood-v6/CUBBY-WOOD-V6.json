@@ -1,0 +1,31 @@
+{
+  "version": "CUBBY-WOOD-V6",
+  "date": "2026-11-12",
+  "status": "installed; native diagnostic cycle PASS; user visual evaluation pending",
+  "assets": {
+    "Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab": "2ac100d91d72b13102ea48ce6199e26a344b40ae2e350e93aafed58b8ff89e70",
+    "Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab.meta": "6c9c820c72b6fe7c8348617c7fe234946f0ca64c41d3a22373ad50f2f28bbec3",
+    "Assets/RoyalAves/Editor/MailCubbyTools.cs": "8f66b9e21b822d0bc8516fa4841cd4d7b457c0ed211a754170209191aedcd062",
+    "Assets/RoyalAves/Editor/MailCubbyLaboratoryTools.cs": "85b8fc80bf1cfb22895d894833a219209aac6dd1b023249a0ddc4263fef0ae7b",
+    "Assets/RoyalAves/Scripts/Gameplay/MailCubbyAnimation.cs": "ba76cc0b81c4527d3223c41e176a023c942606da341abf6625e0192e78c5688b",
+    "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs": "d74772b59cf9decdbc2980492e7ed46693913cd5b61d08a07b305af5657cc9db",
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/MM_cubby_wood_body_v6.png": "c23a918c37195cec71923026f22394d2472371d1be0101dbd49c816cd362090a",
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/MM_cubby_wood_body_v6.png.meta": "069dc001fe515df67db514478b54918d1cdbacefa3086005ccf04e63dbc6dd44",
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/MM_cubby_wood_door_v6.png": "e5ab29700d6f998c1e819f8385652483a2a3ef7f839d6bdb9e1972a7731d97c0",
+    "Assets/RoyalAves/Art/Obstacles/MailCubby/MM_cubby_wood_door_v6.png.meta": "8ed42391644857b760e67c1c04899b0f124ed189aece5af58f488c485d321441"
+  },
+  "preservedSerializedObjectIds": 124,
+  "doorSpeedMultiplier": 1.25,
+  "otherAnimationSpeedUnchanged": true,
+  "stock": 36,
+  "hits": 5,
+  "validation": "PASS: preserved prefab root ID; new body/two doors; four reserved cells; stock and goal 36; first hit only removes doors; reset restores doors/stock; four batches of nine collect 36; final break releases four cells; no campaign result. Diagnostic API hits, not physical input/audio/device validation. Door speed uses isolated 1.25 multiplier.",
+  "runtimeCompilerErrors": 0,
+  "editorCompilerErrors": 0,
+  "campaignEdits": false,
+  "limits": [
+    "Diagnostic APIs, not physical pointer input",
+    "No audible sound, device or full campaign validation",
+    "Main editor may require stopping Play and reopening laboratory after asset import"
+  ]
+}

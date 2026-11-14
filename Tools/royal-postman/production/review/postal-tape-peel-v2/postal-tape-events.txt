@@ -1,0 +1,8 @@
+release 3,2; goal=4; survived=True
+release 1,5; goal=3; survived=True
+release 3,5; goal=2; survived=True
+rocket release 1,5; goal=4; survived=True
+rocket release 3,5; goal=3; survived=True
+rocket release 4,4; goal=2; survived=True
+rocket release 3,2; goal=1; survived=True
+rocket release 5,2; goal=0; survived=True

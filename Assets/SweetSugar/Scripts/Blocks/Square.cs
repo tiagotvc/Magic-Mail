@@ -56,6 +56,13 @@ namespace SweetSugar.Scripts.Blocks
         MailCubby,
         FrankingMachine,
         IceBlock,
+        EnchantedStone,
+        Inkwell,
+        Safe,
+        PostalTape,
+        RoutePotions,
+        BagOpenings,
+        SortingSignals,
     }
     
     //Added_feature
@@ -233,7 +240,7 @@ namespace SweetSugar.Scripts.Blocks
             while (item == null)
             {
 
-                if (!IsHaveSolidAbove() && !IsHaveItemsAbove() && isEnterPoint && item == null)
+                if (!LevelManager.THIS.StopFall && !IsHaveSolidAbove() && !IsHaveItemsAbove() && isEnterPoint && item == null)
                 {
                     if (isSpawnerPoint && !LevelManager.THIS.levelData.IsTotalTargetReached())
                     {
@@ -338,7 +345,7 @@ namespace SweetSugar.Scripts.Blocks
                     break;
                 }
 
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
 
@@ -829,6 +836,8 @@ namespace SweetSugar.Scripts.Blocks
                 if(!layerSquare.anotherSquare)
                 {
                     var b = Instantiate(prefab, transform, true);
+                    if (_type == SquareTypes.RoutePotions)
+                        b.GetComponent<RoyalAves.Gameplay.RouteCentralCell>().ConfigureAuthoredCell(layerSquare.originalPos);
                     Square square = b.GetComponent<Square>();
                     square.field = field;
                     square.mainSquare = this;
@@ -861,6 +870,7 @@ namespace SweetSugar.Scripts.Blocks
                     if (square != null)
                     {
                         subSquares.Add(square);
+                        if (_type == SquareTypes.Safe) type = GetSubSquare().type;
                     }
                 }
             }
@@ -1225,7 +1235,7 @@ namespace SweetSugar.Scripts.Blocks
         /// <returns></returns>
         public bool CanGoOut()
         {
-            return (GetSubSquare()?.canMoveOut ?? false) && (!IsUndestroyable()) ;
+            return !RoyalAves.Gameplay.PostalTapeLayer.Holds(this) && (GetSubSquare()?.canMoveOut ?? false) && (!IsUndestroyable()) ;
         }
 
         bool iceAbsorbedImpact;
@@ -1236,7 +1246,7 @@ namespace SweetSugar.Scripts.Blocks
             LevelManager.THIS.delayedCall(0.2f, () => { iceAbsorbedImpact = false; });
         }
 
-        public bool IsItemLocked => iceAbsorbedImpact || type == SquareTypes.WireBlock ||
+        public bool IsItemLocked => RoyalAves.Gameplay.PostalTapeLayer.Holds(this) || iceAbsorbedImpact || type == SquareTypes.WireBlock ||
             subSquares.Any(layer => layer != null && layer.GetComponent<RoyalAves.Gameplay.IceLayer>() != null);
         /// <summary>
         /// can item fall to the square
@@ -1244,7 +1254,7 @@ namespace SweetSugar.Scripts.Blocks
         /// <returns></returns>
         public bool CanGoInto()
         {
-            return (GetSubSquare()?.canMoveIn ?? false) && (!IsUndestroyable()) ;
+            return !RoyalAves.Gameplay.PostalTapeLayer.Holds(this) && (GetSubSquare()?.canMoveIn ?? false) && (!IsUndestroyable()) ;
         }
         /// <summary>
         /// Next move event
@@ -1259,6 +1269,14 @@ namespace SweetSugar.Scripts.Blocks
         /// </summary>
         public void DestroyBlock(bool destroyTarget=false, Square impactOrigin = null)
         {
+            var tape = RoyalAves.Gameplay.PostalTapeLayer.For(this);
+            if (tape != null && tape.HandleHit(impactOrigin)) return;
+            var sortingSignal = GetSubSquare().GetComponent<RoyalAves.Gameplay.SortingSignalCell>();
+            if (sortingSignal != null) { sortingSignal.HandleHit(impactOrigin); return; }
+            var safe = GetSubSquare().GetComponent<RoyalAves.Gameplay.SafeCell>();
+            if (safe != null) { safe.HandleHit(this, impactOrigin); return; }
+            var inkwell = GetSubSquare().GetComponent<RoyalAves.Gameplay.InkwellCell>();
+            if (inkwell != null) { inkwell.HandleHit(this, impactOrigin); return; }
             var stone = GetSubSquare().GetComponent<RoyalAves.Gameplay.EnchantedStone>();
             if (stone != null) { stone.HandleHit(this, impactOrigin == null || impactOrigin == this); return; }
             var openingBag = GetSubSquare().GetComponent<RoyalAves.Gameplay.BagOpeningStation>();
@@ -1293,7 +1311,7 @@ namespace SweetSugar.Scripts.Blocks
                 var sqList = GetAllNeghborsCross();
                 foreach (var sq in sqList)
                 {
-                    if (!sq.GetSubSquare().CanGoInto() || ((sq.Item?.DestroyByNeighbour??false) && !(Item?.DestroyByNeighbour ?? false)))
+                    if (RoyalAves.Gameplay.PostalTapeLayer.Holds(sq) || !sq.GetSubSquare().CanGoInto() || ((sq.Item?.DestroyByNeighbour??false) && !(Item?.DestroyByNeighbour ?? false)))
                         sq.DestroyBlock(impactOrigin: impactOrigin);
                 }
             }
@@ -1591,6 +1609,8 @@ namespace SweetSugar.Scripts.Blocks
             item1 = RoyalAves.Gameplay.RouteCentralLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.MailbagLaboratory.GetPrefab(sqType) ?? item1;
             item1 = RoyalAves.Gameplay.EnchantedStoneLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.InkwellLaboratory.GetPrefab(sqType) ?? item1;
+            item1 = RoyalAves.Gameplay.SortingSignalLaboratory.GetPrefab(sqType) ?? item1;
 #endif
             var layeredBlock = item1?.GetComponent<LayeredBlock>();
             if (layeredBlock != null)

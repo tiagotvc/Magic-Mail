@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-03",
+  "sourceHashes": {
+    "Assets/RoyalAves/Scripts/Effects/RocketSplitEffect.cs": "a7820d15d3b1d4dccf173db1a8cdeeb04e470ec21675a6bd5d5aafe1bcfe7651",
+    "Assets/RoyalAves/Scripts/Effects/RocketAxisPassObserver.cs": "a9615516505c4f875a0f0e357fe6b5f056265633f440d15f749e338decb42ea4",
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": "04888ce06f6854a51e8934019f32c7fe85fa9acb7eca138ddc5023a89f4a955a",
+    "Assets/RoyalAves/Editor/RocketPassVerification.cs": "8c20e6fa771c842ac8573607e51a956eb6ec8b0d3bb5c2d4d92ef099f0114379",
+    "Assets/RoyalAves/Editor/RocketAxisVerificationRunner.cs": "ba403a1a7bcd3478514e99eccca64291eb7b5c77ae2cce4fb5ce6098f2e40196"
+  },
+  "testedSourcesMatch": {
+    "Assets/RoyalAves/Scripts/Effects/RocketSplitEffect.cs": true,
+    "Assets/RoyalAves/Scripts/Effects/RocketAxisPassObserver.cs": true,
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": true,
+    "Assets/RoyalAves/Editor/RocketPassVerification.cs": true,
+    "Assets/RoyalAves/Editor/RocketAxisVerificationRunner.cs": true
+  },
+  "result": "PASS: eight real Play cases including off-grid horizontal/vertical launches; no diagonal or depth movement; impacts follow actual moving halves, no falling during the sweep, impact pause before refill. No physical-pointer/full-victory/audio test.\nPASS vertical-stones: 9 impacts over 0,584s; gravity held until 0,289s after last impact.\nPASS horizontal-mixed: 8 impacts over 0,516s; gravity held until 0,270s after last impact.\nPASS vertical-pieces: 9 impacts over 0,600s; gravity held until 0,284s after last impact.\nPASS horizontal-pieces: 8 impacts over 0,516s; gravity held until 0,302s after last impact.\nPASS two-rockets: 15 impacts over 0,595s; gravity held until 0,286s after last impact.\nPASS rocket-dynamite: 38 impacts over 0,882s; gravity held until 0,283s after last impact.\nPASS horizontal-offset: 8 impacts over 0,148s; gravity held until 0,300s after last impact.\nPASS vertical-offset: 9 impacts over 0,619s; gravity held until 0,268s after last impact.",
+  "pending": [
+    "physical pointer",
+    "full victory/Continue flow",
+    "device/audio"
+  ]
+}

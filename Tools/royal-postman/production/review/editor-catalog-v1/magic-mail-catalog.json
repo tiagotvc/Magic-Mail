@@ -1,0 +1,87 @@
+{
+    "elements": [
+        {
+            "name": "Caixa de madeira",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Grama",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Escaninho (2×2)",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Franqueadora",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Gelo",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Pedra rúnica",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Tinteiro",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Cofre (2×2)",
+            "status": "Disponível",
+            "location": "Blocks"
+        },
+        {
+            "name": "Ovo mágico",
+            "status": "Disponível",
+            "location": "Items"
+        },
+        {
+            "name": "Poções",
+            "status": "Somente laboratório; sem pincel próprio",
+            "location": "Assets/RoyalAves/Laboratory/RouteCentralCell.prefab"
+        },
+        {
+            "name": "Bolsa do carteiro (fixa)",
+            "status": "Somente laboratório; sem pincel próprio",
+            "location": "Assets/RoyalAves/Laboratory/BagOpeningCell.prefab"
+        },
+        {
+            "name": "Fita",
+            "status": "Ainda não produzida",
+            "location": ""
+        }
+    ],
+    "hiddenBlocks": [
+        "WireBlock",
+        "ThrivingBlock",
+        "JellyBlock",
+        "SpiralBlock",
+        "UndestrBlock",
+        "BigBlock",
+        "Marshmello",
+        "ChocoSpread"
+    ],
+    "hiddenItems": [
+        "INGREDIENT",
+        "SPIRAL",
+        "TimeBomb",
+        "MAILBAG"
+    ],
+    "hiddenTargets": [
+        "Ingredients",
+        "JellyBlock",
+        "Marshmello",
+        "Mailbags"
+    ],
+    "validation": "PASS: prefabs/ícones reais; nove elementos próprios disponíveis, dois só em laboratório, fita não produzida; escolhas filtradas; IDs originais preservados; pincéis legados recusados; Random sem blocos base; fase/catálogo byte-preservados. Sem teste físico de interface, partida ou dispositivo."
+}

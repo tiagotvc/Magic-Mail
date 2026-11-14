@@ -1,0 +1,16 @@
+{
+  "version": 8,
+  "change": "Visible Inkwell access in Blocks and Items; responsive block palette",
+  "source": "Assets\\SweetSugar\\Scripts\\Editor\\LevelMakerEditor.cs",
+  "sha256": "711387af8b33e11072316b4c22da343bcdd55c23d26512a579a17e7da5b08e20",
+  "compile": {
+    "runtimeErrors": 0,
+    "editorErrors": 0
+  },
+  "nativeVerification": "PASS: rendered actual Blocks and Items GUI at 390/640 px; visible labeled shortcut; IMGUI mouse down/up selected Inkwell and reset conflicting brushes in all four cases.",
+  "limits": [
+    "Synthetic IMGUI events, no physical pointer",
+    "No complete game flow tested"
+  ],
+  "levelAssetsModified": false
+}

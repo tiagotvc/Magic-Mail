@@ -1,5 +1,32 @@
 # Memória do projeto — Magic Mail
 
+## Sinalizador de triagem — laboratório criado em 09/11/2026
+
+Usuário rejeitou os laços e escolheu explorar o sinalizador inspirado na lógica de cor variável. Após o mockup montado, selecionou **a primeira opção do ícone**, com trevo de três folhas (não a correção de quatro folhas), e pediu um laboratório para entender e testar a mecânica. Implementado somente como laboratório na tela real de partida, com três objetos de uma célula, três acertos, match adjacente da cor exigida ou especial direto, ciclo verde/vermelho/lilás/azul após a resolução de cada jogada, meta na quebra final e fragmentos existentes. Primeira troca guiada: linha 3, coluna 2, trevo com selo à direita. HUD real, apresentação e painel de teste/reinício; sem campanha/recompensas/produção normal.
+
+Menu **Royal Aves → Elementos → Sinalizador de triagem → Abrir laboratório no jogo**. Compilação e verificação nativa isolada passaram, incluindo swap/match real iniciado por API, foguete, mudanças de cor, contagem e reinício real. Instalado e aberto na instância principal em Playing. Usuário ainda não deu aceite final ao elemento; não chamar de concluído nem adicionar à paleta de produção sem nova autorização. Guia [Sinalizador_Laboratorio.md](Sinalizador_Laboratorio.md); evidências `Tools/royal-postman/production/review/sorting-signal-v1/`.
+
+## Catálogo do Level Editor auditado — 09/11/2026
+
+Pedido do usuário: conferir disponibilidade e esconder elementos Sweet Sugar para não confundir a autoria de fases. Catálogo explícito de escolhas instalado em `MagicMailEditorCatalog`, aplicado a Blocks, Items, Random, geradores e metas (painel/Inspector/janela global). Ocultar apenas da autoria nova; preservar prefabs, enums, índices e dados de fases existentes.
+
+**Disponíveis de verdade no editor normal: 9 elementos** — caixa, grama, escaninho (a refazer), franqueadora, gelo, ovo mágico (Items), pedra rúnica, tinteiro e cofre. **Poções e Bolsa do carteiro fixa, embora concluídas nos laboratórios, ainda não tinham pincel/prefab independente de produção**: os laboratórios substituem `SolidBlock` apenas quando ativos. Não chamar esses dois de disponíveis para autoria normal sem realizar a migração. O antigo `MAILBAG` móvel não é a bolsa fixa e foi ocultado. Fita não produzida; `WireBlock` do base não é a Fita.
+
+Grama/caixa próprias mantidas sob IDs históricos `SugarSquare`/`SolidBlock`. Removidos das escolhas novas blocos, itens, metas, geradores e tutorial base incompatíveis, incluindo ingredientes, TimeBomb, espiral, geleia, crescimento, bloco indestrutível, bloco grande e marshmallow. Valores legados já presentes permanecem legíveis sem conversão. Guia/tabela completa: [Level_Editor_Catalogo_Magic_Mail.md](Level_Editor_Catalogo_Magic_Mail.md).
+
+## Cofre concluído e aprovado — 09/11/2026
+
+O usuário declarou: **"elemento finalizado com sucesso, testei de todas as formas, ficou legal"**, e pediu o registro na memória. Cofre considerado **concluído, testado e aceito pelo usuário**, incluindo a correção da hélice passando por cima. Esse aceite posterior substitui as pendências de aprovação/teste visual do cofre nos registros anteriores; o alcance dos testes automatizados continua descrito separadamente.
+
+- Modelo aprovado: turquesa cartoon, frontal, cantos chanfrados, barra horizontal prateada e suportes dourados. Sem envelope, roda ou cópia do cofre roxo de referência.
+- Ocupa **2×2 / quatro células**, com uma origem, uma resistência compartilhada e uma unidade de meta. Registrado em **Level Editor → Blocks → Cofre 2×2**; pintura e apagamento tratam o grupo inteiro.
+- Cinco estágios/acertos de especiais; matches comuns não danificam. No final, o corpo se despedaça e as moedas se espalham com movimentos independentes. Animação por código e fragmentos com espessura, **não flipbook/spritesheet animado**.
+- A meta diminui uma vez na quebra final, liberando juntas as quatro células. Moedas são efeito visual, sem crédito de saldo.
+- Hélice/power-ups em voo acima do cofre: mesma camada `Item mask`, cofre ordem 90, fragmentos/moedas 93, hélice 100; inicialização corrige também o renderer serializado.
+- Não recolocar o cofre como "a produzir" nem refazer o visual/animação aprovados sem novo pedido. Inserção e balanceamento na campanha permanecem uma etapa própria; nenhuma fase recebeu cofres nesta entrega.
+
+Referências: [Cofre_Level_Editor.md](Cofre_Level_Editor.md), [Cofre_Animacao.md](Cofre_Animacao.md); prefab `Assets/SweetSugar/Resources/Blocks/Safe.prefab`; registros `SAFE-EDITOR-V1.json` e `SAFE-ANIMATION-V1.json` em `Tools/royal-postman/production/`.
+
 Regra vigente de franqueadoras: sempre nas extremidades do grid, em grupos fechando fileiras, colunas ou U. Fases 21-30 atualizadas; ver Maquina_Franquear.md e Campanha_Fases_11_a_30.md. Nao posicionar unidades soltas no centro.
 
 Campanha ampliada: fases 11-30 aplicadas. Fontes atuais e verificacoes em [Campanha_Fases_11_a_30.md](Campanha_Fases_11_a_30.md). Armario estreia na 11; franqueadora na 21; ambos com apresentacao. Desafios 15/20/25/30. Bloco aprovado 1-10 preservado; estrelas 11-30 iniciais, pendentes de playtest. Os registros abaixo de fases 11-100 ainda legadas sao historicos.
@@ -111,7 +138,7 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - Quebra do gelo com fragmentos orgânicos cartoon: cinco no grosso e sete no fino. Captura nativa em `Docs/Gelo_Quebra_Unity.png`.
 - Meta de gelo automática pelo número de células com gelo na fase; grosso conta uma célula. Ícone da meta de caixa usa a caixa base sem tábuas. Detalhes em `Docs/Metas_Gelo_Caixa.md`.
 - Trocar um power-up ativa seu efeito com ou sem match, inclusive arrastando a peça comum para ele. Ativação explícita supera proteções passivas, preservando bloqueios de gelo e combinações entre especiais.
-- Dinamite com raio de três células: até 7×7, mantendo barreiras de caixas e recorte nas bordas. Outras vizinhanças mantêm o alcance anterior.
+- Pacote explosivo com raio reduzido de duas células: até 5×5, mantendo barreiras de caixas e recorte nas bordas; combinação mantém um passo extra de alcance. Outras vizinhanças mantêm o alcance anterior.
 - Validação na Unity aprovada: geometria de 49/16/28 células no centro/canto/lateral e quatro trocas reais da hélice, com/sem match e nos dois sentidos, exatamente uma ativação por caso. Detalhes em `Docs/PowerUps_Troca_Dinamite.md`.
 - Usuário solicitou comitar o trabalho pendente ao encerrar o dia, incluindo assets, fontes e fases locais. Nenhum push solicitado.
 
@@ -146,8 +173,8 @@ O usuário avaliou a performance da sessão com nota 10/10.
 
 - Usuário aprovou e encerrou a Bolsa do carteiro (antigo Malote). Estado atual documentado no topo de `Malote.md`; propostas de alvo móvel com dois impactos são históricas e foram substituídas.
 - Bolsa fixa gera pergaminhos por impactos válidos: abre/fecha em 0,9 s, brilho discreto, pergaminho fechado abrindo, pirueta e voo em arco em 0,72 s sem encolher. Meta manual Pergaminhos (`BagOpenings`) contabilizada na chegada; ícone aberto e proporcional no HUD.
-- Plano principal atualizado: oito elementos com implementação/protótipo, quatro a produzir (Encomenda Encantada, Tinteiro, Fita, Cofre). Pendências anteriores de validação, áudio e campanha não foram declaradas concluídas por esse aceite.
-- Próximo elemento: **Encomenda Encantada**. Tinteiro depende de definir o piso gerado, pois Tinta foi substituída pela Grama.
+- Plano principal atualizado: oito elementos com implementação/protótipo; os elementos posteriores permanecem em revisão. Pendências anteriores de validação, áudio e campanha não foram declaradas concluídas por esse aceite.
+- Próximo elemento: **Encomenda Encantada**.
 
 ## Fechamento do dia — 23/10/2026
 
@@ -158,7 +185,7 @@ O usuário avaliou a performance da sessão com nota 10/10.
 - **Introdução de elementos:** protótipo atual usa Caixas nas fases 1 a 3, que o usuário considera bem preparadas. As estreias dos demais elementos ainda precisam de revisão; Ovo na fase 21 era apenas exemplo, não progressão aprovada.
 - Ordem da introdução: terminar o aviso flutuante de metas (`PrePlay.OnFinished`), escurecer a tela e mostrar a orientação. Último protótipo segue a imagem enviada: título Caixas! com contorno cereja/dourado, subtítulo de novidade, caixa grande iluminada ao centro e placa creme de borda cereja com explicação. Sem botão; leitura por 5 s e fade, liberando a partida ao terminar. Visual ainda em revisão; não tratar como aceite final. Referência e instruções em `Introducao_Elementos.md`.
 - Validação mais recente: runtime/editor compilados sem erros em `Logs/crate-intro-reference-build.log`; conferência visual final do novo aviso ainda pendente. Logs, requests e binários temporários permanecem ignorados.
-- Lista atual: oito elementos implementados/prototipados, quatro a produzir. Próximo: **Encomenda Encantada**; depois Tinteiro (resolver piso gerado), Fita e Cofre. Integração e balanceamento da campanha continuam separados dos aceites dos laboratórios.
+- Lista atual: oito elementos implementados/prototipados. Próximo: **Encomenda Encantada**; a sequência posterior será redefinida. Integração e balanceamento da campanha continuam separados dos aceites dos laboratórios.
 
 ## Regra permanente de campanha ? 23/10/2026
 
@@ -168,3 +195,8 @@ Sempre mostrar a tela de apresenta??o combinada quando um elemento novo estreia.
 ## Variedade de formas ? 28/10/2026
 
 Feedback do usu?rio: n?o repetir quadrados perfeitos em todos os n?veis. Planejar silhuetas distintas (recortes, faixas, leque, cruz, H e ampulheta), al?m de alvos e movimentos. Fases 4?10 revisadas com c?lulas ausentes reais e entradas de reposi??o nos segmentos verticais. Ver Campanha_Fases_4_a_10.md e Campanha_Formas_4_a_10.svg. Manter apresenta??o aprovada nas estreias de elementos.
+
+
+## Verifica??o de merges ? 29/10/2026
+
+Usu?rio confirmou a recupera??o do jogo e pediu um roteiro para evitar recorr?ncia. Seguir `Docs/Roteiro_Verificacao_Merge.md` antes do pr?ximo merge/publica??o autorizada. Compila??o n?o substitui conferir hierarquia, Canvases habilitados, clique real e uma fase completa at? vit?ria e retorno ? home. Causas e corre??es em `Docs/Correcao_Tela_Preta_Merge_2026-10-29.md`.

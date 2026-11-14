@@ -161,6 +161,15 @@ namespace SweetSugar.Scripts
         /// Loop of searching possible combines
         /// </summary>
         /// <returns></returns>
+        public static bool HasUsablePowerUp()
+        {
+            var field = LevelManager.THIS != null ? LevelManager.THIS.field : null;
+            return field != null && field.GetItems().Any(item => item != null && item.isActiveAndEnabled &&
+                Item.IsPlayerPowerUpType(item.currentType) && !item.falling && !item.destroying &&
+                !item.IsMulticolorReserved && item.square != null && item.square.Item == item &&
+                !item.square.IsItemLocked);
+        }
+
         public IEnumerator CheckPossibleCombines()
         {
             if(!itemSprites)InitSprites();
@@ -614,9 +623,10 @@ namespace SweetSugar.Scripts
                 }
 
                 //if we don't get any tip.  call nomatches to regenerate level
-                if (!LevelManager.THIS.DragBlocked && !LevelManager.THIS.field.GetItems().Any(i => i.falling || i.destroying))
+                if (!LevelManager.THIS.DragBlocked && !LevelManager.THIS.StopFall && !LevelManager.THIS.field.GetItems().Any(i => i.falling || i.destroying))
                 {
-                    if (!gotTip && !_debugSettings.AI)
+                    // A standalone powerup can be tapped without a matching swap or a neighbour.
+                    if (!gotTip && !HasUsablePowerUp() && !_debugSettings.AI)
                         LevelManager.THIS.NoMatches();
                 }
 

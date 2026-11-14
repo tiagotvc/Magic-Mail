@@ -318,6 +318,7 @@ namespace SweetSugar.Scripts.Core
             get { return GameStatus; }
             set
             {
+                if(value==GameState.Win && GameStatus==GameState.Win)return;
                 if(GameStatus != value)
                     AdsManager.THIS?.CheckAdsEvents(value);
                 GameStatus = value;
@@ -659,6 +660,7 @@ namespace SweetSugar.Scripts.Core
 
         private void PrepareGame()
         {
+            resolvingWin=false;winResolved=false;
      
             ActivatedBoost = null;
             Score = 0;
@@ -870,7 +872,7 @@ namespace SweetSugar.Scripts.Core
 
 #if UNITY_EDITOR
             // Keep the stone bench open so the last debris finishes falling; no campaign result/reward.
-            if ((win || lose) && (RoyalAves.Gameplay.EnchantedStoneLaboratory.IsActive || RoyalAves.Gameplay.LightBallLaboratory.IsActive)) return;
+            if ((win || lose) && (RoyalAves.Gameplay.PostalTapeLaboratory.IsActive || RoyalAves.Gameplay.SortingSignalLaboratory.IsActive || RoyalAves.Gameplay.InkwellLaboratory.IsActive || RoyalAves.Gameplay.ExplosivePackageLaboratory.IsActive || RoyalAves.Gameplay.EnchantedStoneLaboratory.IsActive || RoyalAves.Gameplay.LightBallLaboratory.IsActive)) return;
             if ((win || lose) && (RoyalAves.Gameplay.MailbagLaboratory.IsActive || RoyalAves.Gameplay.RouteCentralLaboratory.IsActive || RoyalAves.Gameplay.FlyingLetterLaboratory.IsActive || RoyalAves.Gameplay.ParcelStackLaboratory.IsActive || RoyalAves.Gameplay.InkLaboratory.IsActive || RoyalAves.Gameplay.MailCubbyLaboratory.IsActive || RoyalAves.Gameplay.FrankingMachineLaboratory.IsActive))
             {
                 Debug.Log(win ? "[Correio Mágico] Laboratório concluído: todas as camadas removidas." : "[Correio Mágico] Laboratório encerrado: jogadas esgotadas.");
@@ -919,10 +921,17 @@ namespace SweetSugar.Scripts.Core
         public Transform movesTransform;
         public int destLoopIterations;
         //Animations after win
-          private IEnumerator PreWinAnimationsCor()
-          {
+        private bool resolvingWin, winResolved;
+        private IEnumerator PreWinAnimationsCor()
+        {
+            if(resolvingWin || winResolved)yield break;
+            resolvingWin=true;
+            var winningData=levelData;
+            var campaignWin=LobbyController.Instance!=null;
+            var skipView=campaignWin?CampaignBonusSkip.Begin(this):null;
+            try
+            {
             // Resolve the campaign bonus before calculating score-based stars and showing the envelope.
-            var campaignWin = LobbyController.Instance != null;
             if (!campaignWin)
                 tapToSkip = Instantiate((GameObject) Resources.Load("Prefabs/TapToSkip"),MenuReference.THIS.transform);
             if (!InitScript.Instance.losingLifeEveryGame && InitScript.lifes < InitScript.Instance.CapOfLife)
@@ -954,6 +963,9 @@ namespace SweetSugar.Scripts.Core
                 skipWin = false;
                 Destroy(tapToSkip);
             }
+            if(levelData!=winningData || gameStatus!=GameState.PreWinAnimations)yield break;
+            skipView?.Complete();
+            winResolved=true;
             if (PlayerPrefs.GetInt($"Level.{currentLevel:000}.StarsCount", 0) < stars)
                 PlayerPrefs.SetInt($"Level.{currentLevel:000}.StarsCount", stars);
             if (Score > PlayerPrefs.GetInt("Score" + currentLevel))
@@ -975,6 +987,11 @@ namespace SweetSugar.Scripts.Core
 #endif
               
             gameStatus = GameState.Win;
+            }
+            finally
+            {
+                skipView?.Complete();resolvingWin=false;
+            }
         }
 
         private IEnumerator CampaignWinBonus()
@@ -1039,6 +1056,7 @@ namespace SweetSugar.Scripts.Core
         private IEnumerator FireCampaignWinSpecials()
         {
             float quietSince = -1f;
+            int quietFrame = -1;
             while (gameStatus == GameState.PreWinAnimations)
             {
                 var item = field.GetAllExtaItems().FirstOrDefault(candidate => candidate != null &&
@@ -1061,13 +1079,14 @@ namespace SweetSugar.Scripts.Core
                              candidate.NextType != ItemsTypes.NONE)))
                     {
                         quietSince = -1f;
+                        quietFrame = -1;
                         yield return null;
                         continue;
                     }
                     // FallingCor checks for new matches after a 0.2s pause. Require a quiet
                     // interval longer than that pause so the result cannot overtake a cascade.
-                    if (quietSince < 0f) quietSince = Time.time;
-                    if (Time.time - quietSince < .4f)
+                    if (quietSince < 0f){quietSince = Time.time;quietFrame = Time.frameCount;}
+                    if (Time.time - quietSince < .4f || Time.frameCount-quietFrame < 4)
                     {
                         yield return null;
                         continue;
@@ -1310,7 +1329,7 @@ namespace SweetSugar.Scripts.Core
             var type = item.currentType;
             var isBonus = type == ItemsTypes.HORIZONTAL_STRIPED || type == ItemsTypes.VERTICAL_STRIPED ||
                           type == ItemsTypes.PACKAGE || type == ItemsTypes.MULTICOLOR || type == ItemsTypes.MARMALADE;
-            if (!isBonus || gameStatus != GameState.Playing || DragBlocked || findMatchesStarted || item.destroying || item.falling)
+            if (!isBonus || item.square == null || item.square.IsItemLocked || gameStatus != GameState.Playing || DragBlocked || findMatchesStarted || item.destroying || item.falling)
                 return;
             if (levelData.limitType == LIMIT.MOVES)
                 levelData.limit--;
@@ -1373,6 +1392,8 @@ namespace SweetSugar.Scripts.Core
         //No matches detected, regenerate level
         public void NoMatches()
         {
+            // Protect every caller, including delayed searches, from shuffling a playable board.
+            if (StopFall || AI.HasUsablePowerUp()) return;
             if (field.fieldData.noRegenLevel)
             {
                 if (GameStatus == GameState.Playing)
@@ -1743,7 +1764,7 @@ namespace SweetSugar.Scripts.Core
             // rastro de chama, em vez de só sumir. Só dispara quando dá pra achar a peça e sua posição no tabuleiro
             // (alguns dos chamadores de StripedShow passam o quadrado, não o item) - nesse caso sobra o feixe
             // original do Sweet Sugar como alternativa, pra sempre ter algum aviso visual.
-            var rocketItem = obj.GetComponent<Item>();
+            var rocketItem = obj.GetComponentsInParent<Item>().FirstOrDefault(item => item.square != null);
             var origin = rocketItem != null ? rocketItem.square : obj.GetComponent<Square>();
             var lineSquares = origin != null
                 ? (horrizontal ? GetRowSquare(origin.row) : GetColumnSquare(origin.col))
@@ -1758,7 +1779,7 @@ namespace SweetSugar.Scripts.Core
         // inteira vai embora em sequência e a queda já leva mais tempo (distância maior). Esse tempo extra trava a
         // queda do tabuleiro inteiro (mesmo mecanismo do GameBlocker) até a linha toda terminar de estourar + uma
         // pausa, pra dar tempo de ver a linha vazia antes de cair.
-        const float HorizontalRowFallHold = 0.25f;
+        const float RocketImpactFallHold = 0.25f;
 
         // Correio Mágico: como StripedShow, mas chama onPassed uma vez por quadrado da linha/coluna no instante em que
         // a metade do foguete que voa por ele chega ali - assim as peças estouram conforme o foguete passa, e não tudo
@@ -1766,28 +1787,36 @@ namespace SweetSugar.Scripts.Core
         // levou até o último quadrado ser passado (0 quando não houve efeito de foguete).
         public float StripedShowPass(GameObject obj, bool horrizontal, List<Square> line, Action<Square> onPassed)
         {
-            var sourceItem = obj.GetComponent<Item>();
+            var sourceItem = obj.GetComponentsInParent<Item>().FirstOrDefault(item => item.square != null);
             var origin = sourceItem != null ? sourceItem.square : obj.GetComponent<Square>();
+            // Only cells on this rocket's logical row/column can be hit, regardless of its visual position.
+            line = line.Where(cell => cell != null && (origin == null ||
+                (cell.field == origin.field && (horrizontal ? cell.row == origin.row : cell.col == origin.col))))
+                .Distinct().ToList();
             var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(origin != null ? origin.field : field);
             if (origin != null) line = barriers.Filter(origin, line);
             if (line.Count > 1)
             {
                 var ordered = line.OrderBy(s => horrizontal ? s.transform.position.x : s.transform.position.y).ToList();
                 var cells = line.Select(s => s.transform.position).ToList();
+                // Register before Play: the origin cell's callback may run immediately.
+                var fallHold = new GameObject("RocketImpactFallHold");
+                fallHold.AddComponent<GameBlocker>();
+                var ownerData = levelData;
                 var flight = RocketSplitEffect.Play(obj, horrizontal, ordered.First().transform.position,
-                    ordered.Last().transform.position, cells, i => onPassed?.Invoke(line[i]),
+                    ordered.Last().transform.position, cells, i =>
+                    {
+                        if(this!=null && levelData==ownerData && line[i]!=null)onPassed?.Invoke(line[i]);
+                    },
                     barriers.IsBlocking(ordered.First().col, ordered.First().row),
-                    barriers.IsBlocking(ordered.Last().col, ordered.Last().row));
+                    barriers.IsBlocking(ordered.Last().col, ordered.Last().row),
+                    origin != null ? origin.transform.position : (Vector3?)null);
                 if (flight > 0f)
                 {
-                    if (horrizontal)
-                    {
-                        var fallHold = new GameObject("RocketRowFallHold");
-                        fallHold.AddComponent<GameBlocker>();
-                        Destroy(fallHold, flight + HorizontalRowFallHold);
-                    }
+                    Destroy(fallHold, flight + RocketImpactFallHold);
                     return flight;
                 }
+                Destroy(fallHold,RocketImpactFallHold);
             }
 
             if (onPassed != null)
@@ -1795,7 +1824,7 @@ namespace SweetSugar.Scripts.Core
 
             if (stripesEffect != null)
             {
-                var effect = Instantiate(stripesEffect, obj.transform.position, Quaternion.identity);
+                var effect = Instantiate(stripesEffect, origin != null ? origin.transform.position : obj.transform.position, Quaternion.identity);
                 if (!horrizontal)
                     effect.transform.Rotate(Vector3.back, 90);
                 Destroy(effect, 1);
@@ -1819,11 +1848,10 @@ namespace SweetSugar.Scripts.Core
             var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
             var wait = StripedShowPass(target.gameObject, horizontal, squares, sq =>
             {
+                if(sq.type==SquareTypes.JellyBlock)levelData.GetTargetObject().CheckSquares(new[]{sq});
                 if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
                 sq.DestroyBlock();
             });
-            if (squares.Any(i => i.type == SquareTypes.JellyBlock))
-                levelData.GetTargetObject().CheckSquares(squares.ToArray());
             ActivatedBoost = null;
             StartCoroutine(FindMatchDelay(wait));
         }

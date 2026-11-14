@@ -1,0 +1,31 @@
+{
+  "version": "CUBBY-MOTION-V7",
+  "date": "2026-11-12",
+  "status": "installed; isolated native PASS; user visual evaluation pending",
+  "hashes": {
+    "Assets/RoyalAves/Scripts/Gameplay/MailCubbyAnimation.cs": "23c6e1ac3127d5d4aadaefb08c2d590e95d048951842eac13d3a8f5a6048c0ef",
+    "Assets/RoyalAves/Scripts/Gameplay/MailCubbyCell.cs": "3ec2e179cbef173c86c9b84757806ba80eb3dbe63dcd2961b1f678f1c45a88fc",
+    "Assets/RoyalAves/Scripts/Gameplay/MailCubbyBoardController.cs": "95b3e0f1180833dff035de313b319770c3e747cb15a2c57e1a2e6ca774f930ce",
+    "Assets/RoyalAves/Editor/MailCubbyTools.cs": "810182e18f175d335ca1b5dc0b79effcd808acb5ec12a6665676513a36b6772b",
+    "Assets/RoyalAves/Prefabs/Elements/MailCubby.prefab": "2b8ed093fa2ed8171614bf48d099789b533465b1656d7530b99696e91230484b"
+  },
+  "artUnchangedFromV6": true,
+  "serializedObjectIdsPreserved": 124,
+  "flightSeconds": 0.62,
+  "letterStaggerSeconds": 0.045,
+  "bankLimitTestDegrees": 26,
+  "gridFit": ".97 * min(width / visibleWidth, height / visibleHeight); visible center coincides with four-cell center",
+  "remainingStacks": "reflow and interpolate position, scale, shade and sorting into vacant front slots per column",
+  "doorSpeedUnchanged": 1.25,
+  "runtimeCompilerErrors": 0,
+  "editorCompilerErrors": 0,
+  "validation": "PASS: cabinet visible bounds centered on four grid cells; .62s smooth readable delivery above HUD; original and compacted shelf slots/scales verified after each half-niche; preserved prefab root ID; new body/two doors; four reserved cells; stock and goal 36; first hit only removes doors; reset restores doors/stock; four batches of nine collect 36; final break releases four cells; no campaign result. Diagnostic API hits, not physical input/audio/device validation. Door speed uses isolated 1.25 multiplier.",
+  "preview": "native auxiliary board-camera render of actual live overlay source sprites/transforms; no full HUD capture",
+  "notTested": [
+    "physical pointer input",
+    "audible sound",
+    "device",
+    "full campaign flow"
+  ],
+  "campaignEdits": false
+}

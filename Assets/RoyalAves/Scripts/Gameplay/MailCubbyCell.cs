@@ -54,14 +54,13 @@ namespace RoyalAves.Gameplay
             if (bounds.width <= 0f || bounds.height <= 0f)
                 bounds = new Rect(animation.cabinet.sprite.bounds.min, animation.cabinet.sprite.bounds.size);
             float height = Mathf.Abs(bottomRight.transform.position.y - cell.transform.position.y) * 2f;
-            float sx = width / bounds.width;
+            float sx = Mathf.Min(width / bounds.width, height / bounds.height) * .97f;
             float sy = sx;
             root.transform.localScale = new Vector3(sx / Mathf.Abs(cell.field.transform.lossyScale.x), sy / Mathf.Abs(cell.field.transform.lossyScale.y), 1f);
-            // Fill both columns with the visible frame, preserving its aspect ratio.
-            // The bottom aligns with the reserved cells; only the crest may rise above them.
+            // Center the visible wood frame in its four cells, with a small even margin.
             var center = (cell.transform.position + bottomRight.transform.position) * 0.5f;
             root.transform.position = new Vector3(center.x - bounds.center.x * sx,
-                center.y - height * 0.5f - bounds.yMin * sy, center.z - 0.6f);
+                center.y - bounds.center.y * sy, center.z - 0.6f);
             Owner = root.AddComponent<MailCubbyBoardController>();
             var cells = new Square[4];
             int index = 0;

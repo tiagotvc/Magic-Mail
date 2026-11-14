@@ -178,7 +178,7 @@ namespace RoyalAves.EditorTools
             var groupType=assembly.GetType("UnityEditor.GameViewSizeGroupType");
             return sizesType.GetMethod("GetGroup").Invoke(instance,new[]{Enum.Parse(groupType,"Standalone")});
         }
-        static void ConfigureGameView()
+        internal static void ConfigureGameView()
         {
             var assembly=typeof(UnityEditor.Editor).Assembly;
             var view=EditorWindow.GetWindow(assembly.GetType("UnityEditor.GameView"));
@@ -208,7 +208,7 @@ namespace RoyalAves.EditorTools
             }
             selection.SetValue(view,index);view.Focus();view.Repaint();
         }
-        static void RestoreGameView()
+        internal static void RestoreGameView()
         {
             if(!SessionState.GetBool("MagicMail.LightBallLab.ViewSaved",false))return;
             var view=EditorWindow.GetWindow(typeof(UnityEditor.Editor).Assembly.GetType("UnityEditor.GameView"));
@@ -230,7 +230,7 @@ namespace RoyalAves.EditorTools
             }
             SessionState.SetBool("MagicMail.LightBallLab.ViewSaved",false);
         }
-        static void SyncGoalSprites(LevelManager manager)
+        internal static void SyncGoalSprites(LevelManager manager)
         {
             // Resolve the actual pooled piece artwork, without editing global targets or prefabs.
             for(int color=0;color<2;color++)
@@ -243,7 +243,7 @@ namespace RoyalAves.EditorTools
                     if(view.subTargetContainer==goal && view.image!=null)view.SetSprite(goal.extraObject);
             }
         }
-        static void FitViewport(LevelManager manager)
+        internal static void FitViewport(LevelManager manager)
         {
             var camera=manager.GetComponent<Camera>();
             foreach(var fitter in UnityEngine.Object.FindObjectsByType<SweetSugar.Scripts.System.Orientation.OrientationGameCameraHandle>(FindObjectsSortMode.None))

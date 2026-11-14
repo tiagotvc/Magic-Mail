@@ -60,7 +60,16 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             }
             if (targetLevel.name == "SolidBlock")
                 extraObject = targetLevel.defaultSprites.SelectMany(group => group.sprites).FirstOrDefault(s => s.uiSprite)?.icon ?? extraObject;
-            count = targetLevel.name == "IceBlock" && owner != null
+            RoyalAves.Effects.Soft3DTargetVisuals.Resolve(this);
+            count = targetLevel.name == "RoutePotions" && owner != null
+                ? RoyalAves.Gameplay.PendingElementCounts.Potions(owner)
+                : targetLevel.name == "SortingSignals" && owner != null
+                ? RoyalAves.Gameplay.PendingElementCounts.Signals(owner)
+                : targetLevel.name == "Safe" && owner != null
+                ? RoyalAves.Gameplay.SafeFootprint.Count(owner)
+                : targetLevel.name == "Inkwell" && owner != null
+                ? RoyalAves.Gameplay.InkwellCell.CountCells(owner)
+                : targetLevel.name == "IceBlock" && owner != null
                 ? RoyalAves.Gameplay.IceLayer.CountCells(owner)
                 : targetLevel.name == "MailCubby" && owner != null
                 ? RoyalAves.Gameplay.MailCubbyCell.CountLetters(owner)
@@ -76,6 +85,19 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         private int GetCountForSquares(bool subLevel)
         {
+            if (targetLevel.name == "RoutePotions")
+                return subLevel && LevelManager.THIS != null && LevelManager.THIS.field != null
+                    ? LevelManager.THIS.field.GetComponentsInChildren<RoyalAves.Gameplay.RouteCentralCell>().Sum(c => 4-c.BrokenCount)/4 : count;
+            if (targetLevel.name == "SortingSignals")
+                return subLevel && LevelManager.THIS != null && LevelManager.THIS.field != null
+                    ? LevelManager.THIS.field.GetComponentsInChildren<RoyalAves.Gameplay.SortingSignalCell>().Length : count;
+
+            if (targetLevel.name == "Safe")
+                return subLevel && LevelManager.THIS != null && LevelManager.THIS.field != null
+                    ? LevelManager.THIS.field.GetComponentsInChildren<RoyalAves.Gameplay.SafeCell>().Length : count;
+            if (targetLevel.name == "Inkwell")
+                return subLevel && LevelManager.THIS != null && LevelManager.THIS.field != null
+                    ? LevelManager.THIS.field.GetComponentsInChildren<RoyalAves.Gameplay.InkwellCell>().Length : count;
             if (targetLevel.name == "FlyingLetters" || targetLevel.name == "RoutePotions" || targetLevel.name == "Mailbags" || targetLevel.name == "BagOpenings") return count;
             // Ice and the mail cabinet start from authored cells, not scene components absent from
             // the start popup. Each delivered letter decrements the cabinet goal exactly once.
@@ -156,6 +178,8 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
 
         public void OnCheckTarget(GameObject obj, Sprite spr)
         {
+            if (targetLevel.name == "SortingSignals") return;
+            if (targetLevel.name == "Safe") return;
             if (targetLevel.name == "FlyingLetters" || targetLevel.name == "RoutePotions" || targetLevel.name == "Mailbags" || targetLevel.name == "BagOpenings") return;
             var item = obj.GetComponent<ISquareItemCommon>();
             var spriteRenderers = item.GetSpriteRenderers();
@@ -163,6 +187,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             // Matches and specials also check whole cells directly. Parcels collect exclusively
             // in the final-completion callback, never through the generic sprite flight path.
             var objects = spriteRenderers.Where(x =>
+                x.GetComponent<RoyalAves.Gameplay.InkwellCell>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.ParcelStackLayer>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.InkFloorLayer>() == null &&
                 x.GetComponent<RoyalAves.Gameplay.IceLayer>() == null &&

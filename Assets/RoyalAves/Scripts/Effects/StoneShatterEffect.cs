@@ -12,6 +12,8 @@ namespace RoyalAves.Effects
             public Vector3[] points;
             public int[] triangles;
             public Color tint;
+            public bool porcelainCore;
+            public int glazedFaces;
         }
         struct Face
         {
@@ -30,14 +32,29 @@ namespace RoyalAves.Effects
         Texture2D dustTexture;
         SpriteRenderer impact;
         float elapsed, speed, unit, bottom;
+        bool porcelain, chipOnly;
+        public static int PorcelainChipBursts { get; private set; }
+        public static int PorcelainBreakBursts { get; private set; }
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetPorcelainCounters() { PorcelainChipBursts=PorcelainBreakBursts=0; }
+        public bool IsPorcelain => porcelain;
+        public bool IsChipOnly => chipOnly;
+        public float AnimationTime => elapsed;
         public float CrackDuration => .025f;
         public float Duration => 3f;
         public int ShardCount => chunks.Count;
 
         public static StoneShatterEffect Play(SpriteRenderer source, float speed = 1f, float scatter = 1f)
+            => Create(source,speed,scatter,false,false);
+
+        public static StoneShatterEffect PlayPorcelain(SpriteRenderer source, bool chipOnly, float scatter = 1f)
+            => Create(source,1f,scatter,true,chipOnly);
+
+        static StoneShatterEffect Create(SpriteRenderer source, float speed, float scatter, bool porcelain, bool chipOnly)
         {
             if (source == null || source.sprite == null) return null;
-            var root = new GameObject("StoneShatterFX");
+            var root = new GameObject(porcelain ? chipOnly ? "InkwellPorcelainChip" : "InkwellPorcelainShatter" : "StoneShatterFX");
+            if(porcelain)root.layer=source.gameObject.layer;
             var field = source.GetComponentInParent<SweetSugar.Scripts.Level.FieldBoard>();
             root.transform.SetParent(field != null ? field.transform : source.transform.parent, false);
             root.transform.SetPositionAndRotation(source.transform.position, source.transform.rotation);
@@ -45,6 +62,8 @@ namespace RoyalAves.Effects
             root.transform.localScale = new Vector3(source.transform.lossyScale.x / parent.x,
                 source.transform.lossyScale.y / parent.y, 1);
             var effect = root.AddComponent<StoneShatterEffect>();
+            effect.porcelain=porcelain;effect.chipOnly=chipOnly;
+            if(porcelain){if(chipOnly)PorcelainChipBursts++;else PorcelainBreakBursts++;}
             effect.speed = Mathf.Clamp(speed,.1f,3f);
             effect.unit = Mathf.Max(source.sprite.bounds.size.x,source.sprite.bounds.size.y);
             effect.bottom = Camera.main != null
@@ -70,24 +89,59 @@ namespace RoyalAves.Effects
             impact.sortingLayerName=renderer.sortingLayerName;impact.sortingOrder=renderer.sortingOrder+1;
 
             // Deliberately no lattice, Voronoi UVs, rectangular tiles or surviving paw mosaic.
-            for(int i=0;i<30;i++)
+            var inkwell=porcelain?source.GetComponent<RoyalAves.Gameplay.InkwellCell>():null;
+            Vector3 porcelainCenter=inkwell!=null?inkwell.BodyCenterLocal:source.sprite.bounds.center;
+            int count=porcelain?(chipOnly?1:22):30;
+            for(int i=0;i<count;i++)
             {
                 bool large=i<7, grit=i>=19;
                 float radius=unit*(large?Random.Range(.075f,.115f):grit?Random.Range(.012f,.027f):Random.Range(.035f,.065f));
+                if(porcelain)radius=unit*(chipOnly?Random.Range(.025f,.043f):i<8?Random.Range(.06f,.095f):Random.Range(.025f,.05f));
                 float direction=i*2.399963f+Random.Range(-.5f,.5f);
                 var outward=new Vector3(Mathf.Cos(direction),Mathf.Sin(direction),0);
                 var center=new Vector3(Random.Range(-.32f,.32f),Random.Range(-.32f,.32f),0)*unit;
-                var chunk=CreateChunk(radius,grit?4:Random.Range(5,8));
+                var chunk=porcelain?CreatePorcelainChunk(radius,Random.Range(4,7)):CreateChunk(radius,grit?4:Random.Range(5,8));
+                if(porcelain)
+                {
+                    center+=porcelainCenter;
+                    if(chipOnly)center=porcelainCenter+new Vector3(unit*.23f,unit*.17f,0);
+                }
                 chunk.origin=center;
                 chunk.velocity=(outward*Random.Range(1.2f,2.7f)+Vector3.up*Random.Range(1.1f,2.1f))*unit*scatter;
                 chunk.velocity.z=Random.Range(-.12f,.12f)*unit;
+                if(chipOnly)chunk.velocity=new Vector3(Random.Range(.6f,1.1f),Random.Range(.9f,1.4f),-.03f)*unit;
                 chunk.spin=new Vector3(Random.Range(-360,360),Random.Range(-340,340),Random.Range(-440,440));
                 chunk.rotation=new Vector3(Random.Range(-35,35),Random.Range(-35,35),Random.Range(0,360));
                 float shade=Random.Range(.94f,1.08f);
-                chunk.tint=new Color(.66f*shade,.65f*shade,.72f*shade,1);
+                chunk.tint=porcelain?new Color(.43f*shade,.035f*shade,.8f*shade,1):new Color(.66f*shade,.65f*shade,.72f*shade,1);
+                if(porcelain && !chipOnly && i>=18){chunk.tint=new Color(1,.68f,.12f,1);chunk.porcelainCore=false;}
                 chunks.Add(chunk);
             }
-            AddDust();
+            if(!chipOnly)AddDust();
+        }
+
+        static Chunk CreatePorcelainChunk(float radius,int count)
+        {
+            var points=new Vector3[count*2+2];
+            float thickness=radius*.20f;
+            points[0]=new Vector3(0,0,-radius*.24f);
+            points[points.Length-1]=new Vector3(0,0,thickness);
+            for(int i=0;i<count;i++)
+            {
+                float angle=(i+Random.Range(-.13f,.13f))*Mathf.PI*2/count;
+                float r=radius*Random.Range(.8f,1.1f);
+                var edge=new Vector3(Mathf.Cos(angle)*r,Mathf.Sin(angle)*r*.8f,0);
+                points[i+1]=edge;points[i+1+count]=edge+Vector3.forward*thickness;
+            }
+            var indexes=new List<int>();
+            // Keep glazed front faces first, then exposed white porcelain at the rim/back.
+            for(int i=0;i<count;i++){indexes.Add(0);indexes.Add((i+1)%count+1);indexes.Add(i+1);}
+            for(int i=0;i<count;i++)
+            {
+                int a=i+1,b=(i+1)%count+1,c=a+count,d=b+count;
+                indexes.AddRange(new[]{a,b,d,a,d,c,points.Length-1,c,d});
+            }
+            return new Chunk{points=points,triangles=indexes.ToArray(),porcelainCore=true,glazedFaces=count};
         }
 
         // An uneven beveled rock: raised front ridge, broad broken sides and a back face.
@@ -122,7 +176,7 @@ namespace RoyalAves.Effects
         public void Sample(float time)
         {
             float travel=Mathf.Max(0,time-CrackDuration);
-            impact.enabled=time<CrackDuration;
+            impact.enabled=!chipOnly && time<CrackDuration;
             faces.Clear();vertices.Clear();colors.Clear();triangles.Clear();
             if(time>=CrackDuration)
             foreach(var chunk in chunks)
@@ -137,7 +191,8 @@ namespace RoyalAves.Effects
                     // Camera faces along +Z; only forward-facing solid surfaces are needed.
                     if(normal.z>=0)continue;
                     float light=Mathf.Clamp01(Vector3.Dot(normal,Light));
-                    Color tint=Color.Lerp(chunk.tint*.48f,Color.Lerp(chunk.tint,Color.white,.37f),light);
+                    Color faceColor=chunk.porcelainCore && i>=chunk.glazedFaces*3 ? new Color(.94f,.88f,.81f,1) : chunk.tint;
+                    Color tint=Color.Lerp(faceColor*(porcelain?.62f:.48f),Color.Lerp(faceColor,Color.white,.37f),light);
                     tint.a=1;
                     a+=center;b+=center;c+=center;
                     faces.Add(new Face{a=a,b=b,c=c,color=tint,depth=(a.z+b.z+c.z)/3});
@@ -171,7 +226,7 @@ namespace RoyalAves.Effects
             main.startLifetime=new ParticleSystem.MinMaxCurve(.15f,.3f);
             main.startSpeed=new ParticleSystem.MinMaxCurve(unit*.7f,unit*1.7f);
             main.startSize=new ParticleSystem.MinMaxCurve(unit*.14f,unit*.3f);
-            main.startColor=new Color(.76f,.74f,.8f,.5f);main.simulationSpace=ParticleSystemSimulationSpace.Local;
+            main.startColor=porcelain?new Color(.9f,.83f,.77f,.35f):new Color(.76f,.74f,.8f,.5f);main.simulationSpace=ParticleSystemSimulationSpace.Local;
             main.simulationSpeed=speed;main.maxParticles=20;
             var emission=system.emission;emission.rateOverTime=0;emission.SetBursts(new[]{new ParticleSystem.Burst(.02f,14)});
             var shape=system.shape;shape.shapeType=ParticleSystemShapeType.Circle;shape.radius=unit*.24f;

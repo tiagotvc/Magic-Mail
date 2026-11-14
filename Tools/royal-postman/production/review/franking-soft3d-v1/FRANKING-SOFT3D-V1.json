@@ -1,0 +1,22 @@
+{
+  "prefabIDsPreserved": 13,
+  "onlyTwoRendererSpriteAndMaterialPairsChanged": true,
+  "implicitDefaultsSerialized": {
+    "playbackSpeed": 1,
+    "useCabinetDelivery": false
+  },
+  "letterTransformsSpritesFlightAndLeverMotionPreserved": true,
+  "productionCellAndAllOtherBlocksUnchanged": true,
+  "campaignAndGoalCatalogUnchanged": true,
+  "newArt": {
+    "franking-body.png": "d52534de67672de7dc7dde362d19cd2d143e0135049adcfd88f1b23362fdabcc",
+    "franking-lever.png": "68d15cc3187cc50cbfade120b75a2be20b9931d73753e83b19500efe910703a9"
+  },
+  "native": "PASS: production normal load with labs off, new body and lever sprites, original cabinet-only flag false; 8 accepted activations/8 letters/goal0, duplicate busy hits and exhausted quota rejected, no early goal credit, lever returns -28deg and body position/scale restored after every impact, machine remains fixed, no campaign result. Native APIs/camera renders; no physical pointer/device/audio validation.",
+  "limits": [
+    "Native APIs/camera renders, no physical input/device/audio validation"
+  ],
+  "installedPrefabMatchesTestedCopy": true,
+  "compile": "runtime/editor zero errors",
+  "mainInstall": "PASS: franking body/lever sprites and their materials replaced in existing visual prefab; transforms, lever pivot/angles/timings, letter sprites/flight/goal logic, prefab IDs and production cell reference preserved. Level Editor uses the actual installed body sprite."
+}

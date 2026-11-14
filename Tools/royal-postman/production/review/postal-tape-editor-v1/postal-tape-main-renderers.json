@@ -1,0 +1,444 @@
+{
+    "renderers": [
+        {
+            "name": "Square_5_2",
+            "sprite": "RoundedLightBlueBoardCell",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 1.0
+            },
+            "position": {
+                "x": 0.7999998331069946,
+                "y": 0.8200000524520874,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTape",
+            "sprite": "TapeCross",
+            "material": "Sprite-Lit-Default",
+            "enabled": false,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 0.0
+            },
+            "position": {
+                "x": 0.7999998331069946,
+                "y": 0.8200000524520874,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTapeStrip_0",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": 0.7999998331069946,
+                "y": 0.8200000524520874,
+                "z": -0.039999961853027344
+            }
+        },
+        {
+            "name": "PostalTapeStrip_1",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": 0.7999998331069946,
+                "y": 0.8200000524520874,
+                "z": -0.04500007629394531
+            }
+        },
+        {
+            "name": "Square_3_5",
+            "sprite": "RoundedLightBlueBoardCell",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": -1.6399998664855957,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTape",
+            "sprite": "TapeCross",
+            "material": "Sprite-Lit-Default",
+            "enabled": false,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 0.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": -1.6399998664855957,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTapeStrip_0",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.5375555753707886,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": -1.6399998664855957,
+                "z": -0.039999961853027344
+            }
+        },
+        {
+            "name": "PostalTapeStrip_1",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.5375555753707886,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": -1.6399998664855957,
+                "z": -0.04500007629394531
+            }
+        },
+        {
+            "name": "Square_3_2",
+            "sprite": "RoundedLightBlueBoardCell",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": 0.8200000524520874,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTape",
+            "sprite": "TapeCross",
+            "material": "Sprite-Lit-Default",
+            "enabled": false,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 0.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": 0.8200000524520874,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTapeStrip_0",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.5375555753707886,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": 0.8200000524520874,
+                "z": -0.039999961853027344
+            }
+        },
+        {
+            "name": "PostalTapeStrip_1",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.5375555753707886,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.8400000333786011,
+                "y": 0.8200000524520874,
+                "z": -0.04500007629394531
+            }
+        },
+        {
+            "name": "Square_1_5",
+            "sprite": "RoundedLightBlueBoardCell",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 1.0
+            },
+            "position": {
+                "x": -2.4800000190734863,
+                "y": -1.6399998664855957,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTape",
+            "sprite": "TapeCross",
+            "material": "Sprite-Lit-Default",
+            "enabled": false,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 0.0
+            },
+            "position": {
+                "x": -2.4800000190734863,
+                "y": -1.6399998664855957,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTapeStrip_0",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -2.4800000190734863,
+                "y": -1.6399998664855957,
+                "z": -0.039999961853027344
+            }
+        },
+        {
+            "name": "PostalTapeStrip_1",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -2.4800000190734863,
+                "y": -1.6399998664855957,
+                "z": -0.04500007629394531
+            }
+        },
+        {
+            "name": "Square_4_4",
+            "sprite": "RoundedLightBlueBoardCell",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.020000100135803223,
+                "y": -0.8199999332427979,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTape",
+            "sprite": "TapeCross",
+            "material": "Sprite-Lit-Default",
+            "enabled": false,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 1.0
+            },
+            "scale": {
+                "x": 0.41999998688697815,
+                "y": 0.41999998688697815,
+                "z": 0.0
+            },
+            "position": {
+                "x": -0.020000100135803223,
+                "y": -0.8199999332427979,
+                "z": 0.0
+            }
+        },
+        {
+            "name": "PostalTapeStrip_0",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.020000100135803223,
+                "y": -0.8199999332427979,
+                "z": -0.039999961853027344
+            }
+        },
+        {
+            "name": "PostalTapeStrip_1",
+            "sprite": "PostalTapeStrip",
+            "material": "Sprite-Lit-Default",
+            "enabled": true,
+            "color": {
+                "r": 1.0,
+                "g": 1.0,
+                "b": 1.0,
+                "a": 0.6000000238418579
+            },
+            "scale": {
+                "x": 0.537555456161499,
+                "y": 0.3878856301307678,
+                "z": 1.0
+            },
+            "position": {
+                "x": -0.020000100135803223,
+                "y": -0.8199999332427979,
+                "z": -0.04500007629394531
+            }
+        }
+    ]
+}

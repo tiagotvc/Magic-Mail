@@ -1,0 +1,119 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using RoyalAves.Gameplay;
+using RoyalAves.Effects;
+using SweetSugar.Scripts;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Editor;
+using SweetSugar.Scripts.Items;
+using SweetSugar.Scripts.Items._Interfaces;
+using SweetSugar.Scripts.Level;
+using SweetSugar.Scripts.TargetScripts.TargetEditor;
+using SweetSugar.Scripts.TargetScripts.TargetSystem;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+namespace RoyalAves.EditorTools
+{
+ public static class ThreeElementsEditorVerification
+ {
+  const string Key="MagicMail.ThreeElements.Verify",Fixture="Assets/SweetSugar/Resources/Levels/Level_1902.asset",TargetPath="Assets/SweetSugar/Resources/Levels/Targets/TargetLevel1902.asset";
+  static int step,deliveries;static double at;static SortingSignalCell signal;
+  static void Require(bool value,string message){if(!value)throw new Exception(message);}
+  static int Goal(string name)=>LevelManager.THIS.levelData.TargetCounters.Single(t=>t.targetLevel.name==name).count;
+  static RouteCentralCell[] Potions()=>UnityEngine.Object.FindObjectsByType<RouteCentralCell>(FindObjectsSortMode.None);
+  static BagOpeningStation[] Bags()=>UnityEngine.Object.FindObjectsByType<BagOpeningStation>(FindObjectsSortMode.None);
+  static SortingSignalCell[] Signals()=>UnityEngine.Object.FindObjectsByType<SortingSignalCell>(FindObjectsSortMode.None);
+  [InitializeOnLoadMethod]static void Listen(){EditorApplication.update-=Tick;EditorApplication.update+=Tick;}
+  public static void Run()
+  {
+   Require(Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"),"Isolated only");
+   PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailThreeElementsEditor";
+   var config=Resources.Load<TargetEditorScriptable>("Levels/TargetEditorScriptable");var old=config.targets.Select(t=>(t.name,JsonUtility.ToJson(t))).ToArray();
+   PendingElementEditorTools.Build();
+   Require(config.targets.Count==old.Length,"Target indexes changed");foreach(var entry in old)if(entry.name!="RoutePotions"&&entry.name!="BagOpenings"&&entry.name!="SortingSignals")Require(JsonUtility.ToJson(config.targets.Single(t=>t.name==entry.name))==entry.Item2,"Unrelated goal changed: "+entry.name);
+   foreach(var type in new[]{SquareTypes.RoutePotions,SquareTypes.BagOpenings,SquareTypes.SortingSignals})
+   {Require(MagicMailEditorCatalog.IsBlock(type)&&MagicMailEditorCatalog.IsTarget(type.ToString()),"Catalog missing "+type);Require(Square.GetBlockPrefab(type).Length==1&&SquareUtils.GetSquareTexture(type).Texture2D!=null,"Prefab/icon missing "+type);}
+   Require(!MagicMailEditorCatalog.IsTarget("PostalTapes"),"Tape became a goal");
+   var template=AssetDatabase.LoadAssetAtPath<LevelContainer>(SortingSignalLaboratory.LevelPath);var data=JsonUtility.FromJson<LevelData>(JsonUtility.ToJson(template.levelData));data.levelNum=1902;data.fields=data.fields.Take(1).ToList();data.currentSublevelIndex=0;data.limit=60;data.selectedTutorial=0;var field=data.fields[0];field.layers=2;field.frankingMachines.Clear();
+   var sprites=Resources.Load<GameObject>("Items/Item").GetComponent<IColorableComponent>().GetSprites(1);var pieces=new[]{"gift","stamp","envelope","bow"}.Select(n=>sprites.First(s=>s!=null&&s.texture.name==n)).ToArray();var colors=pieces.Select(p=>Array.IndexOf(sprites,p)).ToArray();data.pieceColors=colors.ToList();data.colorLimit=4;
+   for(int y=0;y<field.maxRows;y++)for(int x=0;x<field.maxCols;x++)
+   {var c=field.levelSquares[y*field.maxCols+x];c.blocks.Clear();c.blocks.Add(new SquareTypeLayer{squareType=SquareTypes.EmptySquare});c.block=SquareTypes.EmptySquare;c.obstacle=SquareTypes.NONE;c.blockLayer=c.obstacleLayer=1;c.startWithoutItem=false;c.position=new Vector2Int(x,y);c.spawners.Clear();c.enterSquare=y==0;c.direction=Vector2.down;c.isEnterTeleport=false;c.teleportCoordinatesLinked=c.teleportCoordinatesLinkedBack=new Vector2Int(-1,-1);c.separatorIndexes=new bool[4];int color=(y+2*x)%4;c.item=new ItemForEditor{Item=Resources.Load<GameObject>("Items/Item"),ItemType=ItemsTypes.NONE,Color=colors[color],Tex=pieces[color].texture};}
+   var window=ScriptableObject.CreateInstance<LevelMakerEditor>();var editor=typeof(LevelMakerEditor);
+   void Set(string name,object value)=>editor.GetField(name,BindingFlags.NonPublic|BindingFlags.Instance).SetValue(window,value);
+   void Paint(SquareTypes type,int x,int y){Set("squareType",type);editor.GetMethod("SetSquareType",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(window,new object[]{x,y});}
+   try
+   {
+    Set("levelData",data);Set("subLevelNumber",1);
+    Paint(SquareTypes.RoutePotions,0,3);Paint(SquareTypes.RoutePotions,2,3);Require(PendingElementCounts.Potions(data)==8,"Two potion stands not painted");
+    Set("deleteBlock",true);Paint(SquareTypes.RoutePotions,1,4);Require(PendingElementCounts.Potions(data)==4&&!PotionFootprint.Has(field,0,3)&&PotionFootprint.Has(field,2,3),"Atomic erase damaged neighboring stand");Set("deleteBlock",false);Paint(SquareTypes.RoutePotions,0,3);
+    string snapshot=JsonUtility.ToJson(field);Require(!PotionFootprint.TryPaint(field,6,6,out _)&&snapshot==JsonUtility.ToJson(field),"Edge paint partially wrote cells");Require(PotionFootprint.Validate(field,out _),"Invalid potion footprint");
+    Paint(SquareTypes.BagOpenings,5,3);Paint(SquareTypes.BagOpenings,5,5);Paint(SquareTypes.SortingSignals,3,1);Paint(SquareTypes.SortingSignals,5,1);
+    Require((bool)editor.GetField("pendingPotionTarget",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(window)&&(bool)editor.GetField("pendingBagTarget",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(window)&&(bool)editor.GetField("pendingSignalTarget",BindingFlags.NonPublic|BindingFlags.Instance).GetValue(window),"Goal setup not queued by actual brushes");
+   }finally{UnityEngine.Object.DestroyImmediate(window);}
+   void Piece(int x,int y,int color){var c=field.levelSquares[y*field.maxCols+x];c.item.Color=colors[color];c.item.Texture=pieces[color].texture;}
+   Piece(2,0,0);Piece(2,1,1);Piece(2,2,0);Piece(1,1,0);Piece(1,0,2);Piece(1,2,3);
+   field.levelSquares[3*field.maxCols+6].item=new ItemForEditor{Item=Resources.Load<GameObject>("Items/HORIZONTAL_STRIPED"),ItemType=ItemsTypes.HORIZONTAL_STRIPED,Color=colors[0]};
+   data.LoadTargetObject();data.SetTarget(data.GetTargetIndex("RoutePotions"));
+   var asset=AssetDatabase.LoadAssetAtPath<LevelContainer>(Fixture);if(asset==null){asset=ScriptableObject.CreateInstance<LevelContainer>();AssetDatabase.CreateAsset(asset,Fixture);}asset.levelData=data;EditorUtility.SetDirty(asset);AssetDatabase.SaveAssetIfDirty(asset);
+   var targets=AssetDatabase.LoadAssetAtPath<TargetLevel>(TargetPath);if(targets==null){targets=ScriptableObject.CreateInstance<TargetLevel>();AssetDatabase.CreateAsset(targets,TargetPath);}targets.targets=new TargetList();
+   foreach(var name in new[]{"RoutePotions","BagOpenings","SortingSignals","CollectItems"}){int index=config.targets.FindIndex(t=>t.name==name);targets.AddTargetType(index,config);var entry=targets.targets.Last();entry.CountDrawer.count=name=="BagOpenings"?3:name=="CollectItems"?1000:0;if(name=="CollectItems")entry.sprites=new SpriteList{new SpriteObject{icon=pieces[3],uiSprite=true}};}
+   EditorUtility.SetDirty(targets);AssetDatabase.SaveAssetIfDirty(targets);AssetDatabase.ForceReserializeAssets(new[]{Fixture,TargetPath});AssetDatabase.ImportAsset(Fixture,ImportAssetOptions.ForceSynchronousImport|ImportAssetOptions.ForceUpdate);
+   foreach(var key in LightBallLaboratory.OtherKeys)SessionState.SetBool(key,false);LightBallLaboratory.Disable();InkwellLaboratory.Disable();
+   var loaded=LoadingManager.LoadForPlay(1902);Require(PendingElementCounts.Potions(loaded)==8&&PendingElementCounts.Signals(loaded)==2&&loaded.TargetCounters.Single(t=>t.targetLevel.name=="BagOpenings").count==3,"Normal save/load target setup");
+   File.WriteAllText("Logs/three-elements-editor-authoring.result","PASS: all three real catalog brushes and Resources prefabs, atomic 2x2 potion placement/erase/border rejection, two neighboring stands, goal setup, typed bag quantity, normal disk save/reimport/load, goal indexes and unrelated records preserved, tape excluded from goals.");
+   SessionState.SetBool(Key,true);SessionState.SetString(Key+"Deadline",DateTime.UtcNow.AddMinutes(6).ToString("O"));EditorSceneManager.OpenScene("Assets/SweetSugar/Scenes/game.unity");EditorApplication.isPlaying=true;
+  }
+  static void Tick()
+  {
+   if(!SessionState.GetBool(Key,false)||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+   try
+   {
+    Require(DateTime.UtcNow<DateTime.Parse(SessionState.GetString(Key+"Deadline",""),null,System.Globalization.DateTimeStyles.RoundtripKind),"Timeout");var m=LevelManager.THIS;if(!EditorApplication.isPlaying||m==null)return;
+    if(m.gameStatus==GameState.Map&&AI.THIS!=null){PlayerPrefs.SetInt("OpenLevel",1902);m.currentLevel=1902;m.BoostPackage=m.BoostStriped=m.BoostColorfullBomb=0;m.gameStatus=GameState.PrepareGame;}
+    if(m.gameStatus==GameState.Tutorial)m.gameStatus=GameState.Playing;if(m.gameStatus!=GameState.Playing||EditorApplication.timeSinceStartup<at)return;
+    if(step==0)
+    {
+     if(Potions().Length!=8||Bags().Length!=2||Signals().Length!=2)return;
+     Require(m.field.GetComponentsInChildren<RouteCentralPrototype>().Length==2,"Potion stands merged");Require(Goal("RoutePotions")==8&&Goal("BagOpenings")==3&&Goal("SortingSignals")==2,"Initial production goals");
+     PostalTapeLaboratoryTools.CaptureBoard("Logs/three-elements-editor-initial.png");signal=Signals().First(s=>s.transform.parent.GetComponent<Square>().col==3);m.field.GetSquare(1,1).Item.SwitchDirection(Vector3.left);step=1;at=EditorApplication.timeSinceStartup+3;return;
+    }
+    if(step==1)
+    {
+     if(m.findMatchesStarted||m.DragBlocked)return;Require(signal==null||signal.Hits>=1,"Real match did not reach authored signal");
+     for(int y=3;y<5;y++)for(int x=0;x<4;x++)m.field.GetSquare(x,y).DestroyBlock();
+     step=2;at=EditorApplication.timeSinceStartup+3;return;
+    }
+    if(step==2)
+    {
+     Require(Goal("RoutePotions")==0&&Potions().Length==0,"Potion goals or four-cell release failed");
+     foreach(var s in Signals())s.transform.parent.GetComponent<Square>().DestroyBlock();step=3;at=EditorApplication.timeSinceStartup+.3;return;
+    }
+    if(step==3)
+    {
+     foreach(var s in Signals())s.transform.parent.GetComponent<Square>().DestroyBlock();step=4;at=EditorApplication.timeSinceStartup+.4;return;
+    }
+    if(step==4)
+    {
+     foreach(var s in Signals())s.transform.parent.GetComponent<Square>().DestroyBlock();if(Signals().Length>0){at=EditorApplication.timeSinceStartup+.4;return;}
+     Require(Goal("SortingSignals")==0,"Signal completion count");step=5;return;
+    }
+    if(step==5)
+    {
+     if(Bags().Any(b=>b.IsAnimating))return;
+     if(Goal("BagOpenings")==0){step=6;return;}
+     int before=Goal("BagOpenings");var bag=Bags()[deliveries%2];Require(bag.PlayOpening(),"Authored bag could not emit collectible");Require(Goal("BagOpenings")==before,"Bag counted before arrival");deliveries++;step=7;at=EditorApplication.timeSinceStartup+2;return;
+    }
+    if(step==7){if(Bags().Any(b=>b.IsAnimating))return;Require(Goal("BagOpenings")==Mathf.Max(0,3-deliveries),"Bag HUD delivery count");step=5;return;}
+    if(step==6)
+    {
+     Require(deliveries<=3&&Bags().All(b=>!b.PlayOpening()),"Bag emitted after goal exhausted");Require(m.levelData.TargetCounters.All(t=>t.targetLevel.name!="PostalTapes"),"Tape goal returned");PostalTapeLaboratoryTools.CaptureBoard("Logs/three-elements-editor-cleared.png");
+     File.WriteAllText("Logs/three-elements-editor-native.result","PASS: production normal load with lab flags off; two separate authored potion stands/8 flasks; two fixed bags with serialized production scroll sprites; two signals; automatic potion/signal goals and manual bag quota; actual match API; independent flask hits and 2x2 release; signal completion; bag goal only at delivery and stops at quota; tape remains no-goal. Isolated APIs, not physical pointer/audio/device/full campaign.");SessionState.SetBool(Key,false);EditorApplication.Exit(0);
+    }
+   }catch(Exception e){File.WriteAllText("Logs/three-elements-editor-native.result","FAIL: "+e);Debug.LogException(e);SessionState.SetBool(Key,false);EditorApplication.Exit(1);}
+  }
+ }
+}

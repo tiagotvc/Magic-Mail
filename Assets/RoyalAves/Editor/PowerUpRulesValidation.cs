@@ -156,7 +156,7 @@ namespace RoyalAves.EditorTools
             dragging = field.GetSquare(3, 3).Item;
         }
 
-        [MenuItem("Royal Aves/Validação/Power-ups e alcance 7x7 da dinamite")]
+            [MenuItem("Royal Aves/Validação/Power-ups e alcance reduzido da dinamite")]
         public static void ValidateGeometry()
         {
             var root = new GameObject("PowerUpRulesFixture") { hideFlags = HideFlags.HideAndDontSave };
@@ -176,19 +176,19 @@ namespace RoyalAves.EditorTools
                 }
                 var clear = new ImpactBarrierSnapshot(Array.Empty<Vector2Int>());
                 var center = field.GetSquare(4, 4);
-                Expect(ImpactBarrierSnapshot.AreaAround(center, ItemDestroyAnimation.BlastRadius, clear).Count == 49, "Dynamite center must cover 49 cells.");
-                Expect(ImpactBarrierSnapshot.AreaAround(field.GetSquare(0, 0), 3, clear).Count == 16, "Corner must clip to 16 unique cells.");
-                Expect(ImpactBarrierSnapshot.AreaAround(field.GetSquare(0, 4), 3, clear).Count == 28, "Edge must clip to 28 cells.");
+                Expect(ImpactBarrierSnapshot.AreaAround(center, ItemDestroyAnimation.BlastRadius, clear).Count == 25, "Dynamite center must cover the reduced radius.");
+                Expect(ImpactBarrierSnapshot.AreaAround(field.GetSquare(0, 0), 2, clear).Count == 9, "Corner must clip to 9 unique cells.");
+                Expect(ImpactBarrierSnapshot.AreaAround(field.GetSquare(0, 4), 2, clear).Count == 15, "Edge must clip to 15 cells.");
                 Expect(ImpactBarrierSnapshot.AreaAround(center, 1, clear).Count == 9, "Other adjacency effects must remain 3x3.");
                 var blocked = new ImpactBarrierSnapshot(new[] { new Vector2Int(5, 4) });
-                var blast = ImpactBarrierSnapshot.AreaAround(center, 3, blocked);
+                var blast = ImpactBarrierSnapshot.AreaAround(center, 2, blocked);
                 Expect(blast.Contains(field.GetSquare(5, 4)) && !blast.Contains(field.GetSquare(6, 4)), "A crate must receive but block the blast behind it.");
                 foreach (var type in new[] { ItemsTypes.MARMALADE, ItemsTypes.PACKAGE, ItemsTypes.MULTICOLOR, ItemsTypes.HORIZONTAL_STRIPED, ItemsTypes.VERTICAL_STRIPED })
                     Expect(Item.IsPlayerPowerUpType(type), "Missing movable power-up: " + type);
                 foreach (var type in new[] { ItemsTypes.NONE, ItemsTypes.SPIRAL, ItemsTypes.INGREDIENT, ItemsTypes.TimeBomb })
                     Expect(!Item.IsPlayerPowerUpType(type), "Ordinary/obstacle type treated as power-up: " + type);
                 Directory.CreateDirectory("Logs");
-                File.WriteAllText("Logs/power-up-rules.result", "PASS: native blast geometry (49 center, 16 corner, 28 edge); default adjacency 9; crate barriers; all five player power-up types.");
+                File.WriteAllText("Logs/power-up-rules.result", "PASS: native reduced blast geometry (25 center, 9 corner, 15 edge); default adjacency 9; crate barriers; all five player power-up types.");
             }
             finally { UnityEngine.Object.DestroyImmediate(root); }
         }

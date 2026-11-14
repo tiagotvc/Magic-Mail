@@ -206,7 +206,9 @@ namespace SweetSugar.Scripts.Level
                  ChangeFoundCombines(bonusCombines);
                  if(excludeTutorialItems && combs.All(i => i.items.All(x => x.tutorialItem)))
                      break;
-                 yield return new WaitForEndOfFrame();
+                 // Color cleanup only needs the next update, not a rendered Game View.
+                 // EndOfFrame stalls editor previews when the Game tab is not rendering.
+                 yield return null;
              } while (combs.Count > 0 || allFoundCombines.SelectMany(i=>i.items).Any() || bonusCombines.Any());
              GetItems().ForEach(i => i.Hide(false));
              yield return new WaitWhileFall(false);

@@ -16,7 +16,7 @@ namespace RoyalAves.Gameplay
         public const string TargetPath="Assets/RoyalAves/Laboratory/LightBallTargets.asset";
         public static bool IsActive { get; private set; }
         public static readonly string[] Modes={"Cor comum","Com dinamite","Com foguete","Com hélice","Duas Light Balls"};
-        public static readonly string[] OtherKeys={EnchantedStoneLaboratory.EnabledKey,MailbagLaboratory.EnabledKey,
+        public static readonly string[] OtherKeys={PostalTapeLaboratory.EnabledKey,SortingSignalLaboratory.EnabledKey,ExplosivePackageLaboratory.EnabledKey,EnchantedStoneLaboratory.EnabledKey,MailbagLaboratory.EnabledKey,
             RouteCentralLaboratory.EnabledKey,FlyingLetterLaboratory.EnabledKey,FrankingMachineLaboratory.EnabledKey,
             MailCubbyLaboratory.EnabledKey,InkLaboratory.EnabledKey,ParcelStackLaboratory.EnabledKey};
         public static ItemsTypes PartnerType(int mode) => mode==1?ItemsTypes.PACKAGE:mode==2?ItemsTypes.HORIZONTAL_STRIPED:

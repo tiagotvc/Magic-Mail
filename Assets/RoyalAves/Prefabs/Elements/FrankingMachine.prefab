@@ -150,7 +150,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: aa052e2da0bbb084eb5d1b0dfb000892, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -173,7 +173,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 32
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: f858d7bf3a741094194b330669f994c4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 666fce8fb0cb48843b2d8a86f6bca2e6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -247,10 +247,12 @@ MonoBehaviour:
   collectionDestination: {fileID: 0}
   emissionDuration: 0.65
   letterStagger: 0.12
+  playbackSpeed: 1
   launchDuration: 0.14
   launchDisplacement: {x: 0, y: -0.25, z: -0.03}
   launchStartYScale: 0.18
   drawOverHud: 1
+  useCabinetDelivery: 0
   flyingLetterScale: 1
 --- !u!114 &7912474840261431608
 MonoBehaviour:
@@ -323,7 +325,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: e13ef0a8622202146ab41a106ce5130d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -346,7 +348,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 30
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 65edce83bc3c55041881fc0770cf958e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4fe573b221c06ad48a5f5fafee370a05, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

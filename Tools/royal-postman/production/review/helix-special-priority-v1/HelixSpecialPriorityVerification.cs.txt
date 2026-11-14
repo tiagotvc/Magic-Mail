@@ -1,0 +1,45 @@
+using System;
+using System.IO;
+using System.Reflection;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Items;
+using RoyalAves.Gameplay;
+using RoyalAves.Effects;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+namespace RoyalAves.EditorTools
+{
+ public static class HelixSpecialPriorityVerification
+ {
+  static void Require(bool value,string message){if(!value)throw new Exception(message);}
+  public static void Run()
+  {
+   if(!Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"))throw new Exception("Isolated only");
+   var scene=EditorSceneManager.NewPreviewScene();
+   GameObject New(string name){var o=new GameObject(name);SceneManager.MoveGameObjectToScene(o,scene);return o;}
+   Square Cell(string name,float x,SquareTypes type){var o=New(name);o.transform.position=Vector3.right*x;var s=o.AddComponent<Square>();s.type=type;return s;}
+   try
+   {
+    var requester=New("Helix A");var other=New("Helix B");
+    var crate=Cell("Ordinary match blocker farther away",20,SquareTypes.SolidBlock);
+    var stone=Cell("Rune",2,SquareTypes.EnchantedStone);var rune=stone.gameObject.AddComponent<RoyalAves.Gameplay.EnchantedStone>();
+    var safe=Cell("Safe",4,SquareTypes.Safe);var safeCell=safe.gameObject.AddComponent<SafeCell>();
+    var cells=new[]{crate,stone,safe};
+    IMarmaladeTargetable Pick()=>MarmaladeFly.PreferredSpecialOnlyTarget(cells,requester,null,Vector3.zero);
+    Require(Pick()==safe,"Special-only priority/distance tie-break");
+    safe.GetMarmaladeTarget=other;Require(Pick()==stone,"Reserved safe must not block rune selection");
+    stone.GetMarmaladeTarget=other;Require(Pick()==null,"Reserved targets must allow normal fallback");
+    stone.GetMarmaladeTarget=requester;Require(Pick()==stone,"Own reservation remains eligible");
+    stone.GetMarmaladeTarget=null;typeof(RoyalAves.Gameplay.EnchantedStone).GetField("<IsBreaking>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(rune,true);Require(Pick()==null,"Breaking rune must not be targeted");
+    typeof(RoyalAves.Gameplay.EnchantedStone).GetField("<IsBreaking>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(rune,false);
+    stone.gameObject.SetActive(false);Require(Pick()==null,"Inactive rune must not be targeted");stone.gameObject.SetActive(true);
+    var cover=Cell("Top crate layer",2,SquareTypes.SolidBlock);cover.transform.SetParent(stone.transform);stone.subSquares.Add(cover);Require(Pick()==null,"Covered rune is not an exposed special-only target");stone.subSquares.Clear();
+    safe.GetMarmaladeTarget=null;var controller=New("Safe controller").AddComponent<SafeBoardController>();var animation=New("Safe animation").AddComponent<SafeBreakAnimation>();typeof(SafeBoardController).GetField("animation",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(controller,animation);typeof(SafeCell).GetField("<Controller>k__BackingField",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(safeCell,controller);typeof(SafeBreakAnimation).GetField("hits",BindingFlags.Instance|BindingFlags.NonPublic).SetValue(animation,5);
+    Require(Pick()==stone,"Final-breaking safe must yield to live rune");
+    File.WriteAllText("Logs/helix-special-priority.result","PASS: production selector prioritizes exposed rune/safe over ordinary blockers, farther tie-break retained, other reservations excluded/own reservation allowed, breaking/inactive/covered targets excluded, final-hit safe excluded, no preferred target returns normal fallback. Native editor rules test; no physical flight/device/audio validation.");
+   }
+   finally{EditorSceneManager.ClosePreviewScene(scene);}
+  }
+ }
+}

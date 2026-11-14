@@ -1,0 +1,25 @@
+{
+  "version": "rocket-propeller-v2",
+  "date": "2026-11-11",
+  "status": "native-play-pass-user-visual-review-pending",
+  "supersedes_visual": "rocket-propeller-v1 hanging cargo",
+  "changes": [
+    "side-by-side orbital choreography; pop at windup",
+    "alternating depth and sorting, both always above safe",
+    "low flight arc; combination closes at arrival before rocket fires",
+    "dynamite cargo and other propeller combinations unchanged"
+  ],
+  "tests": [
+    "horizontal: eight orbit side changes; one delivery; nine unique axis hits; gravity released",
+    "vertical: eight orbit side changes; one delivery; nine unique axis hits; gravity released",
+    "dynamite delivery regression pass; zero orbital side changes"
+  ],
+  "limits": [
+    "scripted actual swaps, no physical pointer",
+    "no exact pixel/timing parity with reference claimed",
+    "no audio/device/full victory flow validation"
+  ],
+  "sha256": {
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "4563630ebca3ab165cd04f74b750cda2b98e49f0426431172a002601b0256104"
+  }
+}

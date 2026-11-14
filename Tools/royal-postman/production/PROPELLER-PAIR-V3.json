@@ -1,0 +1,25 @@
+{
+  "version": "propeller-pair-v3",
+  "date": "2026-11-11",
+  "status": "native-play-pass-user-visual-review-pending",
+  "changes": [
+    "both sprites converge on exact midpoint of their two logical cells",
+    "all three propellers launch from that midpoint, with no snap to a cell",
+    "merge shortened to 0.12s; stationary 0.58s group wait removed",
+    "flight opens formation with ease-out entry; only frame-scale departure staggering"
+  ],
+  "tests": [
+    "all three start positions within 0.02 world units of independently calculated midpoint",
+    "three visibly moving more than 0.12 world units from their own start after 0.083 simulated seconds",
+    "one combined activation; max three flyers; three distinct arrivals; cleanup; gravity released",
+    "runtime/editor zero compile errors"
+  ],
+  "limits": [
+    "actual scripted swap, no physical pointer",
+    "no audible audio/device/full victory-flow test"
+  ],
+  "sha256": {
+    "Assets/SweetSugar/Scripts/Items/ItemMarmalade.cs": "01c6affa30d72f51bc187832bacbee8a0fb9c9bf142e2a5464cd8f635a64a815",
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "fbbb3391dca5beb31a7f7dbc133ce05ee70013a86433e6f55ab68d5b5202ae0d"
+  }
+}

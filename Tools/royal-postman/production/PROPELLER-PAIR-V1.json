@@ -1,0 +1,29 @@
+{
+  "version": "propeller-pair-v1",
+  "date": "2026-11-11",
+  "status": "implemented-native-play-pass-user-visual-review-pending",
+  "reference": "../../previews/propeller-pair-v1/references/helice-combinado.webp",
+  "reference_sha256": "37203a10ada89ad553e845ea9ead78c943978f3c67c4e312165ec4b0d9ac8f31",
+  "choreography": [
+    "0.22s partner pull-in",
+    "three propellers open a rotating triangle for 0.58s",
+    "staggered departure, three separately reserved targets"
+  ],
+  "tests": [
+    "one combined activation, max three flyers, spread observed",
+    "three arrivals at distinct cells; no group flyers left active; gravity released",
+    "rocket + propeller regression: eight orbit switches, one delivery, nine axis hits",
+    "dynamite + propeller regression: one delivery"
+  ],
+  "limits": [
+    "scripted real swap, no physical pointer",
+    "no audio/device/full victory flow validation",
+    "not pixel or timing identical to reference"
+  ],
+  "sha256": {
+    "Assets/SweetSugar/Scripts/Items/ItemMarmalade.cs": "1ab9057b40e3f15a4ac50d8dafac2d50262993e3c6330eacbd01ca41fae63ac5",
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "7c18ef66ec79cbca1abfb2e01637f5afc6ef6e591566139400158fb92da03f74",
+    "Assets/RoyalAves/Scripts/Gameplay/ExplosivePackageLaboratory.cs": "b95a4725a85c4089f174585d98ea00989b234ab86b7321ecf6473e44d1788edc",
+    "Assets/RoyalAves/Editor/ExplosivePackageLaboratoryTools.cs": "e35d8282ec69f3ac325a465f11632b35643dcad33d0924dea8df7db49c30b67a"
+  }
+}

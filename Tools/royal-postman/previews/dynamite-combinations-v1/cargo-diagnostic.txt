@@ -1,0 +1,8 @@
+PACKAGE Sprite sprite=dinamite-idle enabled=True order=3 scale=(0.37, 0.37, 1.00)
+PACKAGE Sprite sprite=dinamite-idle enabled=True order=2 scale=(0.37, 0.37, 1.00)
+FLY Marmalade2 sprite=propeller_spin_06 enabled=True color=RGBA(1.000, 1.000, 1.000, 1.000) order=102 layer=Item mask position=(-0.03, 0.03, -0.30) bounds=Center: (-0.03, 0.03, -0.30), Extents: (0.65, 0.61, 0.14) scale=(0.52, 0.49, 1.36)
+FLY Carried dynamite sprite=dinamite-idle enabled=True color=RGBA(1.000, 1.000, 1.000, 1.000) order=101 layer=Item mask position=(-0.03, -0.27, -0.31) bounds=Center: (-0.03, -0.25, -0.31), Extents: (0.27, 0.26, 0.05) scale=(0.20, 0.18, 0.51)
+PACKAGE Sprite sprite=dinamite-idle enabled=True order=3 scale=(0.37, 0.37, 1.00)
+PACKAGE Sprite sprite=dinamite-idle enabled=True order=2 scale=(0.37, 0.37, 1.00)
+FLY Marmalade2 sprite=propeller_spin_06 enabled=True color=RGBA(1.000, 1.000, 1.000, 1.000) order=102 layer=Item mask position=(-0.05, 0.00, -0.30) bounds=Center: (-0.05, 0.00, -0.30), Extents: (0.65, 0.61, 0.14) scale=(0.52, 0.49, 1.36)
+FLY Carried dynamite sprite=dinamite-idle enabled=True color=RGBA(1.000, 1.000, 1.000, 1.000) order=101 layer=Item mask position=(-0.04, -0.91, -0.31) bounds=Center: (-0.05, -0.87, -0.31), Extents: (0.41, 0.38, 0.08) scale=(0.29, 0.27, 0.76)

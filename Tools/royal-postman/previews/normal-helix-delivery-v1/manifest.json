@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-11",
+  "revision": "Normal propeller navigation shared with rocket/dynamite delivery",
+  "fps": 24,
+  "audio": false,
+  "source": "Real isolated Unity Play, board-only camera, scripted swap",
+  "entries": [
+    {
+      "name": "01-dinamite",
+      "mode": 3,
+      "frames": 192
+    },
+    {
+      "name": "02-foguete",
+      "mode": 6,
+      "frames": 144
+    }
+  ],
+  "sha256": {
+    "01-dinamite.gif": "37a58a30531b2aba7be214a0f00e8cece8890b68b1dd420c03218093ae57ef7f",
+    "01-dinamite.mp4": "506cb7d49a2be5c6f4c7bc21ecbf72a726804fda1780fd46d1ac4edd2a693dda",
+    "01-dinamite.png": "eb5bb5a639d4e289a632c0367702bcbef021909832f805826ae04da49fe0a603",
+    "02-foguete.gif": "b4d2fd8f33854f0dce6abd6559db91e32da80e9bf9e679050ad44e6889e634fb",
+    "02-foguete.mp4": "6e81d42eadac7200706a5d05a6771492ecbc30139a36f7df9d58ba417972bb3d",
+    "02-foguete.png": "90a4cfb4f76ea550486d8dc61c4997ffbd12a0de5c4b15c0d2a30b1534bfdaf2",
+    "comparativo.png": "86a613bd9ddec24c61cc6e4855ab50ac377ee98f4e085062a425321520b91a69"
+  },
+  "reference": "User instruction of 2026-11-12: same flight and target as normal propeller"
+}

@@ -177,6 +177,7 @@ namespace SweetSugar.Scripts.System.Pool
 
         public void PutBack(GameObject obj)
         {
+            obj.GetComponent<RoyalAves.Gameplay.InkwellStainedPiece>()?.ClearInk();
             if (LevelManager.THIS.DebugSettings.FallingLog) DebugLogKeeper.Log(obj + " pooled", DebugLogKeeper.LogType.Falling);
             obj.SetActive(false);
             
@@ -267,6 +268,7 @@ namespace SweetSugar.Scripts.System.Pool
 
             if (pooledObj != null)
             {
+                pooledObj.gameObject.GetComponent<RoyalAves.Gameplay.InkwellStainedPiece>()?.ClearInk();
                 pooledObj.gameObject.SetActive(active);
                 return pooledObj.gameObject;
             }

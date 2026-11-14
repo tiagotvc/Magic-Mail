@@ -728,8 +728,8 @@ namespace SweetSugar.Scripts.Items
             bool isMulticolor = list.Any(i=>i.currentType == ItemsTypes.MULTICOLOR);
             if (item1.currentType != ItemsTypes.NONE && item2.currentType != ItemsTypes.NONE || isMulticolor)
             {
-                if(!isMulticolor)
-                    gameObject.AddComponent<GameBlocker>();
+                // Each combo owns its actual animation/impact blocker. A placeholder here
+                // would block Check below before that combo has even started.
                 Vector2 middlePos = item2.transform.position + (item1.transform.position - item2.transform.position).normalized * 0.5f;
                 list = list.OrderBy(i => i.GetComponent<ItemCombineBehaviour>()?.priority?? 100).ToArray();
                 item1 = list.First();
@@ -915,6 +915,7 @@ namespace SweetSugar.Scripts.Items
                         pauseTime = Time.time;
                     }
                     yield return new WaitWhile(() => LevelManager.THIS.StopFall);
+                    if (LevelManager.THIS.StopFall) continue;
                     if(fallStopped && !LevelManager.THIS.StopFall)
                     {
                         fallStopped = false;
@@ -949,7 +950,9 @@ namespace SweetSugar.Scripts.Items
                                            + "speed " + speed +" start " + startPos + " dest " + destPos + " to " + square
                             ,DebugLogKeeper.LogType.Falling);
                     if (fracJourney < 1)
-                        yield return new WaitForEndOfFrame();
+                        // Position interpolation must advance even when the editor Simulator/Scene
+                        // is visible. Waiting for a Game View render can stall, then snap the piece.
+                        yield return null;
                     if (waypoint.instant && Vector2.Distance(square.transform.position, transform.position)>2)
                     {
                         Vector3 pos = square.GetReverseDirection();
@@ -981,10 +984,14 @@ namespace SweetSugar.Scripts.Items
                 }
             }
 
+            yield return new WaitWhile(() => LevelManager.THIS.StopFall);
             JustCreatedItem = false;
             if (previousSquare?.Item == this) previousSquare.Item = null;
             destPos = waypoints.LastOrDefault().destPosition + Vector3.back * 0.2f;
             if (!waypoints.Any()) destPos = square.transform.position + Vector3.back * 0.2f;
+            // Finish placement before publishing falling=false. A later landing snap could
+            // otherwise move an apparently settled piece during a newly activated rocket.
+            transform.position = destPos;
 
             anim.SetTrigger("stop");
             if (distance > 0.5f && animate)
@@ -999,7 +1006,6 @@ namespace SweetSugar.Scripts.Items
             yield return new WaitForSeconds(LevelManager.THIS.waitAfterFall);
             CheckSquareBelow();
             if (callback != null) callback();
-            transform.position = destPos;// square.transform.position;
             if (!needFall)
             {
                 ResetAnimTransform();
@@ -1327,7 +1333,7 @@ namespace SweetSugar.Scripts.Items
             // Rockets play their own launch cue in ItemStriped; do not add a match-break cue on activation.
             if (currentType != ItemsTypes.HORIZONTAL_STRIPED && currentType != ItemsTypes.VERTICAL_STRIPED)
                 SoundBase.Instance?.PlayOneShot(SoundBase.Instance?.destroy[Random.Range(0, SoundBase.Instance.destroy.Length)]);
-            if (explEffect || globalExplEffect)
+            if ((explEffect || globalExplEffect) && currentType != ItemsTypes.PACKAGE)
             {
                 var partcl1 =
                     Instantiate(Resources.Load("Prefabs/Effects/Replace"), transform.position,

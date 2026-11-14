@@ -1,0 +1,32 @@
+﻿{
+    "catalogAssetPreserved":  true,
+    "laboratoryOnly":  [
+                           "Poções",
+                           "Bolsa do carteiro fixa"
+                       ],
+    "campaignChanged":  false,
+    "notTested":  [
+                      "physical UI input",
+                      "full playthrough",
+                      "device"
+                  ],
+    "hashes":  {
+                   "Assets/SweetSugar/Scripts/TargetScripts/TargetEditor/Editor/TargetEditorUtils.cs":  "CD2A7541B9342890938C7003213584E9DDCADCDE20F0937D97100C945EC9DA03",
+                   "Assets/RoyalAves/Editor/MagicMailEditorCatalog.cs":  "6342AFBC9E1FDE9176BCE394E84454DB40DF128895AF9428CD754E871328985A",
+                   "Assets/RoyalAves/Editor/MagicMailCatalogVerification.cs":  "330AD0D68DDD31C71970A3942FB81D92C4A41C52307A4D054B3C9BE4D40C6E15",
+                   "Assets/SweetSugar/Scripts/TargetScripts/TargetEditor/Editor/TargetTypeDrawer.cs":  "8DFF4549F4C5BA9370A0F1561D41687E0590245F754325425524850B50D46058",
+                   "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs":  "38A18EEB723FDA96F4020E726587D6E13868EB8B341E46D1A2AAE57E5C9A415C",
+                   "Assets/SweetSugar/Scripts/Editor/TargetEditor.cs":  "98EE9ABB39A0ACE0758A721908A6DDDF5C71513207FE8715E1930D9AF88D6404"
+               },
+    "availableElements":  9,
+    "compiler":  "runtime/editor zero errors",
+    "prefabsDeleted":  false,
+    "status":  "installed",
+    "scope":  "editor authoring choices only",
+    "date":  "2026-11-09",
+    "notProduced":  [
+                        "Fita"
+                    ],
+    "nativeValidation":  "Unity 6000.6.0f1 isolated InkwellValidationProject, exit 0",
+    "indicesReordered":  false
+}

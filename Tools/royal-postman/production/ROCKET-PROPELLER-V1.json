@@ -1,0 +1,24 @@
+{
+  "version": "rocket-propeller-v1",
+  "date": "2026-11-11",
+  "status": "implemented-native-play-pass-user-visual-review-pending",
+  "reference": "../../previews/rocket-propeller-v1/references/Rocket+Propeller.webp",
+  "reference_sha256": "a1bb460318660971fc4c2aaa59fdf32cc4c8a123c7e74cda9029ef2c7bf636dc",
+  "behavior": [
+    "visible carried rocket; no rocket activation at source",
+    "one delivered rocket; horizontal row or vertical column",
+    "nine unique axis hits per clear on 9x9 fixture",
+    "gravity released; dynamite delivery regression passed"
+  ],
+  "limits": [
+    "scripted actual swap, no physical pointer",
+    "no audible audio, device or full victory flow test",
+    "no pixel-identical reference animation claim"
+  ],
+  "sha256": {
+    "Assets/SweetSugar/Scripts/Items/ItemMarmalade.cs": "6cac3e53c9408a7a4db21791b1469dcff986ff15a3d33bfeb6320e589bb14122",
+    "Assets/SweetSugar/Scripts/Items/MarmaladeFly.cs": "3d1e50e3d3710bfa8a75bd32dc021c14cc861b3397e709950ca2e4c446016f65",
+    "Assets/RoyalAves/Scripts/Gameplay/ExplosivePackageLaboratory.cs": "5150e50814cf89d4e83d8fb8b2358eee94fc3ab731adb86c51f0f34cc7f81628",
+    "Assets/RoyalAves/Editor/ExplosivePackageLaboratoryTools.cs": "38a001a5a9ddbdcec247879074c25cd7c3db801973f33c21fbaa2cded3d16e21"
+  }
+}

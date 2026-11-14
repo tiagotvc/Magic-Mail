@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-11",
+  "revision": "Orbital side-by-side animation; replaces the hanging cargo presentation",
+  "reference": "references/Rocket+Propeller.webp",
+  "fps": 24,
+  "audio": false,
+  "source": "Real isolated Unity Play, board-only camera, scripted swap",
+  "entries": [
+    {
+      "name": "01-foguete-horizontal-helice",
+      "mode": 6,
+      "frames": 144
+    },
+    {
+      "name": "02-foguete-vertical-helice",
+      "mode": 7,
+      "frames": 144
+    }
+  ],
+  "sha256": {
+    "01-foguete-horizontal-helice.gif": "14efeb2764d208ebb7d43a373e50a181ec48cf9fbe9aeb601ec30394d31af89b",
+    "01-foguete-horizontal-helice.mp4": "a82cc34ba77808e9e41f9ceb86311022de23c2146e2a672534b706624f1e6c14",
+    "01-foguete-horizontal-helice.png": "a29e20ab8020b90af7a4551faa8a3dd8658250fb96f6bc66becee412429a6a3f",
+    "02-foguete-vertical-helice.gif": "f586cb8e43c96a822c9e8a104c4eebe81def2213a7343c6de8ab0a1dd2c2562c",
+    "02-foguete-vertical-helice.mp4": "028e4e9e8c2f7e021e5e78878cb70bb0c5626d108c2699a5a55d9d827b0caec6",
+    "02-foguete-vertical-helice.png": "ea771b55668e9d3ef2143e35ca1463b41e9a49fed7730f915755ca1fd1fb1497",
+    "comparativo.png": "d5a8e0cbe9cd084aa08fa95959576a07dcb701cb3b1e9ff871fc6111df5ed61b"
+  }
+}

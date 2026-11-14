@@ -1,0 +1,28 @@
+using System.IO;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using RoyalAves.Gameplay;
+namespace RoyalAves.EditorTools
+{
+ public static class FrankingSoft3DArtCapture
+ {
+  public static void Run()
+  {
+   var scene=EditorSceneManager.NewPreviewScene();var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/RoyalAves/Prefabs/Elements/FrankingMachine.prefab");
+   var rt=new RenderTexture(1280,720,24);var tex=new Texture2D(1280,720,TextureFormat.RGB24,false);var previous=RenderTexture.active;
+   try
+   {
+    for(int i=0;i<2;i++)
+    {
+     var root=(GameObject)PrefabUtility.InstantiatePrefab(prefab,scene);root.transform.position=Vector3.right*(i==0?-1.1f:1.1f);var animation=root.GetComponent<MailCubbyAnimation>();animation.letters[0].enabled=false;
+     if(i==0){animation.cabinet.sprite=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_corpo_v2.png");animation.cabinet.sharedMaterial=AssetDatabase.GetBuiltinExtraResource<Material>("Sprites-Default.mat");var lever=root.GetComponent<FrankingMachineLever>().lever.GetComponent<SpriteRenderer>();lever.sprite=AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Obstacles/FrankingMachine/CM_maquina_alavanca_v2.png");lever.sharedMaterial=animation.cabinet.sharedMaterial;}
+     var label=new GameObject("Label");SceneManager.MoveGameObjectToScene(label,scene);label.transform.position=root.transform.position+Vector3.up*1.03f;var text=label.AddComponent<TextMesh>();text.text=i==0?"Anterior":"Novo acabamento";text.anchor=TextAnchor.MiddleCenter;text.fontSize=42;text.characterSize=.045f;text.color=new Color(.16f,.24f,.30f);
+    }
+    var cameraRoot=new GameObject("Comparison camera");SceneManager.MoveGameObjectToScene(cameraRoot,scene);var camera=cameraRoot.AddComponent<Camera>();camera.enabled=false;camera.scene=scene;camera.orthographic=true;camera.orthographicSize=1.3f;camera.transform.position=new Vector3(0,0,-10);camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.85f,.91f,.94f);camera.targetTexture=rt;camera.Render();camera.Render();RenderTexture.active=rt;tex.ReadPixels(new Rect(0,0,1280,720),0,0);tex.Apply();File.WriteAllBytes("Logs/franking-soft3d-comparison.png",tex.EncodeToPNG());camera.targetTexture=null;
+   }
+   finally{RenderTexture.active=previous;EditorSceneManager.ClosePreviewScene(scene);Object.DestroyImmediate(tex);Object.DestroyImmediate(rt);}
+  }
+ }
+}

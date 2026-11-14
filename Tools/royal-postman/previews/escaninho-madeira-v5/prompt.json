@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-12",
+  "tool": "built-in image_gen",
+  "status": "visual-study-user-review-pending",
+  "prompt": "Redesign the postal cabinet concept to match the SOFT 3D MOBILE PUZZLE rendering shown in the user's purple cabinet-with-plates reference. The supplied orange/teal wooden cabinet concept is the subject/design reference; the purple plate cabinet is ONLY a reference for simplicity, rounded volume, subtle edges and lighting. Produce one transparent-background image with TWO matching front-facing cabinet states side by side, LEFT closed, RIGHT with doors removed showing letters. Essential change: NO drawn outlines, NO dark brown contour strokes, NO thick black seams, NO comic/cel shading. Build form with smooth softly shaded beveled surfaces, gentle ambient occlusion, small soft highlights and visible shelf depth, like a compact rendered 3D game object. Simplify the construction: a clean almost-square cabinet, slim rounded frame, flat top flush with the sides rather than a bulky overhanging slab, two simple recessed door panels and TWO wide horizontal shelves. Warm light honey wood/champagne-caramel outer frame; calm softly shaded muted turquoise door panels; small simple round warm-gold knobs at the central seam. Open interior light warm cream/beige, gently darker at rear corners, not a deep dark cavern. Each shelf holds three neat stacks of ivory envelopes with small red wax seals, consistent with the current postal theme. Material impression of wood through warm colors and very subtle broad tonal variation only; NO woodgrain stripes, no plank textures, no realistic timber. No broad painted shine swooshes, no high-contrast edge bands. Keep enough thickness, under-shelf shadow and recessed-panel shading to look 3-dimensional without line art. Bright cheerful polished casual puzzle style, upper-left soft studio light, simple low-detail surfaces readable as a tiny 2x2 board obstacle. No purple, no plate assets, no crown, no gem, no arched crest, no upper envelope emblem, no extra compartments or drawers, no feet, no floor, no scene, no words or labels. Both states must be the same cabinet model at equal scale, fully contained with margins, frontal orthographic presentation. This is a fresh simplified soft-3D direction, not another thick-outlined recolor of the orange concept.",
+  "references": [
+    "user-attached Royal Match cabinet image: soft 3D rendering and subtle edges only",
+    "../escaninho-madeira-v4/escaninho-cartoon.png: cabinet concept"
+  ],
+  "output": "escaninho-3d-suave.png",
+  "notes": [
+    "Soft bevels and ambient occlusion replace dark contour strokes.",
+    "Simplified honey/turquoise cabinet, two states, no upper emblem.",
+    "No exact-match/copy claim; no Unity, prefab or gameplay changes."
+  ]
+}

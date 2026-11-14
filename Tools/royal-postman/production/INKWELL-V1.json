@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-03",
+  "scope": "Unity inkwell laboratory and separate full-cell/piece tint effect; campaign unchanged by this implementation",
+  "sourceHash": {
+    "Assets/RoyalAves/Scripts/Effects/InkTintVisual.cs": "6ffa830645cc6c286b5920fe99ce074a6c9934b0efe2fdc4dd28a136e198a9c5",
+    "Assets/RoyalAves/Shaders/InkStain.shader": "ad70dcc2b43a65ff361f75c747db6cdd41cc79367f905e04f550652f6ee3d023",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": "468e0c312019145f4c17384e1f46df8b11cc9c806485e0935c6bb3efb969df2a",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedCell.cs": "8360a23defe7b74868951fbbb1ab102f446759841a9fb017a63a71e51101b185",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedPiece.cs": "48e14d68480858d355e6acafad12068167b611afd3443e45d4b782162fce1907",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": "74e80c6a3c29dfbc3cd15d9d7bcc63e4de7b234797ff8621fba46012610af3cf",
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": "95959ffbb7387fb837aa916d5d29c571df9597910f6263fad2405ab3c803cb46",
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": "60e65fc9dc9dae9d7f42e8b41ba86d09b6857048edd25e1540f04202192476b7",
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": "219b6c045f59bb0dd0bbdb39c76e7def522006d5c2b316c7d3c00c70f6f9a759",
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "ac51dd44e0d60945e9377d9a72995b1103138b5c6528beea64c2e1c5b8042d0e",
+    "Assets/SweetSugar/Scripts/Level/LoadingManager.cs": "f8b4f34c3d59d4696f0bfe02b76441ba5e23eda6aeca17b1174918b41ed5ed57",
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": "981cf8bcc7019f188fbeb45d9d532471f9c53c699661d618a4a56f2a27084d38",
+    "Assets/SweetSugar/Scripts/System/Pool/ObjectPooler.cs": "be1e150bfd67172a62570a58b28e0af85711c951d170fd7c268d1a854c11e9e5"
+  },
+  "testedSourceMatchesInstalled": {
+    "Assets/RoyalAves/Scripts/Effects/InkTintVisual.cs": true,
+    "Assets/RoyalAves/Shaders/InkStain.shader": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedCell.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedPiece.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": true,
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": true,
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": true,
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": true,
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": true,
+    "Assets/SweetSugar/Scripts/Level/LoadingManager.cs": true,
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": true,
+    "Assets/SweetSugar/Scripts/System/Pool/ObjectPooler.cs": true
+  },
+  "artSource": "Tools/royal-postman/previews/tinteiro-v4/estagios.png",
+  "artBytesPreserved": true,
+  "nativeVerification": "PASS: imported prefab/six sprites/material/shader; orthogonal forwarded damage; diagonal rejection; immediate duplicate rejection; intermediate/full tint; four neighbors then own cell; goal decremented once after fifth hit; piece/floor independent ownership; original logical color/renderer unchanged. Native captures saved. Diagnostic invocation only: no claim of real pointer matches, swaps, cascades, victory/Continue or device validation.",
+  "pending": [
+    "real pointer matches/swaps/powers",
+    "full home/preplay/game/bonus/visible victory/Continue flow",
+    "physical device and user visual acceptance"
+  ]
+}

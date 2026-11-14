@@ -1,0 +1,100 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using RoyalAves.Gameplay;
+using SweetSugar.Scripts.Blocks;
+using SweetSugar.Scripts.Core;
+using SweetSugar.Scripts.Items;
+using UnityEditor;
+using UnityEngine;
+namespace RoyalAves.EditorTools
+{
+    public static class PostalTapeNativeVerification
+    {
+        const string Key="MagicMail.PostalTape.Verify";static int step {get=>SessionState.GetInt(Key+".Step",0);set=>SessionState.SetInt(Key+".Step",value);}static double at;static PostalTapeLayer first;static Item protectedItem,protectedRocket;static int moves;static int releases;static bool survived=true;static int beforeRocket,finalBefore;static bool rocketSurvived;
+        static PostalTapeLayer[] Tapes()=>UnityEngine.Object.FindObjectsByType<PostalTapeLayer>(FindObjectsSortMode.None);
+        static int Goal()=>LevelManager.THIS.levelData.TargetCounters.Single(t=>t.targetLevel.name=="PostalTapes").count;
+        static void Require(bool value,string message){if(!value)throw new Exception(message);}
+        [InitializeOnLoadMethod] static void Listen(){EditorApplication.update-=Tick;EditorApplication.update+=Tick;}
+        public static void Run()
+        {
+            Require(Application.dataPath.Replace('\\','/').Contains("/Logs/InkwellValidationProject/Assets"),"Isolated project only");
+            step=0;PlayerSettings.companyName="CodexValidation";PlayerSettings.productName="MagicMailPostalTapeV1";
+            File.WriteAllText("Logs/postal-tape-events.txt","");SessionState.SetBool(Key,true);SessionState.SetString(Key+"Deadline",DateTime.UtcNow.AddMinutes(5).ToString("O"));PostalTapeLaboratoryTools.Open();
+        }
+        static void Tap(Item item)=>typeof(LevelManager).GetMethod("ActivateTappedBonus",BindingFlags.NonPublic|BindingFlags.Instance).Invoke(LevelManager.THIS,new object[]{item});
+        static void Tick()
+        {
+            if(!SessionState.GetBool(Key,false)||EditorApplication.isCompiling||EditorApplication.isUpdating)return;
+            try
+            {
+                Require(DateTime.UtcNow<DateTime.Parse(SessionState.GetString(Key+"Deadline",""),null,System.Globalization.DateTimeStyles.RoundtripKind),"Timeout");
+                var manager=LevelManager.THIS;if(!EditorApplication.isPlaying||!PostalTapeLaboratory.IsActive||manager==null||manager.gameStatus!=GameState.Playing||EditorApplication.timeSinceStartup<at)return;
+                if(step==0)
+                {
+                    Require(Tapes().Length==5&&Goal()==5,"Initial tapes and goal");
+                    foreach(var tape in Tapes()){var original=tape.Cell.Item;tape.Released+=t=>{releases++;survived &= original!=null && original.gameObject.activeSelf && t.Cell.Item==original;File.AppendAllText("Logs/postal-tape-events.txt",$"release {t.Cell.col},{t.Cell.row}; goal={Goal()}; survived={survived}\n");};}
+                    first=Tapes().Single(t=>t.Cell.col==3&&t.Cell.row==2);protectedItem=first.Cell.Item;
+                    Require(first.Cell.IsItemLocked&&!first.Cell.CanGoOut()&&!first.Cell.CanGoInto(),"Tape does not lock cell");
+                    var swap=protectedItem.SwitchDirection(Vector3.right);Require(swap.currentItem==null&&swap.neighborItem==null,"Taped piece swapped");
+                    var position=protectedItem.transform.position;protectedItem.CheckNearEmptySquares();Require(protectedItem.transform.position==position,"Taped piece fell");
+                    protectedRocket=manager.field.GetSquare(3,5).Item;Require(protectedRocket.currentType==ItemsTypes.HORIZONTAL_STRIPED,"Prepared rocket missing");
+                    int limit=manager.levelData.limit,m=manager.moveID;Tap(protectedRocket);
+                    Require(manager.levelData.limit==limit&&manager.moveID==m&&!protectedRocket.destroying&&!PostalTapeLayer.For(protectedRocket.square).IsPeeling,"Taped rocket activated or consumed a move");
+                    first.Cell.DestroyBlock(impactOrigin:manager.field.GetSquare(2,1));Require(!first.IsPeeling&&Goal()==5,"Diagonal match removed tape");
+                    PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-initial.png");new GameObject("TapeNativeRecorder").AddComponent<TapeNativeRecorder>();moves=manager.moveID;
+                    manager.field.GetSquare(1,2).Item.SwitchDirection(Vector3.left);step=1;return;
+                }
+                if(step==1)
+                {
+                    if(first!=null&&!first.IsPeeling)return;
+                    PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-peeling.png");step=2;at=EditorApplication.timeSinceStartup+.65;return;
+                }
+                if(step==2)
+                {
+                    if(manager.findMatchesStarted||manager.DragBlocked||Tapes().Any(t=>t.IsPeeling))return;
+                    Require(first==null&&Goal()==5-releases&&Tapes().Length==Goal()&&releases>=1&&survived,"Adjacent match/tape accounting or protected item: releases="+releases+" goal="+Goal()+" remaining="+Tapes().Length+" survived="+survived);
+                    Require(survived,"Removal destroyed protected item at the moment of release");Require(manager.moveID==moves+1,"Real swap move count");
+                    Require(protectedItem==null || !PostalTapeLayer.Holds(manager.field.GetSquare(3,2)),"Released piece still taped");PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-after-match.png");
+                    UnityEngine.Object.FindAnyObjectByType<TapeNativeRecorder>()?.StopRecording();step=20;PostalTapeLaboratoryTools.Open();return;
+                }
+                if(step==20)
+                {
+                    if(Tapes().Length!=5 || Goal()!=5)return;
+                    releases=0;survived=true;rocketSurvived=false;protectedRocket=manager.field.GetSquare(3,5).Item;
+                    foreach(var tape in Tapes()){var original=tape.Cell.Item;tape.Released+=t=>{releases++;bool alive=original!=null&&original.gameObject.activeSelf&&t.Cell.Item==original;survived &= alive;if(original==protectedRocket)rocketSurvived=alive;File.AppendAllText("Logs/postal-tape-events.txt",$"rocket release {t.Cell.col},{t.Cell.row}; goal={Goal()}; survived={alive}\n");};}
+                    beforeRocket=Goal();Tap(manager.field.GetSquare(0,5).Item);step=3;at=EditorApplication.timeSinceStartup+2;return;
+                }
+                if(step==3)
+                {
+                    if(manager.findMatchesStarted||manager.DragBlocked||Tapes().Any(t=>t.IsPeeling))return;
+                    Require(Goal()<=beforeRocket-2&&Tapes().Length==Goal()&&survived&&!Tapes().Any(t=>t.Cell.row==5),"Rocket row tapes/accounting: goal="+Goal()+" before="+beforeRocket+" tapes="+Tapes().Length+" survived="+survived);
+                    Require(rocketSurvived,"Impact consumed the protected rocket at release");
+                    Require(protectedRocket==null || !protectedRocket.square.IsItemLocked,"Rocket remains locked after release");PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-after-rocket.png");
+                    finalBefore=Goal();foreach(var tape in Tapes()){tape.Cell.DestroyBlock();tape.Cell.DestroyBlock();}Require(Goal()==finalBefore,"Goal decremented before peeling completed");step=4;at=EditorApplication.timeSinceStartup+.7;return;
+                }
+                if(step==4)
+                {
+                    if(Tapes().Any(t=>t.IsPeeling))return;Require(Goal()==0&&Tapes().Length==0,"Final count/removal or duplicate-hit guard");Require(manager.gameStatus==GameState.Playing,"Campaign result leaked");
+                    PostalTapeLaboratoryTools.CaptureBoard("Logs/postal-tape-cleared.png");step=5;PostalTapeLaboratoryTools.Open();return;
+                }
+                if(step==5)
+                {
+                    if(Tapes().Length!=5)return;Require(Goal()==5&&Tapes().All(t=>!t.IsPeeling&&t.Cell.IsItemLocked),"Restart failed");
+                    File.WriteAllText("Logs/postal-tape-peel-v2-native.result","PASS: five independent tapes/goal; swap and fall locks; taped rocket tap rejected without move cost; diagonal rejected; real match via swap API removes adjacent tape with cascade-aware accounting; protected piece survives; real rocket via tap API peels two row tapes without consuming trapped rocket; repeated hits count once, goal only after peel; all released; no campaign result; real restart restores all. Diagnostic APIs, not physical pointer/audio/device/full campaign.");
+                    SessionState.SetBool(Key,false);EditorApplication.Exit(0);
+                }
+            }
+            catch(Exception e){File.WriteAllText("Logs/postal-tape-peel-v2-native.result","FAIL: "+e);Debug.LogException(e);SessionState.SetBool(Key,false);EditorApplication.Exit(1);}
+        }
+    }
+}
+
+public sealed class TapeNativeRecorder : MonoBehaviour
+{
+ Camera camera;RenderTexture target;Texture2D pixels;int frame;bool recording=true;
+ void Start(){Time.captureFramerate=24;var manager=LevelManager.THIS;var field=manager.levelData.fields[0];var a=manager.field.GetSquare(0,0).transform.position;var b=manager.field.GetSquare(field.maxCols-1,field.maxRows-1).transform.position;camera=gameObject.AddComponent<Camera>();camera.enabled=false;camera.orthographic=true;camera.orthographicSize=Mathf.Max(Mathf.Abs(a.y-b.y),Mathf.Abs(a.x-b.x))*.5f+.7f;camera.transform.position=(a+b)*.5f+Vector3.back*20;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.06f,.06f,.1f);target=new RenderTexture(640,640,24);pixels=new Texture2D(640,640,TextureFormat.RGBA32,false);camera.targetTexture=target;Directory.CreateDirectory("Logs/postal-tape-peel-v2-frames");}
+ void LateUpdate(){if(!recording||camera==null||Time.frameCount%2!=0)return;var old=RenderTexture.active;camera.Render();RenderTexture.active=target;pixels.ReadPixels(new Rect(0,0,640,640),0,0);pixels.Apply();File.WriteAllBytes("Logs/postal-tape-peel-v2-frames/"+(frame++).ToString("D4")+".png",pixels.EncodeToPNG());RenderTexture.active=old;}
+ public void StopRecording(){recording=false;Time.captureFramerate=0;}
+}

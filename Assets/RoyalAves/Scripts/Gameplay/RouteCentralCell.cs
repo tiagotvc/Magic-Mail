@@ -15,12 +15,16 @@ namespace RoyalAves.Gameplay
         public Sprite standArtwork;
         public Sprite flaskArtwork;
         public Texture2D breakSheet;
+        public bool soft3D;
         RouteCentralCell owner;
         Square cell;
         Square[] cells;
         RouteCentralPrototype visual;
         readonly bool[] broken = new bool[4];
         readonly HashSet<long> impacts = new HashSet<long>();
+        bool authored;
+        Vector2Int authoredOrigin;
+        public void ConfigureAuthoredCell(Vector2Int origin) { authored=true;authoredOrigin=origin; }
         public static readonly int[] RequestedColors = { 1, 0, 2, 6 };
         // Asset identities in flask order: green clover, lilac feather, red seal, blue envelope.
         public static readonly string[] RequestedPieces = { "gift", "envelope", "stamp", "bow" };
@@ -31,6 +35,7 @@ namespace RoyalAves.Gameplay
             cell = transform.parent.GetComponent<Square>();
             GetComponent<SpriteRenderer>().enabled = false;
             yield return null;
+            if(authored && new Vector2Int(cell.col,cell.row)!=authoredOrigin)yield break;
             if (owner != null) yield break;
             var group = new[] { cell, cell.field.GetSquare(cell.col + 1, cell.row),
                 cell.field.GetSquare(cell.col, cell.row + 1), cell.field.GetSquare(cell.col + 1, cell.row + 1) };
@@ -49,6 +54,7 @@ namespace RoyalAves.Gameplay
             visual.standArtwork = standArtwork;
             visual.flaskArtwork = flaskArtwork;
             visual.breakSheet = breakSheet;
+            visual.soft3D = soft3D;
 #if UNITY_EDITOR
             if (UnityEditor.SessionState.GetBool("MagicMail.RouteCentralLab.DrawnLiquid", false)
                 && RouteCentralLaboratory.IsActive)

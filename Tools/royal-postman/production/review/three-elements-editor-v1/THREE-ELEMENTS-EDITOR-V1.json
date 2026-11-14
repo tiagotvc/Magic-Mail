@@ -1,0 +1,55 @@
+{
+  "version": "THREE-ELEMENTS-EDITOR-V1",
+  "date": "2026-11-13",
+  "status": "normal level editor production registration, not a joint laboratory",
+  "hashes": {
+    "Assets/RoyalAves/Editor/MagicMailEditorCatalog.cs": "516716633e05e404a77b1091c6ac8d515633fdb15043f914362ca69071463db9",
+    "Assets/RoyalAves/Editor/PendingElementEditorTools.cs": "da238bc12ba44a9f1a00fce3105092fb005aff4e2b343a709d800b2962336aed",
+    "Assets/RoyalAves/Editor/PendingElementEditorTools.cs.meta": "5cc722182e09f63e99795a4b0b35357256c66ca02b47bb267da6c2d95f5c9af2",
+    "Assets/RoyalAves/Scripts/Gameplay/PotionFootprint.cs": "2f1edd9b39c8e0edc2315fbfffbb32976bdaec64ec5b21cbffa2b899f8e7c804",
+    "Assets/RoyalAves/Scripts/Gameplay/PotionFootprint.cs.meta": "9c0a866648a197df27293ab6100694f1007e1d465635378314b263fa6e4546fe",
+    "Assets/RoyalAves/Scripts/Gameplay/RouteCentralCell.cs": "7d3be2181c554f167e63152783d022623bdd14f0ee97c0272d188c96efd59887",
+    "Assets/RoyalAves/Scripts/Gameplay/RoutePotions.cs": "ffdde7da1b8dbf3b052486446d08bf90d8457c54314753d8454bab4283f52dc2",
+    "Assets/RoyalAves/Scripts/Gameplay/SortingSignalsTarget.cs": "3db4bde3c9df8671e0f6d84836f1bbb7b0956906914af639df9e0cc0c75b7089",
+    "Assets/SweetSugar/Resources/Blocks/BagOpenings.prefab": "42a3e7319e75de94b125c0983f260f5ae69119379645399d459db5505a053c52",
+    "Assets/SweetSugar/Resources/Blocks/BagOpenings.prefab.meta": "0701d7127820af26947e786cb6e1fb407d106676ab29316beed39c44ac986368",
+    "Assets/SweetSugar/Resources/Blocks/RoutePotions.prefab": "aa8bb9d61a763d8dce44420897a2fbce304d967b7406f84310b603e29bff49a8",
+    "Assets/SweetSugar/Resources/Blocks/RoutePotions.prefab.meta": "ca0631622dc69a1c5ab91e54b7a416b4f058135b04599fca7e4f8311ced7a662",
+    "Assets/SweetSugar/Resources/Blocks/SortingSignals.prefab": "aeac214d90de35876d46a692a24f22230e5d52b32e63fefb1b9ca4149f16f112",
+    "Assets/SweetSugar/Resources/Blocks/SortingSignals.prefab.meta": "57e07ae154ee767466d60293fb9827acba6b4b116903b104e7fa871b2f25ac27",
+    "Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset": "186e7373bfdbb7832ca6fe1bc2877037aad8e53ba9e4dfa47e7026427b67191b",
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "37fe2f85a2e510f9d41c8cc70ff8f309cb0f2752cda05ba884dbe4b4dde384f8",
+    "Assets/SweetSugar/Scripts/Editor/LevelMakerEditor.cs": "b311125401a4088f712ac00ce81498e7abf9205f16d07217e774973492d975d2",
+    "Assets/SweetSugar/Scripts/Editor/SquareUtils.cs": "0bb3d6f93071e64c229c9d335dbdbf457df482595fd87a114be6e1eda51d462a",
+    "Assets/SweetSugar/Scripts/Level/LevelData.cs": "7548512e76d5f82a661b401d479882bae7caa043c4d2fe05b6550bce63548145",
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs": "1477ba90c3d88a383c3e54c850358aa815c3abc39f0d82754f619fb22f5f0121"
+  },
+  "elements": [
+    "Pocoes 2x2",
+    "Bolsa do carteiro fixa",
+    "Sinalizador de triagem"
+  ],
+  "goalRecordsModifiedOnly": [
+    "BagOpenings",
+    "RoutePotions",
+    "SortingSignals"
+  ],
+  "goalIndicesUnchanged": true,
+  "enumAppendOnly": true,
+  "tapeRemainsNoGoal": true,
+  "artReused": true,
+  "campaignEdits": false,
+  "fixture1902Installed": false,
+  "nativeValidation": "PASS: production normal load with lab flags off; two separate authored potion stands/8 flasks; two fixed bags with serialized production scroll sprites; two signals; automatic potion/signal goals and manual bag quota; actual match API; independent flask hits and 2x2 release; signal completion; bag goal only at delivery and stops at quota; tape remains no-goal. Isolated APIs, not physical pointer/audio/device/full campaign.",
+  "compilerErrors": {
+    "runtime": 0,
+    "editor": 0
+  },
+  "limitations": [
+    "Diagnostic APIs, not physical pointer input",
+    "No audible audio/device/full campaign validation"
+  ],
+  "builderFinalCleanup": "Also clears laboratory toggles before returning to normal authoring.",
+  "mainEditor": "Fresh main-editor ready marker confirms production registration. Laboratory toggles cleared. No joint lab created.",
+  "legacyCompatibility": "PASS: existing separate potion/fixed-bag/signal laboratories still load their original goals after production registration; no art or lab asset rebuild."
+}

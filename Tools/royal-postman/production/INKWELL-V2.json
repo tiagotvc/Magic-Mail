@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-03",
+  "scope": "Unity inkwell laboratory and separate full-cell/piece tint effect; campaign unchanged by this implementation",
+  "sourceHash": {
+    "Assets/RoyalAves/Scripts/Effects/InkTintVisual.cs": "d91e7c4931a1b3bee8b2a55f56ae7f05de60558ca0af1d591ccee565abcde9e4",
+    "Assets/RoyalAves/Shaders/InkStain.shader": "04546c877a0b9c30a9e709efb3cbd43401e36fd0be4d7dcb8270535aaaf71172",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": "c6d417aaf68a35c84e32900d510e3635e344d215c938dc9fb818a0559c86bb86",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedCell.cs": "feab87dc6e25e630744bf3fcf026394e2590b4e21c125f12966db098ca00fc57",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedPiece.cs": "66cb5b1efc82af13d7d502d4ff741560011d46e5bd2d73cd9d621b228985e01e",
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": "2142a10f5c08f2a7aef9fc405aae2df4a212369d9462f9cadbdbacb7e8c66387",
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": "cea7ea9349ebe488b6f9797cd157782e89bcd8bee03d345023b478e55246ff2d",
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": "ffffde0a3e2c1d8a1291d9d887ecb4dfe3b858db69da2e9f90d7511a429078aa",
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": "219b6c045f59bb0dd0bbdb39c76e7def522006d5c2b316c7d3c00c70f6f9a759",
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": "ac51dd44e0d60945e9377d9a72995b1103138b5c6528beea64c2e1c5b8042d0e",
+    "Assets/SweetSugar/Scripts/Level/LoadingManager.cs": "f8b4f34c3d59d4696f0bfe02b76441ba5e23eda6aeca17b1174918b41ed5ed57",
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": "981cf8bcc7019f188fbeb45d9d532471f9c53c699661d618a4a56f2a27084d38",
+    "Assets/SweetSugar/Scripts/System/Pool/ObjectPooler.cs": "be1e150bfd67172a62570a58b28e0af85711c951d170fd7c268d1a854c11e9e5",
+    "Assets/RoyalAves/Scripts/Effects/InkwellSplashEffect.cs": "8ae88de9d251215f8f9be7cd1daa4ffe55a6312e567f9aadadc738ffb7910f32",
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs": "bcdbba3e3ffd5fe33b76874d27dd08beb6a37dfd4b3adf7c7b3c53609ca92794"
+  },
+  "testedSourceMatchesInstalled": {
+    "Assets/RoyalAves/Scripts/Effects/InkTintVisual.cs": true,
+    "Assets/RoyalAves/Shaders/InkStain.shader": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellCell.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedCell.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellStainedPiece.cs": true,
+    "Assets/RoyalAves/Scripts/Gameplay/InkwellLaboratory.cs": true,
+    "Assets/RoyalAves/Editor/InkwellLaboratoryTools.cs": true,
+    "Assets/RoyalAves/Editor/InkwellNativeVerification.cs": true,
+    "Assets/RoyalAves/Editor/RoyalAvesAssetImporter.cs": true,
+    "Assets/SweetSugar/Scripts/Blocks/Square.cs": true,
+    "Assets/SweetSugar/Scripts/Level/LoadingManager.cs": true,
+    "Assets/SweetSugar/Scripts/Core/LevelManager.cs": true,
+    "Assets/SweetSugar/Scripts/System/Pool/ObjectPooler.cs": true,
+    "Assets/RoyalAves/Scripts/Effects/InkwellSplashEffect.cs": true,
+    "Assets/SweetSugar/Scripts/TargetScripts/TargetSystem/TargetCounter.cs": true
+  },
+  "artSource": "Tools/royal-postman/previews/tinteiro-v4/estagios.png",
+  "artBytesPreserved": true,
+  "nativeVerification": "PASS: real swap/match resolver damages adjacent jar and emits visible liquid flight; five emitted/landed splashes; intermediate/full wet fill; imported prefab/sprites/material/shader; diagonal/duplicate rejection; four neighbors then center; goal decremented once; independent piece/floor ownership. Swap initiated by API, not physical pointer; remaining four hits diagnostic. No full victory/Continue or device claim.",
+  "pending": [
+    "real pointer matches/swaps/powers",
+    "full home/preplay/game/bonus/visible victory/Continue flow",
+    "physical device and user visual acceptance"
+  ],
+  "revision": "V2 liquid jet, delayed impact, organic wet surface, real match resolver and final-break-only objective fix"
+}

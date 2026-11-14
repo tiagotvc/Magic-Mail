@@ -10,7 +10,7 @@
 // // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // // THE SOFTWARE.
 
-using Malee.Editor;
+using RoyalAves.EditorTools;
 using SweetSugar.Scripts.Level;
 using SweetSugar.Scripts.TargetScripts.TargetEditor;
 using SweetSugar.Scripts.TargetScripts.TargetSystem;
@@ -24,7 +24,6 @@ public class TargetEditor : EditorWindow
     private static TargetEditor window;
     TargetEditorScriptable targetObject;
     private SerializedObject so;
-    private ReorderableList list;
     private Vector2 scrollPos;
 
     [MenuItem("Sweet Sugar/Settings/Target editor")]
@@ -40,7 +39,6 @@ public class TargetEditor : EditorWindow
         titleContent = new GUIContent("Target editor");
         targetObject = AssetDatabase.LoadAssetAtPath("Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset", typeof(TargetEditorScriptable)) as TargetEditorScriptable;
         so = new SerializedObject(targetObject);
-        list = new ReorderableList( so.FindProperty("targets"));
     }
 
     void OnGUI()
@@ -51,7 +49,16 @@ public class TargetEditor : EditorWindow
         scrollPos =
             EditorGUILayout.BeginScrollView(scrollPos, GUILayout.Width(position.width), GUILayout.Height(position.height));
         GUILayout.Space(10);
-        list.DoLayoutList();
+        // Filter the presentation without copying, removing or reordering stored target IDs.
+        var entries = so.FindProperty("targets");
+        for (int index = 0; index < entries.arraySize; index++)
+        {
+            var entry = entries.GetArrayElementAtIndex(index);
+            string name = entry.FindPropertyRelative("name").stringValue;
+            if (MagicMailEditorCatalog.IsTarget(name))
+                EditorGUILayout.PropertyField(entry, new GUIContent(
+                    SweetSugar.Scripts.TargetScripts.TargetEditor.Editor.TargetEditorUtils.DisplayName(name)), true);
+        }
 //        GuiList.Show(targetObject.targets, () => {        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/SweetSugar/Resources/Levels/TargetEditorScriptable.asset");});
 
         GUILayout.Space(30);

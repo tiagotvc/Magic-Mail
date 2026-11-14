@@ -25,6 +25,9 @@ namespace SweetSugar.Scripts.Items
     /// </summary>
     public class ItemStriped : Item, IItemInterface
     {
+#if UNITY_EDITOR
+        public static event global::System.Action<Square> DynamiteRocketCellHit;
+#endif
         private Item itemMain;
         public bool ActivateByExplosion;
         public bool StaticOnStart;
@@ -65,13 +68,13 @@ namespace SweetSugar.Scripts.Items
             var wait = LevelManager.THIS.StripedShowPass(gameObject, item1.currentType == ItemsTypes.HORIZONTAL_STRIPED, sqL,
                 sq =>
                 {
+                    if(sq.type==SquareTypes.JellyBlock)
+                        LevelManager.THIS.levelData.GetTargetObject().CheckSquares(new[]{sq});
                     if (itemsAtCell[sq] != null)
                         itemsAtCell[sq].DestroyItem(true, GetItem, this);
                     sq.DestroyBlock();
                 });
             square.DestroyBlock();
-            if (sqL.Any(i => i.type == SquareTypes.JellyBlock))
-                LevelManager.THIS.levelData.GetTargetObject().CheckSquares(sqL.ToArray());
             yield return new WaitForSeconds(0.2f + wait);
             DestroyBehaviour();
         }
@@ -116,47 +119,57 @@ namespace SweetSugar.Scripts.Items
 
             if (striped != null && package != null)
             {
+                if(package.destroying || striped.destroying)yield break;
+                package.destroying=striped.destroying=true;
+                if(striped.GetComponent<GameBlocker>()==null)striped.gameObject.AddComponent<GameBlocker>();
+                var manager = LevelManager.THIS;
+                var data=manager.levelData;
+                using(var charge=new RoyalAves.Effects.DynamiteCombinationCharge(package,striped))
+                {
+                yield return charge.Play();
+                if(manager==null || manager.levelData!=data || package.square==null)yield break;
                 var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(package.square.field);
-                var itemsList = LevelManager.THIS.GetSquaresAroundSquare(package.square, barriers);
-                var direction = 1;
-                itemsList.Add(item1.square);
-                List<Square> squares = new List<Square>();
-                foreach (var _square in itemsList)
+                // Three rows and three columns, even when a crate occupies a launch cell.
+                var origins = package.square.field.squaresArray.Where(cell=>cell!=null && !cell.IsNone() &&
+                    Mathf.Abs(cell.col-package.square.col)<=1 && Mathf.Abs(cell.row-package.square.row)<=1).ToList();
+                var cells = barriers.Filter(package.square, origins.SelectMany(cell =>
+                    GetSquaresInRow(cell, ItemsTypes.HORIZONTAL_STRIPED).Union(GetSquaresInRow(cell, ItemsTypes.VERTICAL_STRIPED))).Distinct().ToList());
+                var originals = cells.ToDictionary(cell => cell, cell => cell.Item);
+                var passed = new HashSet<Square>();
+                var rows = new HashSet<int>(); var columns = new HashSet<int>();
+                item1.destroying = item2.destroying = true;
+                void Hit(Square cell)
                 {
-                    if (_square != null && !barriers.IsBlocking(_square.col, _square.row))
+                    if (!originals.ContainsKey(cell) || !passed.Add(cell)) return;
+                    if(cell.type==SquareTypes.JellyBlock)
+                        manager.levelData.GetTargetObject().CheckSquares(new[]{cell});
+                    var target = originals[cell];
+                    if (target != null && target != item1 && target != item2)
                     {
-                        var list1 = GetSquaresInRow(_square, ItemsTypes.HORIZONTAL_STRIPED);
-                        var list2 = GetSquaresInRow(_square, ItemsTypes.VERTICAL_STRIPED);
-                        squares = squares.Union(list1.Union(list2).ToList()).ToList();
-                        if (direction > 0)
-                            LevelManager.THIS.StripedShow(_square.gameObject, true);
-                        else
-                            LevelManager.THIS.StripedShow(_square.gameObject, false);
-                        direction *= -1;
+#if UNITY_EDITOR
+                        DynamiteRocketCellHit?.Invoke(cell);
+#endif
+                        target.destroyNext = true;
+                        target.DestroyItem(true, explodedItem: striped);
                     }
+                    cell.DestroyBlock();
                 }
-                
-                squares = barriers.Filter(package.square, squares);
-                if(squares.Any(i=>i.type == SquareTypes.JellyBlock) )
-                    LevelManager.THIS.levelData.GetTargetObject().CheckSquares(squares.ToArray());
-                var squaresToDestroy = squares.Distinct();
-                var destroyingItems = squaresToDestroy.Where(i => i.Item != null ).Select(i => i.Item);
-                item1.destroying = true;
-                item2.destroying = true;
-                yield return new WaitForSeconds(0.1f);
-                foreach (var item in destroyingItems)
+                float wait = 0;
+                foreach (var cell in origins)
                 {
-                    item.destroyNext = true;
-                    item.DestroyItem(true, this, this);
+                    if (rows.Add(cell.row))
+                        wait = Mathf.Max(wait, manager.StripedShowPass(cell.gameObject, true,
+                            GetSquaresInRow(cell, ItemsTypes.HORIZONTAL_STRIPED), Hit));
+                    if (columns.Add(cell.col))
+                        wait = Mathf.Max(wait, manager.StripedShowPass(cell.gameObject, false,
+                            GetSquaresInRow(cell, ItemsTypes.VERTICAL_STRIPED), Hit));
                 }
-                squaresToDestroy.Where(i=>i.Item == null /*&& i.IsObstacle()*/).ForEachY(i => i.DestroyBlock());
-                SoundBase.Instance?.PlayLimitSound( SoundBase.Instance.explosion2 );
-                striped.square.DestroyBlock();
-                package.square.DestroyBlock();
-                LevelManager.THIS.levelData.GetTargetObject().CheckItems(list);
-                striped.DestroyBehaviour();
-                package.DestroyBehaviour();
-                LevelManager.THIS.FindMatches();
+                SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.explosion2);
+                yield return new WaitForSeconds(wait + .2f);
+                manager.levelData.GetTargetObject().CheckItems(list);
+                striped.DestroyBehaviour(); package.DestroyBehaviour();
+                manager.FindMatches();
+                }
             }
         }
 
@@ -173,26 +186,33 @@ namespace SweetSugar.Scripts.Items
                 i.currentType == ItemsTypes.HORIZONTAL_STRIPED || i.currentType == ItemsTypes.VERTICAL_STRIPED);
             stripes = stripes.OrderBy(i => i == GetItem).ToList();
             if (stripes.Count() < 2) return;
-            item1.destroying = true;
-            item2.destroying = true;
-            item2?.DestroyBehaviour();
+            item1.destroying = item2.destroying = true;
+            var manager = LevelManager.THIS;
             SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.strippedExplosion);
-            LevelManager.THIS.StripedShow(gameObject, false);
-            LevelManager.THIS.StripedShow(gameObject, true);
-            var list1 = GetSquaresInRow(GetItem.square, ItemsTypes.HORIZONTAL_STRIPED);
-            var list2 = GetSquaresInRow(GetItem.square, ItemsTypes.VERTICAL_STRIPED);
-            var lDistinct = list1.Union(list2).Distinct();
-            if(lDistinct.Any(i=>i.type == SquareTypes.JellyBlock) )
-                LevelManager.THIS.levelData.GetTargetObject().CheckSquares(lDistinct.ToArray());
-
-            foreach (var square in lDistinct)
+            var horizontal = GetSquaresInRow(GetItem.square, ItemsTypes.HORIZONTAL_STRIPED);
+            var vertical = GetSquaresInRow(GetItem.square, ItemsTypes.VERTICAL_STRIPED);
+            var originals = horizontal.Union(vertical).ToDictionary(cell => cell, cell => cell.Item);
+            var passed = new HashSet<Square>();
+            void Hit(Square cell)
             {
-                if (square.Item != null ) square.Item.DestroyItem(true,this,this);
-                else /*if(square.IsObstacle())*/ square.DestroyBlock();
+                if (!passed.Add(cell)) return;
+                if(cell.type==SquareTypes.JellyBlock)
+                    manager.levelData.GetTargetObject().CheckSquares(new[]{cell});
+                var target = originals[cell];
+                if (target != null && target != item1 && target != item2)
+                    target.DestroyItem(true, explodedItem: GetItem);
+                cell.DestroyBlock();
             }
-            LevelManager.THIS.levelData.GetTargetObject().CheckItems(list);
-            item1.square.DestroyBlock();
-            item1?.DestroyBehaviour();
+            float wait = manager.StripedShowPass(gameObject, false, vertical, Hit);
+            wait = Mathf.Max(wait, manager.StripedShowPass(gameObject, true, horizontal, Hit));
+            manager.StartCoroutine(Finish());
+            IEnumerator Finish()
+            {
+                yield return new WaitForSeconds(wait + .2f);
+                manager.levelData.GetTargetObject().CheckItems(list);
+                item1.DestroyBehaviour(); item2.DestroyBehaviour();
+                manager.FindMatches();
+            }
         }
 
         public bool IsExplodable()

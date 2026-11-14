@@ -31,8 +31,15 @@ namespace SweetSugar.Scripts.TargetScripts.TargetEditor.Editor
             if (name == "Mailbags") return "Malotes";
             if (name == "BagOpenings") return "Pergaminhos";
             if (name == "MailCubby") return "Cartas do armário postal";
-            if (name == "SolidBlock") return "Caixa (SolidBlock)";
-            return name;
+            if (name == "SolidBlock") return "Caixa de madeira";
+            if (name == "EmptySquare") return "Chão normal";
+            if (name == "FrankingMachine") return "Franqueadora";
+            if (name == "CollectItems") return "Peças do tabuleiro";
+            if (name == "Stars") return "Estrelas";
+            if (name == "EnchantedStone") return "Pedra rúnica";
+            if (name == "Inkwell") return "Tinteiro";
+            if (name == "Safe") return "Cofre (2×2)";
+            return RoyalAves.EditorTools.MagicMailEditorCatalog.IsTarget(name) ? name : name + " (legado)";
         }
 
         public static TargetEditorScriptable TargetEditorScriptable
