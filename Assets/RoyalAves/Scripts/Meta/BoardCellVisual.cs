@@ -5,7 +5,103 @@ namespace RoyalAves.Meta
     public static class BoardCellVisual
     {
         static readonly Sprite[] tiles = new Sprite[16];
-        public static void Apply(SpriteRenderer renderer, int outerCorners = 0)
+        static readonly Sprite[] chess = new Sprite[2];
+        const int TileSize = 128;
+        const float TileUnits = 1.96f;
+
+        /// col/row alternam as casas clara e escura quando o kit Royal Postman existe; sem ele, vale a arte azul antiga.
+        public static void Apply(SpriteRenderer renderer, int outerCorners = 0, int col = 0, int row = 0)
+        {
+            var kit = RoyalPostmanGameplayKit.Load();
+            if (kit != null && kit.squareLight != null && kit.squareDark != null)
+            {
+                var index = ((col + row) & 1) == 1 ? 1 : 0;
+                if (chess[index] == null) chess[index] = BakeChessCell(kit.squareUnder, index == 1 ? kit.squareDark : kit.squareLight);
+                renderer.sprite = chess[index];
+                renderer.color = Color.white;
+                return;
+            }
+            ApplyRoundedBlue(renderer, outerCorners);
+        }
+
+        // A casa do mock não é quadrada (94x85 sobre um fundo de 103x100): as duas imagens são esticadas para um
+        // quadrado de 128 px, o fundo inteiro e a casa centrada por cima, para a célula manter o tamanho de antes.
+        static Color32? underFill;
+
+        /// Cor do fundo das casas (o pixel central do square_bg): também pinta os vãos das curvas da borda.
+        public static Color32 UnderFill(Sprite under)
+        {
+            if (underFill.HasValue) return underFill.Value;
+            var source = ReadSprite(under);
+            Color32 color = source.GetPixelBilinear(0.5f, 0.5f);
+            Object.Destroy(source);
+            underFill = color;
+            return color;
+        }
+
+        static Sprite BakeChessCell(Sprite under, Sprite top)
+        {
+            var pixels = new Color32[TileSize * TileSize];
+            if (under != null)
+            {
+                // O fundo tem cantos arredondados: usado como sprite, deixaria um furo claro onde quatro casas se
+                // encontram. Por isso vale só a cor dele, preenchendo a casa inteira até a borda.
+                Color32 fill = UnderFill(under);
+                for (var i = 0; i < pixels.Length; i++) pixels[i] = fill;
+            }
+            // A casa quase enche a célula: sobra só um fio do fundo entre uma casa e outra (RoyalPostmanGameplayKit.tileFill).
+            var kit = RoyalPostmanGameplayKit.Load();
+            var fillRatio = kit != null ? kit.tileFill : 0.97f;
+            Composite(pixels, top, fillRatio, fillRatio);
+            var texture = new Texture2D(TileSize, TileSize, TextureFormat.RGBA32, false)
+            {
+                name = "RoyalPostmanChessCell", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp
+            };
+            texture.SetPixels32(pixels);
+            texture.Apply(false, true);
+            var made = Sprite.Create(texture, new Rect(0, 0, TileSize, TileSize), Vector2.one * 0.5f, TileSize / TileUnits);
+            made.name = "RoyalPostmanChessCell";
+            return made;
+        }
+
+        static void Composite(Color32[] target, Sprite sprite, float scaleX, float scaleY)
+        {
+            var source = ReadSprite(sprite);
+            var w = Mathf.RoundToInt(TileSize * scaleX);
+            var h = Mathf.RoundToInt(TileSize * scaleY);
+            var ox = (TileSize - w) / 2;
+            var oy = (TileSize - h) / 2;
+            for (var y = 0; y < h; y++)
+                for (var x = 0; x < w; x++)
+                {
+                    Color s = source.GetPixelBilinear((x + 0.5f) / w, (y + 0.5f) / h);
+                    var index = (y + oy) * TileSize + x + ox;
+                    Color d = target[index];
+                    var outA = s.a + d.a * (1f - s.a);
+                    if (outA <= 0f) continue;
+                    var rgb = ((Vector3)(Vector4)new Color(s.r, s.g, s.b) * s.a + (Vector3)(Vector4)new Color(d.r, d.g, d.b) * d.a * (1f - s.a)) / outA;
+                    target[index] = new Color(rgb.x, rgb.y, rgb.z, outA);
+                }
+            Object.Destroy(source);
+        }
+
+        // Lê o recorte do sprite por uma RenderTexture: a importação da arte não precisa de Read/Write.
+        static Texture2D ReadSprite(Sprite sprite)
+        {
+            var rect = sprite.rect;
+            var buffer = RenderTexture.GetTemporary(sprite.texture.width, sprite.texture.height, 0, RenderTextureFormat.ARGB32);
+            Graphics.Blit(sprite.texture, buffer);
+            var previous = RenderTexture.active;
+            RenderTexture.active = buffer;
+            var copy = new Texture2D((int)rect.width, (int)rect.height, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            copy.ReadPixels(new Rect(rect.x, rect.y, rect.width, rect.height), 0, 0);
+            copy.Apply(false);
+            RenderTexture.active = previous;
+            RenderTexture.ReleaseTemporary(buffer);
+            return copy;
+        }
+
+        static void ApplyRoundedBlue(SpriteRenderer renderer, int outerCorners)
         {
             var tile = tiles[outerCorners];
             if (tile == null)

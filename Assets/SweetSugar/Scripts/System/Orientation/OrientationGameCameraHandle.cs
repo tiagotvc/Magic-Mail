@@ -145,7 +145,7 @@ namespace SweetSugar.Scripts.System.Orientation
             var cameraParameters = new CameraParameters();
             if (currentOrientation == ScreenOrientation.LandscapeLeft)
             {
-                var fieldRect = LevelManager.THIS.field.GetFieldRect();
+                var fieldRect = ReferenceFieldRect(LevelManager.THIS.field.GetFieldRect());
                 var h = fieldRect.height / 2 + 0.5f;
                 var topRectTransform = orientationActivator.GetCurrentPanels().FirstOrDefault();
                 var topRect = GetWorldRect(topRectTransform);
@@ -168,7 +168,7 @@ namespace SweetSugar.Scripts.System.Orientation
                 var topRect = GetWorldRect(topRectTransform);
                 var bottomRect = GetWorldRect(transform2);
 
-                var fieldRect = LevelManager.THIS.field.GetFieldRect();
+                var fieldRect = ReferenceFieldRect(LevelManager.THIS.field.GetFieldRect());
                 var centerRect = new Rect(topRect.xMin, topRect.yMax, topRect.xMax, bottomRect.yMin - topRect.yMax);
                 topRect = RectTransformToWorldSpace(topRectTransform);
 
@@ -184,6 +184,20 @@ namespace SweetSugar.Scripts.System.Orientation
                 cameraParameters.position = LevelManager.THIS.field.GetPosition() + offsetPosition - offsetFieldPosition;
             }
             return cameraParameters;
+        }
+
+        // O zoom segue sempre um tabuleiro de 9x9: fases menores (7x7, 4x4...) mantêm o mesmo tamanho de casa e peça
+        // na tela e ficam centralizadas; fases maiores que 9 ainda dão zoom out para caber.
+        // GetFieldRect mede de centro a centro, por isso (9 - 1) intervalos.
+        public const int ReferenceCells = 9;
+
+        static Rect ReferenceFieldRect(Rect actual)
+        {
+            var field = LevelManager.THIS.field;
+            if (field == null || field.fieldData.scrollLevel) return actual;
+            var size = new Vector2(Mathf.Max(actual.width, (ReferenceCells - 1) * field.squareWidth),
+                                   Mathf.Max(actual.height, (ReferenceCells - 1) * field.squareHeight));
+            return new Rect(actual.center - size / 2f, size);
         }
 
         public Vector2 GetCenterOffset()

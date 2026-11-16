@@ -18,8 +18,18 @@ namespace RoyalAves.Meta
         AspectRatioFitter fitter;
         RenderTexture texture;
 
+        // Desligado de propósito: o fundo da fase é o Background original do CanvasBack (a arte montada à mão).
+        // Para voltar à sala desfocada, ponha true.
+        const bool Enabled = false;
+
         public static void Show(Transform canvasBack, RenderTexture room)
         {
+            if (!Enabled)
+            {
+                // Sem SalaDesfocada e sem desligar o Background; só libera a textura que o LobbyController renderizou.
+                if (room != null) Release(room);
+                return;
+            }
             var backdrop = canvasBack.GetComponent<AreaBackdrop>();
             if (backdrop == null) backdrop = canvasBack.gameObject.AddComponent<AreaBackdrop>();
             backdrop.Apply(room);
@@ -43,9 +53,20 @@ namespace RoyalAves.Meta
             }
             if (texture != null && texture != room) Release(texture);
             texture = room;
-            picture.texture = room;
-            picture.color = new Color(brightness, brightness, brightness, 1);
-            fitter.aspectRatio = room.width / (float)room.height;
+            // Com o kit Royal Postman o fundo é a arte do mock, sem escurecer nem desfocar.
+            var kit = RoyalPostmanGameplayKit.Load();
+            if (kit != null && kit.background != null)
+            {
+                picture.texture = kit.background.texture;
+                picture.color = Color.white;
+                fitter.aspectRatio = kit.background.rect.width / kit.background.rect.height;
+            }
+            else
+            {
+                picture.texture = room;
+                picture.color = new Color(brightness, brightness, brightness, 1);
+                fitter.aspectRatio = room.width / (float)room.height;
+            }
             if (sweetSugarBackground != null && sweetSugarBackground.GetComponent<Image>() is Image old) old.enabled = false;
         }
 

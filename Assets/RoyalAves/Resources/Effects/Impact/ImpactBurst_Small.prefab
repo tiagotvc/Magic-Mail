@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1002}
+  - component: {fileID: 1003}
+  m_Layer: 0
+  m_Name: ImpactBurst_Small
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55cdd076ca3d239878613016ecdb559b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preset: 0
+  masks:
+    flashSoft: {fileID: 21300000, guid: 03661c99999232083f14b7faa1451525, type: 3}
+    flashCore: {fileID: 21300000, guid: f3b9dd675597d0c69879d88c5925b40e, type: 3}
+    ringSoft: {fileID: 21300000, guid: 6d88bbbe30905ff7dbaf0390a2aecceb, type: 3}
+    ringThin: {fileID: 21300000, guid: 211966e3d8972ef1ccd284d819a369c5, type: 3}
+    shockDisc: {fileID: 21300000, guid: 4085492946f0c23a1d2cc5e6ef8e8297, type: 3}
+    ringArc: {fileID: 21300000, guid: 15f2477edd3f2ae4d1d286537c46b2c1, type: 3}
+    streakSoft: {fileID: 21300000, guid: 63be59d3f3f754fbfb0fa19335155db1, type: 3}
+    streakSharp: {fileID: 21300000, guid: 486e054c4b66f7ab19471adf09911764, type: 3}
+    sparkCross: {fileID: 21300000, guid: dc0af956b64bf83550b09f052c67e083, type: 3}
+    sparkDot: {fileID: 21300000, guid: 6dbf943177c9f40792f3e815628fe5a6, type: 3}
+    microPop: {fileID: 21300000, guid: ef9af0eda6e610a148b6d8f3b5ddae4c, type: 3}
+    fragments:
+    - {fileID: 21300000, guid: a992f9976c8fd0799873a62af8ac4f5b, type: 3}
+    - {fileID: 21300000, guid: 3f32c4221dc4e2672e2f1fb5158191d9, type: 3}
+    - {fileID: 21300000, guid: 905cc1a7a2f9c7ce101b88fddbec369a, type: 3}
+    - {fileID: 21300000, guid: b028ce477710a67cc9540305faf30e9c, type: 3}
+    - {fileID: 21300000, guid: 617e510a0b5ba7eaa33073d98bd7f8af, type: 3}
+    - {fileID: 21300000, guid: 6fc7a830ae5fdb8dc2c81428e94049d8, type: 3}
+  additiveMaterial: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  alphaMaterial: {fileID: 2100000, guid: 6b4b9231881e91e9fc1b53806c8f7369, type: 2}
+  settings:
+    duration: 0.4
+    flashColor: {r: 1, g: 0.93, b: 0.7, a: 1}
+    flashSize: 2.2
+    coreSize: 1
+    ringColor: {r: 1, g: 0.88, b: 0.55, a: 1}
+    ringRadius: 2.2
+    shockDiscAlpha: 0.28
+    useRingArc: 1
+    rayColor: {r: 1, g: 0.82, b: 0.45, a: 1}
+    rayCount: 8
+    rayLength: {x: 0.5, y: 1.1}
+    rayTravel: 1.7
+    rayThickness: 0.08
+    fragmentCount: {x: 24, y: 36}
+    fragmentSize: {x: 0.08, y: 0.2}
+    fragmentDistance: {x: 0.9, y: 2.3}
+    fragmentColors:
+    - {r: 1, g: 0.22, b: 0.2, a: 1}
+    - {r: 0.2, g: 0.5, b: 1, a: 1}
+    - {r: 0.25, g: 0.85, b: 0.25, a: 1}
+    - {r: 1, g: 0.8, b: 0.1, a: 1}
+    sparkColor: {r: 1, g: 0.96, b: 0.8, a: 1}
+    sparkCount: 5
+  sortingOrderBase: 100

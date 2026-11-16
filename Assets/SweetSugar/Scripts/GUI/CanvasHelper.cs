@@ -90,6 +90,11 @@ namespace SweetSugar.Scripts.GUI
         {
             if(safeAreaTransform == null)
                 return;
+
+            // Correio Magico: o HUD da fase fica onde foi montado no editor; o recuo do notch e da barra inferior
+            // empurrava o HUD de cima para baixo e o de baixo para cima.
+            if(GetComponent<SweetSugar.Scripts.System.Orientation.OrientationPanels>() != null)
+                return;
      
             var safeArea = Screen.safeArea;
      

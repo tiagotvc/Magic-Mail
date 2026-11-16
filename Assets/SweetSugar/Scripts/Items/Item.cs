@@ -169,7 +169,10 @@ namespace SweetSugar.Scripts.Items
         public Animator anim;
         //gonna be destroy
         [HideInInspector] public bool destroying;
-        public const float BoardItemScale = 0.42f;
+        // Escala da peça no tabuleiro. Royal Postman: a peça ocupa ~85% da casa (era 0.42, bem menor que o mock).
+        public const float BoardItemScale = 0.58f;
+        // Modificadores (listradas, pacote, bola de luz, bomba...) ficam menores que as peças comuns: sua arte já é bem cheia.
+        public const float SpecialItemFactor = 0.78f;
         //item was set by editor
         [HideInInspector] public bool tutorialItem;
         //true - item should be switched in interactive tutorial
@@ -1081,7 +1084,8 @@ namespace SweetSugar.Scripts.Items
 
         public void RestoreBoardScale()
         {
-            transform.localScale = new Vector3(BoardItemScale, BoardItemScale, 1f);
+            var boardScale = currentType == ItemsTypes.NONE ? BoardItemScale : BoardItemScale * SpecialItemFactor;
+            transform.localScale = new Vector3(boardScale, boardScale, 1f);
             if (itemAnimTransform != null && itemAnimTransform != transform)
                 itemAnimTransform.localScale = defaultTransformScale;
             if (_spriteObjectRef != null && _spriteObjectRef != itemAnimTransform)

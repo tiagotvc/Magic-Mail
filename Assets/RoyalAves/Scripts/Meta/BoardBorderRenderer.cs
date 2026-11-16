@@ -62,14 +62,23 @@ namespace RoyalAves.Meta
             foreach (var board in Object.FindObjectsByType<FieldBoard>(FindObjectsSortMode.None)) BuildForBoard(board);
         }
 
+        // HUDs montados à mão (arte atual e a do mock Royal Postman, "base") não levam a moldura sazonal por cima.
+        static bool HasProductionHud(Image image) =>
+            image.sprite != null && (image.sprite.name.StartsWith("hud-base-purple-gold") || image.sprite.name == "base");
+
+        // A HUD agora é montada à mão na cena (o nome do sprite muda quando a arte é reimportada, então checar o nome
+        // não é confiável): o tema sazonal não mexe mais na moldura. Ligue para voltar às molduras de Natal.
+        const bool ApplySeasonalHud = false;
+
         static void ApplyHudTheme()
         {
+            if (!ApplySeasonalHud) return;
             var hudImages = Object.FindObjectsByType<Image>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             foreach (var image in hudImages)
                 if (image.name == "MolduraFase")
                 {
                     // The production HUD is assigned manually; do not replace its artwork with legacy seasonal frames.
-                    if (image.sprite != null && image.sprite.name.StartsWith("hud-base-purple-gold")) continue;
+                    if (HasProductionHud(image)) continue;
                     // The authored sprite is the default, including after a Play-mode script reload.
                     image.overrideSprite = null;
                     SeasonalHudLights.SetChristmas(image, false);
@@ -80,7 +89,7 @@ namespace RoyalAves.Meta
             foreach (var image in hudImages)
             {
                 if (image.name != "MolduraFase") continue;
-                if (image.sprite != null && image.sprite.name.StartsWith("hud-base-purple-gold")) continue;
+                if (HasProductionHud(image)) continue;
                 image.overrideSprite = frame;
                 SeasonalHudLights.SetChristmas(image, appearance.theme == BoardBorderTheme.Christmas);
             }
@@ -204,6 +213,12 @@ namespace RoyalAves.Meta
             int n = verts.Count - 1;
             if (n < 4) return;
             float cell = Mathf.Min(board.squareWidth, board.squareHeight);
+            var kit = RoyalPostmanGameplayKit.Load();
+            if (kit != null && kit.HasBorder)
+            {
+                EmitSpriteBorder(verts, n, cell, container, vertexWorld, kit);
+                return;
+            }
             float radius = cell * 0.20f;
             var path = new List<Vector3>();
             for (int i = 0; i < n; i++)
@@ -238,6 +253,149 @@ namespace RoyalAves.Meta
             EmitBand("Outer fine highlight", path, 0.185f * bandUnit, 0.198f * bandUnit,
                 new Color32(237, 177, 89, 255), container, 4, outerFeather: feather);
             // The board keeps a clean thin frame; seasonal decorations remain in the surrounding HUD.
+        }
+
+        // Borda feita com os sprites do kit Royal Postman: uma curva em cada virada do contorno (as quatro curvas
+        // servem para cantos de fora e de dentro, só muda de que lado cada ponta sai) e o trecho reto esticado entre
+        // elas. Cada curva é escolhida pelas direções das duas pontas: ponta para a vértice anterior e para a próxima.
+        static void EmitSpriteBorder(List<Vector2Int> verts, int n, float cell, GameObject container,
+            System.Func<Vector2Int, Vector3> vertexWorld, RoyalPostmanGameplayKit kit)
+        {
+            var points = new List<Vector3>(n);
+            for (int i = 0; i < n; i++) points.Add(vertexWorld(verts[i]));
+
+            float thickness = cell * kit.borderThickness;
+            float offset = thickness * kit.borderOffset;
+            float pixel = thickness / kit.straight.rect.width;      // metros do mundo por pixel da arte
+            float half = kit.straight.rect.width * 0.5f;            // meia espessura da faixa, em pixels
+            var parentScale = container.transform.lossyScale;
+            float parent = Mathf.Max(0.0001f, Mathf.Abs(parentScale.x));
+
+            var turns = new List<(Vector3 position, Sprite sprite, Vector2 stubs)>();
+            for (int i = 0; i < n; i++)
+            {
+                var previous = points[(i - 1 + n) % n];
+                var current = points[i];
+                var next = points[(i + 1) % n];
+                var incoming = (current - previous).normalized;
+                var outgoing = (next - current).normalized;
+                if (Vector3.Dot(incoming, outgoing) > 0.999f) continue;   // reta: sem curva aqui
+
+                // O lado de fora da grade fica à esquerda de cada aresta (as arestas giram com a casa à direita).
+                var outwardIn = new Vector3(-incoming.y, incoming.x, 0f);
+                var outwardOut = new Vector3(-outgoing.y, outgoing.x, 0f);
+                var position = current + (outwardIn + outwardOut) * offset;
+
+                var toPrevious = -incoming;
+                bool right = toPrevious.x > 0.5f || outgoing.x > 0.5f;
+                bool left = toPrevious.x < -0.5f || outgoing.x < -0.5f;
+                bool up = toPrevious.y > 0.5f || outgoing.y > 0.5f;
+                bool down = toPrevious.y < -0.5f || outgoing.y < -0.5f;
+                Sprite sprite;
+                if (down && right) sprite = kit.cornerUpLeft;
+                else if (down && left) sprite = kit.cornerUpRight;
+                else if (up && right) sprite = kit.cornerDownLeft;
+                else if (up && left) sprite = kit.cornerDownRight;
+                else continue;
+                turns.Add((position, sprite, new Vector2(right ? 1f : -1f, up ? 1f : -1f)));
+
+                // Canto interno (o contorno vira para a esquerda): a curva corta o canto do vão e deixaria uma cunha
+                // sem fundo entre as casas e o arco. Um preenchimento na cor do fundo cobre essa cunha por baixo da faixa.
+                if (incoming.x * outgoing.y - incoming.y * outgoing.x > 0f && kit.squareUnder != null)
+                    EmitCornerFill(current, toPrevious, outgoing, offset, pixel, kit, container, parent);
+            }
+            if (turns.Count < 4) return;
+
+            // O ponto do meio da faixa, no encontro das duas pontas, vai em cima do vértice deslocado.
+            for (int i = 0; i < turns.Count; i++)
+            {
+                var (position, sprite, stubs) = turns[i];
+                var size = sprite.rect.size;
+                var center = position + new Vector3(stubs.x * (size.x * 0.5f - half), stubs.y * (size.y * 0.5f - half), 0f) * pixel;
+                var piece = Piece("Border corner", sprite, center, 0f, container);
+                float scale = pixel * sprite.pixelsPerUnit / parent;
+                piece.transform.localScale = new Vector3(scale, scale, 1f);
+            }
+
+            for (int i = 0; i < turns.Count; i++)
+            {
+                var a = turns[i];
+                var b = turns[(i + 1) % turns.Count];
+                var along = b.position - a.position;
+                var direction = along.normalized;
+                bool horizontal = Mathf.Abs(direction.x) > Mathf.Abs(direction.y);
+                // A ponta de cada curva avança pela aresta: largura da curva na horizontal, altura na vertical.
+                float reachA = ((horizontal ? a.sprite.rect.width : a.sprite.rect.height) - half) * pixel;
+                float reachB = ((horizontal ? b.sprite.rect.width : b.sprite.rect.height) - half) * pixel;
+                float length = along.magnitude - reachA - reachB;
+                if (length <= 0.0001f) continue;
+                var middle = a.position + direction * (reachA + length * 0.5f);
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+                var piece = Piece("Border straight", kit.straight, middle, angle, container);
+                float width = pixel * kit.straight.pixelsPerUnit / parent;
+                float stretch = length / (kit.straight.rect.height / kit.straight.pixelsPerUnit) / parent;
+                piece.transform.localScale = new Vector3(width, stretch, 1f);
+            }
+        }
+
+        static readonly Dictionary<float, Sprite> cornerFills = new Dictionary<float, Sprite>();
+
+        // Quadrado no canto do vão, com a ponta em V e os lados ao longo das duas arestas, pintado só FORA do círculo
+        // do arco (o círculo é onde a faixa passa): assim sobra preenchida a cunha entre o vértice e a faixa.
+        static void EmitCornerFill(Vector3 vertex, Vector3 axisA, Vector3 axisB, float offset, float pixel,
+            RoyalPostmanGameplayKit kit, GameObject container, float parent)
+        {
+            float half = kit.straight.rect.width * 0.5f;
+            float middle = Mathf.Max(1f, kit.cornerArcRadius - half);          // raio da linha do meio do arco, em px
+            float side = offset / pixel + middle;                              // do vértice ao centro do arco, em px
+            float key = Mathf.Round(middle / side * 1000f) / 1000f;
+            if (!cornerFills.TryGetValue(key, out var sprite) || sprite == null)
+            {
+                const int size = 64;
+                var fill = BoardCellVisual.UnderFill(kit.squareUnder);
+                var texture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+                    { name = "BoardCornerFill", filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
+                var pixels = new Color32[size * size];
+                float centre = size - 0.5f;                                    // o centro do arco é o canto oposto a V
+                float radius = size * key;
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                    {
+                        float distance = new Vector2(x + 0.5f - size, y + 0.5f - size).magnitude;
+                        float cover = Mathf.Clamp01(distance - radius + 0.5f);
+                        var color = fill; color.a = (byte)(cover * 255f);
+                        pixels[y * size + x] = color;
+                    }
+                texture.SetPixels32(pixels);
+                texture.Apply(false, true);
+                sprite = Sprite.Create(texture, new Rect(0, 0, size, size), Vector2.zero, size);
+                sprite.name = "BoardCornerFill";
+                cornerFills[key] = sprite;
+            }
+            var piece = new GameObject("Border corner fill");
+            piece.transform.SetParent(container.transform, false);
+            piece.transform.position = vertex;
+            // Eixo x local ao longo da aresta anterior; os dois eixos do vão giram em sentido horário, então y inverte.
+            piece.transform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(axisA.y, axisA.x) * Mathf.Rad2Deg);
+            float world = side * pixel / parent;
+            piece.transform.localScale = new Vector3(world, -world, 1f);
+            var renderer = piece.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingLayerName = SortingLayerName;
+            renderer.sortingOrder = SortingOrder + 1;
+        }
+
+        static GameObject Piece(string name, Sprite sprite, Vector3 position, float angle, GameObject container)
+        {
+            var piece = new GameObject(name);
+            piece.transform.SetParent(container.transform, false);
+            piece.transform.position = position;
+            piece.transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            var renderer = piece.AddComponent<SpriteRenderer>();
+            renderer.sprite = sprite;
+            renderer.sortingLayerName = SortingLayerName;
+            renderer.sortingOrder = SortingOrder + 2;
+            return piece;
         }
 
         static void DecorateChristmas(List<Vector2Int> vertices, GameObject container,

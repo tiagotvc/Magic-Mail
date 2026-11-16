@@ -14,6 +14,8 @@ namespace RoyalAves.Meta
         [SerializeField] Image background;
         [SerializeField] Sprite normal;
         [SerializeField] Sprite selected;
+        [Tooltip("Moldura verde mostrada quando este reforço é o ativo da fase (tela Royal Postman).")]
+        [SerializeField] GameObject selectedOverlay;
 
         [Header("Ícone (Center) via AllIn1SpriteShader")]
         [SerializeField] Image center;
@@ -46,9 +48,12 @@ namespace RoyalAves.Meta
         {
             if (boost == null) boost = GetComponent<BoostIcon>();
             var on = boost.check != null && boost.check.activeSelf;
+            if (selectedOverlay != null && SweetSugar.Scripts.Core.LevelManager.THIS != null)
+                on |= SweetSugar.Scripts.Core.LevelManager.THIS.ActivatedBoost == boost;
             if (on == shown) return;
             shown = on;
             if (background != null) background.sprite = on && selected != null ? selected : normal;
+            if (selectedOverlay != null) selectedOverlay.SetActive(on);
             if (centerMaterial != null)
             {
                 centerMaterial.SetFloat("_HsvSaturation", on ? selectedSaturation : inactiveSaturation);

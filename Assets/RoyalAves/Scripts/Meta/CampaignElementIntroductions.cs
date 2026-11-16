@@ -33,10 +33,19 @@ namespace RoyalAves.Meta
             new Entry(136,"Sinalizador!","Faça combinações ao lado com a <color=#AE193F>COR ACESA</color>, ou use especiais.\nA cor muda a cada jogada. Três acertos o removem!","Blocks/SortingSignals"),
             new Entry(151,"Fita postal!","A <color=#AE193F>FITA</color> prende a peça. Faça uma combinação nela ou ao lado,\nou use um especial para descolá-la. Ela não é uma meta!","Blocks/PostalTape")
         };
-        public static bool Has(int level) => Entries.Any(e=>e.level==level);
-        public static Sprite Icon(Entry entry)
+        // Com o catálogo (ElementIntroCatalog) no projeto, ele manda: fase, textos e imagens vêm dele. A tabela abaixo só
+        // vale como reserva enquanto o catálogo não existe.
+        public static bool Has(int level)
         {
-            var prefab=Resources.Load<GameObject>(entry.resource);
+            var catalog=ElementIntroCatalog.Instance;
+            if(catalog!=null)return ElementIntroCatalog.FindByLevel(level)!=null;
+            return Entries.Any(e=>e.level==level);
+        }
+        public static Sprite Icon(Entry entry)=>Icon(entry.resource);
+        public static Sprite Icon(string resource)
+        {
+            if(string.IsNullOrEmpty(resource))return null;
+            var prefab=Resources.Load<GameObject>(resource);
             if(prefab==null)return null;
             var cubby=prefab.GetComponent<MailCubbyCell>();
             var machine=prefab.GetComponent<FrankingMachineCell>();
@@ -50,9 +59,17 @@ namespace RoyalAves.Meta
         public static void ShowCurrent()
         {
             var manager=LevelManager.THIS;if(manager==null||manager.levelData==null||manager.field==null)return;
-            var entry=Entries.FirstOrDefault(e=>e.level==manager.levelData.levelNum);if(entry==null)return;
-            var icon=Icon(entry);
-            ElementIntroPrototype.Show(icon,entry.title,entry.instruction);
+            var level=manager.levelData.levelNum;
+            if(ElementIntroCatalog.Instance!=null)
+            {
+                var intro=ElementIntroCatalog.FindByLevel(level);if(intro==null)return;
+                var picture=intro.iconOverride!=null?intro.iconOverride:Icon(intro.iconResource);
+                if(ElementIntroScreen.Show(intro,picture))return;
+                ElementIntroPrototype.Show(picture,intro.titlePt,(intro.instructionPt??"").Replace("<hl>","<color=#AE193F>").Replace("</hl>","</color>"));
+                return;
+            }
+            var entry=Entries.FirstOrDefault(e=>e.level==level);if(entry==null)return;
+            ElementIntroPrototype.Show(Icon(entry),entry.title,entry.instruction);
         }
     }
 }

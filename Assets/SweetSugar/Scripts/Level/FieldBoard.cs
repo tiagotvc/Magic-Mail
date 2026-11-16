@@ -406,7 +406,7 @@ namespace SweetSugar.Scripts.Level
              if (!HasCell(col + 1, row) && !HasCell(col, row - 1)) corners |= 2;
              if (!HasCell(col - 1, row) && !HasCell(col, row + 1)) corners |= 4;
              if (!HasCell(col + 1, row) && !HasCell(col, row + 1)) corners |= 8;
-             RoyalAves.Meta.BoardCellVisual.Apply(squareObject.GetComponent<SpriteRenderer>(), corners);
+             RoyalAves.Meta.BoardCellVisual.Apply(squareObject.GetComponent<SpriteRenderer>(), corners, col, row);
              squareObject.transform.SetParent(GameField);//set parent later
              squareObject.transform.localPosition = firstSquarePosition + new Vector2(col * squareWidth, -row * squareHeight);
              var square = squareObject.GetComponent<Square>();

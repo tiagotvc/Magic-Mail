@@ -464,7 +464,7 @@ namespace SweetSugar.Scripts.Core
         //Lock boosts
         private void LockBoosts()
         {
-            foreach (var item in InGameBoosts)
+            foreach (var item in InGameBoosts.Where(b => b != null))
             {
                 if (item.type != ActivatedBoost.type)
                     item.LockBoost();
@@ -473,7 +473,7 @@ namespace SweetSugar.Scripts.Core
         //unlock boosts
         public void UnLockBoosts()
         {
-            foreach (var item in InGameBoosts)
+            foreach (var item in InGameBoosts.Where(b => b != null))
             {
                 item.UnLockBoost();
             }
@@ -680,13 +680,13 @@ namespace SweetSugar.Scripts.Core
 
             if (levelData.limitType == LIMIT.MOVES)
             {
-                InGameBoosts.Where(i => i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(true));
-                InGameBoosts.Where(i => i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(false));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(true));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(false));
             }
             else
             {
-                InGameBoosts.Where(i => i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(false));
-                InGameBoosts.Where(i => i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(true));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(false));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(true));
             }
 
             OnEnterGame?.Invoke();

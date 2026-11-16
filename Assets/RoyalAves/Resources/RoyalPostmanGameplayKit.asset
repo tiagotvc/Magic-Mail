@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d64c79fbe27467646ac75b6ebdbbbed7, type: 3}
+  m_Name: RoyalPostmanGameplayKit
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.RoyalPostmanGameplayKit
+  squareUnder: {fileID: 21300000, guid: 86b557ad6bfb5ad49bbc276e720ec13e, type: 3}
+  squareLight: {fileID: 21300000, guid: c21c794d4a3e8a340bd51cd6fe8424ab, type: 3}
+  squareDark: {fileID: 21300000, guid: 89f6fe6aacac69444bc1bafdf3b0c7fc, type: 3}
+  cornerUpLeft: {fileID: 21300000, guid: d4f3926593ba8254e8d628b93c674b46, type: 3}
+  cornerUpRight: {fileID: 21300000, guid: 34c91b114a671af4885683896da63923, type: 3}
+  cornerDownLeft: {fileID: 21300000, guid: 4cd1b22015aa6874183e7dd10d08da39, type: 3}
+  cornerDownRight: {fileID: 21300000, guid: 49bc7942ccd51eb4f895e723d8a2f127, type: 3}
+  straight: {fileID: 21300000, guid: e9c00a02faf6d49458c7145647bc5e39, type: 3}
+  borderThickness: 0.11
+  borderOffset: 0.5
+  background: {fileID: 0}

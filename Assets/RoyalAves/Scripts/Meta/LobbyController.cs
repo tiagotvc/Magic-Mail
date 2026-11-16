@@ -415,13 +415,26 @@ namespace RoyalAves.Meta
             ShowScoreUi();
         }
 
-        // Show the score and the level-specific 1–3 star thresholds.
+        const bool ShowScoreInGameplay = false;
+        const bool ShowProgressBarInGameplay = false;
+
+        // Show the level-specific 1–3 star thresholds (and the score, if ShowScoreInGameplay).
         static void ShowScoreUi()
         {
             if (LevelManager.THIS == null || LevelManager.THIS.Level == null) return;
             foreach (var t in LevelManager.THIS.Level.GetComponentsInChildren<Transform>(true))
-                if (t.name == "ProgressBar" || t.name == "Score")
+            {
+                if (t.name == "ProgressBar")
+                {
+                    // Fica ativo (o alvo "Stars" procura este objeto por nome), mas invisível quando desligado.
                     t.gameObject.SetActive(true);
+                    if (!t.TryGetComponent<CanvasGroup>(out var fade)) fade = t.gameObject.AddComponent<CanvasGroup>();
+                    fade.alpha = ShowProgressBarInGameplay ? 1f : 0f;
+                }
+                // Por enquanto o gameplay não mostra a pontuação: o objeto "Score" fica sempre desligado.
+                // Para voltar a mostrar, troque ShowScoreInGameplay por true.
+                else if (t.name == "Score") t.gameObject.SetActive(ShowScoreInGameplay);
+            }
         }
 
         // The level's background is this room, blurred (AreaBackdrop): drawn once as the level starts.

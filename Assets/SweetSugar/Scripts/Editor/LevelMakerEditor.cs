@@ -508,6 +508,8 @@ namespace SweetSugar.Scripts.Editor
                     {
                         GUILevelSelector();
                         GUILayout.Space(10);
+                        ElementIntroLevelGUI.Draw(levelNumber, levelData);
+                        GUILayout.Space(10);
 
 
                         GUILimit();

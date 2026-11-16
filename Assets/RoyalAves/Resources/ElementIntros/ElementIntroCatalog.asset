@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3738a3b132eecd43e2566d7ea31f8c19, type: 3}
+  m_Name: ElementIntroCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.ElementIntroCatalog
+  entries:
+  - id: caixas
+    level: 1
+    iconResource: Blocks/SolidBlock
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 5156430711721645808, guid: 02636ae94d07c8048841f7931ff10892, type: 3}
+    nameSpriteEn: {fileID: -369308866213385603, guid: 7616043702fae944b8e46b6a9a8c9dcb, type: 3}
+    titlePt: Caixas!
+    titleEn: Boxes!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado das <hl>CAIXAS</hl> ou use especiais para quebr\xE1-las!"
+    instructionEn: Make matches next to the <hl>BOXES</hl> or use specials to break them!
+  - id: foguete
+    level: 2
+    iconResource: Items/HORIZONTAL_STRIPED
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 5525835816065854811, guid: c27f6167e6711b84ab05f79af7354ef4, type: 3}
+    nameSpriteEn: {fileID: 9035339956695954905, guid: 137bf2eec21c4ec4bb8489771e537508, type: 3}
+    titlePt: Foguete!
+    titleEn: Rocket!
+    instructionPt: "Combine <hl>4 pe\xE7as em linha</hl> para criar um foguete. Ele limpa uma linha ou coluna inteira!"
+    instructionEn: Match <hl>4 in a row</hl> to create a rocket. It clears a whole row or column!
+  - id: dinamite
+    level: 3
+    iconResource: Items/PACKAGE
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 3873942693598743305, guid: 73dab54a908b190469e8b1845675a357, type: 3}
+    nameSpriteEn: {fileID: -4001745433681887495, guid: d219bb5a4692f1141b26bbe1c86e30b7, type: 3}
+    titlePt: Dinamite!
+    titleEn: Dynamite!
+    instructionPt: "Combine pe\xE7as em <hl>T ou L</hl> para criar uma dinamite. Use-a para atingir v\xE1rias casas ao redor!"
+    instructionEn: Match in a <hl>T or L shape</hl> to create dynamite. Use it to hit many cells around it!
+  - id: grama
+    level: 4
+    iconResource: Blocks/SugarSquare
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: -9127047463511306835, guid: 81556faa9be821e459460b84d125eac6, type: 3}
+    nameSpriteEn: {fileID: 8240142676866170596, guid: b507dc4518b947643a5055f0b56f4a26, type: 3}
+    titlePt: Grama!
+    titleEn: Grass!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es <hl>sobre a GRAMA</hl> ou use especiais para remov\xEA-la!"
+    instructionEn: Make matches <hl>on the GRASS</hl> or use specials to remove it!
+  - id: helice
+    level: 6
+    iconResource: Items/MARMALADE
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: -6934471309600777791, guid: 4b179db4264889f468d33dd2c7820cf8, type: 3}
+    nameSpriteEn: {fileID: -3026296671662133410, guid: 1a1f098f9a793fb458a56c6d61a6b768, type: 3}
+    titlePt: "H\xE9lice!"
+    titleEn: Propeller!
+    instructionPt: "Combine <hl>4 pe\xE7as em um quadrado</hl> para criar uma h\xE9lice. Ela voa at\xE9 um alvo e tamb\xE9m pode levar outro especial!"
+    instructionEn: Match <hl>4 in a square</hl> to create a propeller. It flies to a target and can carry another special!
+  - id: globo-de-luz
+    level: 8
+    iconResource: Items/MULTICOLOR
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: 96467ffc068fe854288dbfe7ec47aca5, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 02dd018ec4e97fd46b4c4f4dc01e6e85, type: 3}
+    titlePt: Globo de luz!
+    titleEn: Light ball!
+    instructionPt: "Combine <hl>5 pe\xE7as em linha</hl> para criar um globo. Combine-o com uma cor ou com outro especial!"
+    instructionEn: Match <hl>5 in a row</hl> to create a light ball. Combine it with a color or another special!
+  - id: escaninho
+    level: 11
+    iconResource: Blocks/MailCubby
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: df17eff6a05dcc44aa8d30186a927ee7, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 2d35f4da8f98d9c46a060cf57405b4b9, type: 3}
+    titlePt: Escaninho!
+    titleEn: Mail cubby!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado do <hl>ESCANINHO</hl> para abrir as portas. Continue acertando para entregar todas as cartas!"
+    instructionEn: Make matches next to the <hl>CUBBY</hl> to open its doors. Keep hitting it to deliver all the letters!
+  - id: franqueadora
+    level: 21
+    iconResource: Blocks/FrankingMachine
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: b948e376b5c0891499bd50940a649c8d, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: a9e5d98c44684bb4eb0af23347c608c3, type: 3}
+    titlePt: Franqueadora!
+    titleEn: Franking machine!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado da <hl>M\xC1QUINA</hl> ou use especiais para produzir as cartas da meta!"
+    instructionEn: Make matches next to the <hl>MACHINE</hl> or use specials to produce the goal letters!
+  - id: gelo
+    level: 31
+    iconResource: Blocks/IceBlock
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: -4766399092516540831, guid: a774e89edf9e0884bb2ac37dbf795263, type: 3}
+    nameSpriteEn: {fileID: -4828556797917796796, guid: 22bcef1044b396c4c96bef0a99528dca, type: 3}
+    titlePt: Gelo!
+    titleEn: Ice!
+    instructionPt: "Fa\xE7a uma combina\xE7\xE3o com a pe\xE7a <hl>CONGELADA</hl> ou acerte-a com um especial para quebrar o gelo!"
+    instructionEn: Match the <hl>FROZEN</hl> piece or hit it with a special to break the ice!
+  - id: gelo-duplo
+    level: 36
+    iconResource: Blocks/IceBlock
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: a7c20b1c94e43f944bb20c4d7d4201b1, type: 3}
+    nameSpriteEn: {fileID: 5855185693529380091, guid: 9da8748714e1293418419f6835a37ad1, type: 3}
+    titlePt: Gelo duplo!
+    titleEn: Double ice!
+    instructionPt: "Este gelo tem <hl>DUAS CAMADAS</hl>. Acerte duas vezes para liberar a pe\xE7a!"
+    instructionEn: This ice has <hl>TWO LAYERS</hl>. Hit it twice to free the piece!
+  - id: ovos-magicos
+    level: 46
+    iconResource: Items/FLYING_LETTER
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: d7be464dcb583554cb53da93e33a7887, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 8bf5452a98bab9d41ad3c9f7068a3c63, type: 3}
+    titlePt: "Ovos m\xE1gicos!"
+    titleEn: Magic eggs!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado dos <hl>OVOS</hl> ou use especiais para quebr\xE1-los!"
+    instructionEn: Make matches next to the <hl>EGGS</hl> or use specials to crack them!
+  - id: pocoes
+    level: 61
+    iconResource: Blocks/RoutePotions
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: 086945017d5f3c74fb03684204543e46, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: d78b6132a3aa9c749b8835f1664d6d09, type: 3}
+    titlePt: "Po\xE7\xF5es!"
+    titleEn: Potions!
+    instructionPt: Combine ao lado de cada frasco usando a <hl>COR DELE</hl>, ou acerte-o com um especial. Esvazie os quatro frascos!
+    instructionEn: Match next to each flask using <hl>ITS COLOR</hl>, or hit it with a special. Empty all four flasks!
+  - id: bolsa-do-carteiro
+    level: 76
+    iconResource: Blocks/BagOpenings
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: 56169ace1f57cd14286ecb97ea56c69c, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 06833f3f29faa1a46b198d295dc18f63, type: 3}
+    titlePt: Bolsa do carteiro!
+    titleEn: Postman's bag!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado da <hl>BOLSA</hl> ou use especiais. Ela fica no lugar e entrega os pergaminhos da meta!"
+    instructionEn: Make matches next to the <hl>BAG</hl> or use specials. It stays in place and delivers the goal scrolls!
+  - id: pedra-runica
+    level: 91
+    iconResource: Blocks/EnchantedStone
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: a162859459f54fe4195a06b642b7bbaf, type: 3}
+    nameSpriteEn: {fileID: 7243934505335380126, guid: 29194f93f48739145bd47dd01ae5ad58, type: 3}
+    titlePt: "Pedra r\xFAnica!"
+    titleEn: Runic stone!
+    instructionPt: "As <hl>PEDRAS R\xDANICAS</hl> resistem \xE0s combina\xE7\xF5es comuns. Use especiais ou combine power-ups para quebr\xE1-las!"
+    instructionEn: <hl>RUNIC STONES</hl> resist normal matches. Use specials or combine power-ups to break them!
+  - id: tinteiro
+    level: 106
+    iconResource: Blocks/Inkwell
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: ec531702f14859e47a997dff35cae979, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 4ff06c5366ca0da4d933857b3e4e72e4, type: 3}
+    titlePt: Tinteiro!
+    titleEn: Inkwell!
+    instructionPt: "Acerte o <hl>TINTEIRO</hl> com combina\xE7\xF5es ao lado ou especiais. Ele espalha tinta e quebra depois de cinco acertos!"
+    instructionEn: Hit the <hl>INKWELL</hl> with nearby matches or specials. It spills ink and breaks after five hits!
+  - id: cofre
+    level: 121
+    iconResource: Blocks/Safe
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: 1921d0ddff1371a45b6fb4d6d48a84ba, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 57939c7b73a3f054fa493412351a0aef, type: 3}
+    titlePt: Cofre!
+    titleEn: Safe!
+    instructionPt: "O <hl>COFRE</hl> ocupa quatro casas e s\xF3 recebe dano de especiais. Acerte cinco vezes para abri-lo!"
+    instructionEn: The <hl>SAFE</hl> takes four cells and only takes damage from specials. Hit it five times to open it!
+  - id: sinalizador
+    level: 136
+    iconResource: Blocks/SortingSignals
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: 763820c22cf2cdd40a226526e3341b77, type: 3}
+    nameSpriteEn: {fileID: -3392354667418931199, guid: ddd1ddf46c66c1d4cb6d4f39cbd80717, type: 3}
+    titlePt: Sinalizador!
+    titleEn: Signal!
+    instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado com a <hl>COR ACESA</hl>, ou use especiais. A cor muda a cada jogada. Tr\xEAs acertos o removem!"
+    instructionEn: Make matches next to it with the <hl>LIT COLOR</hl>, or use specials. The color changes every move. Three hits remove it!
+  - id: fita-postal
+    level: 151
+    iconResource: Blocks/PostalTape
+    iconOverride: {fileID: 0}
+    nameSpritePt: {fileID: 21300000, guid: bcf5f8553713b2b46881a97147c18a36, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 6bbc74dfd54470a4e811156587257576, type: 3}
+    titlePt: Fita postal!
+    titleEn: Postal tape!
+    instructionPt: "A <hl>FITA</hl> prende a pe\xE7a. Fa\xE7a uma combina\xE7\xE3o nela ou ao lado, ou use um especial para descol\xE1-la. Ela n\xE3o \xE9 uma meta!"
+    instructionEn: The <hl>TAPE</hl> holds a piece. Match on it or next to it, or use a special to peel it off. It is not a goal!
