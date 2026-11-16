@@ -17,8 +17,8 @@ MonoBehaviour:
     level: 1
     iconResource: Blocks/SolidBlock
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: 5156430711721645808, guid: 02636ae94d07c8048841f7931ff10892, type: 3}
-    nameSpriteEn: {fileID: -369308866213385603, guid: 7616043702fae944b8e46b6a9a8c9dcb, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: 02636ae94d07c8048841f7931ff10892, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 7616043702fae944b8e46b6a9a8c9dcb, type: 3}
     titlePt: Caixas!
     titleEn: Boxes!
     instructionPt: "Fa\xE7a combina\xE7\xF5es ao lado das <hl>CAIXAS</hl> ou use especiais para quebr\xE1-las!"
@@ -27,8 +27,8 @@ MonoBehaviour:
     level: 2
     iconResource: Items/HORIZONTAL_STRIPED
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: 5525835816065854811, guid: c27f6167e6711b84ab05f79af7354ef4, type: 3}
-    nameSpriteEn: {fileID: 9035339956695954905, guid: 137bf2eec21c4ec4bb8489771e537508, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: c27f6167e6711b84ab05f79af7354ef4, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 137bf2eec21c4ec4bb8489771e537508, type: 3}
     titlePt: Foguete!
     titleEn: Rocket!
     instructionPt: "Combine <hl>4 pe\xE7as em linha</hl> para criar um foguete. Ele limpa uma linha ou coluna inteira!"
@@ -37,8 +37,8 @@ MonoBehaviour:
     level: 3
     iconResource: Items/PACKAGE
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: 3873942693598743305, guid: 73dab54a908b190469e8b1845675a357, type: 3}
-    nameSpriteEn: {fileID: -4001745433681887495, guid: d219bb5a4692f1141b26bbe1c86e30b7, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: 73dab54a908b190469e8b1845675a357, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: d219bb5a4692f1141b26bbe1c86e30b7, type: 3}
     titlePt: Dinamite!
     titleEn: Dynamite!
     instructionPt: "Combine pe\xE7as em <hl>T ou L</hl> para criar uma dinamite. Use-a para atingir v\xE1rias casas ao redor!"
@@ -47,8 +47,8 @@ MonoBehaviour:
     level: 4
     iconResource: Blocks/SugarSquare
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: -9127047463511306835, guid: 81556faa9be821e459460b84d125eac6, type: 3}
-    nameSpriteEn: {fileID: 8240142676866170596, guid: b507dc4518b947643a5055f0b56f4a26, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: 81556faa9be821e459460b84d125eac6, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: b507dc4518b947643a5055f0b56f4a26, type: 3}
     titlePt: Grama!
     titleEn: Grass!
     instructionPt: "Fa\xE7a combina\xE7\xF5es <hl>sobre a GRAMA</hl> ou use especiais para remov\xEA-la!"
@@ -57,8 +57,8 @@ MonoBehaviour:
     level: 6
     iconResource: Items/MARMALADE
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: -6934471309600777791, guid: 4b179db4264889f468d33dd2c7820cf8, type: 3}
-    nameSpriteEn: {fileID: -3026296671662133410, guid: 1a1f098f9a793fb458a56c6d61a6b768, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: 4b179db4264889f468d33dd2c7820cf8, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 1a1f098f9a793fb458a56c6d61a6b768, type: 3}
     titlePt: "H\xE9lice!"
     titleEn: Propeller!
     instructionPt: "Combine <hl>4 pe\xE7as em um quadrado</hl> para criar uma h\xE9lice. Ela voa at\xE9 um alvo e tamb\xE9m pode levar outro especial!"
@@ -97,8 +97,8 @@ MonoBehaviour:
     level: 31
     iconResource: Blocks/IceBlock
     iconOverride: {fileID: 0}
-    nameSpritePt: {fileID: -4766399092516540831, guid: a774e89edf9e0884bb2ac37dbf795263, type: 3}
-    nameSpriteEn: {fileID: -4828556797917796796, guid: 22bcef1044b396c4c96bef0a99528dca, type: 3}
+    nameSpritePt: {fileID: 21300000, guid: a774e89edf9e0884bb2ac37dbf795263, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 22bcef1044b396c4c96bef0a99528dca, type: 3}
     titlePt: Gelo!
     titleEn: Ice!
     instructionPt: "Fa\xE7a uma combina\xE7\xE3o com a pe\xE7a <hl>CONGELADA</hl> ou acerte-a com um especial para quebrar o gelo!"
@@ -108,7 +108,7 @@ MonoBehaviour:
     iconResource: Blocks/IceBlock
     iconOverride: {fileID: 0}
     nameSpritePt: {fileID: 21300000, guid: a7c20b1c94e43f944bb20c4d7d4201b1, type: 3}
-    nameSpriteEn: {fileID: 5855185693529380091, guid: 9da8748714e1293418419f6835a37ad1, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: 9da8748714e1293418419f6835a37ad1, type: 3}
     titlePt: Gelo duplo!
     titleEn: Double ice!
     instructionPt: "Este gelo tem <hl>DUAS CAMADAS</hl>. Acerte duas vezes para liberar a pe\xE7a!"

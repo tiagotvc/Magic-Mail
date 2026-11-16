@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8241218972359347628
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9066560144674205237}
+  - component: {fileID: 3592651290436919274}
+  - component: {fileID: 778021291535361492}
+  m_Layer: 0
+  m_Name: HintEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9066560144674205237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241218972359347628}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3592651290436919274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241218972359347628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d560bd99b6702624f998b3c48118b31d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.HintEffect
+  edgeCore: {fileID: 21300000, guid: c259cec73e7fc9b40a994e6bf8c772a3, type: 3}
+  edgeHalo: {fileID: 21300000, guid: 84d76a13431152b4eba8a8a943c80dbb, type: 3}
+  sparkleFour: {fileID: 21300000, guid: 8f04ab52cd3cfc942ae7eb08e6ade05b, type: 3}
+  sparkleSix: {fileID: 21300000, guid: 061b3acca9dd5834ebdfa7a0887deede, type: 3}
+  sparkleTiny: {fileID: 21300000, guid: 68eb44c2510ca8546b4315656738ebd1, type: 3}
+  softDot: {fileID: 21300000, guid: 0c5e674bb8207bb4389e099f5002c83d, type: 3}
+  cellGlow: {fileID: 21300000, guid: 840db54b496888645b1ed05f025635ab, type: 3}
+  nudgeTrail: {fileID: 21300000, guid: 4eba3cddc8c106d4bbd4b3ca2f9035f4, type: 3}
+  nudgeGlow: {fileID: 21300000, guid: 9d501339b0512584186ac1cf3699b976, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  colorA: {r: 1, g: 0.58, b: 0.08, a: 1}
+  colorB: {r: 1, g: 0.82, b: 0.22, a: 1}
+  hotColor: {r: 1, g: 0.96, b: 0.72, a: 1}
+  cornerRadius: 0.22
+  haloWidth: 0.3
+  coreWidth: 0.07
+  haloAlpha: 0.32
+  coreAlpha: 0.9
+  coreWhiteMix: 0.5
+  colorWaves: 0.35
+  flowSpeed: 0.2
+  flickerAmount: 0.2
+  flickerSpeed: 1.5
+  flickerScale: 1.4
+  grainsPerCell: 48
+  grainSize: 0.06
+  grainSpread: 0.05
+  grainAlpha: 0.95
+  grainYellow: {r: 1, g: 0.86, b: 0.3, a: 1}
+  yellowShare: 0.8
+  wobble: 0.035
+  raggedness: 0.55
+  hotSpots: 2
+  hotSpeed: 0.2
+  hotLength: 0.35
+  hotMix: 0.6
+  hotWidthBoost: 0.3
+  hotHeadSize: 0.12
+  sparkleCount: 5
+  sparkleSize: 0.09
+  sparklePeriod: 1.25
+  sparkleAlpha: 0.95
+  emberCount: 14
+  emberSize: 0.08
+  emberLife: 0.95
+  emberDrift: 0.45
+  emberAlpha: 0.9
+  shineIntensity: 0.95
+  shinePeriod: 1.4
+  shineStagger: 0.18
+  shineColor: {r: 1, g: 0.93, b: 0.7, a: 1}
+  shineOrderOffset: 20
+  nudgeDistance: 0.19
+  nudgeDuration: 0.55
+  nudgePeriod: 1.5
+  nudgeStart: 0.35
+  trailAlpha: 0.6
+  nudgeGlowAlpha: 0.55
+  fadeIn: 0.25
+  fadeOut: 0.35
+  sortingLayer: Item mask
+  sortingOrder: 60
+--- !u!114 &778021291535361492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241218972359347628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b618da6669abef4883b50da87f3026a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.HintDirector
+  showSeconds: 3.2
+  pauseSeconds: 0.8
+  shuffle: 1
+  maxHintsPerRound: 0
+  rearmAfterTouch: 1
+  effect: {fileID: 0}

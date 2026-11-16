@@ -33,13 +33,13 @@ namespace RoyalAves.Effects
         public Material additive;
 
         [Header("Cores (mais místico: rosa + azul)")]
-        public Color colorA = new Color(1f, 0.38f, 0.78f, 1f);
-        public Color colorB = new Color(0.45f, 0.65f, 1f, 1f);
-        public Color hotColor = new Color(1f, 0.93f, 0.98f, 1f);
+        public Color colorA = new Color(1f, 0.58f, 0.08f, 1f);
+        public Color colorB = new Color(1f, 0.82f, 0.22f, 1f);
+        public Color hotColor = new Color(1f, 0.96f, 0.72f, 1f);
 
         [Header("Contorno")]
         [Range(0f, 0.5f)] public float cornerRadius = 0.22f;
-        [Min(0)] public float haloWidth = 0.26f;
+        [Min(0)] public float haloWidth = 0.42f;
         [Min(0)] public float coreWidth = 0.05f;
         [Range(0f, 1f)] public float haloAlpha = 0.55f;
         [Range(0f, 1f)] public float coreAlpha = 1f;
@@ -51,6 +51,29 @@ namespace RoyalAves.Effects
         [Range(0f, 1f)] public float flickerAmount = 0.35f;
         public float flickerSpeed = 3.2f;
         public float flickerScale = 1.4f;
+
+        [Header("Poeira mágica (grãos brilhantes ao longo da linha)")]
+        [Min(0)] public float grainsPerCell = 48f;
+        [Min(0)] public float grainSize = 0.06f;
+        [Tooltip("Quanto os grãos se afastam da linha, em casas.")]
+        public float grainSpread = 0.05f;
+        [Range(0f, 1f)] public float grainAlpha = 0.7f;
+        public Color grainYellow = new Color(1f, 0.86f, 0.3f, 1f);
+        [Tooltip("Parte dos grãos que fica amarela (o resto é rosa/azul).")]
+        [Range(0f, 1f)] public float yellowShare = 0.8f;
+        [Tooltip("Quanto a linha ondula/treme (em casas) e quanto ela falha em pedaços (0 = linha lisa).")]
+        public float wobble = 0.012f;
+        [Range(0f, 1f)] public float raggedness = 0.2f;
+
+        [Header("Fumaça de poeira (nuvenzinhas que acompanham e correm pela linha)")]
+        [Min(0)] public float dustPerCell = 7f;
+        [Min(0)] public float dustSize = 0.22f;
+        [Tooltip("Velocidade em casas por segundo ao longo da linha.")]
+        public float dustSpeed = 0.4f;
+        [Min(0.2f)] public float dustLife = 1.4f;
+        [Range(0f, 1f)] public float dustAlpha = 0.22f;
+        [Tooltip("Afastamento da linha, em casas.")]
+        public float dustSpread = 0.16f;
 
         [Header("Focos de luz que correm no contorno (o \"foguinho\")")]
         [Min(0)] public int hotSpots = 2;
@@ -67,6 +90,8 @@ namespace RoyalAves.Effects
         [Min(0)] public float sparkleSize = 0.26f;
         [Min(0.1f)] public float sparklePeriod = 1.25f;
         [Range(0f, 1f)] public float sparkleAlpha = 0.95f;
+        [Tooltip("Desligado: os sparkles são pontinhos de luz. Ligado: parte deles vira cruz com raios.")]
+        public bool useStarShape = false;
 
         [Header("Brasas (pontinhos que sobem do contorno)")]
         [Min(0)] public int emberCount = 10;
@@ -81,7 +106,9 @@ namespace RoyalAves.Effects
         [Min(0.2f)] public float shinePeriod = 1.4f;
         [Tooltip("Atraso da onda de luz de uma peça para a seguinte (fração do período).")]
         [Range(0f, 1f)] public float shineStagger = 0.18f;
-        public Color shineColor = new Color(1f, 0.82f, 0.95f, 1f);
+        public Color shineColor = new Color(1f, 0.9f, 0.97f, 1f);
+        [Tooltip("Quantas posições acima do sprite da peça a luz é desenhada.")]
+        public int shineOrderOffset = 20;
 
         [Header("Empurrão da peça (sem trocar de verdade)")]
         [Range(0f, 0.5f)] public float nudgeDistance = 0.19f;
@@ -123,6 +150,8 @@ namespace RoyalAves.Effects
         readonly List<SpriteRenderer> heads = new List<SpriteRenderer>();
         readonly List<SpriteRenderer> sparkles = new List<SpriteRenderer>();
         readonly List<SpriteRenderer> embers = new List<SpriteRenderer>();
+        readonly List<SpriteRenderer> grains = new List<SpriteRenderer>();
+        readonly List<SpriteRenderer> dust = new List<SpriteRenderer>();
         Ribbon halo, core;
         float[] pointHot, pointWave, pointFlick;
         SpriteRenderer trail, trailGlow;
@@ -156,9 +185,13 @@ namespace RoyalAves.Effects
             BuildPath(cells);
             halo = BuildRibbon("Halo", edgeHalo, 0);
             core = BuildRibbon("Núcleo", edgeCore, 1);
-            for (var i = 0; i < loops.Count * hotSpots; i++) heads.Add(NewSprite("Foco", softDot, 6));
+            for (var i = 0; i < loops.Count * hotSpots; i++) heads.Add(NewSprite("Foco", Dot, 6));
             for (var i = 0; i < sparkleCount; i++) sparkles.Add(NewSprite("Sparkle", sparkleFour, 8));
-            for (var i = 0; i < emberCount; i++) embers.Add(NewSprite("Brasa", softDot, 4));
+            for (var i = 0; i < emberCount; i++) embers.Add(NewSprite("Brasa", Dot, 4));
+            var grainTotal = Mathf.Min(1500, Mathf.RoundToInt(grainsPerCell * totalLength / cell));
+            for (var i = 0; i < grainTotal; i++) grains.Add(NewSprite("Grão", Dot, 5));
+            var dustTotal = Mathf.Min(400, Mathf.RoundToInt(dustPerCell * totalLength / cell));
+            for (var i = 0; i < dustTotal; i++) dust.Add(NewSprite("Poeira", Dot, -2));
             BuildShines();
             if (moverIndex >= 0 && moverIndex < pieces.Count && pieces[moverIndex].nudge != null)
             {
@@ -190,7 +223,7 @@ namespace RoyalAves.Effects
             if (halo != null && halo.mesh != null) DestroyMesh(halo.mesh);
             if (core != null && core.mesh != null) DestroyMesh(core.mesh);
             halo = core = null;
-            loops.Clear(); shines.Clear(); heads.Clear(); sparkles.Clear(); embers.Clear();
+            loops.Clear(); shines.Clear(); heads.Clear(); sparkles.Clear(); embers.Clear(); grains.Clear(); dust.Clear();
             trail = trailGlow = null;
         }
 
@@ -200,6 +233,16 @@ namespace RoyalAves.Effects
         }
 
         void OnDisable() { if (playing) Stop(); }
+
+        float lastT, lastEnvelope;
+
+        // O Animator da peça roda depois do Update e sobrescreve a posição; reaplicamos o empurrão e a luz depois dele.
+        void LateUpdate()
+        {
+            if (!playing || !Application.isPlaying) return;
+            UpdateShines(lastT, lastEnvelope);
+            UpdateNudge(lastT, lastEnvelope);
+        }
 
         // ------------------------------------------------------------------------------------------ construção
 
@@ -240,6 +283,49 @@ namespace RoyalAves.Effects
             pointFlick = new float[pointTotal];
         }
 
+        // Pontinho redondo e macio gerado em código (a máscara do kit tinha pontas que viravam riscos).
+        static Sprite dotSprite;
+        static Sprite Dot
+        {
+            get
+            {
+                if (dotSprite != null) return dotSprite;
+                const int n = 64;
+                var texture = new Texture2D(n, n, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave, wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+                for (var y = 0; y < n; y++)
+                    for (var x = 0; x < n; x++)
+                    {
+                        var dx = (x + 0.5f) / n * 2f - 1f; var dy = (y + 0.5f) / n * 2f - 1f;
+                        var d2 = dx * dx + dy * dy;
+                        texture.SetPixel(x, y, new Color(1, 1, 1, d2 >= 1f ? 0f : Mathf.Exp(-d2 * 4.5f)));
+                    }
+                texture.Apply();
+                dotSprite = Sprite.Create(texture, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), n);
+                dotSprite.hideFlags = HideFlags.HideAndDontSave;
+                return dotSprite;
+            }
+        }
+
+        static Texture2D haloProfile, coreProfile;
+
+        static Texture2D Profile(int order)
+        {
+            ref var cache = ref (order == 0 ? ref haloProfile : ref coreProfile);
+            if (cache != null) return cache;
+            const int h = 64;
+            var k = order == 0 ? 3.2f : 7f;
+            var texture = new Texture2D(4, h, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave, wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            for (var y = 0; y < h; y++)
+            {
+                var v = (y + 0.5f) / h * 2f - 1f;
+                var a = Mathf.Exp(-v * v * k) * Mathf.Clamp01((1f - Mathf.Abs(v)) * 6f);
+                for (var x = 0; x < 4; x++) texture.SetPixel(x, y, new Color(1, 1, 1, a));
+            }
+            texture.Apply();
+            cache = texture;
+            return texture;
+        }
+
         Ribbon BuildRibbon(string label, Sprite sprite, int order)
         {
             var go = new GameObject(label);
@@ -252,12 +338,11 @@ namespace RoyalAves.Effects
             renderer.sortingOrder = sortingOrder + order;
             renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             renderer.receiveShadows = false;
-            if (sprite != null)
-            {
-                block.Clear();
-                block.SetTexture("_MainTex", sprite.texture);
-                renderer.SetPropertyBlock(block);
-            }
+            // Perfil gerado em código (borda suave, uniforme ao longo da linha): as máscaras de borda do kit têm pontas
+            // que apareciam como riscos repetidos no contorno.
+            block.Clear();
+            block.SetTexture("_MainTex", Profile(order));
+            renderer.SetPropertyBlock(block);
 
             var vertexCount = 0;
             foreach (var loop in loops) { loop.vertexStart = vertexCount; vertexCount += 2 * (loop.pts.Length + 1); }
@@ -378,12 +463,18 @@ namespace RoyalAves.Effects
             UpdateHeads(t, envelope);
             UpdateSparkles(t, envelope);
             UpdateEmbers(t, envelope);
+            UpdateGrains(t, envelope);
+            UpdateDust(t, envelope);
+            lastT = t; lastEnvelope = envelope;
             UpdateShines(t, envelope);
             UpdateNudge(t, envelope);
         }
 
+        float hotTime;
+
         void ComputePointFields(float t)
         {
+            hotTime = t;
             var offset = 0;
             for (var li = 0; li < loops.Count; li++)
             {
@@ -421,8 +512,9 @@ namespace RoyalAves.Effects
                     var width = widthCells * cell * (1f + flickerAmount * (flick - 0.5f) * 2f + hot * hotWidthBoost);
                     var color = Color.Lerp(colorA, colorB, pointWave[offset + p]);
                     color = Color.Lerp(color, hotColor, Mathf.Max(whiteMix, hot * hotMix));
-                    color.a = alpha * (1f - 0.35f * flickerAmount * (1f - flick));
-                    var center = loop.pts[p];
+                    var broken = 1f - raggedness * (1f - Mathf.PerlinNoise(loop.dist[p] * 7f + 40f, Time.time * 0f + pointFlick[offset + p] * 0f + hotTime * 1.5f));
+                    color.a = alpha * (1f - 0.35f * flickerAmount * (1f - flick)) * broken;
+                    var center = loop.pts[p] + loop.normals[p] * ((Mathf.PerlinNoise(loop.dist[p] * 5f, hotTime * 0.9f + 3f) - 0.5f) * 2f * wobble * cell);
                     var normal = loop.normals[p] * (width * 0.5f);
                     ribbon.v[loop.vertexStart + 2 * i] = center - normal;
                     ribbon.v[loop.vertexStart + 2 * i + 1] = center + normal;
@@ -464,7 +556,7 @@ namespace RoyalAves.Effects
                 var seed = i * 131 + cycle;
                 Sample(Hash(seed, 3), out var position, out var normal);
                 var shape = Hash(seed, 5);
-                var sprite = shape < 0.55f ? sparkleFour : shape < 0.8f ? sparkleTiny : sparkleSix;
+                var sprite = useStarShape && shape < 0.5f ? sparkleTiny : Dot;   // por padrão: pontinhos de luz, sem os riscos em cruz
                 var envelopeLocal = Mathf.Sin(Mathf.PI * f);
                 envelopeLocal *= envelopeLocal;
                 var s = sparkles[i];
@@ -475,6 +567,48 @@ namespace RoyalAves.Effects
                 var color = Color.Lerp(hotColor, Hash(seed, 11) < 0.5f ? colorA : colorB, 0.3f);
                 color.a = sparkleAlpha * envelopeLocal * envelope;
                 s.color = color;
+            }
+        }
+
+        void UpdateDust(float t, float envelope)
+        {
+            var travel = dustSpeed * cell / Mathf.Max(totalLength, 1e-5f);
+            for (var i = 0; i < dust.Count; i++)
+            {
+                var phase = t / dustLife + Hash(i, 31);
+                var cycle = Mathf.FloorToInt(phase);
+                var f = phase - cycle;
+                var seed = i * 7919 + cycle;
+                Sample(Hash(seed, 32) + f * dustLife * travel, out var position, out var normal);
+                var side = (Hash(seed, 33) - 0.5f) * 2f * dustSpread * cell + f * cell * 0.06f;
+                var d = dust[i];
+                d.transform.position = position + normal * side + Vector3.up * (f * cell * 0.05f);
+                var size = dustSize * cell * (0.5f + Hash(seed, 34)) * (0.7f + 0.7f * f);
+                d.transform.localScale = Vector3.one * (size * SpriteScale(Dot));
+                var color = Color.Lerp(grainYellow, Hash(seed, 35) < 0.3f ? colorA : hotColor, 0.35f);
+                var fade = Mathf.Sin(Mathf.PI * f);
+                color.a = dustAlpha * fade * envelope;
+                d.color = color;
+            }
+        }
+
+        void UpdateGrains(float t, float envelope)
+        {
+            for (var i = 0; i < grains.Count; i++)
+            {
+                var baseU = (i + Hash(i, 21)) / grains.Count;
+                Sample(baseU + t * 0.015f * (0.5f + Hash(i, 22)), out var position, out var normal);
+                var tw = 0.5f + 0.5f * Mathf.Sin(6.2831853f * (t * (0.6f + 1.6f * Hash(i, 23)) + Hash(i, 24)));
+                tw = tw * tw;
+                var spread = (Hash(i, 25) - 0.5f) * 2f * grainSpread * cell;
+                var g = grains[i];
+                g.transform.position = position + normal * spread;
+                g.transform.localScale = Vector3.one * (grainSize * cell * (0.4f + 2.4f * Hash(i, 26) * Hash(i, 26) * Hash(i, 26)) * (0.6f + 0.6f * tw) * SpriteScale(Dot));
+                var pick = Hash(i, 27);
+                var color = pick < yellowShare ? Color.Lerp(grainYellow, hotColor, 0.25f * Hash(i, 28))
+                    : Color.Lerp(pick < yellowShare + (1f - yellowShare) * 0.5f ? colorA : colorB, hotColor, 0.6f + 0.4f * Hash(i, 28));
+                color.a = grainAlpha * tw * envelope;
+                g.color = color;
             }
         }
 
@@ -491,7 +625,7 @@ namespace RoyalAves.Effects
                 var sway = Mathf.Sin((f + Hash(seed, 2)) * 9f) * cell * 0.03f;
                 var e = embers[i];
                 e.transform.position = position + normal * (drift + sway) + Vector3.up * (drift * 0.35f);
-                e.transform.localScale = Vector3.one * (emberSize * cell * (1f - 0.45f * f) * SpriteScale(softDot));
+                e.transform.localScale = Vector3.one * (emberSize * cell * (1f - 0.45f * f) * SpriteScale(Dot));
                 var color = Color.Lerp(Hash(seed, 3) < 0.5f ? colorA : colorB, hotColor, 0.55f);
                 color.a = emberAlpha * Mathf.Sin(Mathf.PI * f) * envelope;
                 e.color = color;
@@ -511,7 +645,7 @@ namespace RoyalAves.Effects
                 shine.overlay.flipX = source.flipX;
                 shine.overlay.flipY = source.flipY;
                 shine.overlay.sortingLayerID = source.sortingLayerID;
-                shine.overlay.sortingOrder = source.sortingOrder + 1;
+                shine.overlay.sortingOrder = source.sortingOrder + shineOrderOffset;
                 var wave = 0.5f + 0.5f * Mathf.Sin(6.2831853f * (t / shinePeriod - shine.piece * shineStagger) - 1.5708f);
                 wave = wave * wave * (3f - 2f * wave);
                 var color = Color.Lerp(shineColor, colorA, 0.25f * wave);
