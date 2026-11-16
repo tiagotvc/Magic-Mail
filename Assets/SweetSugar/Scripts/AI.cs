@@ -806,12 +806,17 @@ namespace SweetSugar.Scripts
 
             }
             //call animation trigger for every found item to show tip
-            foreach (var item in nextMoveItems)
+            // Royal Postman: a dica agora e o efeito magico (contorno + brilhos + luz nas pecas), uma jogada por vez.
+            // So cai na animacao de pulsar antiga se o prefab Resources/Effects/Hint/HintEffect nao existir.
+            if (!RoyalAves.Effects.HintDirector.Begin(nextMoveItems, TipItem, vDirection))
             {
-                if (item != null)
+                foreach (var item in nextMoveItems)
                 {
-                    item.anim.SetBool("package_idle", false);
-                    item.anim.SetTrigger("tip");
+                    if (item != null)
+                    {
+                        item.anim.SetBool("package_idle", false);
+                        item.anim.SetTrigger("tip");
+                    }
                 }
             }
             yield return new WaitForSeconds(0);

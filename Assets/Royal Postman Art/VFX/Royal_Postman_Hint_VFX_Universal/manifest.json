@@ -1,0 +1,86 @@
+[
+  {
+    "file": "Assets/HintMasks/01_border_edge_core.png",
+    "purpose": "Seamless white sharp border stroke, tile/stretch/rotate",
+    "category": "Border",
+    "resolution": "512x128"
+  },
+  {
+    "file": "Assets/HintMasks/02_border_edge_halo.png",
+    "purpose": "Soft halo underneath border stroke",
+    "category": "Border",
+    "resolution": "512x256"
+  },
+  {
+    "file": "Assets/HintMasks/03_border_corner_convex.png",
+    "purpose": "Convex outer corner quarter arc, rotate 90 degrees as needed",
+    "category": "Border",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/04_border_corner_concave.png",
+    "purpose": "Concave inset corner quarter arc for L and T shapes",
+    "category": "Border",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/05_border_light_sweep.png",
+    "purpose": "Optional small traveling glimmer along border",
+    "category": "Border",
+    "resolution": "512x128"
+  },
+  {
+    "file": "Assets/HintMasks/06_sparkle_four_point.png",
+    "purpose": "Small 4-point spark, tint white or warm gold",
+    "category": "Sparkles",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/07_sparkle_six_point.png",
+    "purpose": "6-point accent sparkle for subtle random detail",
+    "category": "Sparkles",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/08_sparkle_tiny_cross.png",
+    "purpose": "Micro glint, use 2-4 sparks per hint",
+    "category": "Sparkles",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/09_sparkle_soft_dot.png",
+    "purpose": "Soft dot for rare drifting dust particles",
+    "category": "Sparkles",
+    "resolution": "128x128"
+  },
+  {
+    "file": "Assets/HintMasks/10_highlight_cell_soft.png",
+    "purpose": "Very subtle square-ish local glow behind matched cells; avoid seams",
+    "category": "Highlights",
+    "resolution": "256x256"
+  },
+  {
+    "file": "Assets/HintMasks/11_highlight_group_radial.png",
+    "purpose": "Optional soft radial fill behind target region",
+    "category": "Highlights",
+    "resolution": "512x512"
+  },
+  {
+    "file": "Assets/HintMasks/12_nudge_trail_horizontal.png",
+    "purpose": "Short motion streak behind moving piece; rotate for any direction",
+    "category": "Motion",
+    "resolution": "512x128"
+  },
+  {
+    "file": "Assets/HintMasks/13_nudge_streak_thin.png",
+    "purpose": "Very thin optional nudge glint; do not use big arrows",
+    "category": "Motion",
+    "resolution": "384x128"
+  },
+  {
+    "file": "Assets/HintMasks/14_nudge_local_glow.png",
+    "purpose": "Small glow underneath nudged sprite; fade out quickly",
+    "category": "Motion",
+    "resolution": "256x256"
+  }
+]

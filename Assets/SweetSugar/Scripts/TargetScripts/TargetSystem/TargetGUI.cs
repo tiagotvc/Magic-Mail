@@ -76,6 +76,15 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             image.preserveAspect = iconPreserveAspect;
             image.type = iconType;
             image.sprite = spr;
+            // A grama é um quadrado com margem transparente: sem preserveAspect ela esticava no retângulo do slot e ficava pequena.
+            if (spr != null && spr.texture != null && spr.texture.name.StartsWith("grass"))
+            {
+                image.type = Image.Type.Simple;
+                image.preserveAspect = true;
+                var side = Mathf.Max(iconSize.x, iconSize.y) * 1.25f;
+                image.rectTransform.sizeDelta = new Vector2(side, side);
+                image.rectTransform.anchoredPosition = iconPosition + new Vector2(0f, iconSize.y * 0.06f);
+            }
             if (spr != null && spr.texture.name == "CM_pergaminho_abrir_sheet_v1")
             {
                 image.type = Image.Type.Simple;

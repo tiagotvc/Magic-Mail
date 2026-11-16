@@ -8,6 +8,11 @@ namespace RoyalAves.Effects
     public sealed class GrassOrganicBorder : MonoBehaviour
     {
         const int Segments = 24;
+        // A arte da grama tem ~4% de margem transparente em cada lado. Nas bordas expostas a malha é colada na grade da
+        // casa, então a textura é recortada nessa margem (senão a grama aparece ~8% menor que a casa, com roxo em volta).
+        const float TextureMargin = 0.042f;
+        // Quanto a grama passa da grade nas bordas expostas, em fração da casa: cobre o fio entre as casas, como o tabuleiro.
+        const float EdgeBleed = 0.02f;
         SpriteRenderer source;
         Sprite sprite;
         Mesh mesh;
@@ -62,12 +67,15 @@ namespace RoyalAves.Effects
             var colors = new Color32[vertices.Length];
             var triangles = new int[Segments * Segments * 6];
             var rect = sprite.textureRect;
+            // Recorta a margem transparente só nos lados expostos (nos vizinhos a grama continua a sobrepor).
+            float u0 = (edgeMask & 1) != 0 ? TextureMargin : 0f, u1 = (edgeMask & 2) != 0 ? 1f - TextureMargin : 1f;
+            float v0 = (edgeMask & 8) != 0 ? TextureMargin : 0f, v1 = (edgeMask & 4) != 0 ? 1f - TextureMargin : 1f;
             for (int y = 0; y <= Segments; y++)
             for (int x = 0; x <= Segments; x++)
             {
                 int i = y * stride + x;
-                uv[i] = new Vector2((rect.x + rect.width * x / Segments) / sprite.texture.width,
-                    (rect.y + rect.height * y / Segments) / sprite.texture.height);
+                uv[i] = new Vector2((rect.x + rect.width * Mathf.Lerp(u0, u1, (float)x / Segments)) / sprite.texture.width,
+                    (rect.y + rect.height * Mathf.Lerp(v0, v1, (float)y / Segments)) / sprite.texture.height);
                 colors[i] = Color.white;
                 if (x == Segments || y == Segments) continue;
                 int t = (y * Segments + x) * 6;
@@ -120,10 +128,10 @@ namespace RoyalAves.Effects
                 cellWidth = upper.x - lower.x;
                 cellHeight = upper.y - lower.y;
                 // Retain overlap only between grass cells. Exposed sides follow the grid footprint.
-                if (exposedLeft) left = lower.x;
-                if (exposedRight) right = upper.x;
-                if (exposedBottom) bottom = lower.y;
-                if (exposedTop) top = upper.y;
+                if (exposedLeft) left = lower.x - cellWidth * EdgeBleed;
+                if (exposedRight) right = upper.x + cellWidth * EdgeBleed;
+                if (exposedBottom) bottom = lower.y - cellHeight * EdgeBleed;
+                if (exposedTop) top = upper.y + cellHeight * EdgeBleed;
             }
             float radius = Mathf.Min(cellWidth, cellHeight) * 0.13f;
             for (int y = 0; y <= Segments; y++)

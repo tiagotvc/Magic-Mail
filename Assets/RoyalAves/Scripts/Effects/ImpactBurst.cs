@@ -1,4 +1,4 @@
-// Explosão 2D "Royal Postman" montada só com as máscaras de Assets/RoyalAves/Art/VFX/ImpactMasks: clarão, ondas de
+// Explosão 2D "Royal Postman" montada só com as máscaras de Assets/Royal Postman Art/VFX/ImpactMasks: clarão, ondas de
 // choque, raios, fragmentos coloridos e brilhos residuais animados por camada (nenhuma textura única com a explosão).
 //
 // Uso no gameplay:

@@ -17,10 +17,10 @@ namespace RoyalAves.EditorTools
     public static class ElementIntroScreenBuilder
     {
         const string Art = "Assets/Royal Postman Art/Screens/Gameplay/New item achieved/";
-        public const string PrefabPath = "Assets/RoyalAves/Resources/UI/ElementIntroScreen.prefab";
-        public const string CatalogPath = "Assets/RoyalAves/Resources/ElementIntros/ElementIntroCatalog.asset";
-        const string AdditivePath = "Assets/RoyalAves/Resources/Effects/Impact/ImpactAdditive.mat";
-        const string MaskFolder = "Assets/RoyalAves/Art/VFX/ImpactMasks/";
+        public const string PrefabPath = "Assets/Royal Postman Art/Resources/UI/ElementIntroScreen.prefab";
+        public const string CatalogPath = "Assets/Royal Postman Art/Resources/ElementIntros/ElementIntroCatalog.asset";
+        const string AdditivePath = "Assets/Royal Postman Art/VFX/Materials/ImpactAdditive.mat";
+        const string MaskFolder = "Assets/Royal Postman Art/VFX/ImpactMasks/";
 
         static readonly Color Gold = new Color(1f, 0.78f, 0.25f, 1f);
         static readonly Color GoldLight = new Color(1f, 0.92f, 0.55f, 1f);
@@ -59,7 +59,7 @@ namespace RoyalAves.EditorTools
 
         public static void BuildPrefab()
         {
-            EnsureFolder("Assets/RoyalAves/Resources/UI");
+            EnsureFolder("Assets/Royal Postman Art/Resources/UI");
 
             var background = LoadFull(Art + "background_mask.png");
             var frame = LoadFull(Art + "frame_info.png");
@@ -467,7 +467,7 @@ namespace RoyalAves.EditorTools
         public static void BuildCatalog()
         {
             if (File.Exists(CatalogPath)) return;
-            EnsureFolder("Assets/RoyalAves/Resources/ElementIntros");
+            EnsureFolder("Assets/Royal Postman Art/Resources/ElementIntros");
             var catalog = ScriptableObject.CreateInstance<ElementIntroCatalog>();
             foreach (var old in CampaignElementIntroductions.Entries)
             {

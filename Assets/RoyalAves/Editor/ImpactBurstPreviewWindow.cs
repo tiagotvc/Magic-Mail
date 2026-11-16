@@ -35,7 +35,7 @@ namespace RoyalAves.EditorTools
         {
             EditorGUILayout.HelpBox(
                 "Edit mode: anima na Scene view. Play mode: usa o pool do jogo. Ajuste cores/quantidades nos prefabs em " +
-                "Assets/RoyalAves/Resources/Effects/Impact.", MessageType.Info);
+                "Assets/Royal Postman Art/Resources/Effects/Impact.", MessageType.Info);
             preset = (ImpactPreset)EditorGUILayout.EnumPopup("Preset", preset);
             cellSize = EditorGUILayout.FloatField(new GUIContent("Tamanho da casa (mundo)", "squareWidth do tabuleiro (1.2)"), cellSize);
             radiusCells = EditorGUILayout.FloatField(new GUIContent("Alcance em casas", "0 = o do preset; a bomba usa 3, a combinada usa o tabuleiro todo"), radiusCells);
