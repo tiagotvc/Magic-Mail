@@ -47,7 +47,7 @@ namespace SweetSugar.Scripts.GUI.Boost
             SoundBase.Instance.PlayOneShot(SoundBase.Instance.destroyPackage);
 
             bool spreadTarget = LevelManager.THIS.levelData.TargetCounters.Any(i=>i.collectingAction == CollectingTypes.Spread);
-            if (boostType == BoostType.ExplodeArea)
+            if (boostType == BoostType.Cannon)
             {
                 var list = LevelManager.THIS.GetItemsAround9(square);
                 if (!LevelManager.THIS.AdditionalSettings.MulticolorDestroyByBoostAndMarmalade)
@@ -64,7 +64,7 @@ namespace SweetSugar.Scripts.GUI.Boost
                     }
                 }
             }
-            if (boostType == BoostType.Bomb)
+            if (boostType == BoostType.Hammer)
             {
                 if(spreadTarget) square.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
                 square.Item.DestroyItem(true);

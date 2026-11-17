@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fd86973aa69ad44492c50bf21bdf737, type: 3}
+  m_Name: BoosterIntroCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Meta.BoosterIntroCatalog
+  entries:
+  - type: 0
+    enabled: 1
+    icon: {fileID: 21300000, guid: 384ff1c1e7d021a4eba7fac352b74431, type: 3}
+    iconScale: 1
+    iconOffset: {x: 0, y: 0}
+    nameSpritePt: {fileID: 21300000, guid: 2190e82b6b9093542a8d1e7281c7651a, type: 3}
+    nameSpriteEn: {fileID: 21300000, guid: dfafead46fd33c74dada29b4f88c697f, type: 3}
+    titlePt: Flexa Postal
+    titleEn: Postal Arrow
+    nameScale: 1
+    instructionPt: Toque em qualquer item para eliminar a fileira inteira!
+    instructionEn: Tap any item to remove the entire row!
+  - type: 4
+    enabled: 1
+    icon: {fileID: 21300000, guid: 64f85696118027a46b937ef8ba84b046, type: 3}
+    iconScale: 1
+    iconOffset: {x: 0, y: 0}
+    nameSpritePt: {fileID: 0}
+    nameSpriteEn: {fileID: 0}
+    titlePt: Martelo Postal
+    titleEn: Postal Hammer
+    nameScale: 1
+    instructionPt: "Toque em qualquer item para quebr\xE1-lo!"
+    instructionEn: Tap any item to smash it!
+  - type: 7
+    enabled: 1
+    icon: {fileID: 21300000, guid: da08e0ad31d487b43b0dbc398c6fdc7c, type: 3}
+    iconScale: 1
+    iconOffset: {x: 0, y: 0}
+    nameSpritePt: {fileID: 0}
+    nameSpriteEn: {fileID: 0}
+    titlePt: "Canh\xE3o Postal"
+    titleEn: Postal Cannon
+    nameScale: 1
+    instructionPt: Toque em qualquer item para eliminar a coluna inteira!
+    instructionEn: Tap any item to remove the entire column!

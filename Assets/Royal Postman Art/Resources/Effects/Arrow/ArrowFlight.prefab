@@ -1,0 +1,178 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6357692604186614157
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7027583957834425811}
+  - component: {fileID: 4301716060968850109}
+  m_Layer: 0
+  m_Name: ArrowFlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7027583957834425811
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357692604186614157}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4301716060968850109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6357692604186614157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1eaa8075b4f19640aff637f465c54dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.ArrowFlightEffect
+  arrowSprite: {fileID: 21300000, guid: 384ff1c1e7d021a4eba7fac352b74431, type: 3}
+  artAngle: 22
+  rimMaterial: {fileID: 2100000, guid: 2f3cf09067b20af4bb9ad3d64e03a1c2, type: 2}
+  rimRadius: {x: 0.018, y: 0.05}
+  freezeArrow: 0
+  freezeX: 0
+  arrowGlowColor: {r: 1, g: 0.66, b: 0.18, a: 1}
+  arrowGlowAlpha: 1
+  arrowGlowScale: {x: 1.035, y: 1.09}
+  headPulseCount: 14
+  headPulseSize: 0.05
+  headPulseRadius: 0.65
+  headPulseLife: 0.6
+  headPulseAlpha: 0.9
+  aura: {fileID: 21300000, guid: 8199848063d2c274483e5913da75a916, type: 3}
+  tipGlow: {fileID: 21300000, guid: f2c4faab664377f4b998276262bbd48a, type: 3}
+  tailHalo: {fileID: 21300000, guid: 7d4fd3598ceb5a848928328b970dcf6a, type: 3}
+  tailCore: {fileID: 21300000, guid: 84e1d3b27f3f6fb41abf82c815776627, type: 3}
+  tailGold: {fileID: 21300000, guid: c9fc02555505a914dbaf72e1256f3f5a, type: 3}
+  ribbonTop: {fileID: 21300000, guid: 6817a4a8d3e109b459f3ff16bccce630, type: 3}
+  ribbonBottom: {fileID: 21300000, guid: 0181f41ac04636c4babf3c169867549f, type: 3}
+  ribbonMid: {fileID: 21300000, guid: a78df0517cd29ea4c9776d61cd42dc40, type: 3}
+  ribbonHalo: {fileID: 21300000, guid: 179348d8961a8864f929fc525f125733, type: 3}
+  residue: {fileID: 21300000, guid: bd73b110a018cae4387c2d26fb9cb082, type: 3}
+  sparkle4: {fileID: 21300000, guid: 572a31736872b2041b1cd2f63216182b, type: 3}
+  sparkle6: {fileID: 21300000, guid: 361dfc0c91fd1cd4fb49d126f8e662d0, type: 3}
+  sparkleMini: {fileID: 21300000, guid: 95eb565bf7661f94ba7e7f53d7e91c0d, type: 3}
+  lightDot: {fileID: 21300000, guid: 996a9b01fc5831b498fd78a55486b179, type: 3}
+  speedStreak: {fileID: 21300000, guid: c6c776ffc8721434ea3743ddd4c18c18, type: 3}
+  flash: {fileID: 21300000, guid: 3e2f31aa5bfc1744e9aaf8061693a617, type: 3}
+  ring: {fileID: 21300000, guid: e888c579f9e3c1f439d9947906d5be79, type: 3}
+  whizz: {fileID: 21300000, guid: 19f97a877d14a1a4f9a9be53c1719f3c, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  fragments:
+  - {fileID: 21300000, guid: a95c9d0fcb8c7624fae920949a821a8d, type: 3}
+  - {fileID: 21300000, guid: 113f4f5d3b491844fa6ea1093b945999, type: 3}
+  - {fileID: 21300000, guid: 18f0a9037a5a8f042a856a1b1a25bc8f, type: 3}
+  - {fileID: 21300000, guid: b96bf3a7fec5b2a4c84be8ca01ab11fe, type: 3}
+  fragmentColors:
+  - {r: 0.93, g: 0.22, b: 0.3, a: 1}
+  - {r: 0.22, g: 0.78, b: 0.38, a: 1}
+  - {r: 0.26, g: 0.52, b: 0.98, a: 1}
+  - {r: 1, g: 0.8, b: 0.16, a: 1}
+  white: {r: 1, g: 0.97, b: 0.88, a: 1}
+  gold: {r: 1, g: 0.77, b: 0.3, a: 1}
+  magenta: {r: 0.93, g: 0.44, b: 0.95, a: 1}
+  violet: {r: 0.62, g: 0.35, b: 0.95, a: 1}
+  blue: {r: 0.5, g: 0.7, b: 1, a: 1}
+  arrowLengthCells: 1.7
+  speedCells: 11
+  windupSeconds: 0.2
+  acceleration: 1.4
+  tipOffset: 0.45
+  overshootCells: {x: 1.3, y: 1.4}
+  tailFadeSeconds: 0.35
+  lingerSeconds: 0.9
+  dimAlpha: 0.6
+  dimFadeSeconds: 0.18
+  auraAlpha: 0
+  auraSizeCells: 2.2
+  tipGlowAlpha: 0
+  tipGlowSizeCells: 0.5
+  whizzAlpha: 0
+  whizzSizeCells: 1
+  tailLengthCells: 3
+  taperedTail: 1
+  taperPower: 0.85
+  coreThickness: 0.15
+  goldThickness: 0.42
+  glowThickness: 0.62
+  glowAlphaTail: 0.55
+  tailFlowSpeed: 7
+  tailFlowWaves: 3.2
+  tailFlowWidth: 0.14
+  tailFlowAlpha: 0.28
+  haloThickness: 0.7
+  proceduralHalo: 1
+  haloAlpha: 0.22
+  goldAlpha: 0.9
+  coreAlpha: 1
+  ribbonHeight: 1.7
+  ribbonWave: 0.16
+  ribbonAlpha: 1
+  ribbonHaloAlpha: 0.5
+  residueAlpha: 0.25
+  helixRibbons: 1
+  helixAmplitude: 0.42
+  helixTurns: 2.2
+  helixSpin: 3.5
+  helixThickness: 0.06
+  helixHaloScale: 5
+  helixAlpha: 1
+  helixHaloAlpha: 0.3
+  helixFunnel: 0.8
+  windEnabled: 1
+  windWidth: 1
+  windAlpha: 0.36
+  windSpeed: 2.2
+  shellEnabled: 1
+  shellSpread: 0.78
+  shellThickness: 0.07
+  shellAlpha: 0.6
+  shellSpeed: 2.6
+  sparkleCount: 46
+  sparkleSize: 0.11
+  sparkleLife: 0.55
+  streakCount: 7
+  streakLengthCells: 0.9
+  fragmentsPerHit: 14
+  fragmentSize: 0.13
+  fragmentLife: 0.8
+  pieceColorFragments: 1
+  burstRays: 10
+  burstRayLength: 1
+  burstSeconds: 0.3
+  burstGlowSize: 1.7
+  hitShake: 0.02
+  fragmentSpeed: 3.8
+  fragmentGravity: 6.5
+  hitBursts: 1
+  flashSeconds: 0.12
+  flashSizeCells: 1
+  ringSeconds: 0.2
+  ringSizeCells: 1.3
+  waveAlpha: 0.55
+  waveSeconds: 0.45
+  waveReach: 1
+  edgeImpact: 1
+  edgeImpactScale: 2.4
+  edgeShake: 0.16
+  shakeAmount: 0.05
+  shakeSeconds: 0.7

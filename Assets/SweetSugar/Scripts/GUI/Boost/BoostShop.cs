@@ -25,14 +25,14 @@ namespace SweetSugar.Scripts.GUI.Boost
 {
     public enum BoostType
     {
-        ExtraMoves,
+        Arrow,
         Packages,
         Stripes,
         ExtraTime,
-        Bomb,
+        Hammer,
         MulticolorCandy,
-        FreeMove,
-        ExplodeArea,
+        Cap,
+        Cannon,
         Marmalade,
         None
     }
@@ -57,7 +57,8 @@ namespace SweetSugar.Scripts.GUI.Boost
         public List<BoostProduct> boostProducts = new List<BoostProduct>();
         // Correio Mágico: the price label shows "10k" from 10,000, so the price of the pack on show is kept here.
         int currentPrice;
-
+        int currentCount;
+        RoyalAves.Meta.BoostShopPresenter presenter;
 
         private void OnEnable()
         {
@@ -76,7 +77,9 @@ namespace SweetSugar.Scripts.GUI.Boost
             boostType = boost.boostType;
             callback = callbackL;
             currentPrice = boost.GemPrices;
+            currentCount = boost.count;
             gameObject.SetActive(true);
+            if (presenter == null) presenter = GetComponent<RoyalAves.Meta.BoostShopPresenter>();
 
             if (boost.boostIconObject != null)
                 boost.boostIconObject.SetActive(true);
@@ -84,13 +87,17 @@ namespace SweetSugar.Scripts.GUI.Boost
                 description.text = boost.GetDescription();
             if (boostName != null)
                 boostName.text = boost.GetName();
+            presenter?.Show(boost); // depois dos textos originais, para o catálogo PT/EN prevalecer
 
             if (buyBoostButton != null)
             {
                 var countText = buyBoostButton.transform.Find("Count")?.GetComponent<TextMeshProUGUI>();
                 var priceText = buyBoostButton.transform.Find("Price")?.GetComponent<TextMeshProUGUI>();
                 if (countText != null)
+                {
                     countText.text = "x" + boost.count;
+                    if (presenter != null && presenter.ShowsCountSprite) countText.enabled = false; // quantidade vem em sprite
+                }
                 if (priceText != null)
                     priceText.text = RoyalAves.Meta.CoinFormat.Short(boost.GemPrices); // Correio Mágico: 10k from 10,000
                 buyBoostButton.gameObject.SetActive(true);
@@ -121,7 +128,8 @@ namespace SweetSugar.Scripts.GUI.Boost
             if (countText == null || priceText == null)
                 return;
 
-            if (!int.TryParse(countText.text.Replace("x", ""), out var count))
+            var count = currentCount;
+            if (count <= 0 && !int.TryParse(countText.text.Replace("x", ""), out count))
                 return;
             var price = currentPrice;
             if (price <= 0 && !int.TryParse(priceText.text, out price))
@@ -133,24 +141,47 @@ namespace SweetSugar.Scripts.GUI.Boost
         [UsedImplicitly]
         public void WatchAdForBoost()
         {
-            if (adRewardPending || boostType == BoostType.None ||
-                InitScript.Instance == null || AdsManager.THIS == null ||
-                !AdsManager.THIS.GetRewardedUnityAdsReady())
+            if (adRewardPending || boostType == BoostType.None || InitScript.Instance == null)
                 return;
+
+            var adReady = AdsManager.THIS != null && AdsManager.THIS.GetRewardedUnityAdsReady();
+#if UNITY_EDITOR
+            // Nenhum SDK de anúncios no projeto (sem LevelPlay/Unity Ads/AdMob): o anúncio nunca fica "pronto".
+            // No editor simulamos o vídeo assistido para dar para testar a modal, o prêmio e o bloqueio de 6h.
+            var simulateAd = !adReady;
+#else
+            const bool simulateAd = false;
+#endif
+            if (!adReady && !simulateAd)
+                return;
+
+            // Um vídeo por power-up a cada 6h (BoostAdCooldown).
+            if (!RoyalAves.Meta.BoostAdCooldown.IsAvailable(boostType))
+            {
+                presenter?.RefreshWatch();
+                return;
+            }
 
             adRewardPending = true;
             if (watchAdButton != null)
                 watchAdButton.interactable = false;
 
-            InitScript.Instance.PrepareBoosterReward(boostType, rewardedBoosterCount, callback);
-            AdsManager.THIS.ShowRewardedAds();
+            var rewardedType = boostType;
+            var originalCallback = callback;
+            InitScript.Instance.PrepareBoosterReward(boostType, rewardedBoosterCount, () =>
+            {
+                RoyalAves.Meta.BoostAdCooldown.Start(rewardedType); // só conta quando o prêmio foi entregue
+                originalCallback?.Invoke();
+            });
+            if (simulateAd) InitScript.Instance.ShowReward();
+            else AdsManager.THIS.ShowRewardedAds();
         }
 
         public void CloseAfterReward()
         {
             adRewardPending = false;
             if (watchAdButton != null)
-                watchAdButton.interactable = true;
+                watchAdButton.interactable = BoostType.None == boostType || RoyalAves.Meta.BoostAdCooldown.IsAvailable(boostType);
             gameObject.SetActive(false);
         }
     }

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace RoyalAves.Effects
 {
-    // Correio Mágico: o canhão (boost ExplodeArea) agora tem visual próprio - aparece parado na base da coluna
+    // Correio Mágico: o canhão (boost Cannon) agora tem visual próprio - aparece parado na base da coluna
     // tocada e atira pra cima, em vez de reaproveitar o foguete partido ao meio (RocketSplitEffect), que não faz
     // sentido pra um canhão que não se move. Sem bala de canhão por enquanto (a pedido do usuário) - o "tiro" é só
     // o flash/fumaça do cano, e as peças da coluna estouram em cascata de baixo pra cima, cronometradas com a

@@ -300,7 +300,7 @@ namespace RoyalAves.Effects
                         texture.SetPixel(x, y, new Color(1, 1, 1, d2 >= 1f ? 0f : Mathf.Exp(-d2 * 4.5f)));
                     }
                 texture.Apply();
-                dotSprite = Sprite.Create(texture, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), n);
+                dotSprite = Sprite.Create(texture, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), n, 0, SpriteMeshType.FullRect);
                 dotSprite.hideFlags = HideFlags.HideAndDontSave;
                 return dotSprite;
             }

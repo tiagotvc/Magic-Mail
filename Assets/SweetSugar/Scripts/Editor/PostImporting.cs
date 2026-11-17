@@ -78,6 +78,9 @@ namespace SweetSugar.Scripts.Editor
                 }
                 CheckPackage(ref defines, "com.unity.purchasing", "UNITY_INAPPS");
                 CheckPackage(ref defines, "com.unity.ads", "UNITY_ADS");
+                // AdMob instalado como pacote UPM (com.google.ads.mobile) em vez de pasta Assets/GoogleMobileAds.
+                // Fica depois do CheckDefines da pasta, que removeria o símbolo por não achar a pasta.
+                CheckPackage(ref defines, "com.google.ads.mobile", "GOOGLE_MOBILE_ADS");
 
                 CheckPackage(ref defines, "com.unity.services.levelplay", "LEVELPLAY");
 

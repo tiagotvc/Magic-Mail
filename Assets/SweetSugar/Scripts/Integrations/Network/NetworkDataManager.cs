@@ -337,13 +337,13 @@ namespace SweetSugar.Scripts.Integrations.Network
        {
            Dictionary<string, int> dic = new Dictionary<string, int>
            {
-               {"Boost_" + (int) BoostType.ExtraMoves, PlayerPrefs.GetInt("" + BoostType.ExtraMoves)},
+               {"Boost_" + (int) BoostType.Arrow, PlayerPrefs.GetInt("" + BoostType.Arrow)},
                {"Boost_" + (int) BoostType.Packages, PlayerPrefs.GetInt("" + BoostType.Packages)},
                {"Boost_" + (int) BoostType.Stripes, PlayerPrefs.GetInt("" + BoostType.Stripes)},
                {"Boost_" + (int) BoostType.ExtraTime, PlayerPrefs.GetInt("" + BoostType.ExtraTime)},
-               {"Boost_" + (int) BoostType.Bomb, PlayerPrefs.GetInt("" + BoostType.Bomb)},
-               {"Boost_" + (int) BoostType.ExplodeArea, PlayerPrefs.GetInt("" + BoostType.ExplodeArea)},
-               {"Boost_" + (int) BoostType.FreeMove, PlayerPrefs.GetInt("" + BoostType.FreeMove)},
+               {"Boost_" + (int) BoostType.Hammer, PlayerPrefs.GetInt("" + BoostType.Hammer)},
+               {"Boost_" + (int) BoostType.Cannon, PlayerPrefs.GetInt("" + BoostType.Cannon)},
+               {"Boost_" + (int) BoostType.Cap, PlayerPrefs.GetInt("" + BoostType.Cap)},
                {"Boost_" + (int) BoostType.MulticolorCandy, PlayerPrefs.GetInt("" + BoostType.MulticolorCandy)}
            };
 
@@ -367,13 +367,13 @@ namespace SweetSugar.Scripts.Integrations.Network
         // {
         //     Dictionary<string, string> dic = new Dictionary<string, string>
         //     {
-        //         {"Boost_" + (int) BoostType.ExtraMoves, "" + PlayerPrefs.GetInt("" + BoostType.ExtraMoves)},
+        //         {"Boost_" + (int) BoostType.Arrow, "" + PlayerPrefs.GetInt("" + BoostType.Arrow)},
         //         {"Boost_" + (int) BoostType.Packages, "" + PlayerPrefs.GetInt("" + BoostType.Packages)},
         //         {"Boost_" + (int) BoostType.Stripes, "" + PlayerPrefs.GetInt("" + BoostType.Stripes)},
         //         {"Boost_" + (int) BoostType.ExtraTime, "" + PlayerPrefs.GetInt("" + BoostType.ExtraTime)},
-        //         {"Boost_" + (int) BoostType.Bomb, "" + PlayerPrefs.GetInt("" + BoostType.Bomb)},
-        //         {"Boost_" + (int) BoostType.ExplodeArea, "" + PlayerPrefs.GetInt("" + BoostType.ExplodeArea)},
-        //         {"Boost_" + (int) BoostType.FreeMove, "" + PlayerPrefs.GetInt("" + BoostType.FreeMove)},
+        //         {"Boost_" + (int) BoostType.Hammer, "" + PlayerPrefs.GetInt("" + BoostType.Hammer)},
+        //         {"Boost_" + (int) BoostType.Cannon, "" + PlayerPrefs.GetInt("" + BoostType.Cannon)},
+        //         {"Boost_" + (int) BoostType.Cap, "" + PlayerPrefs.GetInt("" + BoostType.Cap)},
         //         {"Boost_" + (int) BoostType.MulticolorCandy, "" + PlayerPrefs.GetInt("" + BoostType.MulticolorCandy)}
         //     };
         //

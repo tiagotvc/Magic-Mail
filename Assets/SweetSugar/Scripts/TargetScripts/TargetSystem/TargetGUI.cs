@@ -102,6 +102,22 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             }
         }
 
+        // A grama da meta (SugarSquare) tem que ser um QUADRADO, como o resto do tabuleiro. Alguns sprites dela vêm recortados em
+        // retângulo (mais altos que largos); aqui o ícone vira um quadrado e a textura é esticada nele, sem depender do nome
+        // do arquivo (a checagem por nome de textura em SetSprite não pegava todos os casos).
+        void ForceSquareForGrass()
+        {
+            if (image == null || subTargetContainer == null || subTargetContainer.targetLevel == null) return;
+            if (subTargetContainer.targetLevel.name != "SugarSquare" || image.sprite == null) return;
+            var side = Mathf.Max(iconSize.x, iconSize.y);
+            if (side <= 0f) side = Mathf.Max(image.rectTransform.sizeDelta.x, image.rectTransform.sizeDelta.y);
+            side *= 1.1f;
+            image.type = Image.Type.Simple;
+            image.preserveAspect = false;
+            image.rectTransform.sizeDelta = new Vector2(side, side);
+            image.rectTransform.anchoredPosition = iconPosition + new Vector2(0f, iconSize.y * 0.06f);
+        }
+
         void OnEnable()
         {
             check.SetActive(false);
@@ -167,6 +183,7 @@ namespace SweetSugar.Scripts.TargetScripts.TargetSystem
             subTargetContainer = subTarget;
             subTargetContainer.BindGUI(this);
             text.text = subTargetContainer.GetCount().ToString();
+            ForceSquareForGrass();
         }
     }
 }

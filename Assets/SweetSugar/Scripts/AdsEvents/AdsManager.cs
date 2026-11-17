@@ -94,10 +94,11 @@ namespace SweetSugar.Scripts.AdsEvents
             adsSettings = Resources.Load<AdManagerScriptable>("Scriptable/AdManagerScriptable");
             adsEvents = new List<AdEvents>(adsSettings.adsEvents);
             adsEvents.ForEach(a => a.calls = 0);
-            admobUIDAndroid = adsSettings.admobUIDAndroid;
-            admobUIDIOS = adsSettings.admobUIDIOS;
-            admobRewardedUIDAndroid = adsSettings.admobRewardedUIDAndroid;
-            admobRewardedUIDIOS = adsSettings.admobRewardedUIDIOS;
+            // Editor/Development Build => IDs de teste do Google; release => IDs reais do AdManagerScriptable.
+            admobUIDAndroid = AdmobIds.Pick(adsSettings.admobUIDAndroid, AdmobIds.TestInterstitialAndroid);
+            admobUIDIOS = AdmobIds.Pick(adsSettings.admobUIDIOS, AdmobIds.TestInterstitialIOS);
+            admobRewardedUIDAndroid = AdmobIds.Pick(adsSettings.admobRewardedUIDAndroid, AdmobIds.TestRewardedAndroid);
+            admobRewardedUIDIOS = AdmobIds.Pick(adsSettings.admobRewardedUIDIOS, AdmobIds.TestRewardedIOS);
 #if UNITY_ADS //2.1.1
             gameObject.AddComponent<UnityAdsController>();
             enableUnityAds = true;

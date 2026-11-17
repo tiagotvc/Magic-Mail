@@ -44,10 +44,10 @@ namespace RoyalAves.Meta
             (BoostType.Packages, "Pacote explosivo"),
             (BoostType.MulticolorCandy, "Bomba de cartas"),
             (BoostType.Marmalade, "Avião"),
-            (BoostType.Bomb, "Martelo"),
-            (BoostType.ExplodeArea, "Canhão"),
-            (BoostType.FreeMove, "Troca livre"),
-            (BoostType.ExtraMoves, "+5 movimentos"),
+            (BoostType.Hammer, "Martelo"),
+            (BoostType.Cannon, "Canhão"),
+            (BoostType.Cap, "Troca livre"),
+            (BoostType.Arrow, "+5 movimentos"),
         };
 
         LobbyFeaturesConfig art;

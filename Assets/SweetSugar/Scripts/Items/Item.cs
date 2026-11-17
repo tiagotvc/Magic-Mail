@@ -1352,6 +1352,10 @@ namespace SweetSugar.Scripts.Items
                     // Objective pieces leave as the collection sprite created by CheckItems below.
                     // Non-objective pieces break locally; objective pieces leave intact for the HUD.
                     bool collectInstead = HasActiveCollectionTarget();
+                    // Correio Magico: match normal ganha o efeito magico (anel unico, 3 estrelinhas, confetes na cor da peca)
+                    // alem dos cacos de sempre. So visual: nada aqui decide pontuacao ou remocao.
+                    if (!collectInstead)
+                        RoyalAves.Effects.PowerUpVfx.PlayMatch(transform.position, RoyalAves.Effects.PieceColors.Of(this));
                     if (!collectInstead)
                         foreach (var renderer in GetSpriteRenderers())
                             if (renderer.enabled && renderer.gameObject.activeInHierarchy && renderer.sprite != null)

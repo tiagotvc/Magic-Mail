@@ -1,0 +1,187 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2055770597920978121
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3009938220614859938}
+  - component: {fileID: 7186223894472166348}
+  m_Layer: 0
+  m_Name: PowerUpVfx
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3009938220614859938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055770597920978121}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7186223894472166348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055770597920978121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccc64dc9016efa48959fa83a2817c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.PowerUpVfxPlayer
+  radialGlow: {fileID: 21300000, guid: 42fb20e044f4acc478529f034ba05d90, type: 3}
+  sparkle4: {fileID: 21300000, guid: 904d87ae93f22f6469893655cb8651a7, type: 3}
+  sparkle6: {fileID: 21300000, guid: 2eff90e71ae2747428b75339d2011c14, type: 3}
+  fragments:
+  - {fileID: 21300000, guid: a04e3445738e540409ec6fa75dcf6927, type: 3}
+  - {fileID: 21300000, guid: 71df5281a55e4484c8164c821679f28b, type: 3}
+  - {fileID: 21300000, guid: 0055bc5d7618c0a458d5f0b7dac5cf7d, type: 3}
+  dot: {fileID: 21300000, guid: 167d16f120cb64845a6ff03d7ed0256a, type: 3}
+  matchRing: {fileID: 21300000, guid: 6ba411121ca0ea648876e2795135ff9d, type: 3}
+  matchFlash: {fileID: 21300000, guid: cf721a8455423c0469e9823a02ae6a65, type: 3}
+  matchRingFragmented: {fileID: 21300000, guid: d70ca6c4d40a71542b0836e460799136, type: 3}
+  matchSparkleTrail: {fileID: 21300000, guid: 8033698f8407ed143afb4cad12071735, type: 3}
+  bombFlash: {fileID: 21300000, guid: 1639a8a936db985488b69922fa9bf6c2, type: 3}
+  bombRingThin: {fileID: 21300000, guid: 987c32bf5f786514f954f24f9b9eb7d2, type: 3}
+  bombRingWide: {fileID: 21300000, guid: 29188e5a0a79da34ba7a453ba8e277cd, type: 3}
+  bombRaysLong: {fileID: 21300000, guid: d54390598f63c3547a0affd9d83cbd64, type: 3}
+  bombRaysShort: {fileID: 21300000, guid: b1bfb04c676285f4f9d351443721688a, type: 3}
+  bombAura: {fileID: 21300000, guid: b11e87da02457344c9d0f6ee0ca44df8, type: 3}
+  lineCore: {fileID: 21300000, guid: 7ce607dc3593be9458105fb0a3e0f508, type: 3}
+  lineGlow: {fileID: 21300000, guid: 9e744e58cae4e79408e9601c6d538915, type: 3}
+  ribbonA: {fileID: 21300000, guid: 32a4fe9315f460d4eb1366e867ec0571, type: 3}
+  ribbonB: {fileID: 21300000, guid: 0e1c98aab826c404b987b028d5ae3666, type: 3}
+  lineTip: {fileID: 21300000, guid: d83e83cd3b2027f46a09d0c3c3495bf0, type: 3}
+  lineBreakRing: {fileID: 21300000, guid: 3b2c0189dd4d2684fb7c4d8a28a30bf9, type: 3}
+  lineDust: {fileID: 21300000, guid: fde1c57e0056f7041b21104aaaec505e, type: 3}
+  seekerRing: {fileID: 21300000, guid: 1ec0a7df1a86371498ddaf4cec26e831, type: 3}
+  seekerFlash: {fileID: 21300000, guid: 96536815668576142a18f60e2cc92281, type: 3}
+  seekerStar: {fileID: 21300000, guid: 5e996033fb7abd9478b5c36fab86dc9b, type: 3}
+  seekerArc: {fileID: 21300000, guid: b14965df5bb89694fafa89daf9d3aba4, type: 3}
+  seekerTrail: {fileID: 21300000, guid: 841f66c10cfadfc449159df7f9b60e66, type: 3}
+  seekerMicroStar: {fileID: 21300000, guid: 2dbaf22aaeb71de4f9eb815d12bcff25, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  sortingLayer: Item mask
+  sortingBase: 70
+  white: {r: 1, g: 0.97, b: 0.88, a: 1}
+  gold: {r: 1, g: 0.77, b: 0.3, a: 1}
+  magenta: {r: 0.93, g: 0.44, b: 0.95, a: 1}
+  violet: {r: 0.62, g: 0.35, b: 0.95, a: 1}
+  confettiColors:
+  - {r: 0.93, g: 0.22, b: 0.3, a: 1}
+  - {r: 0.22, g: 0.78, b: 0.38, a: 1}
+  - {r: 0.26, g: 0.52, b: 0.98, a: 1}
+  - {r: 1, g: 0.8, b: 0.16, a: 1}
+  seeker:
+    takeoffAlpha: 0.85
+    takeoffSize: 1.5
+    trailSeconds: 0.5
+    trailWidth: 0.42
+    trailAlpha: 0.95
+    trailGlowAlpha: 0.65
+    trailSparkles: 10
+    markerAlpha: 0.9
+    markerSize: 1.1
+    duration: 0.5
+    flashSize: 0.85
+    raysAlpha: 1
+    raysSize: 2.7
+    streakAlpha: 0.65
+    ringSize: 1.6
+    sparkleCount: 6
+    fragmentCount: 9
+    fragmentSize: 0.13
+  match:
+    duration: 0.5
+    highlightAlpha: 0.85
+    highlightSize: 0.92
+    highlightSeconds: 0.16
+    flashAlpha: 0.8
+    flashSize: 1.25
+    flareAlpha: 0.7
+    flareSize: 1.7
+    burstSeconds: 0.2
+    sparkleCount: 5
+    sparkleSize: 0.3
+    sparkleTravel: 0.42
+    swooshAlpha: 0.75
+    swooshWidth: 0.1
+    swooshRadius: 0.5
+    confettiCount: 6
+    confettiSize: 0.11
+    confettiSpeed: 2.6
+    confettiGravity: 5.5
+    confettiLife: 0.55
+  bomb:
+    duration: 0.6
+    dimAlpha: 0.55
+    coreAlpha: 1
+    coreSize: 1
+    sunburstAlpha: 1
+    sunburstSize: 1.25
+    sunburstSpin: 0
+    warmGlowAlpha: 0.2
+    ringBoldAlpha: 1
+    flashSeconds: 0.12
+    flashSize: 2.6
+    ringSeconds: 0.2
+    ringThinAlpha: 1
+    ringWideAlpha: 1
+    ringWideDelay: 0.03
+    raysAlpha: 1
+    raysSpin: 25
+    auraAlpha: 0.5
+    fragmentsPerCell: 4
+    fragmentSize: 0.13
+    fragmentSpeed: 3.4
+    fragmentGravity: 5
+    fragmentLife: 0.6
+    sparkleCount: 16
+    sparkleSize: 0.3
+    chunkCount: 0
+    chunkSize: 0.2
+  line:
+    dimAlpha: 0.4
+    speed: 9
+    tailCells: 4.5
+    retractSeconds: 0.35
+    exitOvershootCells: 0.8
+    glowWidth: 1.05
+    coreWidth: 0.2
+    glowAlpha: 0.42
+    coreAlpha: 1
+    tipSize: 1.5
+    smokeAlpha: 0.5
+    smokeWidth: 2.5
+    smokeSpeed: 2.4
+    fireAlpha: 0.8
+    fireWidth: 1.5
+    particleCount: 64
+    particleSize: 0.11
+    particleSpread: 0.85
+    particleRate: 2.2
+    breakRingSeconds: 0.22
+    breakRingSize: 1.25
+    fragmentsPerCell: 5
+    fragmentSize: 0.12
+    fragmentSpeed: 2.6
+    fragmentGravity: 5
+    fragmentLife: 0.6
+  viewCamera: {fileID: 0}
+  manual: 0
+  maxActive: 60

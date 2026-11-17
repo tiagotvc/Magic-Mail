@@ -9,11 +9,22 @@ namespace RoyalAves.Effects
     {
         ImpactBurst burst;
         int playId;
+        float emphasisEnd;
         /// <summary>O gameplay espera este tempo, enquanto o clarão e a onda estão no auge, antes de remover a bomba.</summary>
-        public bool IsEmphasizing => burst != null && burst.Active && burst.PlayId == playId && burst.Age < .28f;
+        public bool IsEmphasizing => Time.time < emphasisEnd || (burst != null && burst.Active && burst.PlayId == playId && burst.Age < .28f);
 
         public static DynamiteBlastEffect Play(Vector3 position,float cellWidth,int radius,bool combined)
         {
+            // Efeito magico novo (onda de choque, raios, aura, fragmentos nas cores das pecas); o ImpactBurst antigo fica de reserva
+            // para quando o prefab Resources/Effects/PowerUps/PowerUpVfx nao existir.
+            if (PowerUpVfx.PlayBomb(position, cellWidth, radius))
+            {
+                var holder = new GameObject("DynamiteBlast");
+                var marker = holder.AddComponent<DynamiteBlastEffect>();
+                marker.emphasisEnd = Time.time + .28f;
+                Destroy(holder, .6f);
+                return marker;
+            }
             var preset = combined ? ImpactPreset.Chain : ImpactPreset.Potion;
             // Mesma regra de antes: a explosão combinada cobre o tabuleiro todo; a normal usa o raio da bomba.
             var burst = ImpactBurst.Play(preset, position + Vector3.back * .3f, cellWidth, radius);

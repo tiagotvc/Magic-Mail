@@ -183,6 +183,7 @@ namespace SweetSugar.Scripts.Items
             GetComponent<SpriteRenderer>().sortingOrder = PowerUpEffectOrder.Value;
             PowerUpEffectOrder.Raise(particles);
             canBeStarted = true;
+            PowerUpVfx.PlaySeekerFlight(transform);     // decolagem + rastro mágico (só visual)
             KeepFlightInFront();
             ShowDynamiteCargo();
             if (spinRoutine == null && SpinFrames != null && SpinFrames.Length > 0) spinRoutine = StartCoroutine(SpinCor());
@@ -261,6 +262,8 @@ namespace SweetSugar.Scripts.Items
                 var destination=TargetItem is Item target?target.square:TargetItem.GetGameObject.GetComponent<Square>();
                 if(destination!=null){delivering=true;reachedTarget=true;StartCoroutine(CarriesRocket?DeliverRocket(destination):DeliverDynamite(destination));return;}
             }
+            try { PowerUpVfx.PlaySeekerImpact(TargetItem.GetGameObject.transform.position, TargetItem is Item hit ? PieceColors.Of(hit) : Color.clear); }
+            catch (Exception) { }                           // o efeito nunca pode atrapalhar a entrega
             try
             {
                 if (TargetItem is Item)
@@ -451,6 +454,7 @@ namespace SweetSugar.Scripts.Items
 #if UNITY_EDITOR
             FlightPlanned?.Invoke(this,start,end,apex,flightTime);
 #endif
+            PowerUpVfx.PlaySeekerMarker(end, flightTime);   // marcador dourado no alvo (só visual)
             HoldFlightAudio();
             if (flightAudio != null && flightAudio.isPlaying)
                 flightAudioFade = StartCoroutine(FadeFlightAudio(flightTime));

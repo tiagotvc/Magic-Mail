@@ -197,10 +197,16 @@ namespace SweetSugar.Scripts.Core
                 }
                 // Correio Mágico: FreeMove virou o chapéu (embaralha as peças existentes), aplica na hora, sem
                 // precisar de toque no tabuleiro - igual ExtraTime acima.
-                else if (activatedBoost.type == BoostType.FreeMove)
+                else if (activatedBoost.type == BoostType.Cap)
                 {
                     THIS.ShuffleBoard();
                     ActivatedBoost = null;
+                }
+                // Correio Magico: martelo, flecha e canhao esperam o toque no tabuleiro; mostra a tela intermediaria
+                // (escurece tudo menos o tabuleiro, com nome e como usar). Sem prefab/entrada no catalogo, nada muda.
+                else if (activatedBoost.type == BoostType.Hammer || activatedBoost.type == BoostType.Arrow || activatedBoost.type == BoostType.Cannon)
+                {
+                    RoyalAves.Meta.BoosterIntroScreen.Show(activatedBoost);
                 }
             }
         }
@@ -680,12 +686,12 @@ namespace SweetSugar.Scripts.Core
 
             if (levelData.limitType == LIMIT.MOVES)
             {
-                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(true));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.Arrow).ToList().ForEach(i => i.gameObject.SetActive(true));
                 InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(false));
             }
             else
             {
-                InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraMoves).ToList().ForEach(i => i.gameObject.SetActive(false));
+                InGameBoosts.Where(i => i != null && i.type == BoostType.Arrow).ToList().ForEach(i => i.gameObject.SetActive(false));
                 InGameBoosts.Where(i => i != null && i.type == BoostType.ExtraTime).ToList().ForEach(i => i.gameObject.SetActive(true));
             }
 
@@ -761,11 +767,25 @@ namespace SweetSugar.Scripts.Core
             GameStart();
         }
 
+        public static bool SkipGoalsBannerAtStart = true;
+
         //game start
         private void GameStart()
         {
             if (CurrentSubLevel - 1 == 0)
-                MenuReference.THIS.PrePlay.gameObject.SetActive(true);
+            {
+                // Correio Magico: a janela de pre-jogo (MenuPlay) ja mostra os objetivos, entao a faixa "Seu objetivo"
+                // (PrePlay) nao abre mais ao iniciar a fase. Faz direto o que o fim da animacao dela fazia
+                // (AnimationEventManager.OnFinished "PrePlay"). Ponha false para a faixa voltar.
+                if (SkipGoalsBannerAtStart)
+                {
+                    gameStatus = GameState.Tutorial;
+                    RoyalAves.Meta.ElementIntroPrototype.ShowAfterGoals();
+                    if (levelData.limitType == LIMIT.TIME) SoundBase.Instance.PlayOneShot(SoundBase.Instance.timeOut);
+                }
+                else
+                    MenuReference.THIS.PrePlay.gameObject.SetActive(true);
+            }
             else
             {
                 OnSublevelChanged?.Invoke();
@@ -1273,19 +1293,19 @@ namespace SweetSugar.Scripts.Core
                 {
                     OnStartPlay?.Invoke();
                     tutorialTime = false;
-                    if (THIS.ActivatedBoost.type == BoostType.ExplodeArea &&
+                    if (THIS.ActivatedBoost.type == BoostType.Cannon &&
                         lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
                         // Correio Mágico: ExplodeArea virou o canhão (destrói a coluna tocada).
                         THIS.DestroyColumnWithCannon(lastTouchedItem);
                     }
-                    else if (THIS.ActivatedBoost.type == BoostType.ExtraMoves &&
+                    else if (THIS.ActivatedBoost.type == BoostType.Arrow &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
                         // Correio Mágico: ExtraMoves virou a flecha (destrói a linha tocada).
                         THIS.DestroyLine(lastTouchedItem, true);
                     }
-                    else if (THIS.ActivatedBoost.type == BoostType.Bomb &&
+                    else if (THIS.ActivatedBoost.type == BoostType.Hammer &&
                              lastTouchedItem.currentType != ItemsTypes.MULTICOLOR && lastTouchedItem.currentType != ItemsTypes.INGREDIENT)
                     {
                         // Correio Mágico: martelo (boost Bomb) - ver DestroySquareWithHammer pro efeito visual.
@@ -1813,6 +1833,11 @@ namespace SweetSugar.Scripts.Core
                     origin != null ? origin.transform.position : (Vector3?)null);
                 if (flight > 0f)
                 {
+                    // Correio Magico: o feixe de energia (line cleaner) acompanha as duas metades do foguete.
+                    var firstCell = ordered.First().transform.position; var lastCell = ordered.Last().transform.position;
+                    var beamOrigin = origin != null ? origin.transform.position : obj.transform.position;
+                    RoyalAves.Effects.PowerUpVfx.PlayLine(beamOrigin, horrizontal, firstCell, lastCell,
+                        barriers.IsBlocking(ordered.First().col, ordered.First().row), barriers.IsBlocking(ordered.Last().col, ordered.Last().row), ordered);
                     Destroy(fallHold, flight + RocketImpactFallHold);
                     return flight;
                 }
@@ -1846,6 +1871,20 @@ namespace SweetSugar.Scripts.Core
             // Captura a peça de cada quadrado já aqui (antes do foguete voar) - ver o comentário equivalente em
             // ItemStriped.DestroyCor sobre a gravidade puxar peças pendentes pro buraco antes da vez delas.
             var itemsAtCell = squares.ToDictionary(sq => sq, sq => sq.Item);
+            // Correio Magico: a flecha atravessa a linha (sempre horizontal) com aura, cauda e espiral magicas; cada peca
+            // estoura quando a ponta passa, com a mesma destruicao de sempre (ativa bombas, foguetes etc. da linha).
+            if (horizontal && RoyalAves.Effects.ArrowFlightEffect.IsAvailable)
+            {
+                var arrowWait = RoyalAves.Effects.ArrowFlightEffect.Play(squares.ToList(), sq =>
+                {
+                    if (sq.type == SquareTypes.JellyBlock) levelData.GetTargetObject().CheckSquares(new[] { sq });
+                    if (itemsAtCell[sq] != null) itemsAtCell[sq].DestroyItem(true);
+                    sq.DestroyBlock();
+                });
+                ActivatedBoost = null;
+                StartCoroutine(FindMatchDelay(arrowWait));
+                return;
+            }
             var wait = StripedShowPass(target.gameObject, horizontal, squares, sq =>
             {
                 if(sq.type==SquareTypes.JellyBlock)levelData.GetTargetObject().CheckSquares(new[]{sq});

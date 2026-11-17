@@ -1,8 +1,8 @@
 // Puts Correio Mágico's boosters in the game's booster bar (the buttons under the board, in every orientation of the
-// game scene) instead of Sweet Sugar's candy art, left to right: Martelo Postal (destroys one piece), Arco Expresso
+// game scene) instead of Sweet Sugar's candy art, left to right: Martelo Postal (destroys one piece), Flexa Postal
 // (destroys the touched row), Canhão Postal (destroys the touched column), Boné do Mensageiro (shuffles the board's
-// existing pieces). Each picture is still anchored to a stock Sweet Sugar slot ("Bomb", "ExtraMoves", "ExplodeArea",
-// "FreeMove"), but that slot no longer does what it originally did in the template - see LevelManager.DestroyLine/
+// existing pieces). Each picture is still anchored to a stock Sweet Sugar slot ("Hammer", "Arrow", "Cannon",
+// "Cap"), but that slot no longer does what it originally did in the template - see LevelManager.DestroyLine/
 // ShuffleBoard and the ActivatedBoost setter for the actual gameplay logic.
 // Also sets: the yellow booster button, the grey locked button, the amount in a red badge and the "+" (none left) in
 // a green badge, both at the bottom right, as on the level start window; and the settings gear of the game
@@ -29,15 +29,15 @@ namespace RoyalAves.EditorTools
 
         static readonly Dictionary<BoostType, (string file, string name)> Pictures = new Dictionary<BoostType, (string, string)>
         {
-            [BoostType.Bomb] = ("Boosters/hammer", "Martelo Postal"),
-            [BoostType.ExplodeArea] = ("Boosters/cannon", "Canhão Postal"),
-            [BoostType.FreeMove] = ("Boosters/cap", "Boné do Mensageiro"),
-            [BoostType.ExtraMoves] = ("Boosters/arrow", "Arco Expresso"),
+            [BoostType.Hammer] = ("Boosters/hammer", "Martelo Postal"),
+            [BoostType.Cannon] = ("Boosters/cannon", "Canhão Postal"),
+            [BoostType.Cap] = ("Boosters/cap", "Boné do Mensageiro"),
+            [BoostType.Arrow] = ("Boosters/arrow", "Flexa Postal"),
         };
 
         // Da esquerda pra direita na barra: marreta, flecha, canhão, chapéu.
         static readonly BoostType[] DesiredOrder =
-            { BoostType.Bomb, BoostType.ExtraMoves, BoostType.ExplodeArea, BoostType.FreeMove };
+            { BoostType.Hammer, BoostType.Arrow, BoostType.Cannon, BoostType.Cap };
 
         [MenuItem("Royal Aves/Aplicar reforços do jogo")]
         static void ApplyFromMenu()

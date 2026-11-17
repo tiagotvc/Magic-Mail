@@ -20,6 +20,7 @@ namespace RoyalAves.EditorTools
         public const string PrefabPath = "Assets/Royal Postman Art/Resources/UI/ElementIntroScreen.prefab";
         public const string CatalogPath = "Assets/Royal Postman Art/Resources/ElementIntros/ElementIntroCatalog.asset";
         const string AdditivePath = "Assets/Royal Postman Art/VFX/Materials/ImpactAdditive.mat";
+        const string MagicGlowKey = "RoyalAves.ElementIntro.MagicGlow";
         const string MaskFolder = "Assets/Royal Postman Art/VFX/ImpactMasks/";
 
         static readonly Color Gold = new Color(1f, 0.78f, 0.25f, 1f);
@@ -32,7 +33,12 @@ namespace RoyalAves.EditorTools
             {
                 if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling) return;
                 if (!File.Exists(Art + "frame_info.png")) return;
-                if (File.Exists(PrefabPath) && File.Exists(CatalogPath)) return;
+                if (File.Exists(PrefabPath) && File.Exists(CatalogPath))
+                {
+                    // Uma vez: troca o efeito dourado antigo pelo mesmo estilo dos power-ups (UIMagicGlow), mantendo as suas edições.
+                    if (EditorPrefs.GetInt(MagicGlowKey, 0) < 4) ApplyMagicGlow();
+                    return;
+                }
                 try { BuildCatalog(); BuildPrefab(); }
                 catch (System.Exception e) { Debug.LogError("Não consegui criar a tela de introdução: " + e); }
             };
@@ -144,6 +150,7 @@ namespace RoyalAves.EditorTools
             Object.DestroyImmediate(root);
             AssetDatabase.SaveAssets();
             Debug.Log("Tela de introdução criada: " + PrefabPath);
+            ApplyMagicGlow();
         }
 
         static List<(Image image, RectTransform rect, ElementIntroScreen.GlowMode mode, float spin, float pulse, float speed, float alpha, float phase)> CreateGlow(Transform content, Material additive, Vector2 position, float scale)
@@ -264,6 +271,46 @@ namespace RoyalAves.EditorTools
                 item.FindPropertyRelative("alpha").floatValue = g.alpha;
                 item.FindPropertyRelative("phase").floatValue = g.phase;
             }
+        }
+
+        /// Troca o brilho antigo (camadas feitas à mão) pelo componente UIMagicGlow, o mesmo efeito da tela de power-up:
+        /// halo, muitos espinhos finos com halo e sparkles que saem do centro. Mantém posição do brilho e tudo o que você editou.
+        [MenuItem("Royal Aves/Introdução de elemento/Usar o efeito mágico dos power-ups (espinhos com halo)")]
+        public static void ApplyMagicGlow()
+        {
+            if (!File.Exists(PrefabPath)) return;
+            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            try
+            {
+                var screen = root.GetComponent<ElementIntroScreen>();
+                var content = root.transform.Find("Conteudo");
+                var position = new Vector2(0, 116);
+                var index = 0;
+                var old = content.Find("Brilho dourado");
+                if (old != null) { position = ((RectTransform)old).anchoredPosition; index = old.GetSiblingIndex(); Object.DestroyImmediate(old.gameObject); }
+                var oldSparkles = content.Find("Brilhos do item");
+                if (oldSparkles != null) Object.DestroyImmediate(oldSparkles.gameObject);
+                var existing = content.Find("Brilho mágico");
+                if (existing != null) Object.DestroyImmediate(existing.gameObject);
+
+                var rect = MakeRect(content, "Brilho mágico", new Vector2(900, 900), position);
+                rect.SetSiblingIndex(index);
+                var glow = BoosterIntroBuilder.AddGlow(rect, AssetDatabase.LoadAssetAtPath<Material>(AdditivePath), false);
+                glow.sparkleOutward = true;
+                // Aqui o brilho é maior (o item é grande) e mantém os círculos da versão anterior: um anel fixo e dois que crescem.
+                glow.glowSize = 0.7f; glow.innerGlowSize = 0.42f;
+                glow.ringCount = 2; glow.ringAlpha = 0.55f; glow.ringSize = new Vector2(0.4f, 0.85f);
+                glow.staticRingAlpha = 0.55f; glow.staticRingSize = 0.5f;
+                glow.rayLength = 0.9f; glow.sparkleSizeMin = 0.02f; glow.sparkleSizeMax = 0.06f;
+
+                var so = new SerializedObject(screen);
+                WriteGlow(so, new List<(Image image, RectTransform rect, ElementIntroScreen.GlowMode mode, float spin, float pulse, float speed, float alpha, float phase)>());
+                so.ApplyModifiedPropertiesWithoutUndo();
+                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+                EditorPrefs.SetInt(MagicGlowKey, 4);
+                Debug.Log("Introdução de elemento: efeito mágico (UIMagicGlow) aplicado no prefab.");
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
         }
 
         /// Refaz só as camadas do brilho dourado (raios, halo, anéis, estrelas com seu glow) dentro do prefab já existente,

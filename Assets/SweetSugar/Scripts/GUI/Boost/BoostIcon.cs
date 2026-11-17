@@ -149,16 +149,16 @@ namespace SweetSugar.Scripts.GUI.Boost
                 case BoostType.Marmalade:
                     LevelManager.THIS.BoostMarmalade = checkIt ? 1 : 0;
                     break;
-                case BoostType.ExtraMoves:
+                case BoostType.Arrow:
                     if (checkIt) checkIt = false;
                     break;
                 case BoostType.ExtraTime:
                     break;
-                case BoostType.Bomb:
+                case BoostType.Hammer:
                     break;
-                case BoostType.FreeMove:
+                case BoostType.Cap:
                     break;
-                case BoostType.ExplodeArea:
+                case BoostType.Cannon:
                     break;
                 case BoostType.None:
                     break;
