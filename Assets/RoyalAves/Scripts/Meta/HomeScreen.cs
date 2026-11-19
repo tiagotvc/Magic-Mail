@@ -435,6 +435,7 @@ namespace RoyalAves.Meta
 
         public void OpenSettings()
         {
+            if (ConfigScreen.Open()) return; // tela nova (Resources/UI/ConfigurationsScreen); sem o prefab, cai na antiga
             var settings = MenuReference.THIS != null ? MenuReference.THIS.Settings : null;
             if (settings != null) settings.SetActive(true);
         }
