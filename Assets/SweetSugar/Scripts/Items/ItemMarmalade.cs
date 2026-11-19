@@ -47,6 +47,7 @@ namespace SweetSugar.Scripts.Items
                 return;
             }
 
+            if(merging)return;                         // a junção com o parceiro está tocando; o lançamento vem logo depois
             item1.destroying = true;
             var switchItemType = item2?.currentType ?? ItemsTypes.NONE;
             if(switchItemType==ItemsTypes.MARMALADE)
@@ -58,9 +59,17 @@ namespace SweetSugar.Scripts.Items
             }
             bool carryingDynamite=switchItemType==ItemsTypes.PACKAGE;
             bool carryingPayload=carryingDynamite || switchItemType==ItemsTypes.HORIZONTAL_STRIPED || switchItemType==ItemsTypes.VERTICAL_STRIPED;
-            if(carryingPayload)
+            // Correio Mágico: antes de levar o parceiro, a junção (brilho atrás, giro no eixo, um em volta do outro).
+            if(carryingPayload && !mergeShown && RoyalAves.Effects.PowerUpVfx.IsAvailable)
             {
                 if(item2.destroying || destroyStarted)return;
+                merging=true;item2.destroying=true;
+                if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+                StartCoroutine(MergeThenCarry(item1,item2));return;
+            }
+            if(carryingPayload)
+            {
+                if((item2.destroying && !mergeShown) || destroyStarted)return;
                 item2.destroying=true;
                 if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
             }
@@ -99,6 +108,15 @@ namespace SweetSugar.Scripts.Items
             GetParentItem().square?.DestroyBlock();
         }
 
+        bool merging, mergeShown;
+        IEnumerator MergeThenCarry(Item item1,Item item2)
+        {
+            yield return RoyalAves.Effects.PowerUpMerge.Play(GetParentItem(),item2);
+            merging=false;mergeShown=true;
+            // se o parceiro sumiu no meio, o giro decola sozinho
+            Destroy(item1,item2!=null && item2.gameObject.activeInHierarchy ? item2 : null);
+        }
+
         IEnumerator CombinedPropellers(Item partner)
         {
             var manager=LevelManager.THIS;var data=manager.levelData;var origin=GetParentItem().square;
@@ -111,6 +129,8 @@ namespace SweetSugar.Scripts.Items
             mergePoint.z=mainPosition.z;
             bool animatorWasEnabled=partner.anim!=null && partner.anim.enabled;
             if(partner.anim!=null)partner.anim.enabled=false;
+            // Correio Mágico: junção (brilho atrás, giro no eixo, um em volta do outro) antes de os dois se fundirem.
+            yield return RoyalAves.Effects.PowerUpMerge.Play(GetParentItem(),partner);
             try
             {
                 for(float time=0;time<.12f;time+=Time.deltaTime)
@@ -216,7 +236,9 @@ namespace SweetSugar.Scripts.Items
         public override void InitItem()
         {
             destroyStarted = false;
+            merging = mergeShown = false;
             noMarmaladeLaunch = false;
+            RoyalAves.Effects.SeekerIdleSpin.Attach(this);      // giro rápido de tempos em tempos enquanto está parado
             // Only one piece shows at rest; CreateMarmalade reveals the second one when it duplicates and takes off.
             for (var i = 0; i < marmalades.Length; i++)
                 marmalades[i].gameObject.SetActive(i == 0);

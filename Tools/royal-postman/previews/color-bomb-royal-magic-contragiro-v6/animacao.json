@@ -1,0 +1,46 @@
+{
+  "name": "Color Bomb — cinturão fixo e contragiro",
+  "version": 6,
+  "source": "color-bomb-2d.png",
+  "renderer": "Render-Contragiro.cs",
+  "pose": {
+    "tiltDegrees": 10.5,
+    "pivot": [
+      0.5,
+      0.5
+    ]
+  },
+  "frameFormat": {
+    "count": 48,
+    "size": [
+      384,
+      384
+    ],
+    "fps": 24,
+    "durationSeconds": 2,
+    "sheetGrid": [
+      8,
+      6
+    ],
+    "alpha": true
+  },
+  "layers": [
+    {
+      "name": "Base",
+      "sheet": "spritesheet-base.png",
+      "direction": "direita"
+    },
+    {
+      "name": "Cúpula",
+      "sheet": "spritesheet-topo.png",
+      "direction": "esquerda"
+    },
+    {
+      "name": "Cinturão",
+      "image": "cinturao-fixo.png",
+      "frames": 1
+    }
+  ],
+  "preview": "previa-contragiro.mp4",
+  "verification": "Todos os pixels opacos do cinturão são idênticos nos 48 quadros. As folhas animadas da cúpula e da base são idênticas às da V5."
+}

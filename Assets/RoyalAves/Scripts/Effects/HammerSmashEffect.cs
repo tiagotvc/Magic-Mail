@@ -92,6 +92,34 @@ namespace RoyalAves.Effects
             return total;
         }
 
+        static Sprite[] previewIdle, previewSwing;
+
+        /// Só para a janela de preview do editor: o quadro do martelo "t" segundos depois de aparecer.
+        /// impactAt: instante do golpe; scale: escala do desenho para casas de 1,2 de largura. false = acabou (ou sem arte).
+        public static bool PreviewFrame(float t, out Sprite sprite, out float impactAt, out float scale)
+        {
+            sprite = null; impactAt = 0f; scale = HammerScale;
+            var data = Data;
+            if (data == null) return false;
+            if (previewIdle == null || previewSwing == null || previewIdle.Any(s => s == null) || previewSwing.Any(s => s == null))
+            {
+                previewIdle = ToSprites(data.IdleFrames); previewSwing = ToSprites(data.SwingFrames);
+            }
+            if (previewIdle.Length == 0 && previewSwing.Length == 0) return false;
+            var idleDuration = previewIdle.Length * IdleFrameTime;
+            var holds = previewSwing.Select((_, i) => i < SwingHoldTimes.Length ? SwingHoldTimes[i] : SettleHoldTime).ToArray();
+            impactAt = idleDuration + holds.Take(Mathf.Min(ImpactFrameIndex, holds.Length)).Sum();
+            if (t < 0f) t = 0f;
+            if (t < idleDuration) { sprite = previewIdle[Mathf.Min(previewIdle.Length - 1, Mathf.FloorToInt(t / IdleFrameTime))]; return true; }
+            var at = idleDuration;
+            for (var i = 0; i < previewSwing.Length; i++)
+            {
+                at += holds[i];
+                if (t < at) { sprite = previewSwing[i]; return true; }
+            }
+            return false;
+        }
+
         static Sprite[] ToSprites(Texture2D[] textures)
         {
             if (textures == null) return Array.Empty<Sprite>();

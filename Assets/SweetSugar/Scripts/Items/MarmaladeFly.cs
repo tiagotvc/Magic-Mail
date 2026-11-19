@@ -168,7 +168,20 @@ namespace SweetSugar.Scripts.Items
             flightRenderer.sortingLayerName=PowerUpEffectOrder.SortingLayer;
             flightRenderer.sortingOrder=Mathf.Max(PowerUpEffectOrder.Value+2,flightRenderer.sortingOrder);
         }
-        void LateUpdate(){KeepFlightInFront();AnimatePayloadCombination();AnimatePropellerGroup();}
+        void LateUpdate(){KeepFlightInFront();AnimatePayloadCombination();AnimatePropellerGroup();SpinInPlane();}
+
+        // Rotor novo (sem quadros de hélice): gira o próprio desenho no plano durante todo o voo. Com carga, quem gira é
+        // a cópia que orbita a carga, para a carga não rodar junto.
+        bool HasSpinFrames=>SpinFrames!=null && SpinFrames.Length>0;
+        float flightSpin;
+        void SpinInPlane()
+        {
+            if(!canBeStarted || HasSpinFrames)return;
+            flightSpin-=PowerUpVfx.Whirl.flightSpin*Time.deltaTime;
+            var turn=Quaternion.Euler(0,0,flightSpin);
+            if(comboPropeller!=null)comboPropeller.transform.localRotation=turn;
+            else transform.localRotation=turn;
+        }
 
         public void StartFly()
         {
@@ -184,6 +197,7 @@ namespace SweetSugar.Scripts.Items
             PowerUpEffectOrder.Raise(particles);
             canBeStarted = true;
             PowerUpVfx.PlaySeekerFlight(transform);     // decolagem + rastro mágico (só visual)
+            if(!HasSpinFrames){flightSpin=0;PowerUpVfx.PlaySeekerWhirl(transform,0f);}     // vento de giro em volta, o voo inteiro
             KeepFlightInFront();
             ShowDynamiteCargo();
             if (spinRoutine == null && SpinFrames != null && SpinFrames.Length > 0) spinRoutine = StartCoroutine(SpinCor());
@@ -429,7 +443,8 @@ namespace SweetSugar.Scripts.Items
             // A gentle rock, like a helicopter hovering, on top of the propeller blur (SpinCor, already spinning since
             // the moment it was touched). Keeps going for the whole flight; only the move tween gets cancelled below
             // if the target needs to change mid-flight.
-            LeanTween.Framework.LeanTween.rotateZ(gameObject, 10f, 0.5f).setDelay(LaunchWait).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
+            if(HasSpinFrames)
+                LeanTween.Framework.LeanTween.rotateZ(gameObject, 10f, 0.5f).setDelay(LaunchWait).setEase(LeanTweenType.easeInOutSine).setLoopPingPong();
             StartCoroutine(WindUpThenFindTarget());
         }
 

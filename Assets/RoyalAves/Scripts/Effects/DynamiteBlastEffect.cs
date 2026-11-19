@@ -19,6 +19,7 @@ namespace RoyalAves.Effects
             // para quando o prefab Resources/Effects/PowerUps/PowerUpVfx nao existir.
             if (PowerUpVfx.PlayBomb(position, cellWidth, radius))
             {
+                if (combined) PowerUpVfx.PlayDoubleBombBurst(position, cellWidth, radius);
                 var holder = new GameObject("DynamiteBlast");
                 var marker = holder.AddComponent<DynamiteBlastEffect>();
                 marker.emphasisEnd = Time.time + .28f;

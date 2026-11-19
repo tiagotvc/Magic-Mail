@@ -134,11 +134,7 @@ MonoBehaviour:
   animationTime: 0.2
   originSortingOrder: 2
   startDirection: {x: -1, y: -1, z: 0}
-  SpinFrames:
-  - {fileID: 227822299, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -376716579, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -957473285, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -513013597, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  SpinFrames: []
 --- !u!1 &1525697283171518
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,11 +606,7 @@ MonoBehaviour:
   animationTime: 0.2
   originSortingOrder: 3
   startDirection: {x: 1, y: -1, z: 0}
-  SpinFrames:
-  - {fileID: 227822299, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -376716579, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -957473285, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
-  - {fileID: -513013597, guid: b3a1cbdaca329604b8177d8c583c5028, type: 3}
+  SpinFrames: []
 --- !u!1001 &3686904591113864208
 PrefabInstance:
   m_ObjectHideFlags: 0

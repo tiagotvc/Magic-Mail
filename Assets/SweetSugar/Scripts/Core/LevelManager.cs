@@ -199,8 +199,13 @@ namespace SweetSugar.Scripts.Core
                 // precisar de toque no tabuleiro - igual ExtraTime acima.
                 else if (activatedBoost.type == BoostType.Cap)
                 {
-                    THIS.ShuffleBoard();
-                    ActivatedBoost = null;
+                    // Chapéu de Mago: abre a tela do power-up com o botão "Usar!" (o embaralhamento só começa ao tocar nele).
+                    // Sem a tela (prefab/arte faltando), embaralha na hora, como antes.
+                    if (!RoyalAves.Meta.MagicHat.Begin(activatedBoost))
+                    {
+                        THIS.ShuffleBoard();
+                        ActivatedBoost = null;
+                    }
                 }
                 // Correio Magico: martelo, flecha e canhao esperam o toque no tabuleiro; mostra a tela intermediaria
                 // (escurece tudo menos o tabuleiro, com nome e como usar). Sem prefab/entrada no catalogo, nada muda.
@@ -949,6 +954,8 @@ namespace SweetSugar.Scripts.Core
             var winningData=levelData;
             var campaignWin=LobbyController.Instance!=null;
             var skipView=campaignWin?CampaignBonusSkip.Begin(this):null;
+            // Só visual: moedas do bônus sobem do tabuleiro até o lugar dos objetivos. Um erro aqui nunca trava o fim da fase.
+            if(campaignWin){try{LevelEndCoins.Begin(this);}catch(Exception e){Debug.LogException(e);}}
             try
             {
             // Resolve the campaign bonus before calculating score-based stars and showing the envelope.
@@ -1830,7 +1837,8 @@ namespace SweetSugar.Scripts.Core
                     },
                     barriers.IsBlocking(ordered.First().col, ordered.First().row),
                     barriers.IsBlocking(ordered.Last().col, ordered.Last().row),
-                    origin != null ? origin.transform.position : (Vector3?)null);
+                    origin != null ? origin.transform.position : (Vector3?)null,
+                    !RoyalAves.Effects.PowerUpVfx.IsAvailable);      // com o prefab dos efeitos, a cauda de fogo vem do PlayLine abaixo
                 if (flight > 0f)
                 {
                     // Correio Magico: o feixe de energia (line cleaner) acompanha as duas metades do foguete.
@@ -1896,12 +1904,12 @@ namespace SweetSugar.Scripts.Core
         }
 
         // Correio Mágico: canhão (boost ExplodeArea) - igual a DestroyLine(target, false), mas com visual próprio
-        // (CannonFireEffect: aparece parado na base da coluna e atira pra cima) em vez do foguete partido ao meio.
-        // Mesmos efeitos/sons de destruição de peça de sempre, só a parte "o que aparece e atira" muda.
+        // (CannonFireEffect: aparece na base da coluna, queima o pavio, dispara com coice e a bala em chamas atravessa a
+        // coluna) em vez do foguete partido ao meio. Cada peça estoura quando a bala chega nela; o som do tiro agora
+        // toca no instante do disparo, dentro do efeito. Mesma destruição de peça de sempre.
         public void DestroyColumnWithCannon(Item target)
         {
             DragBlocked = true;
-            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.strippedExplosion);
             var barriers = RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(target.square.field);
             var squares = GetColumnSquare(target.square.col).Where(s =>
                 barriers.CanReach(target.square.col, field.fieldData.maxRows, s.col, s.row)).ToList();
@@ -1965,15 +1973,47 @@ namespace SweetSugar.Scripts.Core
 
             var startPositions = items.Select(i => i.transform.position).ToList();
             var targetPositions = shuffled.Select(s => s.transform.position + Vector3.back * 0.2f).ToList();
-            const float duration = 0.45f;
-            var t = 0f;
-            while (t < duration)
+
+            // Chapéu de Mago: as peças trocam de lugar girando num redemoinho mágico (o roteiro vem do efeito). Sem o prefab
+            // dos efeitos, vale o deslize simples de antes.
+            RoyalAves.Effects.PowerUpVfxPlayer.HatShufflePlan hat = null;
+            try
             {
-                t += Time.deltaTime;
-                var f = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / duration));
-                for (var i = 0; i < items.Count; i++)
-                    items[i].transform.position = Vector3.Lerp(startPositions[i], targetPositions[i], f);
-                yield return null;
+                Vector3 lo = startPositions[0], hi = startPositions[0];
+                foreach (var position in startPositions) { lo = Vector3.Min(lo, position); hi = Vector3.Max(hi, position); }
+                hat = RoyalAves.Effects.PowerUpVfx.PlayHatShuffle(items.Select(i => i.transform).ToList(),
+                    items.Select(i => RoyalAves.Effects.PieceColors.Of(i)).ToList(), (lo + hi) * 0.5f);
+            }
+            catch (Exception e) { Debug.LogException(e); }
+
+            if (hat != null)
+            {
+                var baseScales = items.Select(i => i.transform.localScale).ToList();
+                for (var t = 0f; t < hat.Seconds; )
+                {
+                    t += Time.deltaTime;
+                    for (var i = 0; i < items.Count; i++)
+                    {
+                        if (items[i] == null) continue;
+                        items[i].transform.position = hat.Pose(startPositions[i], targetPositions[i], t, out var scale);
+                        items[i].transform.localScale = baseScales[i] * scale;
+                    }
+                    yield return null;
+                }
+                for (var i = 0; i < items.Count; i++) if (items[i] != null) items[i].transform.localScale = baseScales[i];
+            }
+            else
+            {
+                const float duration = 0.45f;
+                var t = 0f;
+                while (t < duration)
+                {
+                    t += Time.deltaTime;
+                    var f = Mathf.SmoothStep(0, 1, Mathf.Clamp01(t / duration));
+                    for (var i = 0; i < items.Count; i++)
+                        items[i].transform.position = Vector3.Lerp(startPositions[i], targetPositions[i], f);
+                    yield return null;
+                }
             }
 
             for (var i = 0; i < items.Count; i++)
@@ -1983,8 +2023,56 @@ namespace SweetSugar.Scripts.Core
                 shuffled[i].Item = items[i];
             }
 
+            if (hat != null) yield return HatRecolorCor(items);
+
             DragBlocked = false;
             StartCoroutine(FindMatchDelay());
+        }
+
+        // Chapéu de Mago, segunda parte: um cajado lança magias em algumas peças simples e cada uma ganha a cor de uma
+        // vizinha (isso cria jogadas). A cor muda no instante em que a magia chega na peça.
+        private IEnumerator HatRecolorCor(List<Item> items)
+        {
+            var player = RoyalAves.Effects.PowerUpVfx.Player;
+            if (player == null || player.hat.recolorCount <= 0) yield break;
+            var picks = new List<Item>(); var newColors = new List<int>(); var tints = new List<Color>();
+            var candidates = items.Where(i => i != null && i.gameObject.activeSelf && !i.destroying && i.currentType == ItemsTypes.NONE &&
+                                              i.Combinable && i.square != null && !i.square.IsItemLocked).OrderBy(_ => Random.value).ToList();
+            foreach (var item in candidates)
+            {
+                if (picks.Count >= player.hat.recolorCount) break;
+                var neighbour = item.square.GetAllNeghborsCross().Where(s => s != null && s.Item != null && s.Item != item && s.Item.Combinable &&
+                        s.Item.currentType == ItemsTypes.NONE && s.Item.color != item.color && !picks.Contains(s.Item))
+                    .OrderBy(_ => Random.value).Select(s => s.Item).FirstOrDefault();
+                if (neighbour == null) continue;
+                picks.Add(item); newColors.Add(neighbour.color); tints.Add(RoyalAves.Effects.PieceColors.Of(neighbour));
+            }
+            if (picks.Count == 0) yield break;
+
+            Vector3 lo = items[0].transform.position, hi = lo;
+            foreach (var item in items) if (item != null) { lo = Vector3.Min(lo, item.transform.position); hi = Vector3.Max(hi, item.transform.position); }
+            var staffPosition = new Vector3((lo.x + hi.x) * 0.5f, lo.y - player.hat.staffBelowBoard * squareWidth, lo.z);
+            RoyalAves.Effects.PowerUpVfxPlayer.StaffCastPlan cast = null;
+            try { cast = RoyalAves.Effects.PowerUpVfx.PlayStaffCast(staffPosition, picks.Select(i => i.transform.position).ToList(), tints); }
+            catch (Exception e) { Debug.LogException(e); }
+            if (cast == null)
+            {
+                for (var i = 0; i < picks.Count; i++) if (picks[i] != null) picks[i].color = newColors[i];
+                yield break;
+            }
+            var elapsed = 0f;
+            for (var next = 0; next < picks.Count; )
+            {
+                while (next < picks.Count && cast.HitTime(next) <= elapsed)
+                {
+                    if (picks[next] != null && picks[next].gameObject.activeSelf && !picks[next].destroying) picks[next].color = newColors[next];
+                    next++;
+                }
+                if (next >= picks.Count) break;
+                yield return null;
+                elapsed += Time.deltaTime;
+            }
+            yield return new WaitForSeconds(0.3f);
         }
 
         //popup score, to use - enable "Popup score" in editor

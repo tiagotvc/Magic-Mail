@@ -31,7 +31,7 @@ namespace SweetSugar.Scripts.Items
         bool started;
         DynamiteFuseEffect fuse;
         SpriteRenderer mainVisual, incomingVisual;
-        Vector3 mainScale, incomingScale, incomingPosition;
+        Vector3 mainScale, incomingScale, incomingPosition, mainPosition;
         int mainOrder, incomingOrder, mainLayer, incomingLayer;
         Item primary, absorbed;
         static AudioClip explosionSound;
@@ -46,7 +46,14 @@ namespace SweetSugar.Scripts.Items
             started=true;primary=source;absorbed=other;
             primary.destroying=true;if(absorbed!=null)absorbed.destroying=true;
             if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+            RoyalAves.Effects.PowerUpArrivalMotion.Stop(primary);RoyalAves.Effects.PowerUpArrivalMotion.Stop(absorbed);
+            StartCoroutine(Sequence());
+        }
+        // Guarda a pose dos desenhos e acende o pavio (depois da junção, quando houver duas bombas).
+        void Prepare(float anticipation)
+        {
             mainVisual=primary.GetSpriteRenderer();mainScale=mainVisual.transform.localScale;mainOrder=mainVisual.sortingOrder;mainLayer=mainVisual.sortingLayerID;
+            mainPosition=mainVisual.transform.position;
             mainVisual.sortingLayerName=PowerUpEffectOrder.SortingLayer;mainVisual.sortingOrder=PowerUpEffectOrder.Value+8;
             if(primary.anim!=null)primary.anim.enabled=false;
             if(absorbed!=null)
@@ -56,31 +63,40 @@ namespace SweetSugar.Scripts.Items
                 incomingVisual.sortingOrder=PowerUpEffectOrder.Value+7;
                 if(absorbed.anim!=null)absorbed.anim.enabled=false;
             }
-            fuse=DynamiteFuseEffect.Attach(mainVisual,absorbed!=null?.90f:.32f,primary.GetSpriteRenderers());
-            StartCoroutine(Sequence());
+            fuse=DynamiteFuseEffect.Attach(mainVisual,anticipation,primary.GetSpriteRenderers());
         }
         IEnumerator Sequence()
         {
             var manager=LevelManager.THIS;var data=manager.levelData;var cell=primary.square;
             bool combined=absorbed!=null;
-            float anticipation=combined ? .90f : .32f;
+            // Duas bombas: as duas se unem no meio, a bomba unida cresce acesa e explode (sem giro no eixo).
+            if(manager==null || manager.levelData!=data || cell==null || primary==null)yield break;
+            var presence=RoyalAves.Effects.PowerUpVfx.Presence;
+            float anticipation=combined ? presence.doubleChargeSeconds : .32f;
+            Prepare(anticipation);
+            if(combined && incomingVisual!=null)
+                RoyalAves.Effects.PowerUpVfx.PlayDoubleBombCharge(mainVisual.transform,incomingVisual.transform,anticipation);
             for(float time=0;time<anticipation;time+=Time.deltaTime)
             {
                 if(manager==null || manager.levelData!=data || cell==null)yield break;
                 float t=Mathf.Clamp01(time/anticipation);
                 if(combined)
                 {
-                    float pull=Mathf.SmoothStep(0,1,Mathf.Clamp01(t/.35f));
+                    // As duas vão para o meio e viram uma só; ela cresce (acesa pelo efeito) e treme no fim da carga.
+                    float join=Mathf.SmoothStep(0,1,Mathf.Clamp01(t/presence.doubleJoin));
+                    float grow=Mathf.Clamp01((t-presence.doubleJoin*.8f)/(1-presence.doubleJoin*.8f));
+                    float scale=Mathf.Lerp(1,presence.doubleChargeScale,1-Mathf.Pow(1-grow,3));
+                    float squeeze=Mathf.SmoothStep(.78f,1,t)*.12f;
+                    var shake=Vector3.right*(presence.doubleShake*cell.field.squareWidth*t*t*Mathf.Sin(time*75f));
+                    var middle=incomingVisual!=null ? (mainPosition+incomingPosition)*.5f : mainPosition;
+                    mainVisual.transform.position=Vector3.Lerp(mainPosition,middle,join)+shake;
+                    mainVisual.transform.localScale=Vector3.Scale(mainScale,new Vector3(scale*(1+squeeze),scale*(1-squeeze),1));
                     if(incomingVisual!=null)
                     {
-                        incomingVisual.transform.position=Vector3.Lerp(incomingPosition,mainVisual.transform.position,pull);
-                        incomingVisual.transform.localScale=incomingScale*Mathf.Lerp(1,.12f,pull);
-                        if(pull>=.98f)incomingVisual.enabled=false;
+                        incomingVisual.transform.position=Vector3.Lerp(incomingPosition,middle,join);
+                        incomingVisual.transform.localScale=incomingScale*Mathf.Lerp(1,.7f,join);
+                        if(join>=.98f)incomingVisual.enabled=false;
                     }
-                    float grow=Mathf.Clamp01((t-.13f)/.5f);
-                    float scale=Mathf.Lerp(1,2.12f,1-Mathf.Pow(1-grow,3));
-                    float squeeze=Mathf.SmoothStep(.78f,1,t)*.12f;
-                    mainVisual.transform.localScale=Vector3.Scale(mainScale,new Vector3(scale*(1+squeeze),scale*(1-squeeze),1));
                 }
                 else
                 {
@@ -92,7 +108,13 @@ namespace SweetSugar.Scripts.Items
             if(manager==null || manager.levelData!=data || cell==null)yield break;
             int radius=combined?cell.field.squaresArray.Where(s=>s!=null).Max(s=>Mathf.Max(Mathf.Abs(s.col-cell.col),Mathf.Abs(s.row-cell.row))):BlastRadius;
             var barriers=RoyalAves.Gameplay.ImpactBarrierSnapshot.Capture(cell.field);
-            var blast=DynamiteBlastEffect.Play(cell.transform.position,cell.field.squareWidth,radius,combined);
+            var blastAt=cell.transform.position;
+            if(combined && incomingVisual!=null)
+            {
+                // a explosão dupla nasce entre as duas bombas
+                var between=(mainPosition+incomingPosition)*.5f;blastAt=new Vector3(between.x,between.y,blastAt.z);
+            }
+            var blast=DynamiteBlastEffect.Play(blastAt,cell.field.squareWidth,radius,combined);
             if(explosionSound==null)explosionSound=Resources.Load<AudioClip>("Audio/explosao-som");
             SoundBase.Instance?.PlayLimitSound(explosionSound);
             primary.HideSprites(true);if(absorbed!=null)absorbed.HideSprites(true);
@@ -123,7 +145,7 @@ namespace SweetSugar.Scripts.Items
         }
         void OnDisable()
         {
-            if(mainVisual!=null){mainVisual.transform.localScale=mainScale;mainVisual.sortingOrder=mainOrder;mainVisual.sortingLayerID=mainLayer;}
+            if(mainVisual!=null){mainVisual.transform.position=mainPosition;mainVisual.transform.localScale=mainScale;mainVisual.sortingOrder=mainOrder;mainVisual.sortingLayerID=mainLayer;}
             if(incomingVisual!=null)
             {
                 incomingVisual.transform.localScale=incomingScale;incomingVisual.transform.position=incomingPosition;

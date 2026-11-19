@@ -48,8 +48,19 @@ namespace SweetSugar.Scripts.Items
         bool finishSpinCycle;
         Sprite restingSprite;
         Vector3 spinRestScale, spinRestPosition;
+        Quaternion spinRestRotation;
+        // Som de quando a color bomb é usada. Vazio = Resources/Audio/ColorBombCast (e, se faltar, o som antigo).
+        public AudioClip CastSound;
+        static AudioClip defaultCastSound;
+        static bool castSoundLoaded;
         bool spinPoseSaved, spinAnimatorWasEnabled;
         float combinationScale=1f;
+        // Combinação de dois light balls com a sequência cinematográfica (órbita, vórtice, ondas): só visual + ritmo da destruição.
+        bool doubleCombo, raisedAboveDim;
+        int raisedLayer, raisedOrder;
+        Vector3 orbitOffset;
+        float orbitScale=1f;
+        PowerUpVfxPlayer.DoubleBallPlan doublePlan;
         const float DoubleCombinationScale=1.3f;
         const int DoubleMarkBatchSize=16;
         readonly List<Lightning> electricArcs = new List<Lightning>();
@@ -100,10 +111,12 @@ namespace SweetSugar.Scripts.Items
             Phase = SequencePhase.Idle;
             TargetCount = MarkedCount = 0;
             sourceVisualExploded = false;
+            doubleCombo = false;
             jellySpread = false;
             EndAppearance();
             base.InitItem();
             EndSpin();
+            ColorBombIdleGlow.Attach(this);      // brilho permanente enquanto está parada no tabuleiro
             // The visible sprite is on the child "Sprite", not on this root GameObject.
             if (iconRenderer == null) iconRenderer = GetComponentInChildren<SpriteRenderer>();
             activated = false;
@@ -187,11 +200,16 @@ namespace SweetSugar.Scripts.Items
             sequenceBarrier = gameObject.AddComponent<AnimateItems>();
             sequenceBarrier.target = true;
             sequenceManager.animateItems.Add(sequenceBarrier);
-            BeginSpin(doubleBomb?DoubleCombinationScale:1f);
-            if(pairedMulticolor is ItemMulticolor paired)paired.BeginSpin(DoubleCombinationScale);
+            bool cinematic = doubleBomb && partner is ItemMulticolor && PowerUpVfx.IsAvailable;
+            doubleCombo = cinematic;
+            if (cinematic) ((ItemMulticolor)partner).doubleCombo = true;
+            BeginSpin(cinematic?1f:doubleBomb?DoubleCombinationScale:1f);
+            if(pairedMulticolor is ItemMulticolor paired)paired.BeginSpin(cinematic?1f:DoubleCombinationScale);
             Trace("Begin");
             var convertTo = partner != null && !doubleBomb ? partner.currentType : ItemsTypes.NONE;
-            SoundBase.Instance?.PlayOneShot(SoundBase.Instance.colorBombExpl);
+            if(!castSoundLoaded){defaultCastSound=Resources.Load<AudioClip>("Audio/ColorBombCast");castSoundLoaded=true;}
+            var castClip=CastSound!=null?CastSound:defaultCastSound;
+            SoundBase.Instance?.PlayOneShot(castClip!=null?castClip:SoundBase.Instance.colorBombExpl);
             StartCoroutine(RunSelection(items, partner, convertTo, doubleBomb, barriers));
         }
 
@@ -215,6 +233,9 @@ namespace SweetSugar.Scripts.Items
             bool completed = false;
             try
             {
+                if (doubleCombo) yield return RunDoubleCombo(items, barriers);
+                else
+                {
                 if(doubleBomb)yield return MarkDoubleTargets(items);
                 else foreach (var original in items)
                 {
@@ -277,8 +298,9 @@ namespace SweetSugar.Scripts.Items
                     item.NextType = ItemsTypes.NONE;
                     if (jellySpread) item.square?.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
                     Trace("Detonate", item);
-                    ElectricChargeParticles.Discharge(item.transform.position, field.squareWidth, ElectricPieceColor(item.color));
+                    if (!PowerUpVfx.IsAvailable) ElectricChargeParticles.Discharge(item.transform.position, field.squareWidth, ElectricPieceColor(item.color));
                     item.DestroyItem(true, true, this, false);
+                }
                 }
                 if (pairedMulticolor is ItemMulticolor other && other.gameObject.activeSelf)
                 {
@@ -305,8 +327,100 @@ namespace SweetSugar.Scripts.Items
             }
         }
 
+        // Dois light balls: os globos giram um em volta do outro até colapsar no centro (posições dadas pelo roteiro do VFX),
+        // explodem, e cada peça é destruída quando a onda da sua faixa de distância chega nela. Quais peças são destruídas e
+        // como (DestroyItem, blocos, geleia) é o mesmo da sequência antiga.
+        IEnumerator RunDoubleCombo(List<Item> items, RoyalAves.Gameplay.ImpactBarrierSnapshot barriers)
+        {
+            var twin = (ItemMulticolor)pairedMulticolor;
+            var live = items.Where(i => i != null && i.gameObject.activeSelf && i != twin).ToList();
+            Vector3 homeA = iconRenderer != null ? iconRenderer.transform.position : transform.position;
+            Vector3 homeB = twin.iconRenderer != null ? twin.iconRenderer.transform.position : twin.transform.position;
+            doublePlan = PowerUpVfx.PlayDoubleLightBall(iconRenderer != null ? iconRenderer.transform : transform,
+                twin.iconRenderer != null ? twin.iconRenderer.transform : twin.transform,
+                live.Select(i => i.transform.position).ToList(), live.Select(i => PieceColors.Of(i)).ToList());
+            var plan = doublePlan;
+            foreach (var item in live)
+            {
+                markedTargets.Add(new MarkedTarget { Item = item, Highlight = new SelectionHighlight() });
+                MarkedCount++; Trace("Marked", item);
+            }
+            if (plan != null)
+            {
+                for (float t = 0f; t < plan.ExplodeAt; )
+                {
+                    t += Time.deltaTime;
+                    plan.Pose(t, out var a, out var b, out var scaleA, out var scaleB, out var aInFront);
+                    ApplyOrbit(a - homeA, scaleA);
+                    twin.ApplyOrbit(b - homeB, scaleB);
+                    // órbita deitada: o globo que passa na frente é desenhado por cima do outro
+                    if (raisedAboveDim && iconRenderer != null) iconRenderer.sortingOrder = aInFront ? plan.FrontOrder : plan.BackOrder;
+                    if (twin.raisedAboveDim && twin.iconRenderer != null) twin.iconRenderer.sortingOrder = aInFront ? plan.BackOrder : plan.FrontOrder;
+                    yield return null;
+                }
+            }
+            Phase = SequencePhase.Charged;
+            Trace("AllMarked");
+            EndSpin();
+            twin.EndSpin();
+            Phase = SequencePhase.Detonating;
+            Trace("RaysOff");
+            ExplodeSourceVisual();
+            twin.ExplodeSourceVisual();
+            if (LevelManager.THIS.AdditionalSettings.DoubleMulticolorDestroySquaresAndSpreadJelly)
+            {
+                foreach (var cell in barriers.Filter(square, field.squaresArray))
+                {
+                    if (cell.type == SquareTypes.SolidBlock) cell.DestroyBlock();
+                    if (jellySpread) cell.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
+                }
+            }
+            var order = live.Select(i => new KeyValuePair<Item, float>(i, plan != null && i != null ? plan.HitTime(i.transform.position) : 0f))
+                .OrderBy(pair => pair.Value).ToList();
+            float wave = 0f;
+            for (int next = 0; next < order.Count; )
+            {
+                while (next < order.Count && order[next].Value <= wave) { DetonateDoubleTarget(order[next].Key); next++; }
+                if (next >= order.Count) break;
+                yield return null;
+                wave += Time.deltaTime;
+            }
+        }
+
+        void DetonateDoubleTarget(Item item)
+        {
+            if (item == null || !item.gameObject.activeSelf || item == pairedMulticolor) return;
+            Unclaim(item);
+            item.dontDestroyOnThisMove = false;
+            item.dontDestroyForThisCombine = false;
+            item.globalExplEffect = false;
+            item.needFall = false;
+            item.NextType = ItemsTypes.NONE;
+            if (jellySpread) item.square?.SetType(SquareTypes.JellyBlock, 1, SquareTypes.NONE, 1);
+            Trace("Detonate", item);
+            item.DestroyItem(true, true, this, false);
+        }
+
+        // Deslocamento (em mundo) e escala do globo durante a órbita; o giro (SpinCor) soma isto à pose dele.
+        void ApplyOrbit(Vector3 worldOffset, float scale)
+        {
+            orbitOffset = worldOffset; orbitScale = scale;
+            if (spinRoutine != null || iconRenderer == null || !spinPoseSaved) return;
+            iconRenderer.transform.localScale = Vector3.Scale(spinRestScale, new Vector3(combinationScale * orbitScale, combinationScale * orbitScale, 1));
+            iconRenderer.transform.localPosition = spinRestPosition + OrbitLocal();
+        }
+
+        Vector3 OrbitLocal()
+        {
+            var parent = iconRenderer != null ? iconRenderer.transform.parent : null;
+            return parent != null ? parent.InverseTransformVector(orbitOffset) : orbitOffset;
+        }
+
         void ClearSelection()
         {
+            PowerUpVfx.CancelLightBall(transform);
+            if (doublePlan != null && Phase != SequencePhase.Finished) doublePlan.Cancel();
+            doublePlan = null;
             EndSpin();
             if(pairedMulticolor is ItemMulticolor paired && paired!=this)paired.EndSpin();
             if (selectionPulse != null) StopCoroutine(selectionPulse);
@@ -351,13 +465,16 @@ namespace SweetSugar.Scripts.Items
         {
             if (sourceVisualExploded) return;
             sourceVisualExploded = true;
-            ElectricChargeParticles.Flash(transform.position, field.squareWidth * .85f);
-            ElectricChargeParticles.Discharge(transform.position, field.squareWidth);
+            if (!doubleCombo && !PowerUpVfx.DetonateLightBall(transform))
+            {
+                ElectricChargeParticles.Flash(transform.position, field.squareWidth * .85f);
+                ElectricChargeParticles.Discharge(transform.position, field.squareWidth);
+            }
             EndSpin();
             EndAppearance();
             if (anim != null) anim.enabled = false;
             foreach (var renderer in GetSpriteRenderers())
-                if (renderer != null && renderer.enabled && renderer.sprite != null) PowerUpEnergyExit.Play(renderer);
+                if (!doubleCombo && renderer != null && renderer.enabled && renderer.sprite != null) PowerUpEnergyExit.Play(renderer);
             HideSprites(true);
             Trace("SourceVisualDetonate", this);
         }
@@ -524,6 +641,7 @@ namespace SweetSugar.Scripts.Items
 
         private Lightning CreateLightning(Vector3 pos1, Vector3 pos2, Transform target = null, bool hold = false)
         {
+            if (target != null && PowerUpVfx.PlayLightBallBeam(transform, target, PieceColors.Of(target.GetComponentInParent<Item>()))) return null;
             var lightning = Lightning.Rent();
             if (lightning == null) return null;
             lightning.SetLight(pos1, pos2, square.field.squareWidth, hold, iconRenderer!=null?iconRenderer.transform:transform, target);
@@ -536,20 +654,28 @@ namespace SweetSugar.Scripts.Items
         private void BeginSpin(float scaleMultiplier=1f)
         {
             EndAppearance();
+            PowerUpArrivalMotion.Stop(this);
             if(iconRenderer==null) iconRenderer=GetSpriteRenderer();
             if(iconRenderer!=null && !spinPoseSaved)
             {
                 spinRestScale=iconRenderer.transform.localScale;
                 spinRestPosition=iconRenderer.transform.localPosition;
+                spinRestRotation=iconRenderer.transform.localRotation;
                 spinPoseSaved=true;
                 if(anim!=null) {spinAnimatorWasEnabled=anim.enabled;anim.enabled=false;}
             }
             combinationScale=scaleMultiplier;
             if(iconRenderer!=null&&spinPoseSaved)iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(combinationScale,combinationScale,1));
             ElectricChargeParticles.Flash(transform.position, field.squareWidth);
-            if (sourceTrail == null) sourceTrail = MulticolorSpinTrail.Rent(iconRenderer!=null?iconRenderer.transform:transform, field.squareWidth,
+            bool magic = doubleCombo || PowerUpVfx.PlayLightBallCharge(transform, iconRenderer != null ? iconRenderer.transform : transform);
+            if (doubleCombo && iconRenderer != null && !raisedAboveDim)
+            {
+                raisedLayer = iconRenderer.sortingLayerID; raisedOrder = iconRenderer.sortingOrder; raisedAboveDim = true;
+                PowerUpVfx.RaiseAboveDim(iconRenderer);
+            }
+            if (!magic && sourceTrail == null) sourceTrail = MulticolorSpinTrail.Rent(iconRenderer!=null?iconRenderer.transform:transform, field.squareWidth,
                 Mathf.Max(1,SpinFrames != null ? SpinFrames.Length : 12)*SpinFrameTime);
-            if (spinRoutine != null || SpinFrames == null || SpinFrames.Length == 0) return;
+            if (spinRoutine != null) return;
             finishSpinCycle = false;
             restingSprite = iconRenderer != null ? iconRenderer.sprite : null;
             spinRoutine = StartCoroutine(SpinCor());
@@ -576,10 +702,14 @@ namespace SweetSugar.Scripts.Items
             {
                 iconRenderer.transform.localScale=spinRestScale;
                 iconRenderer.transform.localPosition=spinRestPosition;
+                iconRenderer.transform.localRotation=spinRestRotation;
             }
             if(spinPoseSaved && anim!=null)anim.enabled=spinAnimatorWasEnabled;
             spinPoseSaved=false;
             combinationScale=1f;
+            if (raisedAboveDim && iconRenderer != null) { iconRenderer.sortingLayerID = raisedLayer; iconRenderer.sortingOrder = raisedOrder; }
+            raisedAboveDim = false;
+            orbitOffset = Vector3.zero; orbitScale = 1f;
         }
 
         public static Vector2 SpinScaleAt(float age)
@@ -596,7 +726,10 @@ namespace SweetSugar.Scripts.Items
         private IEnumerator SpinCor()
         {
             float age=0,phase=0;
-            float period=SpinFrames.Length*SpinFrameTime;
+            var presence=PowerUpVfx.Presence;
+            // Sem quadros de giro (medalhão novo): gira o próprio desenho no plano.
+            bool hasFrames=SpinFrames!=null && SpinFrames.Length>0;
+            float period=hasFrames ? SpinFrames.Length*SpinFrameTime : 360f/Mathf.Max(1f,Mathf.Abs(presence.ballSpin));
             do
             {
                 float dt=Time.deltaTime;age+=dt;
@@ -604,16 +737,23 @@ namespace SweetSugar.Scripts.Items
                 float previous=phase;phase+=dt*rate/period;
                 if(iconRenderer!=null)
                 {
-                    iconRenderer.sprite=SpinFrames[Mathf.FloorToInt(phase*SpinFrames.Length)%SpinFrames.Length];
+                    if(hasFrames)iconRenderer.sprite=SpinFrames[Mathf.FloorToInt(phase*SpinFrames.Length)%SpinFrames.Length];
+                    else iconRenderer.transform.localRotation=spinRestRotation*Quaternion.Euler(0,0,-phase*360f);
                     var scale=SpinScaleAt(age);
-                    iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(scale.x*combinationScale,scale.y*combinationScale,1));
+                    // Medalhão girando no plano: escala igual nos dois eixos, senão ele vira um oval rodando.
+                    if(!hasFrames){float round=(scale.x+scale.y)*.5f;scale=new Vector2(round,round);}
+                    // respira enquanto gira: encolhe um pouco e volta
+                    scale*=1f-presence.ballBreath*(.5f-.5f*Mathf.Cos(age*Mathf.PI*2f*presence.ballBreathFrequency));
+                    iconRenderer.transform.localScale=Vector3.Scale(spinRestScale,new Vector3(scale.x*combinationScale*orbitScale,scale.y*combinationScale*orbitScale,1));
                     // Convert board-cell lift into the sprite parent's coordinates; never move the logical cell.
                     float parentY=iconRenderer.transform.parent!=null?Mathf.Abs(iconRenderer.transform.parent.lossyScale.y):1;
                     float lift=field.squareWidth*.09f*Mathf.SmoothStep(0,1,Mathf.Clamp01((age-.09f)/.13f));
-                    iconRenderer.transform.localPosition=spinRestPosition+Vector3.up*(lift/Mathf.Max(.001f,parentY));
+                    iconRenderer.transform.localPosition=spinRestPosition+Vector3.up*(lift/Mathf.Max(.001f,parentY))+OrbitLocal();
                 }
                 if(sourceTrail!=null)sourceTrail.FollowPhase(phase);
-                if(finishSpinCycle && Mathf.FloorToInt(phase)>Mathf.FloorToInt(previous))break;
+                // Com quadros: termina a volta. Medalhão: para no próximo oitavo de volta, para a marcação não esperar mais do que antes.
+                int steps=hasFrames?1:8;
+                if(finishSpinCycle && Mathf.FloorToInt(phase*steps)>Mathf.FloorToInt(previous*steps))break;
                 yield return null;
             }
             while(true);

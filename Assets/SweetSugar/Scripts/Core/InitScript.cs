@@ -182,6 +182,7 @@ namespace SweetSugar.Scripts.Core
                     reward.gameObject.SetActive(true);
                 }
                 RestoreLifes();
+                RoyalAves.Meta.LifeAdCooldown.Start(); // Correio Mágico: próximo vídeo de vida só em 3h
                 if (liveShop != null)
                     liveShop.GetComponent<AnimationEventManager>().CloseMenu();
             }

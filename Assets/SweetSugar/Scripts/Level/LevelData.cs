@@ -26,12 +26,18 @@ using UnityEngine.Serialization;
 
 namespace SweetSugar.Scripts.Level
 {
+    /// Correio Mágico: dificuldade da fase, escolhida no Level editor. Troca o botão de Play da tela inicial.
+    public enum LevelDifficulty { Normal, Hard, SuperHard }
+
     /// <summary>
     /// Level data for level editor
     /// </summary>
     [Serializable]
     public class LevelData
     {
+        /// Correio Mágico: Normal, Hard ou SuperHard (fases antigas, sem o campo, valem Normal).
+        public LevelDifficulty difficulty;
+
         //Add_feature
         public bool SpawnerExits;
 

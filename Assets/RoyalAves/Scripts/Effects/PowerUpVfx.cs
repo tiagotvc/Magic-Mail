@@ -82,6 +82,141 @@ namespace RoyalAves.Effects
             SuppressMatchFor(0.1f);
         }
 
+        /// Light ball, 1: carga mágica em volta do globo. false = sem prefab (o jogo usa o efeito antigo).
+        public static bool PlayLightBallCharge(Transform owner, Transform follow)
+        {
+            var p = Player;
+            return p != null && p.PlayLightBallCharge(owner, follow, CellSize);
+        }
+
+        /// Ajustes do giro e do vento do seeker (do prefab dos efeitos, ou os padrões se ele não existir).
+        static readonly PowerUpVfxPlayer.WhirlSettings defaultWhirl = new PowerUpVfxPlayer.WhirlSettings();
+        public static PowerUpVfxPlayer.WhirlSettings Whirl
+        {
+            get { var p = IsAvailable ? Player : null; return p != null ? p.whirl : defaultWhirl; }
+        }
+
+        /// Vento de giro em volta do seeker. seconds &lt;= 0: em laço até ele sumir (voo).
+        public static void PlaySeekerWhirl(Transform follow, float seconds, float strength = 1f)
+        {
+            var p = Player;
+            if (p != null) p.PlaySeekerWhirl(follow, seconds, CellSize, strength);
+        }
+
+        /// Color bomb parada: brilho permanente (raios coloridos e halo quente). null = sem prefab dos efeitos.
+        public static PowerUpVfxPlayer.IdleGlow PlayLightBallIdle(Transform follow)
+        {
+            var p = Player;
+            return p != null ? p.PlayLightBallIdle(follow, CellSize) : null;
+        }
+
+        /// Light ball, 2: conexão luminosa do globo até a peça.
+        public static bool PlayLightBallBeam(Transform owner, Transform target, Color pieceColor)
+        {
+            var p = Player;
+            return p != null && p.PlayLightBallBeam(owner, target, pieceColor);
+        }
+
+        /// Light ball, 3: explosão coordenada do globo e das peças conectadas (substitui o efeito de match delas).
+        public static bool DetonateLightBall(Transform owner)
+        {
+            var p = Player;
+            if (p == null || !p.DetonateLightBall(owner)) return false;
+            SuppressMatchFor(0.25f);
+            return true;
+        }
+
+        public static void CancelLightBall(Transform owner)
+        {
+            if (player != null) player.CancelLightBall(owner);
+        }
+
+        /// Combinação de dois light balls. Devolve o roteiro (posição dos globos e hora em que a onda chega em cada peça),
+        /// ou null se não há prefab (o jogo usa a sequência antiga).
+        public static PowerUpVfxPlayer.DoubleBallPlan PlayDoubleLightBall(Transform ballA, Transform ballB, IList<Vector3> cells, IList<Color> colors)
+        {
+            var p = Player;
+            if (p == null) return null;
+            var plan = p.PlayDoubleLightBall(ballA, ballB, cells, colors, CellSize);
+            if (plan != null) SuppressMatchFor(plan.Total);
+            return plan;
+        }
+
+        static readonly PowerUpVfxPlayer.PresenceSettings defaultPresence = new PowerUpVfxPlayer.PresenceSettings();
+
+        /// Ajustes da chegada e da junção dos power-ups (os do prefab; sem prefab, os valores padrão).
+        public static PowerUpVfxPlayer.PresenceSettings Presence
+        {
+            get { var p = IsAvailable ? Player : null; return p != null ? p.presence : defaultPresence; }
+        }
+
+        /// Chegada de um power-up no tabuleiro: luz, anel e fitas girando em volta dele.
+        public static void PlayArrival(Transform follow, PowerUpKind kind)
+        {
+            var p = Player;
+            if (p != null) p.PlayArrival(follow, kind, CellSize);
+        }
+
+        /// Junção de dois power-ups: brilho atrás e fitas girando. Devolve o roteiro do movimento (null sem prefab).
+        public static PowerUpVfxPlayer.MergePlan PlayMerge(Transform a, Transform b)
+        {
+            var p = Player;
+            return p == null ? null : p.PlayMerge(a, b, CellSize);
+        }
+
+        /// Duas bombas: carga lado a lado.
+        public static void PlayDoubleBombCharge(Transform a, Transform b, float seconds)
+        {
+            var p = Player;
+            if (p != null) p.PlayDoubleBombCharge(a, b, seconds, CellSize);
+        }
+
+        /// Duas bombas: explosão dupla, por cima da explosão normal.
+        public static void PlayDoubleBombBurst(Vector3 center, float cellWidth, float radiusCells)
+        {
+            var p = Player;
+            if (p == null) return;
+            SuppressMatchFor(p.PlayDoubleBombBurst(center, radiusCells, cellWidth) * 0.6f);
+        }
+
+        /// Põe o sprite de um globo acima da tela escura da combinação dupla.
+        public static void RaiseAboveDim(SpriteRenderer renderer)
+        {
+            if (player != null) player.RaiseAboveDim(renderer);
+        }
+
+        /// Chapéu de Mago: redemoinho do embaralhamento. Devolve o roteiro (onde cada peça fica em cada instante) ou null sem prefab.
+        public static PowerUpVfxPlayer.HatShufflePlan PlayHatShuffle(IList<Transform> pieces, IList<Color> colors, Vector3 center)
+        {
+            var p = Player;
+            return p == null ? null : p.PlayHatShuffle(pieces, colors, center, CellSize);
+        }
+
+        /// Chapéu de Mago: cajado lançando uma magia em cada alvo. Devolve quando cada uma chega (para trocar a cor nessa hora).
+        public static PowerUpVfxPlayer.StaffCastPlan PlayStaffCast(Vector3 staffPosition, IList<Vector3> targets, IList<Color> newColors)
+        {
+            var p = Player;
+            return p == null ? null : p.PlayStaffCast(staffPosition, targets, newColors, CellSize);
+        }
+
+        // A tela escura é só para power-ups (reforços usados pelo jogador: flecha, canhão, martelo...). Bomba e
+        // limpador de linha que estouram no tabuleiro por combinação NÃO escurecem a tela; só escurecem quando
+        // são disparados enquanto um power-up está em uso.
+        // Usa o campo activatedBoost: a propriedade ActivatedBoost nunca é nula (devolve um ícone vazio).
+        // Só os power-ups de toque no tabuleiro contam (flecha, canhão, martelo): light ball e girocóptero não escurecem.
+        static bool PowerUpInUse
+        {
+            get
+            {
+                var boost = LevelManager.THIS != null ? LevelManager.THIS.activatedBoost : null;
+                if (boost == null) return false;
+                var type = boost.type;
+                return type == SweetSugar.Scripts.GUI.Boost.BoostType.Arrow ||
+                       type == SweetSugar.Scripts.GUI.Boost.BoostType.Cannon ||
+                       type == SweetSugar.Scripts.GUI.Boost.BoostType.Hammer;
+            }
+        }
+
         public static bool PlayBomb(Vector3 center, float cellWidth, float radiusCells)
         {
             var p = Player;
@@ -100,7 +235,7 @@ namespace RoyalAves.Effects
                     colors.Add(PieceColors.Of(square.Item));
                 }
             }
-            var duration = p.PlayBomb(center, radiusCells, cellWidth, cells, colors);
+            var duration = p.PlayBomb(center, radiusCells, cellWidth, cells, colors, PowerUpInUse);
             SuppressMatchFor(duration + 0.2f);
             return true;
         }
@@ -111,7 +246,7 @@ namespace RoyalAves.Effects
             if (p == null) return false;
             var cells = squares != null ? squares.Select(s => s.transform.position).ToList() : new List<Vector3>();
             var colors = squares != null ? squares.Select(s => PieceColors.Of(s.Item)).ToList() : new List<Color>();
-            var duration = p.PlayLine(origin, horizontal, endA, endB, stopA, stopB, cells, colors, CellSize);
+            var duration = p.PlayLine(origin, horizontal, endA, endB, stopA, stopB, cells, colors, CellSize, PowerUpInUse);
             SuppressMatchFor(duration + 0.2f);
             return true;
         }

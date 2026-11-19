@@ -1,0 +1,290 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6086483247268088530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1959857681184741556}
+  - component: {fileID: 651836063549490139}
+  m_Layer: 0
+  m_Name: Brilho do power-up (modelo)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1959857681184741556
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086483247268088530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9200851554413408296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 475, y: 475}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &651836063549490139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6086483247268088530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2235835115c7a7d43b6f98909251fa59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.UIMagicGlow
+  glowSprite: {fileID: 21300000, guid: 03661c99999232083f14b7faa1451525, type: 3}
+  raySprite: {fileID: 21300000, guid: 63be59d3f3f754fbfb0fa19335155db1, type: 3}
+  sparkleStar: {fileID: 21300000, guid: dc0af956b64bf83550b09f052c67e083, type: 3}
+  sparkleDot: {fileID: 21300000, guid: 6dbf943177c9f40792f3e815628fe5a6, type: 3}
+  ringSprite: {fileID: 21300000, guid: 6d88bbbe30905ff7dbaf0390a2aecceb, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  glowColor: {r: 1, g: 0.76, b: 0.28, a: 1}
+  rayColor: {r: 1, g: 0.84, b: 0.42, a: 1}
+  sparkleColor: {r: 1, g: 0.93, b: 0.66, a: 1}
+  glowSize: 1
+  glowAlpha: 0.9
+  glowPulse: 0.07
+  glowSpeed: 0.6
+  innerGlowAlpha: 0.45
+  innerGlowSize: 0.5
+  proceduralRays: 1
+  rayCount: 18
+  rayLength: 1
+  rayLengthVariation: 0.45
+  rayWidth: 0.085
+  rayAlpha: 0.4
+  rayFlicker: 0.45
+  raySpin: 14
+  rayHaloWidth: 3
+  rayHaloAlpha: 0.35
+  sparkleCount: 10
+  sparkleSizeMin: 0.035
+  sparkleSizeMax: 0.09
+  sparkleAlpha: 0.95
+  sparklePeriod: 2.2
+  sparkleRadius: {x: 0.3, y: 1}
+  sparkleRise: 0
+  sparkleStarShare: 0.8
+  sparkleOutward: 1
+  sparkleHaloSize: 2.8
+  sparkleHaloAlpha: 0.5
+  dotCount: 0
+  dotSize: 0.05
+  dotAlpha: 0.8
+  dotLife: 2
+  dotRise: 0.35
+  ringCount: 0
+  ringAlpha: 0.6
+  ringPeriod: 2.4
+  ringSize: {x: 0.45, y: 1}
+  staticRingAlpha: 0
+  staticRingSize: 0.62
+  speed: 1
+  autoPlay: 1
+  intensity: 1
+--- !u!1 &7976789818811064553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9200851554413408296}
+  - component: {fileID: 7470919409624008042}
+  m_Layer: 0
+  m_Name: ChestOpenScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9200851554413408296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976789818811064553}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1959857681184741556}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7470919409624008042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976789818811064553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40fa3c8659e50b478d4aba0f1ebc97b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.ChestOpenScreen
+  chestBody: {fileID: 0}
+  chestLid: {fileID: 0}
+  chestInterior: {fileID: 0}
+  chestOpened: {fileID: 0}
+  lidInFront: 0
+  chestWidth: 470
+  chestPosition: {x: 0, y: -470}
+  lidWidth: 1
+  lidOffset: {x: 0, y: -0.03}
+  interiorWidth: 0.9
+  interiorOffset: {x: 0, y: 0.01}
+  mouthOffset: {x: 0, y: 0.02}
+  lidOpenLift: 0.2
+  lidOpenAngle: -7
+  lidOpenScale: {x: 0.96, y: 0.7}
+  openPunch: 0.12
+  backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  backgroundAlpha: 1
+  ambientColor: {r: 0.506, g: 0.169, b: 1, a: 1}
+  ambientAlpha: 0.4
+  ambientSize: 1500
+  fadeIn: 0.25
+  chestEnter: 0.45
+  anticipation: 0.95
+  openDuration: 0.32
+  firstLaunchDelay: 0.08
+  launchStagger: 0.16
+  flightDuration: 0.85
+  glowFade: 0.45
+  continueDelay: 0.5
+  fadeOut: 0.25
+  tapSkips: 1
+  shakeAngle: 5
+  shakeFrequency: 9
+  bounceCount: 2
+  bounceHeight: 26
+  squash: 0.08
+  lidRattle: 14
+  leakColor: {r: 1, g: 0.76, b: 0.28, a: 1}
+  leakAlpha: 0.9
+  leakSparkleCount: 8
+  flashColor: {r: 1, g: 0.86, b: 0.55, a: 1}
+  flashAlpha: 0.9
+  flashSize: 1500
+  flashDuration: 0.55
+  ringColor: {r: 0.82, g: 0.169, b: 1, a: 1}
+  ringAlpha: 0.8
+  ringSize: 1300
+  ringDuration: 0.6
+  burstRayCount: 14
+  burstRayColor: {r: 1, g: 0.76, b: 0.28, a: 1}
+  burstRayAlpha: 0.6
+  burstRayIdle: 0.35
+  burstRayLength: 640
+  burstRayWidth: 70
+  burstRaySpin: 10
+  beamColor: {r: 1, g: 0.76, b: 0.28, a: 1}
+  beamAlpha: 0.6
+  beamIdle: 0.45
+  beamWidth: 1.15
+  beamHeight: 900
+  innerGlowAlpha: 0.85
+  burstSparkleCount: 26
+  burstFan: {x: 25, y: 155}
+  burstSparkleSpeed: {x: 700, y: 2000}
+  burstGravity: 900
+  launchHeight: 620
+  launchSpread: 240
+  arcOver: 240
+  arcSide: 200
+  swirlAmplitude: 70
+  swirlTurns: 1.5
+  spinDegrees: 300
+  startScale: 0.2
+  trailSegments: 18
+  trailSeconds: 0.3
+  trailWidth: 0.5
+  trailCoreWidth: 0.14
+  trailAlpha: 0.85
+  trailCoreAlpha: 0.7
+  trailFade: 0.3
+  headGlowSize: 1.7
+  headGlowAlpha: 0.6
+  flightSparkles: 12
+  sparkleLife: 0.7
+  sparkleSize: {x: 24, y: 64}
+  sparkleDrift: 90
+  sparkleGravity: 160
+  iconSize: 250
+  singleScale: 1.3
+  maxPerRow: 3
+  spacing: {x: 1.3, y: 1.5}
+  rewardsCenter: {x: 0, y: 330}
+  rewardsArea: {x: 980, y: 800}
+  arrivalPop: 0.22
+  popDuration: 0.3
+  idleBob: 10
+  bobSpeed: 0.5
+  glowTemplate: {fileID: 651836063549490139}
+  glowSize: 1.9
+  tintGlowWithPalette: 1
+  palette:
+  - {r: 0.506, g: 0.169, b: 1, a: 1}
+  - {r: 1, g: 0.341, b: 0.776, a: 1}
+  - {r: 0.286, g: 0.867, b: 0.961, a: 1}
+  - {r: 0.82, g: 0.169, b: 1, a: 1}
+  - {r: 1, g: 0.76, b: 0.28, a: 1}
+  font: {fileID: 11400000, guid: 866b4301ef1c73d4dbc8e392640e02c2, type: 2}
+  amountFormat: x{0}
+  showAmountOfOne: 1
+  amountSize: 78
+  amountColor: {r: 1, g: 1, b: 1, a: 1}
+  amountOffset: {x: 0, y: -0.62}
+  textOutlineColor: {r: 0.157, g: 0.055, b: 0.275, a: 1}
+  textOutlineWidth: 0.22
+  titlePt: "Voc\xEA ganhou!"
+  titleEn: You got!
+  titleSize: 96
+  titleColor: {r: 1, g: 0.82, b: 0.36, a: 1}
+  titlePosition: {x: 0, y: 820}
+  continuePt: Toque para continuar
+  continueEn: Tap to continue
+  continueSize: 46
+  continueColor: {r: 1, g: 1, b: 1, a: 0.9}
+  continuePosition: {x: 0, y: -860}
+  icons:
+  - type: 0
+    icon: {fileID: 21300000, guid: 384ff1c1e7d021a4eba7fac352b74431, type: 3}
+  - type: 4
+    icon: {fileID: 21300000, guid: 64f85696118027a46b937ef8ba84b046, type: 3}
+  - type: 7
+    icon: {fileID: 21300000, guid: da08e0ad31d487b43b0dbc398c6fdc7c, type: 3}
+  - type: 6
+    icon: {fileID: 21300000, guid: f39035d9def76e94b8ca525ab1ea5775, type: 3}
+  fallbackIcon: {fileID: 0}
+  glowSprite: {fileID: 21300000, guid: 03661c99999232083f14b7faa1451525, type: 3}
+  sparkleSprite: {fileID: 21300000, guid: dc0af956b64bf83550b09f052c67e083, type: 3}
+  dotSprite: {fileID: 21300000, guid: 6dbf943177c9f40792f3e815628fe5a6, type: 3}
+  ringSprite: {fileID: 21300000, guid: 6d88bbbe30905ff7dbaf0390a2aecceb, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  openSound: {fileID: 0}
+  launchSound: {fileID: 0}
+  arriveSound: {fileID: 0}
+  sortingOrder: 32750
+  designSize: {x: 1080, y: 1920}

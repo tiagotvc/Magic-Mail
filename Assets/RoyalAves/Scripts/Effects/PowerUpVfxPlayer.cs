@@ -15,7 +15,7 @@ namespace RoyalAves.Effects
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Royal Aves/Power-Up VFX Player")]
-    public sealed class PowerUpVfxPlayer : MonoBehaviour
+    public sealed partial class PowerUpVfxPlayer : MonoBehaviour
     {
         public const string ResourcePath = "Effects/PowerUps/PowerUpVfx";
 
@@ -59,6 +59,25 @@ namespace RoyalAves.Effects
         public Sprite seekerTrail;
         public Sprite seekerMicroStar;
 
+        [Header("Light Ball (VFX/Light ball/Mascaras_PNG)")]
+        public Sprite lbCoreGlow;
+        public Sprite lbPulseRing;
+        public Sprite lbOrbitEllipse;
+        public Sprite lbOrbitArc;
+        public Sprite lbChargeFlare;
+        public Sprite lbBeamCore;
+        public Sprite lbBeamHalo;
+        public Sprite lbRibbonWave;
+        public Sprite lbRibbonSecondary;
+        public Sprite lbTargetHalo;
+        public Sprite lbTargetPreflash;
+        public Sprite lbTargetPop;
+        public Sprite lbFinalBurst;
+        public Sprite lbStars;
+
+        [Header("Combinação de dois Light Balls (VFX/Light ball/doubles/Mascaras_PNG, 01 a 16)")]
+        public Sprite[] doubleMasks = new Sprite[0];
+
         [Header("Material e desenho")]
         [Tooltip("Aditivo (luz). Os fragmentos usam o material normal de sprite.")]
         public Material additive;
@@ -82,26 +101,22 @@ namespace RoyalAves.Effects
         public sealed class MatchSettings
         {
             [Min(0.1f)] public float duration = 0.5f;
-            [Header("1. Brilho de destaque (contorno dourado da peça)")]
-            [Range(0f, 1f)] public float highlightAlpha = 0.85f;
-            [Tooltip("Tamanho do contorno em relação à casa.")]
-            [Min(0)] public float highlightSize = 0.92f;
-            [Min(0.02f)] public float highlightSeconds = 0.16f;
-            [Header("2. Explosão suave (clarão + brilho em cruz)")]
+            [Header("Explosãozinha da peça (a mesma de cada casa na combinação de dois Light Balls)")]
+            [Tooltip("Tempo do anel, do clarão e dos brilhos.")]
+            [Min(0.05f)] public float impactSeconds = 0.3f;
+            [Tooltip("Clarão no centro: branco-dourado que vira a cor da peça.")]
             [Range(0f, 1f)] public float flashAlpha = 0.8f;
             [Min(0)] public float flashSize = 1.25f;
-            [Range(0f, 1f)] public float flareAlpha = 0.7f;
-            [Min(0)] public float flareSize = 1.7f;
-            [Min(0.05f)] public float burstSeconds = 0.2f;
-            [Header("3. Partículas mágicas")]
-            [Min(0)] public int sparkleCount = 5;
-            [Min(0)] public float sparkleSize = 0.3f;
-            [Min(0)] public float sparkleTravel = 0.42f;
-            [Header("Fita mágica (dourado para magenta) que passa pela peça")]
-            [Range(0f, 1f)] public float swooshAlpha = 0.75f;
-            [Min(0)] public float swooshWidth = 0.1f;
-            [Tooltip("Raio horizontal da volta da fita, em casas.")]
-            [Min(0)] public float swooshRadius = 0.5f;
+            [Tooltip("Anel magenta que abre em volta da peça.")]
+            [Range(0f, 1f)] public float ringAlpha = 0.9f;
+            [Min(0)] public float ringSize = 1.25f;
+            [Tooltip("Estrela de 4 pontas no centro.")]
+            [Range(0f, 1f)] public float starAlpha = 1f;
+            [Min(0)] public float starSize = 0.95f;
+            [Header("Brilhos que saem do centro")]
+            [Min(0)] public int sparkleCount = 3;
+            [Min(0)] public float sparkleSize = 0.28f;
+            [Min(0)] public float sparkleTravel = 0.6f;
             [Header("Confetes (cores da peça)")]
             [Min(0)] public int confettiCount = 6;
             [Min(0)] public float confettiSize = 0.11f;
@@ -166,9 +181,17 @@ namespace RoyalAves.Effects
             [Range(0f, 1f)] public float trailAlpha = 0.95f;
             [Range(0f, 1f)] public float trailGlowAlpha = 0.65f;
             [Min(0)] public int trailSparkles = 10;
-            [Header("Marcador no alvo (anel dourado com brilho em cruz)")]
+            [Tooltip("Faíscas soltas pelo caminho (riscos ciano, dourados e rosa).")]
+            [Min(0)] public int trailEmbers = 12;
+            [Tooltip("Pequenas descargas elétricas em volta do girocóptero enquanto voa.")]
+            [Range(0f, 1f)] public float flightLightning = 0.8f;
+            [Header("Alvo mágico (mira que trava na peça onde ele vai cair)")]
             [Range(0f, 1f)] public float markerAlpha = 0.9f;
             [Min(0)] public float markerSize = 1.1f;
+            [Tooltip("Tempo para a mira fechar e travar no alvo.")]
+            [Min(0.05f)] public float markerLockSeconds = 0.28f;
+            [Tooltip("Giro da mira, em graus por segundo.")]
+            public float markerSpin = 90f;
             [Header("3. Impacto e limpeza")]
             [Min(0.1f)] public float duration = 0.5f;
             [Min(0)] public float flashSize = 0.85f;
@@ -180,6 +203,14 @@ namespace RoyalAves.Effects
             [Min(0)] public int sparkleCount = 6;
             [Min(0)] public int fragmentCount = 9;
             [Min(0)] public float fragmentSize = 0.13f;
+            [Header("Impacto: ondas de choque, faíscas e raios")]
+            [Range(0f, 1f)] public float shockAlpha = 0.9f;
+            [Tooltip("Diâmetro final da onda de choque maior, em casas.")]
+            [Min(0)] public float shockSize = 2.9f;
+            [Tooltip("Faíscas radiais (riscos de luz).")]
+            [Min(0)] public int sparkCount = 14;
+            [Tooltip("Raios curtos saindo do ponto de impacto.")]
+            [Range(0, 8)] public int boltCount = 5;
         }
 
         [Serializable]
@@ -217,6 +248,34 @@ namespace RoyalAves.Effects
             [Tooltip("Até onde as partículas se afastam do centro, em casas.")]
             [Min(0)] public float particleSpread = 0.85f;
             [Min(0)] public float particleRate = 2.2f;
+            [Header("Cauda de foguete: fogo cartoon que fica para trás")]
+            [Tooltip("As cabeças aceleram ao sair, no mesmo ritmo das metades do foguete no jogo.")]
+            public bool easeIn = true;
+            public Color fireHot = new Color(1f, 0.95f, 0.3f);
+            public Color fireMid = new Color(1f, 0.55f, 0.02f);
+            public Color fireEnd = new Color(0.98f, 0.2f, 0.03f);
+            [Tooltip("Labaredas por casa percorrida.")]
+            [Min(0)] public float flamesPerCell = 6f;
+            [Tooltip("Tamanho de cada labareda, em casas.")]
+            [Min(0)] public float flameSize = 0.62f;
+            [Tooltip("Quanto tempo cada labareda fica no rastro, em segundos.")]
+            [Min(0.05f)] public float flameLife = 0.5f;
+            [Tooltip("Espalhamento das labaredas para os lados, em casas.")]
+            [Min(0)] public float flameSpread = 0.16f;
+            [Header("Fumaça amarelada que fica para trás")]
+            public Color puffColor = new Color(1f, 0.87f, 0.32f);
+            public Color puffColorEnd = new Color(0.97f, 0.6f, 0.18f);
+            [Range(0f, 1f)] public float puffAlpha = 0.8f;
+            [Tooltip("Nuvens por casa percorrida.")]
+            [Min(0)] public float puffsPerCell = 2.5f;
+            [Tooltip("Tamanho de cada nuvem, em casas.")]
+            [Min(0)] public float puffSize = 0.85f;
+            [Min(0.1f)] public float puffLife = 0.95f;
+            [Header("Cabeças (as duas metades do line cleaner)")]
+            [Tooltip("Altura da cabeça, em casas.")]
+            [Min(0)] public float headSize = 0.66f;
+            [Tooltip("Clarão na boca do fogo, atrás da cabeça (multiplica o Tip Size).")]
+            [Range(0f, 1.5f)] public float nozzleFlare = 0.55f;
             [Header("Cada casa atingida")]
             [Min(0.05f)] public float breakRingSeconds = 0.22f;
             [Min(0)] public float breakRingSize = 1.25f;
@@ -227,10 +286,234 @@ namespace RoyalAves.Effects
             [Min(0.1f)] public float fragmentLife = 0.6f;
         }
 
+        [Serializable]
+        public sealed class LightBallSettings
+        {
+            [Header("1. Carga mágica (em volta do globo)")]
+            [Range(0f, 1f)] public float auraAlpha = 0.85f;
+            [Min(0)] public float auraSize = 2.7f;
+            [Range(0f, 1f)] public float raysAlpha = 0.75f;
+            [Min(0)] public float raysSize = 2.3f;
+            [Tooltip("Graus por segundo.")]
+            public float raysSpin = 40f;
+            [Header("Raios de várias cores atrás do globo")]
+            [Min(0)] public int rainbowRays = 16;
+            [Range(0f, 1.5f)] public float rainbowAlpha = 0.8f;
+            [Tooltip("Comprimento dos raios, em casas.")]
+            [Min(0)] public float rainbowLength = 2.3f;
+            [Tooltip("Largura dos raios, em casas.")]
+            [Min(0)] public float rainbowWidth = 0.55f;
+            [Tooltip("Graus por segundo.")]
+            public float rainbowSpin = 14f;
+            [Header("Brilho amarelo quente colado no globo (como o da flecha)")]
+            public Color warmGlow = new Color(1f, 0.74f, 0.2f);
+            [Range(0f, 1.5f)] public float warmGlowAlpha = 0.9f;
+            [Tooltip("Tamanho do clarão quente atrás do globo, em casas.")]
+            [Min(0)] public float warmGlowSize = 2.4f;
+            [Header("Órbitas (aro elíptico dourado e arco magenta girando)")]
+            [Range(0f, 1f)] public float orbitAlpha = 0.9f;
+            [Min(0)] public float orbitSize = 2.1f;
+            [Tooltip("Graus por segundo.")]
+            public float orbitSpin = 70f;
+            [Header("Fitas arco-íris girando em volta do globo")]
+            [Range(0, 4)] public int swirlCount = 2;
+            [Range(0f, 1f)] public float swirlAlpha = 0.9f;
+            [Min(0)] public float swirlRadius = 0.85f;
+            [Min(0)] public float swirlWidth = 0.09f;
+            [Tooltip("Voltas por segundo.")]
+            public float swirlSpeed = 1.6f;
+            [Min(0)] public int sparkleCount = 8;
+            [Header("2. Conexões luminosas (do globo até cada peça)")]
+            [Min(0.01f)] public float beamTravelSeconds = 0.09f;
+            [Range(0f, 1f)] public float beamAlpha = 1f;
+            [Min(0)] public float beamCoreWidth = 0.09f;
+            [Range(0f, 1f)] public float beamGlowAlpha = 0.5f;
+            [Min(0)] public float beamGlowWidth = 0.75f;
+            [Tooltip("Fio arco-íris enrolado em volta de cada conexão.")]
+            [Range(0f, 1f)] public float beamStrandAlpha = 0.8f;
+            [Tooltip("Altura da ondulação das fitas entrelaçadas, em casas.")]
+            [Min(0)] public float beamStrandWidth = 0.4f;
+            [Tooltip("Quanto a conexão faz curva (0 = reta).")]
+            [Range(0f, 0.6f)] public float beamCurve = 0.18f;
+            [Tooltip("Altura da ondulação (em S) de cada conexão, em casas.")]
+            [Min(0)] public float beamWave = 0.3f;
+            [Tooltip("Quantas ondas cabem numa conexão.")]
+            [Min(0)] public float beamWaves = 1.5f;
+            [Header("3. Alvos carregando (brilho na cor da peça + aura magenta com pontinhos)")]
+            [Range(0f, 1f)] public float targetGlowAlpha = 0.6f;
+            [Range(0f, 1f)] public float nodeAlpha = 0.8f;
+            [Min(0)] public float nodeSize = 1.4f;
+            [Header("4. Explosão mágica: cada peça")]
+            [Min(0.1f)] public float burstSeconds = 0.5f;
+            [Min(0)] public float targetFlashSize = 1f;
+            [Min(0)] public float targetStarSize = 2.2f;
+            [Min(0)] public float targetRingSize = 1.3f;
+            [Range(0f, 1f)] public float targetRingAlpha = 0.9f;
+            [Min(0)] public int targetConfetti = 5;
+            [Header("4. Explosão mágica: o globo")]
+            [Min(0)] public float ballFlashSize = 2f;
+            [Min(0)] public float ballRaysSize = 7f;
+            [Tooltip("Raios magenta entre os raios dourados.")]
+            [Range(0f, 1f)] public float ballStreakAlpha = 0.8f;
+            [Min(0)] public float ballRingSize = 3.6f;
+            [Min(0)] public int ballConfetti = 20;
+            [Header("5. Limpeza: redemoinho magenta e confetes flutuando")]
+            [Range(0f, 1f)] public float sweepAlpha = 0.85f;
+            [Tooltip("Raio do redemoinho, em casas.")]
+            [Min(0)] public float sweepRadius = 3.8f;
+            [Min(0)] public float sweepWidth = 0.22f;
+            [Min(0.1f)] public float sweepSeconds = 0.9f;
+            [Min(0.1f)] public float confettiLife = 0.9f;
+            [Min(0)] public float confettiGravity = 2.5f;
+            [Header("6. Finalização: brilhos piscando onde as peças sumiram")]
+            [Range(0f, 1f)] public float finishAlpha = 0.9f;
+            [Min(0.1f)] public float finishSeconds = 1.1f;
+            [Min(0)] public float confettiSize = 0.12f;
+            [Tooltip("Com mais alvos que isto (dois globos juntos), cada peça usa uma versão mais leve do efeito.")]
+            [Min(1)] public int lightAbove = 24;
+        }
+
+        [Serializable]
+        public sealed class DoubleBallSettings
+        {
+            [Header("Geral")]
+            [Tooltip("Multiplicador de velocidade da sequência inteira.")]
+            [Min(0.1f)] public float speed = 1f;
+            [Tooltip("Intensidade geral dos brilhos.")]
+            [Range(0f, 2f)] public float intensity = 1f;
+            [Tooltip("Quanto a tela escurece (o tabuleiro continua visível).")]
+            [Range(0f, 1f)] public float darkness = 0.6f;
+            [Min(0.05f)] public float dimSeconds = 0.25f;
+            [Tooltip("Tempo, no fim, para a tela voltar ao normal.")]
+            [Min(0.05f)] public float restoreSeconds = 0.5f;
+            [Header("Carga dos dois globos")]
+            [Min(0.05f)] public float chargeSeconds = 0.55f;
+            [Tooltip("Tamanho máximo dos globos (1 = tamanho normal).")]
+            [Min(1f)] public float maxScale = 1.3f;
+            [Range(0f, 1f)] public float chargeGlow = 0.8f;
+            public float pulseFrequency = 9f;
+            [Header("Órbita")]
+            [Min(0.1f)] public float orbitSeconds = 0.9f;
+            [Tooltip("Quantas voltas os globos dão um em volta do outro.")]
+            public float turns = 2.5f;
+            [Tooltip("Avanço do giro ao longo da órbita (0 a 1): começa devagar e acelera.")]
+            public AnimationCurve orbitAngle = new AnimationCurve(new Keyframe(0f, 0f, 0f, 0.2f), new Keyframe(1f, 1f, 2.4f, 0f));
+            [Tooltip("Raio da órbita ao longo do tempo, em múltiplos da distância inicial: abre um pouco e converge para o centro.")]
+            public AnimationCurve orbitRadius = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(0.25f, 1.35f), new Keyframe(0.7f, 0.95f), new Keyframe(1f, 0f));
+            [Tooltip("Inclinação da órbita: 0 = círculo de frente para a tela (giro na vertical), 1 = órbita deitada, vista totalmente de lado.")]
+            [Range(0f, 1f)] public float orbitTilt = 0.68f;
+            [Tooltip("Profundidade da órbita deitada: quanto o globo que passa na frente cresce e o que passa atrás diminui.")]
+            [Range(0f, 0.6f)] public float orbitDepth = 0.24f;
+            [Tooltip("Fração da órbita que leva para ela deitar (os globos saem das casas sem dar salto).")]
+            [Range(0.02f, 1f)] public float orbitTiltEase = 0.22f;
+            [Header("Rastros dos globos (violeta e dourado)")]
+            [Min(0.05f)] public float trailSeconds = 0.3f;
+            [Min(0)] public float trailWidth = 0.34f;
+            [Range(0f, 1f)] public float trailAlpha = 0.95f;
+            [Header("Vórtice")]
+            [Tooltip("Diâmetro do vórtice, em casas.")]
+            [Min(0)] public float vortexScale = 6.5f;
+            [Tooltip("Quanto o vórtice gira em relação ao giro dos globos.")]
+            public float vortexSpin = 1f;
+            [Range(0f, 1f)] public float vortexAlpha = 0.85f;
+            public Color vortexOuter = new Color(0.62f, 0.35f, 0.95f);
+            public Color vortexMid = new Color(1f, 0.35f, 0.85f);
+            public Color vortexInner = new Color(1f, 0.82f, 0.42f);
+            [Tooltip("Partículas atraídas para o centro.")]
+            [Min(0)] public int particleCount = 22;
+            [Header("Colapso e explosão")]
+            [Tooltip("Pausa curtíssima entre o colapso e a explosão.")]
+            [Min(0)] public float collapsePause = 0.06f;
+            [Range(0f, 1f)] public float flashIntensity = 1f;
+            [Min(0.05f)] public float flashSeconds = 0.35f;
+            [Tooltip("Diâmetro da estrela de raios, em casas.")]
+            [Min(0)] public float explosionScale = 8f;
+            [Tooltip("Tremor da câmera na explosão, em unidades de mundo (0 = desligado).")]
+            [Min(0)] public float shakeAmount = 0.04f;
+            [Min(0.01f)] public float shakeSeconds = 0.25f;
+            [Header("Ondas circulares")]
+            [Range(1, 5)] public int waveCount = 3;
+            [Min(0)] public float waveDelay = 0.2f;
+            [Min(0.1f)] public float waveSeconds = 0.75f;
+            [Range(0f, 1f)] public float waveOpacity = 0.95f;
+            [Header("Cada peça destruída")]
+            [Min(0.05f)] public float cellFlashSeconds = 0.3f;
+            [Min(0)] public float cellFlashSize = 1.3f;
+            [Min(0)] public int fragmentsPerCell = 2;
+            [Min(0)] public float fragmentSize = 0.12f;
+            [Min(0)] public float fragmentSpeed = 2.6f;
+            [Min(0.1f)] public float fragmentLife = 0.7f;
+            [Header("Dissipação")]
+            [Min(0)] public int lingerSparkles = 14;
+
+            public float ExplodeT => chargeSeconds + orbitSeconds + collapsePause;
+            public float TotalT => ExplodeT + (Mathf.Max(1, waveCount) - 1) * waveDelay + waveSeconds + restoreSeconds;
+        }
+
+        /// Roteiro da combinação dupla: o jogo usa para mover os dois globos (Pose) e destruir cada peça quando a onda chega (HitTime).
+        public sealed class DoubleBallPlan
+        {
+            internal DoubleBallSettings s;
+            internal Vector3 center, homeA;
+            internal float cell, maxDistance, maxRadius;
+            internal Action cancel;
+            internal int frontOrder;
+
+            /// Ordem de desenho do globo que está passando na frente e do que está passando atrás.
+            public int FrontOrder => frontOrder;
+            public int BackOrder => frontOrder - 1;
+
+            public Vector3 Center => center;
+            /// Segundos (reais) do início até a explosão.
+            public float ExplodeAt => s.ExplodeT / s.speed;
+            public float Total => s.TotalT / s.speed;
+
+            /// Posição dos dois globos e a escala deles, "seconds" depois do início.
+            public void Pose(float seconds, out Vector3 a, out Vector3 b, out float scale) => Pose(seconds, out a, out b, out scale, out _, out _);
+
+            /// Igual, com a órbita deitada: cada globo tem a sua escala (o da frente maior) e "aInFront" diz qual passa na frente.
+            public void Pose(float seconds, out Vector3 a, out Vector3 b, out float scaleA, out float scaleB, out bool aInFront)
+            {
+                float scale;
+                var T = seconds * s.speed;
+                var charge = Mathf.Clamp01(T / s.chargeSeconds);
+                var p = Mathf.Clamp01((T - s.chargeSeconds) / s.orbitSeconds);
+                var arm = homeA - center; arm.z = 0f;
+                var angle = Mathf.Atan2(arm.y, arm.x) + Mathf.PI * 2f * s.turns * s.orbitAngle.Evaluate(p);
+                var radius = arm.magnitude * Mathf.Max(0f, s.orbitRadius.Evaluate(p));
+                // a órbita deita aos poucos: no começo é o círculo (os globos estão nas casas), depois vira uma elipse horizontal
+                var lay = Smooth(p / Mathf.Max(0.02f, s.orbitTiltEase));
+                var sin = Mathf.Sin(angle);
+                var offset = new Vector3(Mathf.Cos(angle), sin * (1f - s.orbitTilt * lay), 0f) * radius;
+                a = center + offset; b = center - offset;
+                var depth = s.orbitDepth * lay * sin * Mathf.Clamp01(radius / Mathf.Max(0.001f, arm.magnitude));   // em cima = longe
+                aInFront = sin < 0f;
+                var grow = 1f - (1f - charge) * (1f - charge) * (1f - charge) + 0.08f * Mathf.Sin(charge * Mathf.PI);   // cresce com um leve excesso
+                scale = (1f + (s.maxScale - 1f) * grow) * (1f + 0.03f * Mathf.Sin(T * s.pulseFrequency)) * (1f - 0.75f * Smooth((p - 0.82f) / 0.18f));
+                scaleA = scale * (1f - depth); scaleB = scale * (1f + depth);
+            }
+
+            /// Segundos (reais) depois da explosão em que a onda chega nesta posição. As peças são divididas em faixas de
+            /// distância (uma por onda), calculadas pela peça mais distante, e cada peça é atingida só pela onda da sua faixa.
+            public float HitTime(Vector3 position)
+            {
+                var delta = position - center; delta.z = 0f;
+                var distance = delta.magnitude;
+                var waves = Mathf.Max(1, s.waveCount);
+                var band = Mathf.Min(waves - 1, (int)(waves * distance / (maxDistance + 0.001f)));
+                var x = 1f - Mathf.Pow(1f - Mathf.Clamp01(distance / maxRadius), 1f / 1.5f);
+                return (band * s.waveDelay + x * s.waveSeconds) / s.speed;
+            }
+
+            public void Cancel() => cancel?.Invoke();
+        }
+
         public SeekerSettings seeker = new SeekerSettings();
         public MatchSettings match = new MatchSettings();
         public BombSettings bomb = new BombSettings();
         public LineSettings line = new LineSettings();
+        public LightBallSettings lightBall = new LightBallSettings();
+        public DoubleBallSettings doubleBall = new DoubleBallSettings();
 
         [Header("Execução")]
         [Tooltip("Câmera usada para cobrir a tela com o escurecimento (vazio = a câmera principal; o preview define a dele).")]
@@ -307,6 +590,7 @@ namespace RoyalAves.Effects
         /// Avança todos os efeitos ativos (o jogo chama a cada quadro; o preview, com o tempo que quiser).
         public void Tick(float dt)
         {
+            UpdateBloom(dt);
             for (var i = active.Count - 1; i >= 0; i--)
             {
                 var effect = active[i];
@@ -315,6 +599,7 @@ namespace RoyalAves.Effects
                 effect.Evaluate(effect.age);
                 if (DebugSolo >= 0) effect.Solo(DebugSolo);
             }
+            TickIdle(dt);
         }
 
         /// Diagnóstico (capturas do editor): mostra só a camada N de cada efeito. -1 = normal.
@@ -326,6 +611,7 @@ namespace RoyalAves.Effects
         {
             foreach (var effect in active) effect.Release();
             active.Clear();
+            StopIdle();
         }
 
         void Launch(Effect effect)
@@ -337,7 +623,7 @@ namespace RoyalAves.Effects
             effect.Evaluate(0f);
         }
 
-        void OnDisable() => StopAll();
+        void OnDisable() { StopAll(); RestoreBloom(); }
 
         // ------------------------------------------------------------------------------------------ API
 
@@ -350,22 +636,61 @@ namespace RoyalAves.Effects
 
         /// Bomba em área: onda circular, clarão, raios e fragmentos saindo de cada célula atingida.
         /// radiusCells: raio da bomba em casas; cells/colors (opcionais): posição e cor das peças da área.
-        public float PlayBomb(Vector3 center, float radiusCells, float cell, IList<Vector3> cells = null, IList<Color> colors = null)
+        public float PlayBomb(Vector3 center, float radiusCells, float cell, IList<Vector3> cells = null, IList<Color> colors = null, bool dimScreen = true)
         {
             if (bombRingThin == null) return 0f;
-            var effect = new BombEffect { center = center, radius = Mathf.Max(0.5f, radiusCells), cell = cell, cells = cells, colors = colors };
+            var effect = new BombEffect { center = center, radius = Mathf.Max(0.5f, radiusCells), cell = cell, cells = cells, colors = colors, dimScreen = dimScreen };
             Launch(effect);
             return effect.duration;
         }
 
         /// Line Cleaner: feixe de energia que sai de origin para os dois lados (ou só um). cells: posição de cada casa da linha.
         /// stopA/stopB: o feixe termina na última casa (barreira) em vez de sair do tabuleiro.
-        public float PlayLine(Vector3 origin, bool horizontal, Vector3 endA, Vector3 endB, bool stopA, bool stopB, IList<Vector3> cells, IList<Color> colors, float cell)
+        /// heads: desenha também as duas cabeças (no jogo quem desenha é o RocketSplitEffect; o preview usa true).
+        public float PlayLine(Vector3 origin, bool horizontal, Vector3 endA, Vector3 endB, bool stopA, bool stopB, IList<Vector3> cells, IList<Color> colors, float cell, bool dimScreen = true, bool heads = false)
         {
             if (lineCore == null) return 0f;
-            var effect = new LineEffect { origin = origin, horizontal = horizontal, endA = endA, endB = endB, stopA = stopA, stopB = stopB, cells = cells, colors = colors, cell = cell };
+            var effect = new LineEffect { origin = origin, horizontal = horizontal, endA = endA, endB = endB, stopA = stopA, stopB = stopB, cells = cells, colors = colors, cell = cell, dimScreen = dimScreen, heads = heads };
             Launch(effect);
             return effect.duration;
+        }
+
+        /// Instante em que a cabeça do line cleaner passa a "along" da origem, num lado de comprimento "side" (até a última casa).
+        public float LineTimeAt(float along, float side, float cell)
+        {
+            var length = Mathf.Max(0.01f, side + line.exitOvershootCells * cell);
+            if (!line.easeIn) return along / line.speed;
+            return Mathf.Max(0.25f, length / line.speed) * Mathf.Sqrt(Mathf.Clamp01(along / length));
+        }
+
+        static Sprite smokePuffSprite, flameBlobSprite;
+        // Nuvem de fumaça: vários tufos macios juntos, sem borda marcada.
+        static Sprite SmokePuff => smokePuffSprite != null ? smokePuffSprite : smokePuffSprite = Procedural(128, (x, y) =>
+        {
+            var d2 = x * x + y * y;
+            if (d2 >= 1f) return 0f;
+            float Tuft(float cx, float cy, float r) { var dx = x - cx; var dy = y - cy; return Mathf.Exp(-(dx * dx + dy * dy) / (r * r)); }
+            var a = 0.85f * Tuft(0f, 0.02f, 0.42f) + 0.6f * Tuft(-0.34f, 0.1f, 0.3f) + 0.6f * Tuft(0.33f, -0.06f, 0.31f)
+                + 0.5f * Tuft(0.08f, 0.36f, 0.27f) + 0.5f * Tuft(-0.1f, -0.36f, 0.28f) + 0.35f * Tuft(0.36f, 0.34f, 0.2f) + 0.35f * Tuft(-0.38f, -0.3f, 0.2f);
+            return Mathf.Clamp01(a) * (1f - d2) * (1f - d2);
+        });
+        // Labareda cartoon: disco cheio de cor chapada, só a beirada macia.
+        static Sprite FlameBlob => flameBlobSprite != null ? flameBlobSprite : flameBlobSprite = Procedural(128, (x, y) => Mathf.Clamp01((1f - Mathf.Sqrt(x * x + y * y)) / 0.22f));
+
+        static readonly Dictionary<Texture2D, Sprite> lineHeads = new Dictionary<Texture2D, Sprite>();
+        static RocketSplitEffectData lineHeadData;
+
+        /// Cabeça do line cleaner (metade da peça) com o pivô na borda de trás, onde sai o fogo. forward = sentido positivo do eixo.
+        static Sprite LineHead(bool forward)
+        {
+            if (lineHeadData == null) lineHeadData = Resources.Load<RocketSplitEffectData>("Effects/RocketSplitEffectData");
+            var texture = lineHeadData == null ? null : forward ? lineHeadData.HalfRight : lineHeadData.HalfLeft;
+            if (texture == null) return null;
+            if (lineHeads.TryGetValue(texture, out var sprite) && sprite != null) return sprite;
+            sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(forward ? 0f : 1f, 0.5f), 100f);
+            sprite.hideFlags = HideFlags.HideAndDontSave;
+            lineHeads[texture] = sprite;
+            return sprite;
         }
 
         /// Impacto do girocóptero na peça-alvo: marcador mágico, clarão branco-dourado, estrela de raios e fragmentos na cor da peça.
@@ -388,6 +713,82 @@ namespace RoyalAves.Effects
         public void PlaySeekerMarker(Vector3 position, float seconds, float cell)
         {
             Launch(new SeekerMarkerEffect { position = position, seconds = seconds, cell = cell });
+        }
+
+        // ---- Light ball: um efeito por globo (carga → conexões → explosão), achado pelo transform do item.
+        readonly Dictionary<Transform, LightBallEffect> lightBalls = new Dictionary<Transform, LightBallEffect>();
+
+        LightBallEffect LightBallOf(Transform owner)
+        {
+            if (owner == null || !lightBalls.TryGetValue(owner, out var effect)) return null;
+            if (effect.done || effect.Ended) { lightBalls.Remove(owner); return null; }
+            return effect;
+        }
+
+        /// 1. Carga mágica: aura, raios e anéis arco-íris em volta do globo (segue follow) até detonar ou cancelar.
+        public bool PlayLightBallCharge(Transform owner, Transform follow, float cell)
+        {
+            if (owner == null) return false;
+            if (LightBallOf(owner) != null) return true;
+            var effect = new LightBallEffect { follow = follow != null ? follow : owner, cell = cell };
+            Launch(effect);
+            lightBalls[owner] = effect;
+            return true;
+        }
+
+        /// 2. Conexão luminosa do globo até uma peça; fica acesa até a explosão.
+        public bool PlayLightBallBeam(Transform owner, Transform target, Color pieceColor)
+        {
+            var effect = LightBallOf(owner);
+            if (effect == null || target == null) return false;
+            effect.AddBeam(target, Normalize(pieceColor));
+            return true;
+        }
+
+        /// 3. Explosão coordenada: o globo e todas as peças conectadas estouram juntos.
+        public bool DetonateLightBall(Transform owner)
+        {
+            var effect = LightBallOf(owner);
+            if (effect == null) return false;
+            effect.Detonate();
+            return true;
+        }
+
+        /// Sequência interrompida: apaga carga e conexões sem explosão.
+        public void CancelLightBall(Transform owner)
+        {
+            var effect = LightBallOf(owner);
+            if (effect != null) effect.Cancel();
+        }
+
+        /// Combinação de dois light balls: escurece, carrega, órbita, vórtice, explosão, ondas e dissipação.
+        /// cells/colors: posição e cor de cada peça que as ondas vão destruir.
+        public DoubleBallPlan PlayDoubleLightBall(Transform ballA, Transform ballB, IList<Vector3> cells, IList<Color> colors, float cell)
+        {
+            if (ballA == null || ballB == null) return null;
+            var plan = new DoubleBallPlan { frontOrder = sortingBase - 1, s = doubleBall, cell = cell, homeA = ballA.position, center = (ballA.position + ballB.position) * 0.5f };
+            var far = cell;
+            if (cells != null)
+                foreach (var position in cells)
+                {
+                    var delta = position - plan.center; delta.z = 0f;
+                    far = Mathf.Max(far, delta.magnitude);
+                }
+            plan.maxDistance = far; plan.maxRadius = far + 0.9f * cell;
+            var normalized = new List<Color>();
+            if (cells != null) for (var i = 0; i < cells.Count; i++) normalized.Add(Normalize(colors != null && i < colors.Count ? colors[i] : Color.clear));
+            var effect = new DoubleLightBallEffect { plan = plan, ballA = ballA, ballB = ballB, cells = cells ?? new List<Vector3>(), colors = normalized };
+            plan.cancel = () => { if (!effect.done) effect.duration = Mathf.Min(effect.duration, effect.age); };
+            Launch(effect);
+            return plan;
+        }
+
+        /// Põe um sprite do jogo (os globos) acima da tela escura e abaixo dos brilhos.
+        public void RaiseAboveDim(SpriteRenderer renderer)
+        {
+            if (renderer == null) return;
+            renderer.sortingLayerName = sortingLayer;
+            renderer.sortingOrder = sortingBase - 1;
         }
 
         Color Normalize(Color c)
@@ -532,6 +933,23 @@ namespace RoyalAves.Effects
             return horizontal + vertical + 0.8f * Gauss(Mathf.Sqrt(x * x + y * y), 0.13f);
         });
 
+        // ---- Seeker: mira mágica. Aro com quatro aberturas, quatro marcas nos eixos, aro interno tracejado e ponto central.
+        static Sprite targetReticle;
+        static Sprite TargetReticle => targetReticle != null ? targetReticle : targetReticle = Procedural(256, (x, y) =>
+        {
+            var r = Mathf.Sqrt(x * x + y * y);
+            if (r >= 1f) return 0f;
+            var theta = Mathf.Atan2(y, x);
+            const float quarter = Mathf.PI * 0.5f;
+            var toAxis = Mathf.Abs(theta - Mathf.Round(theta / quarter) * quarter);                     // 0 no eixo, 45° na diagonal
+            var open = Smooth((Mathf.PI * 0.25f - toAxis - 0.2f) / 0.06f + 1f) * Smooth((Mathf.PI * 0.25f - toAxis) / 0.2f);   // some perto das diagonais
+            var a = (Gauss(r - 0.74f, 0.016f) + 0.25f * Gauss(r - 0.74f, 0.06f)) * open;
+            if (r > 0.8f && r < 0.97f) a += Gauss(r * Mathf.Sin(toAxis), 0.016f) * Smooth((0.97f - r) / 0.03f);   // marcas nos eixos
+            a += Gauss(r - 0.44f, 0.011f) * (Mathf.Cos(theta * 12f) > 0f ? 1f : 0f);                              // aro interno tracejado
+            a += 0.9f * Gauss(r, 0.05f);
+            return a;
+        });
+
         // ---- Bomba: camadas desenhadas em código. O anel fica em 0,8 da metade do sprite, para os raios dos eixos passarem dele.
         const float BombRing = 0.8f;
         static Sprite bombDisc, bombRingMagenta, bombRingGold, bombRingLine, bombRaysGlow, bombRaysLine, bombCoreWhite;
@@ -598,6 +1016,18 @@ namespace RoyalAves.Effects
             }
             return a;
         }
+
+        /// Anel de pontinhos (raio em BombRing), para a explosão de cada peça do light ball.
+        static Sprite dottedRing;
+        static Sprite DottedRing => dottedRing != null ? dottedRing : dottedRing = Procedural(256, (x, y) =>
+        {
+            var r = Mathf.Sqrt(x * x + y * y);
+            const float step = Mathf.PI * 2f / 18f;
+            var theta = Mathf.Atan2(y, x);
+            var delta = theta - Mathf.Round(theta / step) * step;
+            var dist = Mathf.Sqrt(Mathf.Max(0f, r * r + BombRing * BombRing - 2f * r * BombRing * Mathf.Cos(delta)));
+            return Gauss(dist, 0.04f);
+        });
 
         /// Cobre a tela com preto (atrás do efeito, acima das peças).
         static void PlaceDim(SpriteRenderer sr, Camera cam, float z, float alpha)
@@ -723,6 +1153,7 @@ namespace RoyalAves.Effects
         {
             public PowerUpVfxPlayer player;
             public float age, duration;
+            public bool done;
             protected readonly List<SpriteRenderer> sprites = new List<SpriteRenderer>();
             protected readonly List<GameObject> objects = new List<GameObject>();
 
@@ -742,8 +1173,12 @@ namespace RoyalAves.Effects
             public abstract void Begin();
             public abstract void Evaluate(float t);
 
+            protected virtual void OnRelease() { }
+
             public void Release()
             {
+                done = true;
+                OnRelease();
                 foreach (var sr in sprites) player.Return(sr);
                 sprites.Clear();
                 foreach (var go in objects)
@@ -782,28 +1217,27 @@ namespace RoyalAves.Effects
 
         // ------------------------------------------------------------------------------------------ MATCH
 
+        /// Match normal: a explosãozinha de cada casa da combinação dupla (anel magenta pequeno, clarão branco-dourado que
+        /// vira a cor da peça, estrela e brilhos saindo), mais os confetes na cor da peça. Tamanho e rotação variam de peça para peça.
         sealed class MatchEffect : Effect
         {
             public Vector3 position; public Color pieceColor; public float cell;
             MatchSettings s;
-            SpriteRenderer outline, inner, flash, flare;
+            SpriteRenderer flash, ring, star;
             SpriteRenderer[] sparkles;
-            Ribbon swoosh;
             Shard[] confetti;
-            float seed;
+            int seed;
 
             public override void Begin()
             {
                 s = player.match;
-                duration = s.duration;
-                seed = Hash((int)(position.x * 100), (int)(position.y * 100));
-                inner = Add(GlowDot, 0);
-                outline = Add(MatchOutline, 1);
+                duration = Mathf.Max(s.duration, s.impactSeconds, 0.12f + s.confettiLife * 1.2f);
+                seed = Mathf.RoundToInt(position.x * 100f) * 31 + Mathf.RoundToInt(position.y * 100f);
+                ring = Add(BombRingMagenta, 1);
                 flash = Add(GlowDot, 2);
-                swoosh = player.MakeRibbon("Fita mágica", 3, objects);
-                flare = Add(CrossStar, 4);
+                star = Add(CrossStar, 3);
                 sparkles = new SpriteRenderer[s.sparkleCount];
-                for (var i = 0; i < sparkles.Length; i++) sparkles[i] = Add(CrossStar, 5);
+                for (var i = 0; i < sparkles.Length; i++) sparkles[i] = Add(CrossStar, 4);
                 confetti = new Shard[s.confettiCount];
                 for (var i = 0; i < confetti.Length; i++)
                 {
@@ -819,66 +1253,41 @@ namespace RoyalAves.Effects
                         sr = Add(player.Fragment(i), 8, false), origin = position,
                         velocity = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * speed,
                         spin = (Hash(i, 17) - 0.5f) * 720f, size = s.confettiSize * (0.6f + 0.9f * Hash(i, 18)),
-                        life = s.confettiLife * (0.7f + 0.5f * Hash(i, 19)), delay = 0.08f + 0.02f * Hash(i, 20), color = color,
+                        life = s.confettiLife * (0.7f + 0.5f * Hash(i, 19)), delay = 0.04f + 0.02f * Hash(i, 20), color = color,
                     };
                 }
             }
 
             public override void Evaluate(float t)
             {
-                // 1. BRILHO DE DESTAQUE: contorno dourado em volta da peça, acende e apaga rápido
-                var h = Smooth(t / 0.03f) * (1f - Smooth((t - s.highlightSeconds * 0.45f) / (s.highlightSeconds * 0.55f)));
-                var outlineSize = s.highlightSize * cell / 0.62f * (0.96f + 0.1f * Mathf.Clamp01(t / s.highlightSeconds));
-                Place(outline, position, outlineSize, outlineSize, A(Color.Lerp(player.gold, player.white, 0.25f), s.highlightAlpha * h));
-                Place(inner, position, cell * 1.5f, cell * 1.5f, A(Color.Lerp(pieceColor, player.gold, 0.5f), 0.3f * s.highlightAlpha * h));
-
-                // 2. EXPLOSÃO SUAVE: clarão macio branco-dourado e um brilho fino em cruz
-                var ef = (t - 0.05f) / s.burstSeconds;
-                if (ef >= 0f && ef <= 1f)
+                var p = player;
+                var a = t / s.impactSeconds;
+                if (a <= 1f)
                 {
-                    var grow = EaseOut(ef);
-                    var flashSize = s.flashSize * cell * (0.7f + 0.5f * grow);
-                    Place(flash, position, flashSize, flashSize, A(Color.Lerp(player.white, player.gold, 0.3f), s.flashAlpha * (1f - ef) * (1f - ef)));
-                    var flareSize = s.flareSize * cell * (0.6f + 0.5f * grow);
-                    Place(flare, position, flareSize, flareSize, A(Color.Lerp(player.white, player.gold, 0.2f), s.flareAlpha * Mathf.Pow(1f - ef, 1.5f)));
+                    var vary = 0.8f + 0.4f * Hash(seed, 271);
+                    var size = cell * s.flashSize * 0.75f * vary * (0.6f + 0.6f * a);
+                    Place(flash, position, size, size, A(Color.Lerp(Color.Lerp(Color.white, p.prismGold, 0.4f), pieceColor, a), s.flashAlpha * Mathf.Pow(1f - a, 1.5f)));
+                    var ringSize = cell * s.ringSize * vary * (0.45f + 0.55f * EaseOut(a)) / BombRing;
+                    Place(ring, position, ringSize, ringSize, A(p.prismMagenta, s.ringAlpha * (1f - a)));
+                    var starSize = cell * s.starSize * vary * (0.5f + 0.5f * EaseOut(a));
+                    Place(star, position, starSize, starSize, A(Color.Lerp(Color.white, p.prismGold, 0.3f), s.starAlpha * Mathf.Pow(1f - a, 1.6f)), Hash(seed, 272) * 90f);
+                    for (var k = 0; k < sparkles.Length; k++)
+                    {
+                        var id = seed * 3 + k;
+                        var angle = (k + Hash(id, 273)) / sparkles.Length * Mathf.PI * 2f + Hash(seed, 274) * 6.28f;
+                        var dist = cell * (0.2f + s.sparkleTravel * EaseOut(a)) * (0.7f + 0.6f * Hash(id, 275));
+                        var env = Mathf.Sin(Mathf.PI * Mathf.Pow(a, 0.6f));
+                        var sparkle = cell * s.sparkleSize * (0.5f + Hash(id, 276)) * (0.5f + 0.5f * env);
+                        Place(sparkles[k], position + new Vector3(Mathf.Cos(angle) * dist, Mathf.Sin(angle) * dist, 0f), sparkle, sparkle,
+                            A(k % 3 == 0 ? p.prismCyan : k % 3 == 1 ? p.prismPink : Color.Lerp(p.prismGold, Color.white, 0.5f), env));
+                    }
                 }
-                else { flash.color = A(Color.white, 0f); flare.color = A(Color.white, 0f); }
-
-                // 3. PARTÍCULAS MÁGICAS: estrelinhas de 4 pontas que se afastam piscando
-                for (var i = 0; i < sparkles.Length; i++)
+                else
                 {
-                    var f = (t - 0.08f - 0.025f * i) / (duration - 0.2f);
-                    if (f < 0f || f > 1f) { sparkles[i].color = A(Color.white, 0f); continue; }
-                    var angle = (seed + i / (float)sparkles.Length + (Hash(i, 31) - 0.5f) * 0.12f) * Mathf.PI * 2f;
-                    var dist = cell * (0.2f + s.sparkleTravel * EaseOut(f)) * (0.7f + 0.5f * Hash(i, 33));
-                    var env = Mathf.Sin(Mathf.PI * Mathf.Pow(f, 0.6f));
-                    var size = s.sparkleSize * cell * (0.6f + 0.7f * Hash(i, 32)) * (0.5f + 0.5f * env) * (0.85f + 0.15f * Mathf.Sin(t * 40f + i));
-                    Place(sparkles[i], position + new Vector3(Mathf.Cos(angle) * dist, Mathf.Sin(angle) * dist + cell * 0.08f * f, 0f), size, size,
-                        A(i % 2 == 0 ? Color.Lerp(player.gold, player.white, 0.4f) : player.white, env));
+                    var off = A(Color.white, 0f);
+                    flash.color = off; ring.color = off; star.color = off;
+                    for (var k = 0; k < sparkles.Length; k++) sparkles[k].color = off;
                 }
-
-                // Fita mágica: dá uma volta achatada pela peça, dourada na frente e magenta na cauda
-                var sf = Mathf.Clamp01((t - 0.1f) / (duration - 0.14f));
-                var headAngle = (seed * 360f - 150f + 330f * EaseOut(sf)) * Mathf.Deg2Rad;
-                var spanAngle = Mathf.Min(170f, 330f * EaseOut(sf)) * Mathf.Deg2Rad;
-                var envelope = Smooth(sf / 0.12f) * (1f - Smooth((sf - 0.55f) / 0.45f));
-                var rx = s.swooshRadius * cell; var ry = rx * 0.42f;
-                var centre = position - new Vector3(0f, cell * 0.08f, 0f);
-                for (var k = 0; k <= RibbonSegments; k++)
-                {
-                    var q = k / (float)RibbonSegments;
-                    var a = headAngle - q * spanAngle;
-                    var point = centre + new Vector3(Mathf.Cos(a) * rx, Mathf.Sin(a) * ry, 0f);
-                    var tangent = new Vector3(-Mathf.Sin(a) * rx, Mathf.Cos(a) * ry, 0f).normalized;
-                    var half = new Vector3(-tangent.y, tangent.x, 0f) * (s.swooshWidth * cell * Mathf.Pow(1f - q, 0.8f) * 0.5f);
-                    swoosh.v[2 * k] = point - half; swoosh.v[2 * k + 1] = point + half;
-                    var col = Color.Lerp(Color.Lerp(player.white, player.gold, 0.45f), player.magenta, Mathf.Clamp01(q * 1.4f));
-                    col.a = Mathf.Clamp01(s.swooshAlpha * envelope * Mathf.Pow(1f - q, 0.5f));
-                    swoosh.c[2 * k] = col; swoosh.c[2 * k + 1] = col;
-                }
-                swoosh.mesh.vertices = swoosh.v; swoosh.mesh.colors = swoosh.c;
-
-                // Confetes com a cor da peça
                 for (var i = 0; i < confetti.Length; i++) UpdateShard(confetti[i], t, cell, s.confettiGravity);
             }
         }
@@ -887,7 +1296,7 @@ namespace RoyalAves.Effects
 
         sealed class BombEffect : Effect
         {
-            public Vector3 center; public float radius, cell;
+            public Vector3 center; public float radius, cell; public bool dimScreen = true;
             public IList<Vector3> cells; public IList<Color> colors;
             BombSettings s;
             SpriteRenderer dim, field, warm, haloRing, haloRing2, starB, starA, ring, ring2, flashHot, flashCore;
@@ -966,7 +1375,7 @@ namespace RoyalAves.Effects
                 var late = Mathf.Clamp01((t - 0.12f) / 0.4f);
 
                 // Tela escura (a explosão brilha mais no escuro)
-                PlaceDim(dim, player.ViewCam, center.z, s.dimAlpha * Smooth(t / 0.05f) * (1f - Smooth((t - duration * 0.5f) / (duration * 0.5f))));
+                PlaceDim(dim, player.ViewCam, center.z, (dimScreen ? s.dimAlpha : 0f) * Smooth(t / 0.05f) * (1f - Smooth((t - duration * 0.5f) / (duration * 0.5f))));
 
                 // Tudo (círculo violeta, anel, raios) cresce junto do centro até a borda da área, segura e some.
                 var k3 = 1f - Mathf.Clamp01(t / s.ringSeconds);
@@ -1025,16 +1434,20 @@ namespace RoyalAves.Effects
         {
             public Vector3 position; public Color pieceColor; public float cell;
             SeekerSettings s;
-            SpriteRenderer glowOrange, glowYellow, core, raysGlow, raysLine, streaks, ring, ringGold;
-            SpriteRenderer[] sparkles;
+            SpriteRenderer glowOrange, glowYellow, glowPiece, core, raysGlow, raysLine, streaks, ring, ringGold, shockMagenta, shockCyan;
+            SpriteRenderer[] sparkles, sparks;
             Shard[] shards;
+            BoltSet bolts;
 
             public override void Begin()
             {
                 s = player.seeker;
                 duration = s.duration;
+                glowPiece = Add(GlowDot, 0);
                 glowOrange = Add(GlowDot, 0);
                 streaks = Add(SeekerRaysLine, 1);
+                shockCyan = Add(BombRingLine, 2);
+                shockMagenta = Add(BombRingMagenta, 2);
                 ringGold = Add(BombRingGold, 2);
                 raysGlow = Add(SeekerRaysGlow, 3);
                 raysLine = Add(SeekerRaysLine, 4);
@@ -1043,6 +1456,9 @@ namespace RoyalAves.Effects
                 core = Add(BombCoreWhite, 7);
                 sparkles = new SpriteRenderer[s.sparkleCount];
                 for (var i = 0; i < sparkles.Length; i++) sparkles[i] = Add(CrossStar, 8);
+                sparks = new SpriteRenderer[s.sparkCount];
+                for (var i = 0; i < sparks.Length; i++) sparks[i] = Add(GlowDot, 8);
+                if (s.boltCount > 0) bolts = new BoltSet(player, objects, 9, s.boltCount * 2);
                 shards = new Shard[s.fragmentCount];
                 for (var i = 0; i < shards.Length; i++)
                 {
@@ -1061,6 +1477,8 @@ namespace RoyalAves.Effects
 
             public override void Evaluate(float t)
             {
+                var p = player;
+                var x = Mathf.Clamp01(t / duration);
                 var grow = EaseOut(Mathf.Clamp01(t / 0.14f));
                 var life = Smooth(t / 0.02f) * (1f - Smooth((t - 0.12f) / (duration - 0.12f)));
                 var hot = Smooth(t / 0.02f) * (1f - Smooth((t - 0.05f) / 0.28f));
@@ -1068,15 +1486,23 @@ namespace RoyalAves.Effects
                 Place(raysGlow, position, rays, rays, A(new Color(1f, 0.55f, 0.1f), s.raysAlpha * life));
                 Place(raysLine, position, rays, rays, A(new Color(1f, 0.9f, 0.6f), s.raysAlpha * life));
                 var streak = s.raysSize * 1.25f * cell * (0.3f + 0.7f * grow);
-                Place(streaks, position, streak, streak, A(player.magenta, s.streakAlpha * life), 22.5f);
+                Place(streaks, position, streak, streak, A(p.prismMagenta, s.streakAlpha * life), 22.5f);
                 var ringDiameter = s.ringSize * cell * (0.35f + 0.65f * EaseOut(Mathf.Clamp01(t / 0.24f)));
                 var ringAlpha = 1f - Smooth(t / 0.32f);
                 Place(ring, position, ringDiameter / BombRing, ringDiameter / BombRing, A(new Color(1f, 0.9f, 0.6f), ringAlpha));
-                Place(ringGold, position, ringDiameter / BombRing, ringDiameter / BombRing, A(Color.Lerp(player.magenta, player.gold, 0.4f), 0.7f * ringAlpha));
+                Place(ringGold, position, ringDiameter / BombRing, ringDiameter / BombRing, A(Color.Lerp(p.prismPink, p.prismGold, 0.4f), 0.7f * ringAlpha));
+
+                // duas ondas de choque maiores e mais lentas: magenta larga e ciano fina, cada uma no seu ritmo
+                var magenta = s.shockSize * cell * (0.25f + 0.75f * EaseOut(Mathf.Clamp01(t / (duration * 0.7f))));
+                Place(shockMagenta, position, magenta / BombRing, magenta / BombRing, A(p.prismMagenta, s.shockAlpha * (1f - Smooth(t / (duration * 0.75f)))));
+                var cyan = s.shockSize * 1.2f * cell * (0.2f + 0.8f * EaseOut(Mathf.Clamp01((t - 0.04f) / (duration * 0.85f))));
+                Place(shockCyan, position, cyan / BombRing, cyan / BombRing, A(p.prismCyan, t > 0.04f ? 0.8f * s.shockAlpha * (1f - Smooth((t - 0.04f) / (duration * 0.85f))) : 0f));
+
                 var c = s.flashSize * cell * (0.6f + 0.4f * grow);
+                Place(glowPiece, position, c * 2.6f, c * 2.6f, A(pieceColor, 0.55f * (1f - x) * (1f - x)));
                 Place(glowOrange, position, c * 2.4f, c * 2.4f, A(new Color(1f, 0.5f, 0.1f), 0.5f * hot));
                 Place(glowYellow, position, c * 1.6f, c * 1.6f, A(new Color(1f, 0.82f, 0.28f), hot));
-                Place(core, position, c * 0.9f, c * 0.9f, A(player.white, hot));
+                Place(core, position, c * 0.9f, c * 0.9f, A(p.white, hot));
                 for (var i = 0; i < sparkles.Length; i++)
                 {
                     var tt = Mathf.Clamp01((t - 0.03f) / (duration * 0.85f));
@@ -1084,39 +1510,72 @@ namespace RoyalAves.Effects
                     var dist = cell * (0.35f + 0.85f * EaseOut(tt)) * (0.75f + 0.4f * Hash(i, 91));
                     var e = Mathf.Sin(Mathf.PI * Mathf.Pow(tt, 0.7f));
                     var size = cell * 0.34f * (0.6f + 0.6f * Hash(i, 90)) * (0.5f + 0.5f * e);
-                    Place(sparkles[i], position + new Vector3(Mathf.Cos(angle) * dist, Mathf.Sin(angle) * dist, 0f), size, size, A(i % 2 == 0 ? player.white : Color.Lerp(player.gold, player.white, 0.3f), e));
+                    Place(sparkles[i], position + new Vector3(Mathf.Cos(angle) * dist, Mathf.Sin(angle) * dist, 0f), size, size,
+                        A(i % 3 == 0 ? p.prismCyan : i % 3 == 1 ? p.white : Color.Lerp(p.gold, p.white, 0.3f), e));
+                }
+                // faíscas radiais: riscos de luz que saem rápido e desaceleram
+                for (var i = 0; i < sparks.Length; i++)
+                {
+                    var angle = (i + Hash(i, 92)) / sparks.Length * Mathf.PI * 2f;
+                    var direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
+                    var dist = cell * (0.3f + (1.4f + 1.3f * Hash(i, 93)) * EaseOut(x));
+                    PlaceStreak(sparks[i], position + direction * dist, direction, cell * 0.45f * Mathf.Max(0.15f, 1f - x), cell * 0.1f,
+                        A(i % 3 == 0 ? p.prismCyan : i % 3 == 1 ? p.prismGold : p.prismPink, Mathf.Pow(1f - x, 1.3f)));
+                }
+                if (bolts != null)
+                {
+                    bolts.Begin();
+                    var electric = 1f - Smooth(t / 0.2f);
+                    for (var i = 0; i < s.boltCount; i++)
+                    {
+                        var angle = (i + 0.5f * Hash(i, 94)) / s.boltCount * Mathf.PI * 2f;
+                        var direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
+                        bolts.Arc(position + direction * (0.2f * cell), position + direction * ((1.1f + 0.7f * Hash(i, 95)) * cell * EaseOut(t / 0.12f)), t, 900 + i, electric, cell, 0f, true, 1f);
+                    }
+                    bolts.End();
                 }
                 for (var i = 0; i < shards.Length; i++) UpdateShard(shards[i], t, cell, 5f);
             }
         }
 
-        /// Marcador no alvo: anel dourado que fecha sobre a peça e pulsa, com brilho em cruz, enquanto o girocóptero chega.
+        /// Alvo mágico: uma mira grande desce girando, fecha e trava na peça (com um clarão quando trava); depois fica pulsando,
+        /// com uma mira dourada menor girando ao contrário e pulsos ciano saindo dela, até o girocóptero chegar.
         sealed class SeekerMarkerEffect : Effect
         {
             public Vector3 position; public float seconds, cell;
             SeekerSettings s;
-            SpriteRenderer glow, ringGold, ring, flare;
+            SpriteRenderer glow, reticle, inner, pulse, flare;
 
             public override void Begin()
             {
                 s = player.seeker;
                 duration = seconds + 0.18f;
                 glow = Add(GlowDot, 0);
-                ringGold = Add(BombRingGold, 1);
-                ring = Add(BombRingLine, 2);
+                pulse = Add(BombRingLine, 1);
+                reticle = Add(TargetReticle, 2);
+                inner = Add(TargetReticle, 2);
                 flare = Add(CrossStar, 3);
             }
 
             public override void Evaluate(float t)
             {
-                var arrive = Smooth(t / 0.18f);
-                var alpha = s.markerAlpha * arrive * (1f - Smooth((t - seconds) / 0.18f));
-                var diameter = s.markerSize * cell * (1.6f - 0.6f * arrive) * (1f + 0.04f * Mathf.Sin(t * 14f));
-                Place(ring, position, diameter / BombRing, diameter / BombRing, A(new Color(1f, 0.9f, 0.55f), alpha));
-                Place(ringGold, position, diameter / BombRing, diameter / BombRing, A(new Color(1f, 0.6f, 0.12f), 0.9f * alpha));
-                Place(glow, position, diameter * 1.5f, diameter * 1.5f, A(player.gold, 0.28f * alpha));
-                var flareSize = diameter * 1.75f * (0.92f + 0.08f * Mathf.Sin(t * 9f));
-                Place(flare, position, flareSize, flareSize, A(Color.Lerp(player.gold, player.white, 0.5f), 0.75f * alpha));
+                var p = player;
+                var lockIn = Smooth(t / s.markerLockSeconds);
+                var alpha = s.markerAlpha * Smooth(t / 0.08f) * (1f - Smooth((t - seconds) / 0.18f));
+                var beat = 0.5f + 0.5f * Mathf.Sin(t * 13f);
+                var size = s.markerSize * cell * (2.6f - 1.3f * lockIn) * (1f + 0.035f * beat * lockIn);
+                Place(reticle, position, size, size, A(p.prismMagenta, alpha), (1f - lockIn) * 160f + t * s.markerSpin);
+                Place(inner, position, size * 0.6f, size * 0.6f, A(p.prismGold, alpha * lockIn), -t * s.markerSpin * 1.5f);
+                Place(glow, position, size * 1.25f, size * 1.25f, A(p.prismViolet, 0.4f * alpha));
+                // pulsos ciano saindo da mira depois que ela trava
+                var phase = Mathf.Repeat((t - s.markerLockSeconds) * 2.2f, 1f);
+                var pulseSize = s.markerSize * cell * (0.9f + 1.1f * phase) / BombRing;
+                Place(pulse, position, pulseSize, pulseSize, A(p.prismCyan, t > s.markerLockSeconds ? 0.6f * alpha * (1f - phase) : 0f));
+                // clarão em cruz no instante em que trava, depois um brilho pequeno pulsando no centro
+                var snap = 1f - Smooth((t - s.markerLockSeconds) / 0.18f);
+                var locked = t >= s.markerLockSeconds * 0.85f ? 1f : 0f;
+                var flareSize = s.markerSize * cell * (1.1f + 1.5f * snap) * (0.92f + 0.08f * beat);
+                Place(flare, position, flareSize, flareSize, A(Color.Lerp(p.prismGold, p.white, 0.5f + 0.5f * snap), alpha * locked * (0.45f + 0.55f * snap)));
             }
         }
 
@@ -1128,6 +1587,8 @@ namespace RoyalAves.Effects
             SpriteRenderer aura, swirlA, swirlB;
             SpriteRenderer[] sparkles;
             Ribbon trail, trailGlow;
+            SpriteRenderer[] embers;
+            BoltSet bolts;
             readonly List<Vector4> history = new List<Vector4>();
             readonly Vector3[] points = new Vector3[RibbonSegments + 1];
             Vector3 last;
@@ -1145,6 +1606,9 @@ namespace RoyalAves.Effects
                 trail = player.MakeRibbon("Rastro mágico", 2, objects);
                 sparkles = new SpriteRenderer[s.trailSparkles];
                 for (var i = 0; i < sparkles.Length; i++) sparkles[i] = Add(CrossStar, 3);
+                embers = new SpriteRenderer[s.trailEmbers];
+                for (var i = 0; i < embers.Length; i++) embers[i] = Add(GlowDot, 3);
+                if (s.flightLightning > 0f) bolts = new BoltSet(player, objects, 4, 4);
             }
 
             Vector3 Sample(float time)
@@ -1207,6 +1671,34 @@ namespace RoyalAves.Effects
                 trail.mesh.vertices = trail.v; trail.mesh.colors = trail.c;
                 trailGlow.mesh.vertices = trailGlow.v; trailGlow.mesh.colors = trailGlow.c;
 
+                // Faíscas soltas: nascem no girocóptero, ficam para trás no caminho e se afastam dele em curva
+                for (var i = 0; i < embers.Length; i++)
+                {
+                    var phase = Mathf.Repeat(t * (1.6f + 0.8f * Hash(i, 131)) + Hash(i, 132), 1f);
+                    var at = Sample(t - phase * s.trailSeconds);
+                    var ahead = Sample(t - phase * s.trailSeconds + 0.03f);
+                    var along = ahead - at; along.z = 0f;
+                    along = along.sqrMagnitude > 1e-10f ? along.normalized : Vector3.up;
+                    var side = new Vector3(-along.y, along.x, 0f) * (Hash(i, 133) > 0.5f ? 1f : -1f);
+                    var drift = side * (cell * 0.55f * phase * (0.4f + 0.6f * Hash(i, 134)));
+                    PlaceStreak(embers[i], at + drift, along, cell * 0.3f * (1f - 0.5f * phase), cell * 0.09f,
+                        A(i % 3 == 0 ? player.prismCyan : i % 3 == 1 ? Color.Lerp(player.gold, player.white, 0.4f) : player.prismPink, s.trailAlpha * fade * moving * Mathf.Sin(Mathf.PI * phase)));
+                }
+                // Pequenas descargas elétricas em volta do girocóptero
+                if (bolts != null)
+                {
+                    bolts.Begin();
+                    if (alive)
+                        for (var i = 0; i < 2; i++)
+                        {
+                            var a0 = i * Mathf.PI + t * 2.3f;
+                            var a1 = a0 + 1.3f + 0.5f * Mathf.Sin(t * 4f + i);
+                            bolts.Arc(last + new Vector3(Mathf.Cos(a0), Mathf.Sin(a0), 0f) * (0.42f * cell), last + new Vector3(Mathf.Cos(a1), Mathf.Sin(a1), 0f) * (0.6f * cell),
+                                t, 950 + i, s.flightLightning * fade, cell, 0.22f);
+                        }
+                    bolts.End();
+                }
+
                 // Faíscas piscando ao longo do rastro
                 for (var i = 0; i < sparkles.Length; i++)
                 {
@@ -1219,18 +1711,22 @@ namespace RoyalAves.Effects
             }
         }
 
+        // Light Ball e combinação dupla: ver PowerUpVfxPlayerLightBall.cs
+
         // ------------------------------------------------------------------------------------------ LINE CLEANER
 
         sealed class LineEffect : Effect
         {
             public Vector3 origin, endA, endB; public bool horizontal, stopA, stopB;
-            public IList<Vector3> cells; public IList<Color> colors; public float cell;
+            public IList<Vector3> cells; public IList<Color> colors; public float cell; public bool dimScreen = true, heads;
             LineSettings s;
 
             sealed class Beam
             {
                 public Vector3 dir; public float length, angle; public float startOffset;
-                public SpriteRenderer tip, warm;
+                public float time;                       // tempo de voo até o fim do caminho
+                public SpriteRenderer tip, warm, head;
+                public SpriteRenderer[] flames = new SpriteRenderer[0], puffs = new SpriteRenderer[0];
                 public Ribbon halo, mid, core;
                 public Ribbon[] smoke;
                 public SpriteRenderer[] particles;
@@ -1275,7 +1771,13 @@ namespace RoyalAves.Effects
                 if (dist < 0.01f) return null;
                 var dir = to / dist;
                 var beam = new Beam { dir = dir, length = dist + overshoot, angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg };
+                beam.time = s.easeIn ? Mathf.Max(0.25f, beam.length / s.speed) : beam.length / s.speed;
                 if (dim == null) dim = Add(Solid, -2, false);
+                // fumaça amarelada e labaredas ancoradas no caminho: nascem quando a cabeça passa e ficam para trás
+                beam.puffs = new SpriteRenderer[Mathf.Min(32, Mathf.CeilToInt(beam.length / cell * s.puffsPerCell))];
+                for (var i = 0; i < beam.puffs.Length; i++) beam.puffs[i] = Add(SmokePuff, 0, false);
+                beam.flames = new SpriteRenderer[3 * Mathf.Min(54, Mathf.CeilToInt(beam.length / cell * s.flamesPerCell))];
+                for (var i = 0; i < beam.flames.Length; i++) beam.flames[i] = Add(FlameBlob, 1 + i % 3, false);
                 beam.warm = Add(GlowDot, 0);
                 beam.halo = player.MakeRibbon("Cauda (halo)", 1, objects);
                 beam.smoke = new Ribbon[5];
@@ -1285,6 +1787,11 @@ namespace RoyalAves.Effects
                 beam.particles = new SpriteRenderer[s.particleCount];
                 for (var i = 0; i < beam.particles.Length; i++) beam.particles[i] = Add(GlowDot, 5);
                 beam.tip = Add(player.lineTip, 6);
+                if (heads)
+                {
+                    var sprite = LineHead(horizontal ? dir.x > 0f : dir.y > 0f);
+                    if (sprite != null) beam.head = Add(sprite, 8, false);
+                }
                 beams.Add(beam);
                 return beam;
             }
@@ -1295,7 +1802,8 @@ namespace RoyalAves.Effects
                 var beamA = MakeBeam(endA, stopA);
                 var beamB = MakeBeam(endB, stopB);
                 var longest = Mathf.Max(beamA != null ? beamA.length : 0f, beamB != null ? beamB.length : 0f);
-                duration = longest / s.speed + s.retractSeconds + 0.35f;
+                var longestTime = Mathf.Max(beamA != null ? beamA.time : 0f, beamB != null ? beamB.time : 0f);
+                duration = longestTime + Mathf.Max(s.retractSeconds + 0.35f, s.puffLife * 1.25f + 0.1f);
 
                 if (cells != null)
                     for (var i = 0; i < cells.Count; i++)
@@ -1305,7 +1813,7 @@ namespace RoyalAves.Effects
                         var beam = useB ? beamB : beamA;
                         if (beam == null) continue;
                         var along = Mathf.Max(0f, Vector3.Dot(rel, beam.dir));
-                        var hit = new CellHit { time = along / s.speed, position = cells[i], beamB = useB };
+                        var hit = new CellHit { time = TimeAt(beam, along), position = cells[i], beamB = useB };
                         hit.ring = Add(player.lineBreakRing, 6);
                         hit.puff = Add(player.dot, 7);
                         var color = colors != null && i < colors.Count && colors[i].a > 0.5f ? colors[i] : player.confettiColors[i % Mathf.Max(1, player.confettiColors.Length)];
@@ -1332,7 +1840,7 @@ namespace RoyalAves.Effects
             public override void Evaluate(float t)
             {
                 var dimK = Smooth(t / 0.08f) * (1f - Smooth((t - (duration - 0.45f)) / 0.45f));
-                PlaceDim(dim, player.ViewCam, origin.z, s.dimAlpha * dimK);
+                PlaceDim(dim, player.ViewCam, origin.z, (dimScreen ? s.dimAlpha : 0f) * dimK);
                 foreach (var beam in beams) EvaluateBeam(beam, t);
 
                 foreach (var hit in hits)
@@ -1351,10 +1859,14 @@ namespace RoyalAves.Effects
                 }
             }
 
+            /// Instante em que a cabeça passa a "along" da origem (inverso do movimento).
+            float TimeAt(Beam beam, float along) => s.easeIn ? beam.time * Mathf.Sqrt(Mathf.Clamp01(along / beam.length)) : along / s.speed;
+
             void EvaluateBeam(Beam beam, float t)
             {
-                var travelled = Mathf.Min(beam.length, s.speed * t);
-                var arrived = beam.length / s.speed;
+                var progress = Mathf.Clamp01(t / beam.time);
+                var travelled = beam.length * (s.easeIn ? progress * progress : progress);
+                var arrived = beam.time;
                 var retract = Mathf.Clamp01((t - arrived) / s.retractSeconds);
                 var tail = Mathf.Min(s.tailCells * cell, travelled) * (1f - Smooth(retract));
                 var head = origin + beam.dir * travelled;
@@ -1365,7 +1877,43 @@ namespace RoyalAves.Effects
 
                 var length = Mathf.Max(0.01f, tail);
                 var show = fade * Smooth(tail / (0.6f * cell));
-                var deep = new Color(0.45f, 0.16f, 0.9f);
+
+                // FUMAÇA AMARELADA: nuvens que nascem onde a cabeça passou, crescem, giram, sobem um pouco e somem
+                for (var j = 0; j < beam.puffs.Length; j++)
+                {
+                    var h1 = Hash(j, 141); var h2 = Hash(j, 142);
+                    var along = (j + 0.5f) / beam.puffs.Length * beam.length;
+                    var age = t - TimeAt(beam, along) - 0.05f;
+                    var life = s.puffLife * (0.75f + 0.5f * h1);
+                    if (age < 0f || age > life) { beam.puffs[j].color = A(Color.white, 0f); continue; }
+                    var f = age / life;
+                    var at = origin + beam.dir * along + perp * ((h2 - 0.5f) * 0.5f * cell) + Vector3.up * (0.22f * cell * f);
+                    var size = s.puffSize * cell * (0.5f + 0.9f * f) * (0.75f + 0.5f * h2);
+                    Place(beam.puffs[j], at, size, size, A(Color.Lerp(s.puffColor, s.puffColorEnd, f), s.puffAlpha * Smooth(f / 0.12f) * (1f - Smooth((f - 0.35f) / 0.65f))),
+                        h1 * 360f + t * 40f * (j % 2 == 0 ? 1f : -1f));
+                }
+
+                // LABAREDAS cartoon: em cada ponto do rastro, vermelho por fora, laranja no meio e amarelo no miolo;
+                // o amarelo some primeiro, depois o laranja, e o vermelho encolhe por último
+                var flameCount = beam.flames.Length / 3;
+                for (var i = 0; i < flameCount; i++)
+                {
+                    var h1 = Hash(i, 131); var h2 = Hash(i, 132); var h3 = Hash(i, 133);
+                    var along = (i + 0.5f) / flameCount * beam.length;
+                    var age = t - TimeAt(beam, along);
+                    var life = s.flameLife * (0.7f + 0.6f * h1);
+                    var red = beam.flames[3 * i]; var orange = beam.flames[3 * i + 1]; var yellow = beam.flames[3 * i + 2];
+                    if (age < 0f || age > life) { red.color = orange.color = yellow.color = A(Color.white, 0f); continue; }
+                    var f = age / life;
+                    var at = origin + beam.dir * (along - 0.3f * cell * f) + perp * ((h2 - 0.5f) * 2f * s.flameSpread * cell * (1f + 0.6f * f));
+                    var size = s.flameSize * cell * (0.75f + 0.5f * h3) * (1f + 0.1f * Mathf.Sin(t * 26f + i * 1.3f));
+                    var outer = size * (1f - 0.6f * f * f);
+                    Place(red, at, outer * 1.25f, outer, A(s.fireEnd, Smooth((1f - f) / 0.3f)), beam.angle);
+                    var middle = size * 0.72f * Mathf.Clamp01(1f - f / 0.8f);
+                    Place(orange, at + beam.dir * (0.04f * cell), middle * 1.25f, middle, A(s.fireMid, middle > 0.001f ? 1f : 0f), beam.angle);
+                    var inner = size * 0.44f * Mathf.Clamp01(1f - f / 0.5f);
+                    Place(yellow, at + beam.dir * (0.07f * cell), inner * 1.25f, inner, A(s.fireHot, inner > 0.001f ? 1f : 0f), beam.angle);
+                }
 
                 // CAUDA como a da flecha: larga na frente e afunilando; halo translúcido, corpo dourado e centro neon
                 Shape(beam.halo, head, beam.dir, perp, length, s.glowWidth * cell, 0.8f, Color.Lerp(player.gold, new Color(1f, 0.55f, 0.12f), 0.3f), s.glowAlpha * show * pulse, 0.55f, 0f, 0f, 0f, false, 0f, 0f);
@@ -1374,8 +1922,9 @@ namespace RoyalAves.Effects
 
                 // AURA esfumaçada por cima (roxo, roxo escuro e amarelo): desliza sem parar da frente até a ponta da cauda
                 var scale = length / (cell * 3.2f);
-                Shape(beam.smoke[0], head, beam.dir, perp, length, s.smokeWidth * cell, 0.7f, player.violet, s.smokeAlpha * show, 0.5f, 0.06f, 0.14f, t * 9f, true, scale, -t * s.smokeSpeed);
-                Shape(beam.smoke[1], head, beam.dir, perp, length, s.smokeWidth * 1.25f * cell, 0.65f, deep, s.smokeAlpha * show, 0.45f, 0.08f, 0.18f, -t * 7f + 2f, true, scale * 0.7f, -t * s.smokeSpeed * 0.7f + 0.37f);
+                // (a aura roxa saiu: a cauda agora é só fogo) duas faixas de fogo vermelho-alaranjado no lugar
+                Shape(beam.smoke[0], head, beam.dir, perp, length, s.fireWidth * 1.35f * cell, 0.7f, s.fireEnd, 0.55f * s.fireAlpha * show, 0.5f, 0.06f, 0.14f, t * 9f, true, scale, -t * s.smokeSpeed);
+                Shape(beam.smoke[1], head, beam.dir, perp, length, s.fireWidth * 1.1f * cell, 0.7f, s.fireMid, 0.6f * s.fireAlpha * show, 0.45f, 0.08f, 0.18f, -t * 7f + 2f, true, scale * 0.7f, -t * s.smokeSpeed * 0.7f + 0.37f);
                 Shape(beam.smoke[2], head, beam.dir, perp, length, s.smokeWidth * 0.7f * cell, 0.8f, Color.Lerp(player.gold, player.white, 0.15f), 0.4f * s.smokeAlpha * show, 0.6f, 0.05f, 0.12f, t * 12f + 4f, true, scale * 1.3f, -t * s.smokeSpeed * 1.35f + 0.71f);
                 Place(beam.warm, head - beam.dir * (length * 0.25f), Mathf.Max(length * 0.9f, cell), s.glowWidth * cell * 1.5f, A(new Color(1f, 0.6f, 0.15f), 0.12f * show), beam.angle);
 
@@ -1393,13 +1942,19 @@ namespace RoyalAves.Effects
                     var side = i % 2 == 0 ? 1f : -1f;
                     var offset = side * (0.04f + phase * s.particleSpread * (0.5f + 0.5f * h2)) * cell * (1f - 0.45f * q);
                     var size = s.particleSize * cell * (0.55f + 0.9f * h1) * (1f - 0.55f * phase);
-                    var tone = h2 < 0.5f ? Color.Lerp(player.gold, player.white, 0.35f) : h2 < 0.8f ? player.white : Color.Lerp(player.magenta, player.white, 0.3f);
+                    var tone = h2 < 0.5f ? Color.Lerp(s.fireHot, player.white, 0.35f) : h2 < 0.8f ? s.fireHot : s.fireMid;      // faíscas de fogo
                     Place(beam.particles[i], head - beam.dir * (q * length) + perp * offset, size, size, A(tone, show * Mathf.Sin(Mathf.PI * Mathf.Pow(phase, 0.6f)) * (1f - 0.5f * q)));
                 }
 
                 // Frente de impacto: acompanha o ponto de limpeza
-                var tipSize = s.tipSize * cell * (0.9f + 0.15f * Mathf.Sin(t * 26f));
-                Place(beam.tip, head, tipSize, tipSize, A(Color.Lerp(player.white, player.gold, 0.2f), (1f - Smooth(retract * 3f)) * (t > 0f ? 1f : 0f)), t * 120f);
+                // Clarão na boca do fogo (a borda de trás da cabeça) e a cabeça voando na frente dele
+                var tipSize = s.tipSize * s.nozzleFlare * cell * (0.9f + 0.15f * Mathf.Sin(t * 26f));
+                Place(beam.tip, head, tipSize, tipSize, A(Color.Lerp(player.white, s.fireHot, 0.35f), (1f - Smooth(retract * 3f)) * (t > 0f ? 1f : 0f)), t * 120f);
+                if (beam.head != null)
+                {
+                    var tall = s.headSize * cell;
+                    Place(beam.head, head, tall * Sw(beam.head.sprite) / Sh(beam.head.sprite), tall, A(Color.white, retract <= 0f ? 1f : 0f), horizontal ? 0f : 90f);
+                }
             }
         }
     }

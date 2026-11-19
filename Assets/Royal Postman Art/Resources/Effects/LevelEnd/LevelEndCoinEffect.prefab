@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6284109569671114608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6116643663724624381}
+  - component: {fileID: 4872426287553603656}
+  m_Layer: 0
+  m_Name: LevelEndCoinEffect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6116643663724624381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6284109569671114608}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4872426287553603656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6284109569671114608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4968b3a11fcb8644bee8b0306a183e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoyalAves.Effects.LevelEndCoinEffect
+  coinSprite: {fileID: 7675826601332790545, guid: 13fb847804485204795ecbdc923e5ec3, type: 3}
+  glow: {fileID: 21300000, guid: 42fb20e044f4acc478529f034ba05d90, type: 3}
+  sparkle4: {fileID: 21300000, guid: 904d87ae93f22f6469893655cb8651a7, type: 3}
+  sparkle6: {fileID: 21300000, guid: 2eff90e71ae2747428b75339d2011c14, type: 3}
+  dot: {fileID: 21300000, guid: 167d16f120cb64845a6ff03d7ed0256a, type: 3}
+  ring: {fileID: 21300000, guid: 6ba411121ca0ea648876e2795135ff9d, type: 3}
+  additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  gold: {r: 1, g: 0.761, b: 0.278, a: 1}
+  violet: {r: 0.506, g: 0.169, b: 1, a: 1}
+  magenta: {r: 0.82, g: 0.169, b: 1, a: 1}
+  pink: {r: 1, g: 0.341, b: 0.776, a: 1}
+  cyan: {r: 0.286, g: 0.867, b: 0.961, a: 1}
+  core: {r: 1, g: 0.97, b: 0.88, a: 1}
+  emission:
+    startDelay: 0.18
+    interval: 0.075
+    maxFlying: 14
+    fractionPerCoin: 0.18
+    minValuePerCoin: 3
+    spawnRadius: 0.45
+  flight:
+    seconds: 0.78
+    secondsVariation: 0.15
+    popSeconds: 0.17
+    popDistance: 0.75
+    arcHeight: 1.5
+    sideSwing: 1.5
+    acceleration: 2
+    coinSize: 0.62
+    arrivalScale: 0.6
+    spinTurns: 2.5
+  trail:
+    haloSize: 2.3
+    haloAlpha: 0.6
+    cometLength: 1.5
+    cometWidth: 0.5
+    cometSeconds: 0.09
+    cometAlpha: 0.7
+    sparksPerSecond: 30
+    sparkSize: 0.24
+    sparkLife: 0.5
+    sparkSpread: 0.16
+    maxSparks: 180
+  arrival:
+    sparks: 7
+    sparkDistance: 0.9
+    seconds: 0.42
+    ringSize: 1.5
+    flashSize: 1.3
+    counterPop: 0.2
+    counterPopSeconds: 0.2
+    playSound: 1
+    sound: {fileID: 0}
+    soundInterval: 0.14
+  source:
+    size: 3.4
+    alpha: 0.55
+    raysSize: 2.4
+    raysAlpha: 0.5
+    raysSpin: 40
+    pulseSpeed: 1.6
+    birthSparks: 3
+  counter:
+    goalsFadeSeconds: 0.25
+    appearSeconds: 0.38
+    iconHeight: 0.74
+    textHeight: 0.56
+    gap: 0.1
+    maxWidth: 0.86
+    prefix: +
+    useGoalTextStyle: 1
+    textColor: {r: 0.45, g: 0.16, b: 0.06, a: 1}
+    countSeconds: 0.22
+    glowSize: 2.4
+    glowAlpha: 0.45
+    plaqueTitle: "B\xF4nus"
+    plaqueObjectName: PlacaObjetivos
+  overlaySortingOrder: 32000
+  finishFadeSeconds: 0.18
+  demoSeconds: 2.5

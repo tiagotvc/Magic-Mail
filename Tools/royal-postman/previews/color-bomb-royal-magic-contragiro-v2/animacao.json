@@ -1,0 +1,49 @@
+{
+  "name": "Color Bomb — giros independentes",
+  "version": 2,
+  "source": "color-bomb-2d.png",
+  "renderer": "Render-Contragiro.cs",
+  "format": {
+    "frames": 48,
+    "frameSize": [
+      384,
+      384
+    ],
+    "fps": 24,
+    "loopSeconds": 2,
+    "columns": 8,
+    "rows": 6,
+    "frameOrder": "Da esquerda para a direita, de cima para baixo.",
+    "pivot": [
+      0.5,
+      0.5
+    ],
+    "alpha": true
+  },
+  "parts": [
+    {
+      "name": "Topo",
+      "sheet": "spritesheet-topo.png",
+      "screenDirection": "esquerda"
+    },
+    {
+      "name": "Base",
+      "sheet": "spritesheet-base.png",
+      "screenDirection": "direita"
+    }
+  ],
+  "combined": {
+    "sheet": "spritesheet.png",
+    "pngZip": "48-quadros-png.zip"
+  },
+  "preview": {
+    "file": "previa-giros-independentes.mp4",
+    "panels": [
+      "Somente topo",
+      "Somente base",
+      "Topo e base"
+    ],
+    "darkBackground": true
+  },
+  "verified": "48 composições correspondem aos PNGs de cada quadro. Máscaras das duas camadas fixas e sem sobreposição. Direções opostas e alinhamento das duas fileiras douradas conferidos na prévia."
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Color Bomb — repintura das joias e do botão rosa",
+  "version": 7,
+  "source": "color-bomb-2d.png",
+  "repaint": {
+    "file": "repintura-2d.png",
+    "method": "ImageGen integrado",
+    "sha256": "0a04829921ead114562b6f8a9a1ffd34978529872254d259505867237b529163",
+    "prompt": "Precise 2D sprite art EDIT, using the attached current Royal Magic sprite as the exact design and camera pose. Retain the existing transparent square canvas, centered placement, clockwise leaning tall round shape, exact camera and overall layout. Keep the orange and yellow dome segments, purple protruding cuff silhouette, and blue base segment geometry as close to the reference as possible. Do two repairs with considerable care to professional 2D game sprite craft. (1) Repaint the colored cabochons and their gold settings on the purple central cuff, avoiding any warped outlines. Four prominent front stones remain in the same order and approximate positions: red, yellow, green, cyan-blue, with thin green and magenta turning ends if present in the reference. Each main stone is a regularly rounded square with four clean straight sides, smoothly rounded corners of equal radius, a single unbroken even gold frame, the stone perfectly centered inside it and a clean broad beveled facet. Treat each setting like a solid jewel sunk into the band. At the center of the band the gold frame should be a rounded square in a gentle perspective (not a lopsided outward-curving blob); an outer stone can be proportionally narrower and follows the local curve, with a continuous contour. All gem settings must sit at the middle of the same purple band, spaced neatly. No deformed trapezoids with bent sides, no wave artifacts, no broken orange edges, no white speckling/no glitter. Keep similar thickness to the clean gold faceted plates of the given sprite, rich golden highlights and soft amber shading. (2) Repaint the entire existing raised pink button on top as ONE clean rounded dome nested tightly in its purple seat. Retain its placement, angle, shade and current width, but make it a smooth fuchsia cabochon with one broad controlled soft reflection, shadows painted as a coherent dark magenta underside, and a clean continuous silhouette. Repair all streaks, nicks or gaps at the upper edge and keep the reflection fully INSIDE the stone. The raised short purple collar has a simple even outline. Use vivid wide clean 2D hand-painted color blocks and soft polished highlights, maintaining cartoon art direction for a small match-3 sprite. Keep the rest of the game sprite visually unchanged. No text, shadows outside silhouette, soft outer glow, extra objects, checkerboard or painted background. Real PNG transparency. Output only one full edited sprite.",
+    "scope": "Trechos pintados registrados no cinturão e no topo rosa."
+  },
+  "renderer": "Render-Contragiro.cs",
+  "layers": {
+    "dome": "spritesheet-topo.png",
+    "belt": "cinturao-fixo.png",
+    "base": "spritesheet-base.png"
+  },
+  "animation": {
+    "frames": 48,
+    "frameSize": [
+      384,
+      384
+    ],
+    "fps": 24,
+    "layout": [
+      8,
+      6
+    ],
+    "pivot": [
+      0.5,
+      0.5
+    ],
+    "alpha": true
+  },
+  "previews": [
+    "previa-contragiro.webp",
+    "previa-contragiro.mp4"
+  ],
+  "validation": "48 quadros RGBA e 48 quadros WebP conferidos. O cinturão e a área rosa permanecem fixos. O contorno superior está contínuo e a base mantém os bytes da V6."
+}

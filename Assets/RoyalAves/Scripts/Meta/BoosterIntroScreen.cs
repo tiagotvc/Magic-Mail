@@ -106,6 +106,21 @@ namespace RoyalAves.Meta
         Vector3 iconBaseScale, nameBaseScale;
         Vector2 iconBasePosition;
 
+        /// Botão "Usar!" no meio do tabuleiro, para power-ups que não precisam de toque numa peça (o Chapéu de Mago).
+        /// Com ele a tela cobre o tabuleiro também; tocar fora do botão cancela o power-up sem gastar.
+        public sealed class UseButton
+        {
+            public Sprite border, center;
+            public TMP_FontAsset font;
+            public string labelPt = "Usar!", labelEn = "Use!";
+            public Vector2 size = new Vector2(560f, 250f);
+            public System.Action onUse;
+        }
+
+        UseButton use;
+        RectTransform useRect;
+        bool used;
+
         public static BoosterIntroScreen Current { get; private set; }
 
         /// Instante (Time.unscaledTime) até o qual a tela fica escura mesmo depois que o power-up foi usado: o efeito da
@@ -132,6 +147,110 @@ namespace RoyalAves.Meta
             view.Setup();
             view.StartCoroutine(view.Run());
             return true;
+        }
+
+        /// Abre a tela com o botão "Usar!". entry: conteúdo usado se o catálogo não tiver uma entrada para este power-up.
+        public static bool ShowUse(BoostIcon boost, BoosterIntroCatalog.Entry entry, UseButton use)
+        {
+            if (boost == null || use == null || use.border == null) return false;
+            var found = BoosterIntroCatalog.Find(boost.type);
+            if (found != null) entry = found;
+            var prefab = Resources.Load<BoosterIntroScreen>(PrefabPath);
+            if (entry == null || prefab == null) return false;
+            Hide(true);
+            var view = Instantiate(prefab);
+            view.name = "Apresentação de power-up - " + entry.DisplayName;
+            view.boost = boost;
+            view.entry = entry;
+            view.use = use;
+            Current = view;
+            view.Setup();
+            if (LevelManager.THIS != null) LevelManager.THIS.DragBlocked = true;      // nada de arrastar peça com a tela aberta
+            view.StartCoroutine(view.Run());
+            return true;
+        }
+
+        void BuildUseButton()
+        {
+            if (use == null || useRect != null) return;
+            if (GetComponent<GraphicRaycaster>() == null) gameObject.AddComponent<GraphicRaycaster>();
+
+            // tocar no escuro cancela (o mesmo que tocar de novo no power-up da barra)
+            if (dim != null)
+            {
+                dim.raycastTarget = true;
+                var cancel = dim.GetComponent<Button>();
+                if (cancel == null) cancel = dim.gameObject.AddComponent<Button>();
+                cancel.transition = Selectable.Transition.None;
+                cancel.onClick.AddListener(() =>
+                {
+                    if (closing || used) return;
+                    var lm = LevelManager.THIS;
+                    if (lm != null && lm.activatedBoost == boost) { lm.activatedBoost = null; lm.UnLockBoosts(); }
+                    BeginClose();
+                });
+            }
+
+            var go = new GameObject("Usar", typeof(RectTransform), typeof(Image), typeof(Button));
+            useRect = (RectTransform)go.transform;
+            useRect.SetParent(root, false);
+            useRect.SetAsLastSibling();
+            useRect.anchorMin = useRect.anchorMax = new Vector2(0.5f, 0.5f);
+            useRect.sizeDelta = use.size;
+            useRect.anchoredPosition = BoardCenterInRoot();
+            var borderImage = go.GetComponent<Image>();
+            borderImage.sprite = use.border; borderImage.preserveAspect = false;
+
+            if (use.center != null)
+            {
+                var core = new GameObject("Miolo", typeof(RectTransform), typeof(Image));
+                var coreRect = (RectTransform)core.transform;
+                coreRect.SetParent(useRect, false);
+                coreRect.anchorMin = new Vector2(0.035f, 0.09f); coreRect.anchorMax = new Vector2(0.965f, 0.93f);
+                coreRect.offsetMin = coreRect.offsetMax = Vector2.zero;
+                var coreImage = core.GetComponent<Image>();
+                coreImage.sprite = use.center; coreImage.raycastTarget = false;
+            }
+
+            var label = new GameObject("Texto", typeof(RectTransform), typeof(TextMeshProUGUI));
+            var labelRect = (RectTransform)label.transform;
+            labelRect.SetParent(useRect, false);
+            labelRect.anchorMin = Vector2.zero; labelRect.anchorMax = Vector2.one;
+            labelRect.offsetMin = new Vector2(30f, 24f); labelRect.offsetMax = new Vector2(-30f, -12f);
+            var text = label.GetComponent<TextMeshProUGUI>();
+            if (use.font != null) text.font = use.font;
+            else if (nameFallback != null) text.font = nameFallback.font;
+            text.text = LocalizedImage.Current == GameLanguage.Portuguese ? use.labelPt : use.labelEn;
+            text.alignment = TextAlignmentOptions.Center;
+            text.enableAutoSizing = true; text.fontSizeMin = 40f; text.fontSizeMax = 130f;
+            text.color = Color.white;
+            text.outlineColor = new Color32(30, 90, 10, 255); text.outlineWidth = 0.22f;
+            text.raycastTarget = false;
+
+            go.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                if (closing || used) return;
+                used = true;
+                var action = use.onUse;
+                BeginClose();
+                action?.Invoke();
+            });
+        }
+
+        Vector2 BoardCenterInRoot()
+        {
+            var lm = LevelManager.THIS; var cam = Camera.main;
+            if (lm == null || lm.field == null || cam == null || root == null) return Vector2.zero;
+            var squares = lm.field.GetSquares(true);
+            if (squares == null || squares.Count == 0) return Vector2.zero;
+            Vector3 lo = new Vector3(float.MaxValue, float.MaxValue), hi = new Vector3(float.MinValue, float.MinValue);
+            foreach (var square in squares)
+            {
+                if (square == null || square.IsNone()) continue;
+                lo = Vector3.Min(lo, square.transform.position); hi = Vector3.Max(hi, square.transform.position);
+            }
+            if (lo.x > hi.x) return Vector2.zero;
+            return ScreenToRoot(cam.WorldToScreenPoint((lo + hi) * 0.5f));
         }
 
         public static void Hide(bool immediate = false)
@@ -264,6 +383,7 @@ namespace RoyalAves.Meta
             yield return null;   // dá um quadro para o botão mostrar o visual de "selecionado"
             if (boost == null || closing) yield break;
             Layout();
+            BuildUseButton();
             while (age < fadeIn && !closing)
             {
                 age += Time.unscaledDeltaTime;
@@ -301,6 +421,8 @@ namespace RoyalAves.Meta
         {
             if (closing) return;
             closing = true;
+            // modo "Usar!": se fechou sem usar, devolve o arrastar; se usou, o embaralhamento cuida disso
+            if (use != null && !used && LevelManager.THIS != null) LevelManager.THIS.DragBlocked = false;
             if (Current == this) Current = null;
             StartCoroutine(FadeOutAndDestroy());
         }
@@ -346,6 +468,12 @@ namespace RoyalAves.Meta
                 var c = outlineColor; c.a = baseAlpha * pulse;
                 outlines[i].color = c;
             }
+            if (useRect != null)
+            {
+                // botão "Usar!": entra com um quique e fica pulsando de leve
+                var enter = EaseOutBack((t - 0.12f) / 0.35f);
+                useRect.localScale = Vector3.one * Mathf.Max(0.01f, enter) * (1f + 0.035f * Mathf.Sin(t * 4.5f));
+            }
             if (snapshot != null)
             {
                 var k = buttonPopSeconds > 0f ? Mathf.Clamp01(t / buttonPopSeconds) : 1f;
@@ -384,6 +512,11 @@ namespace RoyalAves.Meta
 
             if (dimInstance != null) Destroy(dimInstance);
             if (holeTexture != null) Destroy(holeTexture);
+            if (use != null)
+            {
+                dim.material = null;   // modo "Usar!": preto liso por cima de tudo, tabuleiro inclusive
+                return;
+            }
             if (useBoardCamera && SetupBoardCamera())
             {
                 dim.material = null;   // preto liso; o tabuleiro vem por cima, desenhado de verdade

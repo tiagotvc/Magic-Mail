@@ -22,3 +22,155 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 850cb625a63543a3b282f1ae420d2829, type: 3}
   - {fileID: 2800000, guid: f8e4cbf423494fefb2efb50e3b89c309, type: 3}
   - {fileID: 2800000, guid: 1e93d3f81b364a4799dadb5acc9c2073, type: 3}
+  useFireFrames: 0
+  idleFrameTime: 0.07
+  fireFrameTime: 0.08
+  ballSprite: {fileID: 0}
+  fuseSparkSprite: {fileID: 0}
+  fuseSegmentSprite: {fileID: 0}
+  additiveMaterial: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
+  pixelsPerUnit: 128
+  cannonScale: 0.576
+  artAngle: 90
+  muzzleOffsetPx: 123
+  breechOffsetPx: 168
+  muzzleIntoBoardCells: 0.28
+  entranceSeconds: 0.38
+  entranceSlideCells: 0.7
+  entranceGlowColor: {r: 0.85, g: 0.35, b: 1, a: 1}
+  entranceRingColor: {r: 1, g: 0.82, b: 0.35, a: 1}
+  entranceGlowAlpha: 0.6
+  entranceSparkles: 6
+  auraColor: {r: 0.7, g: 0.3, b: 1, a: 1}
+  auraAlpha: 0.3
+  fuseSeconds: 0.7
+  fuseLengthCells: 0.75
+  fuseWidthCells: 0.07
+  fuseSide: 1
+  fuseSegments: 12
+  fuseColorA: {r: 0.95, g: 0.86, b: 0.64, a: 1}
+  fuseColorB: {r: 0.74, g: 0.58, b: 0.36, a: 1}
+  fuseSparkColor: {r: 1, g: 0.72, b: 0.22, a: 1}
+  fuseSparkSizeCells: 0.5
+  fuseSparksPerSecond: 45
+  fuseSwell: 0.12
+  fuseTrembleCells: 0.018
+  chargeColor: {r: 1, g: 0.6, b: 0.25, a: 1}
+  chargeAlpha: 0.55
+  chargeMotes: 8
+  muzzleFlashSeconds: 0.3
+  muzzleFlashSizeCells: 2.4
+  muzzleGlowColor: {r: 1, g: 0.78, b: 0.3, a: 1}
+  muzzleBurstColor: {r: 1, g: 0.52, b: 0.14, a: 1}
+  muzzleRingColor: {r: 1, g: 0.35, b: 0.85, a: 1}
+  muzzleSparks: 20
+  recoilCells: 0.5
+  recoilSeconds: 0.55
+  recoilCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.13
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.62
+      value: 0.1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.82
+      value: -0.07
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  recoilSquash: 0.16
+  recoilTiltDegrees: 4
+  cannonLingerSeconds: 0.6
+  cannonFadeSeconds: 0.28
+  ballSpeedCells: 12
+  ballSizeCells: 0.62
+  ballSpinDegrees: 0
+  hitLeadCells: 0.35
+  ballFlameColor: {r: 1, g: 0.5, b: 0.12, a: 1}
+  ballFringeColor: {r: 0.9, g: 0.3, b: 1, a: 1}
+  ballCoreColor: {r: 1, g: 0.95, b: 0.72, a: 1}
+  ballFlameAlpha: 0.75
+  ballFringeAlpha: 0.4
+  ballCoreAlpha: 0.85
+  trailLengthCells: 3.2
+  trailWidthCells: 0.85
+  trailTaper: 0.75
+  trailWobble: 0.2
+  trailSwayCells: 0.14
+  trailFringeColor: {r: 0.82, g: 0.25, b: 1, a: 1}
+  trailFlameColor: {r: 1, g: 0.42, b: 0.08, a: 1}
+  trailGoldColor: {r: 1, g: 0.74, b: 0.2, a: 1}
+  trailCoreColor: {r: 1, g: 0.93, b: 0.66, a: 1}
+  trailFringeAlpha: 0.45
+  trailFlameAlpha: 0.8
+  trailGoldAlpha: 0.7
+  trailCoreAlpha: 0.6
+  trailFadeSeconds: 0.3
+  embersPerCell: 6
+  emberSizeCells: 0.1
+  emberLifeSeconds: 0.6
+  emberHotColor: {r: 1, g: 0.8, b: 0.3, a: 1}
+  emberColdColor: {r: 1, g: 0.3, b: 0.06, a: 1}
+  emberMagicColor: {r: 0.95, g: 0.35, b: 1, a: 1}
+  emberMagicShare: 0.22
+  maxParticles: 180
+  impactSeconds: 0.32
+  impactSizeCells: 1.5
+  impactAlpha: 0.85
+  impactSparks: 7
+  impactFallbackColor: {r: 1, g: 0.74, b: 0.25, a: 1}
+  suppressMatchEffect: 1
+  fallHoldAfterLastHit: 0.25
+  exitCells: 2.5
+  endBurstSizeCells: 2.6
+  endBurstSparks: 16
+  afterglowSeconds: 0.6
+  dimAlpha: 0.55
+  dimFadeSeconds: 0.18
+  dimHoldAfterBall: 0.1
+  cameraShake: 1
+  fireShakeCells: 0.07
+  fireShakeSeconds: 0.28
+  hitShakeCells: 0.012
+  entranceSound: {fileID: 0}
+  fuseSound: {fileID: 0}
+  shotSound: {fileID: 0}

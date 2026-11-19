@@ -1231,8 +1231,20 @@ namespace RoyalAves.Meta
         void OpenChest()
         {
             if (!MetaProgress.ClaimChest(config)) return;
-            rewardText.text = RewardText(MetaProgress.CurrentArea(config).reward);
-            ShowModal(rewardExtra, "Baú de Correspondências", tag: "ÁREA RESTAURADA", art: true, primary: "Recolher", onPrimary: ShowNextArea);
+            var reward = MetaProgress.CurrentArea(config).reward;
+            rewardText.text = RewardText(reward);
+            System.Action summary = () =>
+                ShowModal(rewardExtra, "Baú de Correspondências", tag: "ÁREA RESTAURADA", art: true, primary: "Recolher", onPrimary: ShowNextArea);
+            // Tela do baú abrindo (só visual: os prêmios já foram creditados acima). Sem power-ups no baú, ou se a tela
+            // não puder abrir, vai direto para o resumo, como antes.
+            try
+            {
+                var prizes = reward.boosters.Where(b => b.count > 0)
+                    .Select(b => new RoyalAves.Effects.ChestReward(b.type, b.count)).ToList();
+                if (prizes.Count > 0 && RoyalAves.Effects.ChestOpenScreen.Show(prizes, summary)) return;
+            }
+            catch (System.Exception e) { Debug.LogException(e); }
+            summary();
         }
 
         void ShowNextArea()

@@ -1,0 +1,62 @@
+﻿{
+    "name":  "Color Bomb — cúpula, cinta e base",
+    "version":  5,
+    "renderer":  "Render-Contragiro.cs",
+    "source":  "color-bomb-2d.png",
+    "pose":  {
+                 "tiltClockwiseDegrees":  10.5,
+                 "commonPivot":  [
+                                     0.5,
+                                     0.5
+                                 ]
+             },
+    "frameFormat":  {
+                        "count":  48,
+                        "size":  [
+                                     384,
+                                     384
+                                 ],
+                        "fps":  24,
+                        "loopSeconds":  2,
+                        "sheetGrid":  [
+                                          8,
+                                          6
+                                      ],
+                        "order":  "Esquerda para direita, de cima para baixo.",
+                        "alpha":  true
+                    },
+    "paintOrder":  [
+                       {
+                           "part":  "Base",
+                           "sheet":  "spritesheet-base.png",
+                           "direction":  "direita"
+                       },
+                       {
+                           "part":  "Cúpula",
+                           "sheet":  "spritesheet-topo.png",
+                           "direction":  "esquerda"
+                       },
+                       {
+                           "part":  "Cinta",
+                           "sheet":  "spritesheet-cinta.png",
+                           "direction":  "direita na amostra isolada"
+                       }
+                   ],
+    "combined":  {
+                     "sheet":  "spritesheet.png",
+                     "pngZip":  "48-quadros-png.zip",
+                     "motion":  "A cúpula e a base giram em sentidos opostos, com a cinta no quadro inicial."
+                 },
+    "preview":  {
+                    "file":  "previa-tres-camadas.mp4",
+                    "panels":  [
+                                   "Cúpula isolada",
+                                   "Cinta isolada",
+                                   "Base isolada",
+                                   "Contragiro com cinta parada"
+                               ],
+                    "background":  "roxo escuro",
+                    "closeup":  "previa-cinta.gif"
+                },
+    "verification":  "48 quadros conferidos. Cúpula, base e imagem-fonte idênticas à V4. Máscara da cinta preservada. As joias são centralizadas entre as bordas da cinta e cada moldura segue a tangente local. Ângulos medidos da borda superior à esquerda, ao centro e à direita: 26,0°, 7,0° e -2,4°."
+}

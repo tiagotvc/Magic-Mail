@@ -75,6 +75,37 @@ MonoBehaviour:
   seekerArc: {fileID: 21300000, guid: b14965df5bb89694fafa89daf9d3aba4, type: 3}
   seekerTrail: {fileID: 21300000, guid: 841f66c10cfadfc449159df7f9b60e66, type: 3}
   seekerMicroStar: {fileID: 21300000, guid: 2dbaf22aaeb71de4f9eb815d12bcff25, type: 3}
+  lbCoreGlow: {fileID: 21300000, guid: 2958dbe5fc452ec4ca29a861b830ae95, type: 3}
+  lbPulseRing: {fileID: 21300000, guid: f87a4931bad6d174cbb96da33cba9c6a, type: 3}
+  lbOrbitEllipse: {fileID: 21300000, guid: 6dbaf708222d1334989ceb3a1aadd9dd, type: 3}
+  lbOrbitArc: {fileID: 21300000, guid: 830e68451dcff5340a85f0d2600d606c, type: 3}
+  lbChargeFlare: {fileID: 21300000, guid: f1c84ab9a77326f449610312cfd1d641, type: 3}
+  lbBeamCore: {fileID: 21300000, guid: f88a15e29cba56d4b8698239f13b3ad4, type: 3}
+  lbBeamHalo: {fileID: 21300000, guid: f5717733bf2d6d747913c978e82d70ea, type: 3}
+  lbRibbonWave: {fileID: 21300000, guid: 448ea115cd0661b47a73668198a7dd11, type: 3}
+  lbRibbonSecondary: {fileID: 21300000, guid: ec1ec1c2dc5e30c4888dacc6688c9c41, type: 3}
+  lbTargetHalo: {fileID: 21300000, guid: c8a31943af5d0f94a85ed8d091c0a729, type: 3}
+  lbTargetPreflash: {fileID: 21300000, guid: 420b910b833964d4bb89b6982eecc036, type: 3}
+  lbTargetPop: {fileID: 21300000, guid: 4484c044a78a47e4e83cf9141f84b39b, type: 3}
+  lbFinalBurst: {fileID: 21300000, guid: 12b7da6a21c9f6444bd4dc0d43980f54, type: 3}
+  lbStars: {fileID: 21300000, guid: cd11295faf9d3c24b87c863ba4ae993c, type: 3}
+  doubleMasks:
+  - {fileID: 21300000, guid: a8891166f4775b14db23e1551b4106bf, type: 3}
+  - {fileID: 21300000, guid: 937d0d2211144974d9586903885ad939, type: 3}
+  - {fileID: 21300000, guid: be66bc46177aab349883c79c825e8a3b, type: 3}
+  - {fileID: 21300000, guid: e6d8b1a1d67e7b24c933040d892b91b0, type: 3}
+  - {fileID: 21300000, guid: eaccc287053d6c846943368285927283, type: 3}
+  - {fileID: 21300000, guid: 0621d92b9855581428ae8727880e1b9a, type: 3}
+  - {fileID: 21300000, guid: 227b5c9bf7feeee40808a5394e9b5fe3, type: 3}
+  - {fileID: 21300000, guid: bcb69ecbe2d9dbf41a8bf5e176256972, type: 3}
+  - {fileID: 21300000, guid: 511f6439867db4e418aae0774bcd2630, type: 3}
+  - {fileID: 21300000, guid: 8a085ec9b24f21344bf48094ea3d8d08, type: 3}
+  - {fileID: 21300000, guid: af7eb4c97096a0e44bc6cc89f1bd7b0f, type: 3}
+  - {fileID: 21300000, guid: 5f405c895ad872048959d890417bf3f7, type: 3}
+  - {fileID: 21300000, guid: 806e06804ee3abb4b86d6ee0872356fe, type: 3}
+  - {fileID: 21300000, guid: 50011aad4af53354692b0e9774a87592, type: 3}
+  - {fileID: 21300000, guid: 03d079a4ca42cd2429ba4b946bbb9e9e, type: 3}
+  - {fileID: 21300000, guid: 4b0d87aa4faa7354a8b693a1751f301d, type: 3}
   additive: {fileID: 2100000, guid: dcadfd0f700b8ee8ba30ce997c64834d, type: 2}
   sortingLayer: Item mask
   sortingBase: 70
@@ -95,8 +126,12 @@ MonoBehaviour:
     trailAlpha: 0.95
     trailGlowAlpha: 0.65
     trailSparkles: 10
+    trailEmbers: 12
+    flightLightning: 0.8
     markerAlpha: 0.9
     markerSize: 1.1
+    markerLockSeconds: 0.28
+    markerSpin: 90
     duration: 0.5
     flashSize: 0.85
     raysAlpha: 1
@@ -106,6 +141,10 @@ MonoBehaviour:
     sparkleCount: 6
     fragmentCount: 9
     fragmentSize: 0.13
+    shockAlpha: 0.9
+    shockSize: 2.9
+    sparkCount: 14
+    boltCount: 5
   match:
     duration: 0.5
     highlightAlpha: 0.85
@@ -182,6 +221,300 @@ MonoBehaviour:
     fragmentSpeed: 2.6
     fragmentGravity: 5
     fragmentLife: 0.6
+  lightBall:
+    auraAlpha: 0.85
+    auraSize: 2.7
+    raysAlpha: 0.75
+    raysSize: 2.3
+    raysSpin: 40
+    orbitAlpha: 0.9
+    orbitSize: 2.1
+    orbitSpin: 70
+    swirlCount: 2
+    swirlAlpha: 0.9
+    swirlRadius: 0.85
+    swirlWidth: 0.09
+    swirlSpeed: 1.6
+    sparkleCount: 8
+    beamTravelSeconds: 0.09
+    beamAlpha: 1
+    beamCoreWidth: 0.09
+    beamGlowAlpha: 0.5
+    beamGlowWidth: 0.75
+    beamStrandAlpha: 0.8
+    beamStrandWidth: 0.4
+    beamCurve: 0.18
+    beamWave: 0.3
+    beamWaves: 1.5
+    targetGlowAlpha: 0.6
+    nodeAlpha: 0.8
+    nodeSize: 1.4
+    burstSeconds: 0.5
+    targetFlashSize: 1
+    targetStarSize: 2.2
+    targetRingSize: 1.3
+    targetRingAlpha: 0.9
+    targetConfetti: 5
+    ballFlashSize: 2
+    ballRaysSize: 7
+    ballStreakAlpha: 0.8
+    ballRingSize: 3.6
+    ballConfetti: 20
+    sweepAlpha: 0.85
+    sweepRadius: 3.8
+    sweepWidth: 0.22
+    sweepSeconds: 0.9
+    confettiLife: 0.9
+    confettiGravity: 2.5
+    finishAlpha: 0.9
+    finishSeconds: 1.1
+    confettiSize: 0.12
+    lightAbove: 24
+  doubleBall:
+    speed: 1
+    intensity: 1
+    darkness: 0.6
+    dimSeconds: 0.25
+    restoreSeconds: 0.5
+    chargeSeconds: 0.55
+    maxScale: 1.3
+    chargeGlow: 0.8
+    pulseFrequency: 9
+    orbitSeconds: 0.9
+    turns: 2.5
+    orbitAngle:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2.4
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    orbitRadius:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.25
+        value: 1.35
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.7
+        value: 0.95
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    trailSeconds: 0.3
+    trailWidth: 0.34
+    trailAlpha: 0.95
+    vortexScale: 6.5
+    vortexSpin: 1
+    vortexAlpha: 0.85
+    vortexOuter: {r: 0.62, g: 0.35, b: 0.95, a: 1}
+    vortexMid: {r: 1, g: 0.35, b: 0.85, a: 1}
+    vortexInner: {r: 1, g: 0.82, b: 0.42, a: 1}
+    particleCount: 22
+    collapsePause: 0.06
+    flashIntensity: 1
+    flashSeconds: 0.35
+    explosionScale: 8
+    shakeAmount: 0.04
+    shakeSeconds: 0.25
+    waveCount: 3
+    waveDelay: 0.2
+    waveSeconds: 0.75
+    waveOpacity: 0.95
+    cellFlashSeconds: 0.3
+    cellFlashSize: 1.3
+    fragmentsPerCell: 2
+    fragmentSize: 0.12
+    fragmentSpeed: 2.6
+    fragmentLife: 0.7
+    lingerSparkles: 14
   viewCamera: {fileID: 0}
   manual: 0
   maxActive: 60
+  hatIcon: {fileID: 21300000, guid: f39035d9def76e94b8ca525ab1ea5775, type: 3}
+  staffSprite: {fileID: 0}
+  useButtonBorder: {fileID: 6199006494631276500, guid: 916be89383181d646b08e2902319ff68, type: 3}
+  useButtonCenter: {fileID: -1655384971754560457, guid: d1d3e3b9ec95c5c44a49681e5809ef95, type: 3}
+  useButtonFont: {fileID: 11400000, guid: 866b4301ef1c73d4dbc8e392640e02c2, type: 2}
+  hat:
+    titlePt: "Chap\xE9u de Mago"
+    titleEn: Wizard Hat
+    instructionPt: Embaralhe os objetos e <hl>mude as cores</hl>!
+    instructionEn: Shuffle the objects and <hl>change the colors</hl>!
+    useLabelPt: Usar!
+    useLabelEn: Use!
+    useButtonSize: {x: 560, y: 250}
+    dim: 0.6
+    shuffleSeconds: 1.3
+    swirlTurns: 0.75
+    gather: 0.45
+    stagger: 0.22
+    liftScale: 1.18
+    pieceGlowAlpha: 0.55
+    vortexAlpha: 0.8
+    vortexArms: 4
+    vortexWidth: 0.5
+    dustCount: 44
+    glintCount: 12
+    boltCount: 5
+    hatSize: 2.3
+    hatSpins: 1
+    hatGlowAlpha: 0.7
+    recolorCount: 7
+    staffAppearSeconds: 0.4
+    castInterval: 0.13
+    travelSeconds: 0.42
+    staffSize: 3
+    staffTip: 0.42
+    staffBelowBoard: 1.2
+    castCurve: 0.28
+    orbSize: 0.55
+    trailWidth: 0.3
+    burstSeconds: 0.42
+    burstSize: 1.6
+    staffLingerSeconds: 0.35
+  prismViolet: {r: 0.506, g: 0.169, b: 1, a: 1}
+  prismMagenta: {r: 0.82, g: 0.169, b: 1, a: 1}
+  prismPink: {r: 1, g: 0.341, b: 0.776, a: 1}
+  prismGold: {r: 1, g: 0.761, b: 0.278, a: 1}
+  prismCyan: {r: 0.286, g: 0.867, b: 0.961, a: 1}
+  useBloom: 1
+  bloomIntensity: 1.4
+  bloomThreshold: 1.15
+  bloomScatter: 0.7
+  hdrBoost: 2.6
+  prism:
+    emission: 1
+    dustDensity: 1
+    sparkDensity: 1
+    orbitalParticles: 14
+    maxParticles: 220
+    colorVariation: 0.6
+    coreGlow: 0.9
+    magentaGlow: 0.6
+    goldenGlow: 0.7
+    violetGlow: 0.55
+    ribbonCount: 5
+    ribbonWidth: 0.46
+    ribbonGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 0.341, b: 0.776, a: 1}
+      key1: {r: 0.82, g: 0.169, b: 1, a: 1}
+      key2: {r: 0.506, g: 0.169, b: 1, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 32768
+      ctime2: 65535
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 2
+    vortexCompression: 0.7
+    shockThickness: 1
+    shockBrightness: 1
+    shockParticles: 22
+    targetImpact: 1
+    residualSeconds: 0.9
+  lightning:
+    intensity: 1
+    arcCount: 2
+    branchProbability: 0.35
+    arcWidth: 0.045
+    arcLifetime: 0.08
+    flickerFrequency: 18
+    electricGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 0.286, g: 0.867, b: 0.961, a: 1}
+      key2: {r: 0.506, g: 0.169, b: 1, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 32768
+      ctime2: 65535
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 3
+      m_NumAlphaKeys: 2
+    vortexDensity: 1
+    shockwaveDensity: 1

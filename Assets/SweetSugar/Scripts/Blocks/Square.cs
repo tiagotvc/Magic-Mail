@@ -607,8 +607,13 @@ namespace SweetSugar.Scripts.Blocks
 
             itemComponent.needFall = falling;
             itemComponent.StartFallingTo(itemComponent.GenerateWaypoints(this));
-            if (!noAnim && itemComponent is ItemMulticolor multicolor) multicolor.PlayAppearance();
-            if (!noAnim && itemComponent is ItemPackage package) package.PlayAppearance();
+            // Correio Mágico: chegada dos power-ups (bomba gira, globo gira, hélice vai parando, line cleaner pulsa). Na montagem
+            // da fase, ou sem o prefab dos efeitos, fica a entrada antiga.
+            if (!noAnim && !RoyalAves.Effects.PowerUpArrivalMotion.Play(itemComponent))
+            {
+                if (itemComponent is ItemMulticolor multicolor) multicolor.PlayAppearance();
+                if (itemComponent is ItemPackage package) package.PlayAppearance();
+            }
             return itemComponent;
         }
         /// <summary>

@@ -124,6 +124,8 @@ namespace SweetSugar.Scripts.Items
                 if(striped.GetComponent<GameBlocker>()==null)striped.gameObject.AddComponent<GameBlocker>();
                 var manager = LevelManager.THIS;
                 var data=manager.levelData;
+                // Correio Mágico: junção (brilho atrás, giro no eixo, um em volta do outro) antes da carga.
+                yield return RoyalAves.Effects.PowerUpMerge.Play(package,striped);
                 using(var charge=new RoyalAves.Effects.DynamiteCombinationCharge(package,striped))
                 {
                 yield return charge.Play();
@@ -186,11 +188,21 @@ namespace SweetSugar.Scripts.Items
                 i.currentType == ItemsTypes.HORIZONTAL_STRIPED || i.currentType == ItemsTypes.VERTICAL_STRIPED);
             stripes = stripes.OrderBy(i => i == GetItem).ToList();
             if (stripes.Count() < 2) return;
+            if (item1.destroying && item2.destroying) return;
             item1.destroying = item2.destroying = true;
             var manager = LevelManager.THIS;
+            var self = GetItem;
+            var other = item1 == self ? item2 : item1;
+            if(GetComponent<GameBlocker>()==null)gameObject.AddComponent<GameBlocker>();
+            manager.StartCoroutine(Run());
+            IEnumerator Run()
+            {
+            // Correio Mágico: junção (brilho atrás, giro no eixo, um em volta do outro) antes de os dois feixes saírem.
+            yield return RoyalAves.Effects.PowerUpMerge.Play(self, other);
+            if (manager == null || self == null || self.square == null) yield break;
             SoundBase.Instance?.PlayLimitSound(SoundBase.Instance.strippedExplosion);
-            var horizontal = GetSquaresInRow(GetItem.square, ItemsTypes.HORIZONTAL_STRIPED);
-            var vertical = GetSquaresInRow(GetItem.square, ItemsTypes.VERTICAL_STRIPED);
+            var horizontal = GetSquaresInRow(self.square, ItemsTypes.HORIZONTAL_STRIPED);
+            var vertical = GetSquaresInRow(self.square, ItemsTypes.VERTICAL_STRIPED);
             var originals = horizontal.Union(vertical).ToDictionary(cell => cell, cell => cell.Item);
             var passed = new HashSet<Square>();
             void Hit(Square cell)
@@ -200,18 +212,15 @@ namespace SweetSugar.Scripts.Items
                     manager.levelData.GetTargetObject().CheckSquares(new[]{cell});
                 var target = originals[cell];
                 if (target != null && target != item1 && target != item2)
-                    target.DestroyItem(true, explodedItem: GetItem);
+                    target.DestroyItem(true, explodedItem: self);
                 cell.DestroyBlock();
             }
-            float wait = manager.StripedShowPass(gameObject, false, vertical, Hit);
-            wait = Mathf.Max(wait, manager.StripedShowPass(gameObject, true, horizontal, Hit));
-            manager.StartCoroutine(Finish());
-            IEnumerator Finish()
-            {
-                yield return new WaitForSeconds(wait + .2f);
-                manager.levelData.GetTargetObject().CheckItems(list);
-                item1.DestroyBehaviour(); item2.DestroyBehaviour();
-                manager.FindMatches();
+            float wait = manager.StripedShowPass(self.gameObject, false, vertical, Hit);
+            wait = Mathf.Max(wait, manager.StripedShowPass(self.gameObject, true, horizontal, Hit));
+            yield return new WaitForSeconds(wait + .2f);
+            manager.levelData.GetTargetObject().CheckItems(list);
+            item1.DestroyBehaviour(); item2.DestroyBehaviour();
+            manager.FindMatches();
             }
         }
 

@@ -514,6 +514,8 @@ namespace SweetSugar.Scripts.Editor
 
                         GUILimit();
                         GUILayout.Space(10);
+                        GUIDifficulty();
+                        GUILayout.Space(10);
 
                         GUIColorLimit();
                         GUILayout.Space(10);
@@ -1964,6 +1966,20 @@ namespace SweetSugar.Scripts.Editor
                 dirtyLevel = true;
                 // SaveLevel();
             }
+        }
+
+        // Correio Mágico: dificuldade da fase (troca o botão de Play da tela inicial: normal, hard, super hard).
+        private void GUIDifficulty()
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Dificuldade", EditorStyles.label, GUILayout.Width(150));
+                var old = levelData.difficulty;
+                levelData.difficulty = (LevelDifficulty) EditorGUILayout.EnumPopup(levelData.difficulty, GUILayout.Width(93));
+                if (old != levelData.difficulty)
+                    dirtyLevel = true;
+            }
+            GUILayout.EndHorizontal();
         }
 
         private void GUILimit()

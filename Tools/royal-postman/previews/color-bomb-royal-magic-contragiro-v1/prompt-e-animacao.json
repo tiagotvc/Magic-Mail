@@ -1,0 +1,40 @@
+{
+  "title": "Color Bomb — pose inclinada e contragiro em 2D",
+  "source": {
+    "file": "color-bomb-2d.png",
+    "generation": "ImageGen integrado",
+    "prompt": "Image 1 (the large purple-background isolated polished Color Bomb) is the DESIGN SOURCE for this edit. Image 2 (small match-3 board screenshot with a blue and yellow power-up sphere) supplies viewing angle and proportions only. Draw an original fully 2D hand-painted cartoon sprite for Royal Magic based squarely on image 1, but rotate the viewpoint down toward the equator so the upper cap is seen as a much SHALLOWER pink ellipse and the bottom blue hemisphere is visible more fully, like the relaxed side/near-frontal angle of image 2. Keep the camera axis level, directly facing the sphere, no tilt or diagonal rim. Less overhead: view only 6–10 degrees above the front equator. Retain the design language of image 1: compact plump circular cobalt-purple shell; a broad yellow-orange dome built as TWO clean rows of large trapezoidal rounded enamel panels separated by dark plum seams (the upper row a little more orange); one narrow pink domed cabochon on top in a shallow purple collar; one contiguous strong royal-purple equatorial band with large evenly spaced individual jewel cabochons in chunky rounded-square gold bezels; and one visible band of bright blue beveled panels under the purple belt. Keep the gold panels integrated into the curve of the sphere, not four large petals. Across the front, use the same ruby, yellow, emerald and cyan jewel family from image 1, with purple peeking at the far turning edge. Paint the surfaces in clean saturated casual-game 2D, smooth soft cartoon modeled shading with short dark contact shadows and one broad highlight per surface. The upper dome joins lower belt cleanly at a distinct dark curved track suitable for independent animation. Keep all horizontal rings smooth and continuous, all spacing and bevels even, no stray lines; ensure whole object reads at 34px. Single piece in resting state. Round classic silhouette with very little top height above the sphere. No existing game icon copying from image 2. No dramatized cast shadow, no halo, no lens effects, no particles, no magenta outline, no background (remove purple backdrop), no floor, no grid, no captions, no logo, no text. True transparency including the outer edges and a comfortable transparent border, square image. Output only the icon.",
+    "reference": "Imagem de arte fornecida pelo usuário para o desenho. Capturas anexadas para ângulo, inclinação e proporção."
+  },
+  "animation": {
+    "rendering": "Composição quadro a quadro das faixas do sprite 2D.",
+    "fixedPose": {
+      "clockwiseTiltDegrees": 10.5,
+      "silhouetteWidthPixels": 289,
+      "silhouetteHeightPixels": 330
+    },
+    "direction": {
+      "goldDome": "esquerda",
+      "gemBeltAndBlueBase": "direita"
+    },
+    "frames": 48,
+    "fps": 24,
+    "durationSeconds": 2,
+    "frameSize": [
+      384,
+      384
+    ],
+    "pivot": [
+      0.5,
+      0.5
+    ],
+    "sheet": {
+      "file": "spritesheet.png",
+      "columns": 8,
+      "rows": 6,
+      "traversal": "Da esquerda para a direita, de cima para baixo."
+    },
+    "zip": "48-quadros-png.zip",
+    "matte": "Transparência nos PNGs, roxo escuro nas prévias."
+  }
+}

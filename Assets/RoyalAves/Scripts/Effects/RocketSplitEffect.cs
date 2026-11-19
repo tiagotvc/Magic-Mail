@@ -21,7 +21,7 @@ namespace RoyalAves.Effects
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetFlights() => activeFlights.Clear();
         const float ExitOvershoot = 0.8f;
-        const float TrailTail = 0.5f; // keeps the effect object alive long enough for the last particle to fade
+        const float TrailTail = 0.5f; // how long after the flight the board still waits for the effect (HasActiveFlights)
         // Multiplies the flame particles' size. Their Flame object is scaled by RestScale, which shrinks them a lot.
         const float TrailSize = 2f;
         // World units/second the rocket halves travel. Faster than the helix on purpose - the rocket should feel
@@ -38,6 +38,7 @@ namespace RoyalAves.Effects
         const float ActivatedScale = RestScale * 1.05f;
 
         static RocketSplitEffectData _data;
+        static bool buildTail = true;
 
         static RocketSplitEffectData Data
         {
@@ -54,8 +55,10 @@ namespace RoyalAves.Effects
         // destroyed as the rocket passes over them. Returns how long the whole effect takes, or 0 when there's no
         // effect to show (caller then has to handle the cells itself).
         public static float Play(GameObject rocketObject, bool horizontal, Vector3 towardA, Vector3 towardB,
-            IList<Vector3> cells, Action<int> onCellPassed, bool stopAtA = false, bool stopAtB = false, Vector3? boardOrigin = null)
+            IList<Vector3> cells, Action<int> onCellPassed, bool stopAtA = false, bool stopAtB = false, Vector3? boardOrigin = null, bool tail = true)
         {
+            // tail = false: só as duas metades voando; quem desenha a cauda de fogo é o efeito de linha (PowerUpVfx.PlayLine).
+            buildTail = tail;
             var data = Data;
             if (data == null || rocketObject == null) return 0f;
 
@@ -88,12 +91,15 @@ namespace RoyalAves.Effects
             var overshootB = stopAtB ? 0f : ExitOvershoot;
             var durationA = FlightTime(origin, towardA, overshootA);
             var durationB = FlightTime(origin, towardB, overshootB);
-            var halfA = BuildHalf(root.transform, data.HalfLeft, data.EngineNozzle, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA, false, bodyHeight);
-            var halfB = BuildHalf(root.transform, data.HalfRight, data.EngineNozzle, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB, true, bodyHeight);
+            var halfA = BuildHalf(root.transform, data, data.HalfLeft, data.EngineNozzle, data.FlameMaterial, origin, towardA, horizontal, PowerUpEffectOrder.Value, durationA, overshootA, false, bodyHeight);
+            var halfB = BuildHalf(root.transform, data, data.HalfRight, data.EngineNozzle, data.FlameMaterial, origin, towardB, horizontal, PowerUpEffectOrder.Value, durationB, overshootB, true, bodyHeight);
             root.AddComponent<RocketAxisPassObserver>().Initialize(origin, horizontal, halfA, halfB, cells, onCellPassed);
 
             var total = Mathf.Max(durationA, durationB);
-            UnityEngine.Object.Destroy(root, total + TrailTail);
+            // A fumaça fica para trás mais tempo do que o tabuleiro deve esperar: o objeto vive até ela sumir,
+            // mas deixa de contar como voo ativo no mesmo instante de antes.
+            LeanTween.delayedCall(root, total + TrailTail, () => activeFlights.Remove(root));
+            UnityEngine.Object.Destroy(root, total + Mathf.Max(TrailTail, data.smokeLifetime * 1.15f + 0.1f));
             return total;
         }
 
@@ -112,7 +118,7 @@ namespace RoyalAves.Effects
 
         const float HalfPixelsPerUnit = 128f; // matches capsule-half-left/right.png's import setting
 
-        static Transform BuildHalf(Transform parent, Texture2D texture, Texture2D nozzleTexture, Material flameMat, Vector3 from, Vector3 to,
+        static Transform BuildHalf(Transform parent, RocketSplitEffectData data, Texture2D texture, Texture2D nozzleTexture, Material flameMat, Vector3 from, Vector3 to,
             bool horizontal, int sortOrder, float duration, float overshoot, bool rightHalf, float bodyHeight)
         {
             if (texture == null) return null;
@@ -166,33 +172,50 @@ namespace RoyalAves.Effects
                 exhaust.x += rearSign * nozzleLength;
             }
             half.transform.position = from + direction * (halfExtent + nozzleLength * half.transform.localScale.x);
-            // Each nozzle sits at the cut, with its flame trailing behind the flying half.
-            // Keep both wakes behind the hull so the mouth of the nozzle remains visible.
-            AddBeam(half, flameMat, sortOrder - 2, 0.34f, new Color(1f, 0.67f, 0.12f), exhaust);
-            AddBeam(half, flameMat, sortOrder - 1, 0.11f, new Color(1f, 1f, 0.85f), exhaust);
-
-            var flame = new GameObject("Flame");
-            flame.transform.SetParent(half.transform, false);
-            flame.transform.localPosition = exhaust;
-            // Particle size/speed use the Flame object's own local scale (Scaling Mode: Local), which doesn't
-            // inherit from its parent automatically - match the half's scale so the trail isn't oversized next to it.
-            flame.transform.localScale = Vector3.one * ActivatedScale;
-
-            var ps = flame.AddComponent<ParticleSystem>();
-            ConfigureFlame(ps, flameMat, sortOrder - 3, duration);
-
+            // Cauda de foguete saindo do anel dourado (a borda de trás da metade): rastro contínuo em três camadas,
+            // labaredas, faíscas e fumaça amarelada ficando para trás.
             var toOvershot = to + direction * overshoot;
+            if (!buildTail)
+            {
+                LeanTween.move(half, toOvershot, duration).setEase(LeanTweenType.easeInQuad).setOnComplete(() => Arrive(half));
+                return half.transform;
+            }
+            var wide = data.trailWidth;
+            AddBeam(half, flameMat, sortOrder - 3, 0.56f * wide, data.fireEnd, exhaust, data.trailTime);
+            AddBeam(half, flameMat, sortOrder - 2, 0.38f * wide, data.fireMid, exhaust, data.trailTime * 0.85f);
+            AddBeam(half, flameMat, sortOrder - 1, 0.15f * wide, Color.Lerp(data.fireHot, Color.white, 0.45f), exhaust, data.trailTime * 0.6f);
+
+            var smoke = AddEmitter(half, "Smoke", exhaust);
+            ConfigureSmoke(smoke, data, sortOrder - 5, duration);
+            var ps = AddEmitter(half, "Flame", exhaust);
+            ConfigureFlame(ps, data, flameMat, sortOrder - 4, duration);
+            var sparks = AddEmitter(half, "Sparks", exhaust);
+            ConfigureSparks(sparks, data, flameMat, sortOrder, duration);
+
             LeanTween.move(half, toOvershot, duration).setEase(LeanTweenType.easeInQuad)
-                .setOnComplete(() => Arrive(half, sr, ps));
+                .setOnComplete(() => Arrive(half));
             return half.transform;
+        }
+
+        // Particle size/speed use the emitter object's own local scale (Scaling Mode: Local), which doesn't
+        // inherit from its parent automatically - match the half's scale so the trail isn't oversized next to it.
+        static ParticleSystem AddEmitter(GameObject half, string name, Vector3 exhaust)
+        {
+            var node = new GameObject(name);
+            node.transform.SetParent(half.transform, false);
+            node.transform.localPosition = exhaust;
+            node.transform.localScale = Vector3.one * ActivatedScale;
+            var ps = node.AddComponent<ParticleSystem>();
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            return ps;
         }
 
         // Reaches the edge: just stops emitting and disappears, instead of sitting there finished-but-visible.
         // The trail keeps fading on its own (it lives in world space already).
-        static void Arrive(GameObject half, SpriteRenderer sr, ParticleSystem ps)
+        static void Arrive(GameObject half)
         {
             if (half == null) return;
-            if (ps != null)
+            foreach (var ps in half.GetComponentsInChildren<ParticleSystem>())
             {
                 var emission = ps.emission;
                 emission.enabled = false;
@@ -200,62 +223,164 @@ namespace RoyalAves.Effects
             foreach (var renderer in half.GetComponentsInChildren<SpriteRenderer>()) renderer.enabled = false;
         }
 
-        static void ConfigureFlame(ParticleSystem ps, Material mat, int baseSortOrder, float duration)
+        static Gradient Fade(Color a, Color b, Color c, float alphaStart, float alphaMid)
         {
-            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            var gradient = new Gradient();
+            gradient.SetKeys(
+                new[] { new GradientColorKey(a, 0f), new GradientColorKey(b, 0.45f), new GradientColorKey(c, 1f) },
+                new[] { new GradientAlphaKey(alphaStart, 0f), new GradientAlphaKey(alphaMid, 0.55f), new GradientAlphaKey(0f, 1f) });
+            return gradient;
+        }
+
+        static void Finish(ParticleSystem ps, Material mat, int order)
+        {
+            var renderer = ps.GetComponent<ParticleSystemRenderer>();
+            renderer.material = mat;
+            renderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
+            renderer.sortingOrder = order;
+            renderer.renderMode = ParticleSystemRenderMode.Billboard;
+            renderer.minParticleSize = 0;
+            ps.Play();
+        }
+
+        // Labaredas: nascem amarelas e grandes, viram laranja e terminam vermelhas, encolhendo (língua de fogo cartoon).
+        static void ConfigureFlame(ParticleSystem ps, RocketSplitEffectData data, Material mat, int order, float duration)
+        {
             var main = ps.main;
             main.loop = false;
             main.duration = duration + TrailTail;
-            main.startLifetime = new ParticleSystem.MinMaxCurve(0.3f, 0.5f);
-            main.startSpeed = new ParticleSystem.MinMaxCurve(0.1f, 0.35f);
-            main.startSize = new ParticleSystem.MinMaxCurve(0.22f * TrailSize, 0.4f * TrailSize);
-            main.startColor = new ParticleSystem.MinMaxGradient(new Color(1f, 0.9f, 0.4f), new Color(1f, 0.5f, 0.1f));
+            main.startLifetime = new ParticleSystem.MinMaxCurve(data.fireLifetime * 0.65f, data.fireLifetime);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.1f, 0.45f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.3f * TrailSize * data.fireSize, 0.55f * TrailSize * data.fireSize);
+            main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+            main.startColor = new ParticleSystem.MinMaxGradient(data.fireHot, Color.Lerp(data.fireHot, data.fireMid, 0.6f));
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = 400;
+            main.playOnAwake = false;
+
+            var emission = ps.emission;
+            emission.rateOverTime = data.fireRate;
+
+            var shape = ps.shape;
+            shape.shapeType = ParticleSystemShapeType.Sphere;
+            shape.radius = data.fireSpread;
+
+            var size = ps.sizeOverLifetime;
+            size.enabled = true;
+            size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.75f), new Keyframe(0.2f, 1f), new Keyframe(1f, 0f)));
+
+            var color = ps.colorOverLifetime;
+            color.enabled = true;
+            color.color = Fade(data.fireHot, data.fireMid, data.fireEnd, 1f, 0.9f);
+
+            Finish(ps, mat, order);
+        }
+
+        // Fumaça amarelada: nuvens opacas que crescem, giram devagar e sobem um pouco enquanto somem.
+        static void ConfigureSmoke(ParticleSystem ps, RocketSplitEffectData data, int order, float duration)
+        {
+            var main = ps.main;
+            main.loop = false;
+            main.duration = duration + TrailTail;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(data.smokeLifetime * 0.7f, data.smokeLifetime);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.05f, 0.3f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.42f * TrailSize * data.smokeSize, 0.75f * TrailSize * data.smokeSize);
+            main.startRotation = new ParticleSystem.MinMaxCurve(0f, Mathf.PI * 2f);
+            main.startColor = Color.white;
+            main.gravityModifier = -0.06f;
             main.simulationSpace = ParticleSystemSimulationSpace.World;
             main.maxParticles = 200;
             main.playOnAwake = false;
 
             var emission = ps.emission;
-            emission.rateOverTime = 80;
+            emission.rateOverTime = data.smokeRate;
 
             var shape = ps.shape;
             shape.shapeType = ParticleSystemShapeType.Sphere;
-            // Correio Mágico: raio da área de emissão - é o que dá a largura do rastro (espalhamento lateral das
-            // partículas), separado do tamanho de cada partícula (TrailSize).
-            shape.radius = 0.22f;
+            shape.radius = data.fireSpread * 1.1f;
 
-            var sizeOverLifetime = ps.sizeOverLifetime;
-            sizeOverLifetime.enabled = true;
-            sizeOverLifetime.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0, 1, 1, 0));
+            var size = ps.sizeOverLifetime;
+            size.enabled = true;
+            size.size = new ParticleSystem.MinMaxCurve(1f, new AnimationCurve(new Keyframe(0f, 0.45f), new Keyframe(0.35f, 1f), new Keyframe(1f, 1.5f)));
 
-            var colorOverLifetime = ps.colorOverLifetime;
-            colorOverLifetime.enabled = true;
-            var gradient = new Gradient();
-            gradient.SetKeys(
-                new[]
-                {
-                    new GradientColorKey(new Color(1f, 0.95f, 0.6f), 0f),
-                    new GradientColorKey(new Color(1f, 0.35f, 0.08f), 0.6f),
-                    new GradientColorKey(new Color(0.55f, 0.1f, 0.05f), 1f)
-                },
-                new[]
-                {
-                    new GradientAlphaKey(1f, 0f),
-                    new GradientAlphaKey(0.8f, 0.5f),
-                    new GradientAlphaKey(0f, 1f)
-                });
-            colorOverLifetime.color = gradient;
+            var rotation = ps.rotationOverLifetime;
+            rotation.enabled = true;
+            rotation.z = new ParticleSystem.MinMaxCurve(-0.9f, 0.9f);
 
-            var psRenderer = ps.GetComponent<ParticleSystemRenderer>();
-            psRenderer.material = mat;
-            psRenderer.sortingLayerName = PowerUpEffectOrder.SortingLayer;
-            psRenderer.sortingOrder = baseSortOrder;
-            psRenderer.renderMode = ParticleSystemRenderMode.Billboard;
-            psRenderer.minParticleSize = 0;
+            var color = ps.colorOverLifetime;
+            color.enabled = true;
+            color.color = Fade(data.smokeStart, Color.Lerp(data.smokeStart, data.smokeEnd, 0.6f), data.smokeEnd, data.smokeAlpha, data.smokeAlpha * 0.7f);
 
-            ps.Play();
+            Finish(ps, SmokeMaterial, order);
         }
 
-        static void AddBeam(GameObject half, Material source, int order, float width, Color color, Vector3 exhaust)
+        // Faíscas pequenas e rápidas saltando da boca do fogo.
+        static void ConfigureSparks(ParticleSystem ps, RocketSplitEffectData data, Material mat, int order, float duration)
+        {
+            var main = ps.main;
+            main.loop = false;
+            main.duration = duration + TrailTail;
+            main.startLifetime = new ParticleSystem.MinMaxCurve(0.22f, 0.45f);
+            main.startSpeed = new ParticleSystem.MinMaxCurve(0.9f, 2.4f);
+            main.startSize = new ParticleSystem.MinMaxCurve(0.07f * TrailSize, 0.15f * TrailSize);
+            main.startColor = new ParticleSystem.MinMaxGradient(Color.Lerp(data.fireHot, Color.white, 0.5f), data.fireHot);
+            main.gravityModifier = 0.35f;
+            main.simulationSpace = ParticleSystemSimulationSpace.World;
+            main.maxParticles = 120;
+            main.playOnAwake = false;
+
+            var emission = ps.emission;
+            emission.rateOverTime = data.sparkRate;
+
+            var shape = ps.shape;
+            shape.shapeType = ParticleSystemShapeType.Sphere;
+            shape.radius = data.fireSpread * 0.6f;
+
+            var size = ps.sizeOverLifetime;
+            size.enabled = true;
+            size.size = new ParticleSystem.MinMaxCurve(1f, AnimationCurve.Linear(0f, 1f, 1f, 0.2f));
+
+            var color = ps.colorOverLifetime;
+            color.enabled = true;
+            color.color = Fade(Color.Lerp(data.fireHot, Color.white, 0.5f), data.fireHot, data.fireMid, 1f, 1f);
+
+            Finish(ps, mat, order);
+        }
+
+        static Material smokeMaterial;
+
+        // Material da fumaça: nuvem macia desenhada por código, com transparência normal (não soma luz como o fogo).
+        static Material SmokeMaterial
+        {
+            get
+            {
+                if (smokeMaterial != null) return smokeMaterial;
+                const int n = 96;
+                var texture = new Texture2D(n, n, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave, wrapMode = TextureWrapMode.Clamp };
+                var tufts = new[] { new Vector3(0f, 0.02f, 0.44f), new Vector3(-0.34f, 0.1f, 0.3f), new Vector3(0.33f, -0.06f, 0.31f), new Vector3(0.08f, 0.36f, 0.27f),
+                    new Vector3(-0.1f, -0.36f, 0.28f), new Vector3(0.36f, 0.34f, 0.2f), new Vector3(-0.38f, -0.3f, 0.2f) };
+                var pixels = new Color32[n * n];
+                for (var y = 0; y < n; y++)
+                    for (var x = 0; x < n; x++)
+                    {
+                        var u = (x + 0.5f) / n * 2f - 1f; var v = (y + 0.5f) / n * 2f - 1f;
+                        var d2 = u * u + v * v;
+                        var alpha = 0f;
+                        if (d2 < 1f)
+                        {
+                            foreach (var tuft in tufts) { var dx = u - tuft.x; var dy = v - tuft.y; alpha += 0.7f * Mathf.Exp(-(dx * dx + dy * dy) / (tuft.z * tuft.z)); }
+                            alpha = Mathf.Clamp01(alpha) * (1f - d2) * (1f - d2);
+                        }
+                        pixels[y * n + x] = new Color32(255, 255, 255, (byte)Mathf.RoundToInt(alpha * 255f));
+                    }
+                texture.SetPixels32(pixels);
+                texture.Apply(false, true);
+                smokeMaterial = new Material(Shader.Find("Sprites/Default")) { hideFlags = HideFlags.HideAndDontSave, mainTexture = texture };
+                return smokeMaterial;
+            }
+        }
+
+        static void AddBeam(GameObject half, Material source, int order, float width, Color color, Vector3 exhaust, float time)
         {
             var node = new GameObject("RocketBrightWake");
             node.transform.SetParent(half.transform, false);
@@ -265,9 +390,11 @@ namespace RoyalAves.Effects
             material.SetTexture("_MainTex", Texture2D.whiteTexture);
             node.AddComponent<RocketBeamMaterial>().ownedMaterial = material;
             trail.sharedMaterial = material;
-            trail.time = 0.20f;
+            trail.time = time;
             trail.minVertexDistance = 0.015f;
             trail.widthMultiplier = width;
+            // largo junto da metade e afinando para trás, como a cauda de um foguete
+            trail.widthCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(0.35f, 0.8f), new Keyframe(1f, 0.08f));
             trail.numCapVertices = 3;
             trail.startColor = color;
             trail.endColor = new Color(color.r, color.g, color.b, 0f);

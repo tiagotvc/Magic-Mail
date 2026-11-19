@@ -1,0 +1,15 @@
+{
+  "title": "Color Bomb — Royal Magic",
+  "status": "Mockup 2D em repouso",
+  "generation": "ImageGen integrado",
+  "reference": "Duas imagens anexadas pelo usuário, aplicadas como referência de estilo",
+  "file": "color-bomb.png",
+  "sha256": "9e9e77477fbd723e8e6d94d36c187799e532a505cf9d1f0928e6d1d978a67c5f",
+  "prompt": "Use the user's two attached screenshots of a colorful match-3 bomb as visual direction. Create a single ORIGINAL 2D hand-painted game sprite for Royal Magic based on this visual family. Match the overall art direction closely: compact sphere, royal blue housing, luminous golden upper cap and a midsection with large well-separated colored jewel dots; saturated yet controlled colors, dark blue-violet contact shadows, painted gradients, rounded broad bevels and crisp silhouette. Do not recreate the screenshot icon, its exact panel geometry, color order, top shape, effects or layout. Invent this specific design: the upper third is a round golden crown-cap formed by THREE broad smoothly convex petal-shaped panels, one broad raised central gold petal with an upward soft curve, and two curved side petals tucking around a deep cobalt shell. A tiny rounded purple-ruby diamond-shaped jewel rests low in a shallow gold seat at the top, visible as a compact soft lozenge, not a protruding ornament. The broad INDIGO-COBALT belt beneath the cap has three dominant, uncluttered luminous round cabochons visible at the front, an emerald and a ruby on either side of a bright sky blue one, with at most one small amber hint at the far turning side. Set those jewels directly into the shell with short colored contact shadows and a single smooth specular spot per jewel. Below the belt show one clean rich ultramarine rounded hemisphere, with one restrained crescent of purple near the lower edge. Use an intentional slight overhead 2D game view, chest-high camera up by about 12 degrees, centered symmetrical sphere with charming simple asymmetry only in the colored jewels, clean high polish. Broad contrast and very few large shapes so it reads at 34 pixels. The color proportions should roughly be half blue/indigo, one third bright warm sunshine gold, the remainder jewel accents. Craft illustration as a 2D raster sprite with controlled upper-left highlights, deep rich painted shadows, no realistic metal, no PBR look, no angular gemstone reflection noise, no grains, no heavy black outlines. Transparent square canvas with a little clear margin. Include only the finished special piece in resting state with no rays, no glow or effects outside the sprite, no ground or tile, no text, interface, frame, numbers, lightning emblem, game branding, star emblem, letter mark, or external objects. Single sprite only.",
+  "comparison": {
+    "file": "color-bomb-no-tabuleiro.png",
+    "source": "Tools/level-map/campaign-200/evidence-density-v2/board-103.png",
+    "cellPixels": 40,
+    "maximumSpriteDimensionPixels": 34
+  }
+}

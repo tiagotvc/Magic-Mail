@@ -1,0 +1,28 @@
+{
+  "title": "Royal Magic — especial multicolorido",
+  "status": "Estudo visual estático para escolha de conceito",
+  "generation": "ImageGen integrado",
+  "references": [
+    "Imagem do especial atual anexada à conversa",
+    "Tools/level-map/campaign-200/evidence-density-v2/board-103.png",
+    "Assets/RoyalAves/Resources/MapEventsV98/postal-pig-gold-cartoon.png"
+  ],
+  "concepts": [
+    {
+      "file": "cubo-do-caos.png",
+      "prompt": "Design a production-quality standalone match-3 board piece for the user's original game Royal Magic. The referenced local board screenshot and any attached in-chat board screenshot are shading, saturation and legibility references only; the golden cartoon pig reference is only a material/color reference for the soft sunny gold with orange shadows. Make a clean isolated game sprite on a true transparent canvas, no board, no presentational layout, no text, no other objects. Center it, 12 percent safe space. Premium hand-directed casual game soft 3D, generous smooth bevels, broad clean reflections, soft light from upper left, bright clean saturated red, blue, green, yellow and lilac as in the game. Use good silhouette contrast and full color even at a 32 px sprite diameter. No grain, painted noise, harsh black outlines, realistic metal, tiny ornamentation, glints outside the silhouette, glow, haze, sparkles or cast shadow. Keep the reflectivity controlled. Subject: “Cubo do Caos”, an enchanted 3×3 puzzle cube. An upright and compact cube at a subtle three-quarter orthographic angle, generously visible frontal square face, smaller right face and shallow top face. Every visible face has EXACTLY 3 rows × 3 columns, with the divisions aligned precisely across adjacent sides, all panels are equal regular chunky squares in perspective. Nine enamel panels per visible face, scrambled but deliberately balanced into neighboring blocks of similar color to avoid visual noise. Thin dark plum seams, no frames around every square. A single small royal design choice: smooth yellow-gold corner caps along ONLY the three outer corners near the front, integrated flush into the cube's casing, extremely minimal, for a magical royal object silhouette. No crown or protrusions. Keep cube architecture, shallow perspective, clear grid and large blocks of color above everything. Elegant toy-like hand-polished soft enamels and a couple of big authentic light reflections. Royal magical artifact, no text or external symbols. Single centered cube in rest pose, no layers displaced.",
+      "motion": "Giros de 90 graus em fileiras e colunas. A camada termina encaixada no cubo antes do próximo giro."
+    },
+    {
+      "file": "talisma-dos-elementos.png",
+      "prompt": "Design a production-quality standalone match-3 board piece for the user's original game Royal Magic. The referenced local board screenshot and any attached in-chat board screenshot are shading, saturation and legibility references only; the golden cartoon pig reference is only a material/color reference for the soft sunny gold with orange shadows. Make a clean isolated game sprite on a true transparent canvas, no board, no presentational layout, no text, no other objects. Center it, 12 percent safe space. Premium hand-directed casual game soft 3D, generous smooth bevels, broad clean reflections, soft light from upper left, bright clean saturated red, blue, green, yellow and lilac as in the game. Use good silhouette contrast and full color even at a 32 px sprite diameter. No grain, painted noise, harsh black outlines, realistic metal, tiny ornamentation, glints outside the silhouette, glow, haze, sparkles or cast shadow. Keep the reflectivity controlled. Subject: “Talismã dos Elementos”, one compact round royal magic artifact seen PERFECTLY front-on, centered and radially symmetrical, no pendant loop or feet. A visually distinct central fixed disc occupies 63 percent of the diameter. On the central disc, exactly five broad colored polished enamel inlays in saturated ruby, sky blue, leaf green, sunny yellow, and lilac, arranged as a clear five-part rosette with a tiny round warm-gold hub and simple seams. The rosette has big chunky readable broad curved wedge regions with rounded bevels and visibly separated colors. Outside it: exactly two visibly separable concentric bands, an inner plum enamel track with three broad short gold indexing marks at 120 degrees, and an outer chunky sunny yellow-gold rim with four simple broad recessed segments to show its opposite rotation. No additional nested ring layers, no wreath, no crown or extra gemstones on the rim, no filigree, no text, no engraved runes. Gold frame is thick enough for depth but restrained, with warm amber side shading, identical polish to the game pieces. No bloom, no bright white sparkle, center colors and whole silhouette should remain immediately readable as the multicolor special. Single piece and rest pose.",
+      "motion": "O centro colorido permanece fixo. O anel roxo e a borda dourada giram em sentidos opostos."
+    }
+  ],
+  "comparison": {
+    "file": "comparativo-no-tabuleiro.png",
+    "method": "Montagem sobre o mesmo recorte da captura do nível 103, com substituição da mesma célula central nos dois painéis.",
+    "cellPixels": 40,
+    "maximumSpriteDimensionPixels": 34
+  }
+}

@@ -4,6 +4,9 @@ namespace RoyalAves.Meta
 {
     public static class CoinFormat
     {
-        public static string Short(int coins) => coins > 9999 ? coins / 1000 + "k" : coins.ToString();
+        public static string Short(int coins) => Short(coins, 10000);
+
+        /// Abrevia em "k" a partir de kFrom (ex.: 100000 -> "100k"); abaixo disso mostra o número inteiro.
+        public static string Short(int coins, int kFrom) => coins >= kFrom ? coins / 1000 + "k" : coins.ToString();
     }
 }

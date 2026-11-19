@@ -245,7 +245,19 @@ namespace SweetSugar.Scripts.GUI
             if (name == "GemsShop")
                 InitScript.Instance.currentReward = RewardsType.GetGems;
             else if (name == "LiveShop")
+            {
+                // Correio Mágico: um vídeo a cada 3 horas (LifeAdCooldown).
+                if (!RoyalAves.Meta.LifeAdCooldown.IsAvailable) return;
                 InitScript.Instance.currentReward = RewardsType.GetLifes;
+#if UNITY_EDITOR
+                // No editor simulamos o vídeo assistido (sem anúncio pronto) para testar prêmio e bloqueio.
+                if (!AdsManager.THIS.GetRewardedUnityAdsReady())
+                {
+                    InitScript.Instance.ShowReward();
+                    return;
+                }
+#endif
+            }
             else if (name == "PreFailed")
                 InitScript.Instance.currentReward = RewardsType.GetGoOn;
             AdsManager.THIS.ShowRewardedAds();
@@ -596,7 +608,10 @@ namespace SweetSugar.Scripts.GUI
             // Correio Mágico: the price label shows "10k" from 10,000, so the real price comes from the life shop.
             var lifeShop = button.GetComponentInParent<LifeShop>();
             int price = lifeShop != null ? lifeShop.CostIfRefill : int.Parse(priceText != null ? priceText.text : "0");
-            
+
+            // Correio Mágico: vidas já cheias, não cobra nada.
+            if (InitScript.lifes >= InitScript.Instance.CapOfLife) { CloseMenu(); return; }
+
             if (InitScript.Gems >= price)
             {
                 InitScript.Instance.SpendGems(price);

@@ -182,6 +182,26 @@ namespace RoyalAves.Effects
         [Tooltip("Velocidade do brilho correndo pelos arcos.")]
         public float shellSpeed = 2.6f;
 
+        [Header("Rastro de fogo mágico roxo (a mais: labaredas e fumaça que ficam para trás no caminho)")]
+        public bool magicFire = true;
+        public Color magicFireHot = new Color(1f, 0.8f, 1f);
+        public Color magicFireMid = new Color(0.86f, 0.32f, 1f);
+        public Color magicFireEnd = new Color(0.46f, 0.13f, 0.88f);
+        [Tooltip("Labaredas por casa percorrida.")]
+        [Min(0)] public float magicFlamesPerCell = 5f;
+        [Tooltip("Tamanho de cada labareda, em casas (o do line cleaner é 0,62).")]
+        [Min(0)] public float magicFlameSize = 0.42f;
+        [Min(0.05f)] public float magicFlameLife = 0.42f;
+        [Tooltip("Espalhamento das labaredas para cima e para baixo, em casas.")]
+        [Min(0)] public float magicFlameSpread = 0.1f;
+        public Color magicPuffColor = new Color(0.74f, 0.48f, 1f);
+        public Color magicPuffColorEnd = new Color(0.42f, 0.2f, 0.78f);
+        [Range(0f, 1f)] public float magicPuffAlpha = 0.6f;
+        [Tooltip("Nuvens de fumaça por casa percorrida.")]
+        [Min(0)] public float magicPuffsPerCell = 2f;
+        [Min(0)] public float magicPuffSize = 0.6f;
+        [Min(0.1f)] public float magicPuffLife = 0.8f;
+
         [Header("Estrelinhas e riscos")]
         [Min(0)] public int sparkleCount = 46;
         [Min(0)] public float sparkleSize = 0.11f;
@@ -491,7 +511,80 @@ namespace RoyalAves.Effects
             st.mesh.vertices = st.v; st.mesh.colors = st.c;
         }
 
-        static Sprite softDotSprite;
+        static Sprite softDotSprite, flameBlobSprite, smokePuffSprite;
+        SpriteRenderer[] magicFlames = new SpriteRenderer[0], magicPuffs = new SpriteRenderer[0];
+
+        static Sprite MakeMask(int n, Func<float, float, float> alpha)
+        {
+            var texture = new Texture2D(n, n, TextureFormat.RGBA32, false) { hideFlags = HideFlags.HideAndDontSave, wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear };
+            for (var py = 0; py < n; py++)
+                for (var px = 0; px < n; px++)
+                    texture.SetPixel(px, py, new Color(1, 1, 1, Mathf.Clamp01(alpha((px + 0.5f) / n * 2f - 1f, (py + 0.5f) / n * 2f - 1f))));
+            texture.Apply();
+            var sprite = Sprite.Create(texture, new Rect(0, 0, n, n), new Vector2(0.5f, 0.5f), n, 0, SpriteMeshType.FullRect);
+            sprite.hideFlags = HideFlags.HideAndDontSave;
+            return sprite;
+        }
+
+        // Labareda cartoon: disco cheio de cor chapada, só a beirada macia.
+        static Sprite FlameBlob => flameBlobSprite != null ? flameBlobSprite : flameBlobSprite = MakeMask(96, (x, y) => (1f - Mathf.Sqrt(x * x + y * y)) / 0.22f);
+
+        // Nuvem de fumaça: vários tufos macios juntos.
+        static Sprite SmokePuff => smokePuffSprite != null ? smokePuffSprite : smokePuffSprite = MakeMask(96, (x, y) =>
+        {
+            var d2 = x * x + y * y;
+            if (d2 >= 1f) return 0f;
+            float Tuft(float cx, float cy, float r) { var dx = x - cx; var dy = y - cy; return Mathf.Exp(-(dx * dx + dy * dy) / (r * r)); }
+            var a = 0.85f * Tuft(0f, 0.02f, 0.42f) + 0.6f * Tuft(-0.34f, 0.1f, 0.3f) + 0.6f * Tuft(0.33f, -0.06f, 0.31f)
+                + 0.5f * Tuft(0.08f, 0.36f, 0.27f) + 0.5f * Tuft(-0.1f, -0.36f, 0.28f) + 0.35f * Tuft(0.36f, 0.34f, 0.2f) + 0.35f * Tuft(-0.38f, -0.3f, 0.2f);
+            return Mathf.Clamp01(a) * (1f - d2) * (1f - d2);
+        });
+
+        /// Instante em que a traseira da flecha passa pelo ponto x do caminho (inverso de HeadX).
+        float TimeAtX(float x, float back)
+        {
+            var f = Mathf.Clamp01((x + back - x0) / Mathf.Max(0.01f, x1 - x0));
+            return windup + flight * Mathf.Pow(f, 1f / acceleration);
+        }
+
+        /// Fogo mágico roxo, a mais: labaredas cartoon e fumaça ancoradas no caminho, que nascem quando a flecha passa.
+        void EvaluateMagicFire(float t, float back)
+        {
+            var span = x1 - x0;
+            for (var j = 0; j < magicPuffs.Length; j++)
+            {
+                var h1 = Hash(j, 541); var h2 = Hash(j, 542);
+                var x = x0 + (j + 0.5f) / magicPuffs.Length * span;
+                var born = TimeAtX(x, back);
+                var age = t - born - 0.04f;
+                var life = magicPuffLife * (0.75f + 0.5f * h1);
+                if (age < 0f || age > life || born >= windup + flight) { magicPuffs[j].color = A(Color.white, 0f); continue; }
+                var f = age / life;
+                var size = magicPuffSize * cell * (0.5f + 0.9f * f) * (0.75f + 0.5f * h2);
+                Place(magicPuffs[j], new Vector3(x - 0.2f * cell * f, y + (h2 - 0.5f) * 0.4f * cell + 0.18f * cell * f, z), size, size,
+                    A(Color.Lerp(magicPuffColor, magicPuffColorEnd, f), magicPuffAlpha * Smooth(f / 0.12f) * (1f - Smooth((f - 0.35f) / 0.65f))), h1 * 360f + t * 40f * (j % 2 == 0 ? 1f : -1f));
+            }
+            var count = magicFlames.Length / 3;
+            for (var i = 0; i < count; i++)
+            {
+                var h1 = Hash(i, 531); var h2 = Hash(i, 532); var h3 = Hash(i, 533);
+                var x = x0 + (i + 0.5f) / count * span;
+                var born = TimeAtX(x, back);
+                var age = t - born;
+                var life = magicFlameLife * (0.7f + 0.6f * h1);
+                var outerSr = magicFlames[3 * i]; var midSr = magicFlames[3 * i + 1]; var hotSr = magicFlames[3 * i + 2];
+                if (age < 0f || age > life || born >= windup + flight) { outerSr.color = midSr.color = hotSr.color = A(Color.white, 0f); continue; }
+                var f = age / life;
+                var at = new Vector3(x - 0.3f * cell * f, y + (h2 - 0.5f) * 2f * magicFlameSpread * cell * (1f + 0.6f * f), z);
+                var size = magicFlameSize * cell * (0.75f + 0.5f * h3) * (1f + 0.1f * Mathf.Sin(t * 26f + i * 1.3f));
+                var outer = size * (1f - 0.6f * f * f);
+                Place(outerSr, at, outer * 1.25f, outer, A(magicFireEnd, Smooth((1f - f) / 0.3f)));
+                var middle = size * 0.72f * Mathf.Clamp01(1f - f / 0.8f);
+                Place(midSr, at + Vector3.right * (0.04f * cell), middle * 1.25f, middle, A(magicFireMid, middle > 0.001f ? 1f : 0f));
+                var inner = size * 0.44f * Mathf.Clamp01(1f - f / 0.5f);
+                Place(hotSr, at + Vector3.right * (0.07f * cell), inner * 1.25f, inner, A(magicFireHot, inner > 0.001f ? 1f : 0f));
+            }
+        }
 
         static Sprite SoftDot
         {
@@ -724,6 +817,13 @@ namespace RoyalAves.Effects
                 ribHaloB = Make("Fita: halo B", ribbonHalo, 1);
             }
             residueSr = Make("Resíduo ondulado", residue, 1);
+            if (magicFire)
+            {
+                // por cima da cauda de luz (0-5) e por baixo das estrelinhas e da flecha
+                var cells = (x1 - x0) / Mathf.Max(0.01f, cell);
+                magicPuffs = Enumerable.Range(0, Mathf.Min(40, Mathf.CeilToInt(cells * magicPuffsPerCell))).Select(i => Make("Fumaça roxa", SmokePuff, 1, false)).ToArray();
+                magicFlames = Enumerable.Range(0, 3 * Mathf.Min(70, Mathf.CeilToInt(cells * magicFlamesPerCell))).Select(i => Make("Labareda roxa", FlameBlob, 2 + i % 3, false)).ToArray();
+            }
             if (helixRibbons)
             {
                 // Duas fitas em fase oposta (cruzam-se) + uma fina e curta no meio; cada uma com um halo macio por baixo.
@@ -958,6 +1058,9 @@ namespace RoyalAves.Effects
                 Place(goldSr, tailCenter, tailLen * 0.92f, goldThickness * cell / GoldMaskFraction, A(gold, goldAlpha * fade));
                 Place(coreSr, tailCenter + Vector3.right * (tailLen * 0.04f), tailLen * 0.96f, coreThickness * cell / CoreMaskFraction, A(white, coreAlpha * fade));
             }
+
+            // Fogo mágico roxo (a mais): labaredas e fumaça ficando para trás, a partir das penas da flecha
+            if (magicFire && !freezeArrow) EvaluateMagicFire(t, length * 0.28f);
 
             // Fitas mágicas: curvas suaves com fases diferentes, atrás do núcleo
             if (helixRibbons && strands.Length == 10 && strandsFront.Length == 10)

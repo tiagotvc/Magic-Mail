@@ -12,6 +12,13 @@ namespace RoyalAves.EditorTools
     {
         public const string PrefabPath = "Assets/Royal Postman Art/Resources/Effects/PowerUps/PowerUpVfx.prefab";
         const string Masks = "Assets/Royal Postman Art/VFX/Power ups/Mascaras_PNG/";
+        const string LightBallMasks = "Assets/Royal Postman Art/VFX/Light ball/Mascaras_PNG/";
+        const string DoubleMasks = "Assets/Royal Postman Art/VFX/Light ball/doubles/Mascaras_PNG/";
+        static readonly string[] DoubleNames =
+        {
+            "01_soft_core_glow", "02_intense_flash", "03_ring_thin", "04_ring_thick", "05_orbit_thin", "06_orbit_thick", "07_spiral_ribbon", "08_spiral_double",
+            "09_vortex_small", "10_vortex_large", "11_radial_burst", "12_radial_burst_soft", "13_magic_streak", "14_sparkle_ring", "15_sparkle_cluster", "16_fragment_cluster",
+        };
         const string AdditivePath = "Assets/Royal Postman Art/VFX/Materials/ImpactAdditive.mat";
         const string VersionKey = "RoyalAves.PowerUpVfx.Version";
         const int Version = 16;
@@ -23,8 +30,11 @@ namespace RoyalAves.EditorTools
             {
                 if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling) return;
                 if (!File.Exists(Masks + "00_Comuns/01_radial_glow.png")) return;
-                if (File.Exists(PrefabPath) && EditorPrefs.GetInt(VersionKey, 0) >= Version) return;
-                try { Build(); }
+                try
+                {
+                    if (File.Exists(PrefabPath) && EditorPrefs.GetInt(VersionKey, 0) >= Version) LinkLightBallMasks();
+                    else Build();
+                }
                 catch (System.Exception e) { Debug.LogError("Não consegui criar o prefab dos efeitos de power-up: " + e); }
             };
         }
@@ -44,9 +54,71 @@ namespace RoyalAves.EditorTools
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
         }
 
-        static Sprite M(string relative)
+        static Sprite M(string relative) => Load(Masks + relative + ".png");
+
+        /// Liga as 14 máscaras do Light Ball no prefab que já existe, sem recriá-lo (os ajustes feitos nele ficam).
+        static void LinkLightBallMasks()
         {
-            var path = Masks + relative + ".png";
+            var asset = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            var current = asset != null ? asset.GetComponent<PowerUpVfxPlayer>() : null;
+            if (current == null) return;
+            var single = File.Exists(LightBallMasks + "06_connection_beam_core.png") && (current.lbBeamCore == null || current.lbStars == null);
+            var pair = File.Exists(DoubleMasks + DoubleNames[0] + ".png") &&
+                       (current.doubleMasks == null || current.doubleMasks.Length < DoubleNames.Length || System.Array.Exists(current.doubleMasks, m => m == null));
+            var hatArt = current.hatIcon == null || current.useButtonBorder == null || current.useButtonCenter == null || current.useButtonFont == null;
+            if (!single && !pair && !hatArt) return;
+            AssetDatabase.Refresh();
+            var root = PrefabUtility.LoadPrefabContents(PrefabPath);
+            try
+            {
+                AssignLightBall(root.GetComponent<PowerUpVfxPlayer>());
+                AssignDoubleBall(root.GetComponent<PowerUpVfxPlayer>());
+                AssignHat(root.GetComponent<PowerUpVfxPlayer>());
+                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
+            Debug.Log("Máscaras do Light Ball ligadas em " + PrefabPath);
+        }
+
+        /// Arte do Chapéu de Mago: figura do chapéu e o botão verde da modal de power-ups (só preenche o que estiver vazio).
+        static void AssignHat(PowerUpVfxPlayer p)
+        {
+            if (p.hatIcon == null) p.hatIcon = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/RoyalAves/Art/Boosters/cap.png");
+            if (p.useButtonBorder == null) p.useButtonBorder = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Royal Postman Art/Screens/Modal/button_border.png");
+            if (p.useButtonCenter == null) p.useButtonCenter = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Royal Postman Art/Screens/Modal/button_center.png");
+            if (p.useButtonFont == null) p.useButtonFont = AssetDatabase.LoadAssetAtPath<TMPro.TMP_FontAsset>("Assets/RoyalAves/Fonts/LilitaOne SDF.asset");
+        }
+
+        static void AssignDoubleBall(PowerUpVfxPlayer p)
+        {
+            if (!File.Exists(DoubleMasks + DoubleNames[0] + ".png")) return;
+            var sprites = new Sprite[DoubleNames.Length];
+            for (var i = 0; i < sprites.Length; i++) sprites[i] = Load(DoubleMasks + DoubleNames[i] + ".png");
+            p.doubleMasks = sprites;
+        }
+
+        static void AssignLightBall(PowerUpVfxPlayer p)
+        {
+            if (!File.Exists(LightBallMasks + "06_connection_beam_core.png")) return;
+            Sprite L(string name) => Load(LightBallMasks + name + ".png");
+            p.lbCoreGlow = L("01_ball_core_glow");
+            p.lbPulseRing = L("02_ball_pulse_ring");
+            p.lbOrbitEllipse = L("03_ball_orbit_ellipse");
+            p.lbOrbitArc = L("04_ball_orbit_arc");
+            p.lbChargeFlare = L("05_ball_charge_flare");
+            p.lbBeamCore = L("06_connection_beam_core");
+            p.lbBeamHalo = L("07_connection_beam_halo");
+            p.lbRibbonWave = L("08_connection_ribbon_wave");
+            p.lbRibbonSecondary = L("09_connection_ribbon_secondary");
+            p.lbTargetHalo = L("10_target_precharge_halo");
+            p.lbTargetPreflash = L("11_target_preflash");
+            p.lbTargetPop = L("12_target_pop_burst");
+            p.lbFinalBurst = L("13_final_central_burst");
+            p.lbStars = L("14_scattered_twinkling_stars");
+        }
+
+        static Sprite Load(string path)
+        {
             var sprite = BoosterIntroBuilder.LoadFull(path);
             if (AssetImporter.GetAtPath(path) is TextureImporter importer)
             {
@@ -102,6 +174,9 @@ namespace RoyalAves.EditorTools
                 p.seekerArc = M("04_Seeker_Impacto/04_arco_espiral");
                 p.seekerTrail = M("04_Seeker_Impacto/05_rastro_curto_de_chegada");
                 p.seekerMicroStar = M("04_Seeker_Impacto/06_micro_estrela_radial");
+                AssignLightBall(p);
+                AssignDoubleBall(p);
+                AssignHat(p);
                 p.additive = AssetDatabase.LoadAssetAtPath<Material>(AdditivePath);
                 PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
             }

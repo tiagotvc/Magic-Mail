@@ -25,6 +25,8 @@ namespace SweetSugar.Scripts.GUI
 		
 		void OnEnable ()
 		{
+			// Correio Mágico: textos PT/EN, vidas, timer e limite do vídeo da modal.
+			if (GetComponent<RoyalAves.Meta.LifeShopPresenter>() == null) gameObject.AddComponent<RoyalAves.Meta.LifeShopPresenter>();
 			transform.Find ("Image/Buttons/BuyLife/Price").GetComponent<TextMeshProUGUI> ().text = RoyalAves.Meta.CoinFormat.Short(CostIfRefill); // Correio Mágico: 10k from 10,000
 			if (!LevelManager.THIS.enableInApps)
 				transform.Find ("Image/Buttons/BuyLife").gameObject.SetActive (false);
