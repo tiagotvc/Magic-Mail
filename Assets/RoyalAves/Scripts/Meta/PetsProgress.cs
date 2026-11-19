@@ -15,6 +15,7 @@ namespace RoyalAves.Meta
                 return state;
             }
         }
+        public static void InvalidateCache(){state=null;Changed?.Invoke();}
         public static void Save(){PlayerPrefs.SetString(SaveKey,JsonUtility.ToJson(State));PlayerPrefs.Save();Changed?.Invoke();}
         public static void GrantCommonEggs(int count){if(count<=0)return;State.commonEggs=(int)Math.Min(int.MaxValue,(long)State.commonEggs+count);Save();}
         public static void GrantRareEggs(int count){if(count<=0)return;State.rareEggs=(int)Math.Min(int.MaxValue,(long)State.rareEggs+count);Save();}

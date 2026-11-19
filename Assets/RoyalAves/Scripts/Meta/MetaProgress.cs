@@ -269,6 +269,9 @@ namespace RoyalAves.Meta
                 RecordWin(LevelManager.THIS.currentLevel, config);
         }
 
+        /// Descarta o cache em memória (o save da nuvem foi aplicado no PlayerPrefs); a próxima leitura relê de lá.
+        public static void InvalidateCache() => data = null;
+
         static SaveData Load()
         {
             var json = PlayerPrefs.GetString(SaveKey, "");

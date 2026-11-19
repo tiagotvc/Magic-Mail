@@ -84,6 +84,11 @@ namespace SweetSugar.Scripts.Editor
 
                 CheckPackage(ref defines, "com.unity.services.levelplay", "LEVELPLAY");
 
+                // Correio Mágico: save na nuvem (RoyalAves/Scripts/Save). Cada símbolo liga um pedaço do UgsCloudProvider.
+                CheckPackage(ref defines, "com.unity.services.cloudsave", "ROYAL_CLOUDSAVE");
+                CheckPackage(ref defines, "com.google.play.games", "ROYAL_PLAYGAMES");
+                CheckPackage(ref defines, "com.apple.unityplugin.gamekit", "ROYAL_GAMEKIT");
+
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(_target, defines);
             }
         }

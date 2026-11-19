@@ -43,6 +43,7 @@ namespace RoyalAves.Meta
                 for(int level=1;level<=last;level++)if(Eligible(level))return level;return 0;
             }
         }
+        public static void InvalidateCache(){state=null;Changed?.Invoke();}
         public static void ResetProgress(){state=new PostalEventState();PlayerPrefs.DeleteKey(SaveKey);PlayerPrefs.Save();Changed?.Invoke();}
         public static bool Join(){if(Config==null||!State.Join(MetaProgress.NextLevel,Config,DateTime.UtcNow))return false;Save();return true;}
         public static bool ClaimDaily()=>Claim(s=>s.ClaimDaily(Config,DateTime.UtcNow,Award));

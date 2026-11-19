@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Visão geral
 
-**Magic Mail**: jogo mobile match-3 (Android/iOS) feito em **Unity 6000.6.0f1**, URP 2D. Todo o jogo é o template pago **Sweet Sugar** (Candy Smith, Asset Store), em `Assets/SweetSugar/`. Ainda não há pasta de código próprio. O `applicationIdentifier` Android continua `com.candysmithgames.sweetsugar`.
+**Magic Mail**: jogo mobile match-3 (Android/iOS) feito em **Unity 6000.6.0f1**, URP 2D. Todo o jogo é o template pago **Sweet Sugar** (Candy Smith, Asset Store), em `Assets/SweetSugar/`. Ainda não há pasta de código próprio. O `applicationIdentifier` Android é `com.oakhouse.royalmagic` (iOS igual).
 
 ## Economia de tokens: onde NÃO procurar
 
