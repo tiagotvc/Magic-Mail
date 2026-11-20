@@ -52,7 +52,15 @@ namespace RoyalAves.Meta
         Image portugueseImage, englishImage;
         RectTransform switchKnob, switchRoot;
         Image switchContainer;
+        GameObject redFill;
+        Transform switchLabel;
         float knobTarget;
+        bool labelPending;
+        static Sprite roundedSprite;
+
+        // Versão do builder que montou este prefab; o builder refaz o prefab sozinho se ela for menor que a dele.
+        [SerializeField, HideInInspector] int builderVersion;
+        public int BuilderVersion => builderVersion;
         readonly Dictionary<string, GameObject> offBars = new Dictionary<string, GameObject>();
         readonly List<(string path, string pt, string en)> labels = new List<(string, string, string)>
         {
@@ -120,8 +128,14 @@ namespace RoyalAves.Meta
             switchRoot = Child("Main/Notifications/Switch") as RectTransform;
             switchKnob = Child("Main/Notifications/Switch/Knob") as RectTransform;
             switchContainer = switchRoot != null ? switchRoot.GetComponent<Image>() : null;
+            switchLabel = Child("Main/Notifications/Switch/Label");
+            CreateRedFill();
 
-            foreach (var text in GetComponentsInChildren<TMP_Text>(true)) ApplyShadow(text);
+            foreach (var text in GetComponentsInChildren<TMP_Text>(true))
+            {
+                if (text.name == "SaveStatus") text.color = new Color(0.42f, 0.25f, 0.10f, 1f);   // fica sobre o papel claro: marrom, sem sombra
+                else ApplyShadow(text);
+            }
 
             Wire("Main/Header/Close", Close);
             Wire("Main/Music", () => Toggle(SettingsScreen.MusicKey, MusicBase.Instance != null ? MusicBase.Instance.audioMixer : null, "MusicVolume"));
@@ -166,8 +180,7 @@ namespace RoyalAves.Meta
         {
             if (languageModal != null) languageModal.SetActive(false);
             if (termsModal != null) termsModal.SetActive(false);
-            Refresh();
-            if (switchKnob != null) switchKnob.anchoredPosition = new Vector2(knobTarget, switchKnob.anchoredPosition.y);
+            Refresh(true);
         }
 
         void Update()
@@ -177,6 +190,8 @@ namespace RoyalAves.Meta
                 var p = switchKnob.anchoredPosition;
                 p.x = Mathf.MoveTowards(p.x, knobTarget, 900f * Time.unscaledDeltaTime);
                 switchKnob.anchoredPosition = p;
+                // O texto só aparece quando o botão termina de deslizar.
+                if (labelPending && Mathf.Approximately(p.x, knobTarget)) { labelPending = false; ApplySwitchLabel(); }
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -190,7 +205,8 @@ namespace RoyalAves.Meta
 
         // ------------------------------------------------------------------------------------------------ estado
 
-        void Refresh()
+        /// snap = coloca o botão do switch direto no lugar (ao abrir a tela), sem deslizar.
+        void Refresh(bool snap = false)
         {
             SetOff("Music", !SettingsScreen.IsOn(SettingsScreen.MusicKey));
             SetOff("Sounds", !SettingsScreen.IsOn(SettingsScreen.SoundKey));
@@ -202,26 +218,88 @@ namespace RoyalAves.Meta
             {
                 var half = switchRoot.rect.width * 0.23f;
                 knobTarget = notifications ? half : -half;
-                var text = Child("Main/Notifications/Switch/Label") as RectTransform;
-                if (text != null)
+                if (redFill != null) redFill.SetActive(!notifications);   // NÃO = fundo vermelho (e continua clicável)
+                if (switchContainer != null) switchContainer.color = Color.white;
+                if (snap && switchKnob != null) switchKnob.anchoredPosition = new Vector2(knobTarget, switchKnob.anchoredPosition.y);
+                var sliding = switchKnob != null && !Mathf.Approximately(switchKnob.anchoredPosition.x, knobTarget);
+                if (sliding)
                 {
-                    var tmp = text.GetComponent<TMP_Text>();
-                    if (tmp != null) tmp.text = notifications ? (pt ? "SIM" : "YES") : (pt ? "NÃO" : "NO");
-                    text.anchoredPosition = new Vector2(notifications ? -half : half, text.anchoredPosition.y);
+                    labelPending = true;
+                    if (switchLabel != null) switchLabel.gameObject.SetActive(false);
                 }
-                if (switchContainer != null) switchContainer.color = notifications ? Color.white : new Color(.62f, .62f, .62f, 1f);
+                else ApplySwitchLabel();
             }
 
             foreach (var (path, ptText, enText) in labels)
             {
                 var t = Child(path);
                 var tmp = t != null ? t.GetComponent<TMP_Text>() : null;
-                if (tmp != null) tmp.text = pt ? ptText : enText;
+                if (tmp == null) continue;
+                var value = pt ? ptText : enText;
+                // O arco acompanha a largura do texto: um título curto ("Language") com o mesmo arco de um longo
+                // ("Termos e Privacidade") giraria as letras demais. Mantém a mesma inclinação nas pontas.
+                var arc = tmp.GetComponent<TextArc>();
+                if (arc != null) arc.height = Mathf.Clamp(tmp.GetPreferredValues(value).x * 0.085f, 10f, 80f);
+                tmp.text = value;
             }
 
             var portuguese = LocalizedImage.Current == GameLanguage.Portuguese;
             if (portugueseImage != null && selectedOptionSprite != null) portugueseImage.sprite = portuguese ? selectedOptionSprite : otherOptionSprite;
             if (englishImage != null && selectedOptionSprite != null) englishImage.sprite = portuguese ? otherOptionSprite : selectedOptionSprite;
+        }
+
+        void ApplySwitchLabel()
+        {
+            if (switchLabel == null || switchRoot == null) return;
+            var on = NotificationsOn;
+            var pt = IsPortuguese;
+            var half = switchRoot.rect.width * 0.23f;
+            var tmp = switchLabel.GetComponent<TMP_Text>();
+            if (tmp != null) tmp.text = on ? (pt ? "SIM" : "YES") : (pt ? "NÃO" : "NO");
+            var rt = (RectTransform)switchLabel;
+            rt.anchoredPosition = new Vector2(on ? -half : half, rt.anchoredPosition.y);
+            switchLabel.gameObject.SetActive(true);
+        }
+
+        // Fundo vermelho do switch desligado: um retângulo arredondado por cima do verde, embaixo do botão e do texto.
+        void CreateRedFill()
+        {
+            if (switchRoot == null) return;
+            var go = new GameObject("RedFill", typeof(RectTransform), typeof(Image));
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(switchRoot, false);
+            rt.SetAsFirstSibling();
+            rt.anchorMin = new Vector2(0.03f, 0.11f);
+            rt.anchorMax = new Vector2(0.975f, 0.89f);
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            var image = go.GetComponent<Image>();
+            image.sprite = RoundedSprite();
+            image.type = Image.Type.Sliced;
+            image.color = new Color(0.80f, 0.12f, 0.12f, 1f);
+            image.raycastTarget = false;
+            redFill = go;
+        }
+
+        static Sprite RoundedSprite()
+        {
+            if (roundedSprite != null) return roundedSprite;
+            const int size = 64;
+            const float radius = 22f;
+            var texture = new Texture2D(size, size, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
+            var pixels = new Color32[size * size];
+            for (var y = 0; y < size; y++)
+                for (var x = 0; x < size; x++)
+                {
+                    var cx = Mathf.Clamp(x + 0.5f, radius, size - radius);
+                    var cy = Mathf.Clamp(y + 0.5f, radius, size - radius);
+                    var d = Vector2.Distance(new Vector2(x + 0.5f, y + 0.5f), new Vector2(cx, cy));
+                    pixels[y * size + x] = new Color32(255, 255, 255, (byte)(Mathf.Clamp01(radius - d + 0.5f) * 255f));
+                }
+            texture.SetPixels32(pixels);
+            texture.Apply();
+            roundedSprite = Sprite.Create(texture, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f, 0,
+                SpriteMeshType.FullRect, new Vector4(radius, radius, radius, radius));
+            return roundedSprite;
         }
 
         void SetOff(string name, bool off)

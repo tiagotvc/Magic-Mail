@@ -24,6 +24,8 @@ namespace RoyalAves.EditorTools
         const string FontPath = "Assets/RoyalAves/Fonts/LilitaOne SDF.asset";
         const float K = 1536f / 1080f;
         const float MockHeight = 1980f;
+        // Suba este número quando mudar o jeito de montar: o prefab antigo é refeito sozinho (a versão fica gravada nele).
+        const int Version = 4;
 
         static TMP_FontAsset font;
 
@@ -32,7 +34,7 @@ namespace RoyalAves.EditorTools
             EditorApplication.delayCall += () =>
             {
                 if (EditorApplication.isPlayingOrWillChangePlaymode) return;
-                if (!File.Exists(PrefabPath)) Build(false);
+                if (!File.Exists(PrefabPath) || PrefabIsOld()) Build(false);
                 PlaceInScene(false);
             };
         }
@@ -61,6 +63,13 @@ namespace RoyalAves.EditorTools
             Debug.Log("Royal Aves: tela de configurações colocada no CanvasGlobal. Salve a cena (Ctrl+S).");
         }
 
+        static bool PrefabIsOld()
+        {
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(PrefabPath);
+            var screen = prefab != null ? prefab.GetComponent<ConfigScreen>() : null;
+            return screen == null || screen.BuilderVersion < Version;
+        }
+
         [MenuItem("Royal Aves/Tela de configurações/Montar prefab")]
         static void BuildFromMenu() => Build(true);
 
@@ -75,6 +84,7 @@ namespace RoyalAves.EditorTools
             var so = new SerializedObject(screen);
             so.FindProperty("selectedOptionSprite").objectReferenceValue = LoadArt("Buttons/Idioma Modal/button_idioma_selected.png");
             so.FindProperty("otherOptionSprite").objectReferenceValue = LoadArt("Buttons/Idioma Modal/button_idioma_options.png");
+            so.FindProperty("builderVersion").intValue = Version;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             BuildBackground(rootRt);
@@ -124,12 +134,12 @@ namespace RoyalAves.EditorTools
             Picture("FrameBottom", main, "Frames/frame_inferior.png", 1007, 426, 535, 905);
 
             RoundToggle("Music", main, 220, 515, "Icons/music icon.png", 95, 86);
-            RoundToggle("Sounds", main, 540, 515, "Icons/sound_icon.png", 104, 104);
+            RoundToggle("Sounds", main, 540, 515, "Icons/sound_icon.png", 156, 156);
             RoundToggle("Hints", main, 837, 515, "Icons/idea_icon.png", 84, 96);
 
             var notifications = Container("Notifications", main);
             Picture("Bell", notifications, "Icons/notification_icon.png", 84, 84, 140, 805);
-            Label("Label", notifications, 336, 810, 300, 80, 46);
+            Label("Label", notifications, 336, 810, 320, 80, 54);
             var sw = Picture("Switch", notifications, "Buttons/Switch/switch_container.png", 398, 124, 714, 813);
             Plain(sw);
             var knob = Picture("Knob", sw, "Buttons/Switch/switch_button.png", 186, 96); Top(knob, 540, 0); knob.anchorMin = knob.anchorMax = new Vector2(0.5f, 0.5f); knob.anchoredPosition = Vector2.zero;
@@ -146,10 +156,10 @@ namespace RoyalAves.EditorTools
             var supportIcon = Picture("Icon", support, "Icons/support_icon.png", 78, 78); Mid(supportIcon, -118, 4);
             Label("Label", support, 34, 0, 250, 90, 50, true);
 
-            LongButton("Save", main, 525, 1250, "Buttons/Longed/longed_button_center_blue.png", 738, 226, 670, 160, "Icons/save_icon.png", 72, 58, 56);
-            var status = Label("SaveStatus", main, 525, 1372, 760, 50, 32);
+            LongButton("Save", main, 525, 1250, "Buttons/Longed/longed_button_center_blue.png", 738, 226, 670, 160, "Icons/save_icon.png", 104, 104, 62);
+            var status = Label("SaveStatus", main, 525, 1390, 760, 56, 40);
             status.GetComponent<TMP_Text>().text = "";
-            LongButton("Terms", main, 525, 1495, "Buttons/Longed/longed_button_center_green.png", 738, 226, 670, 160, null, 0, 0, 58);
+            LongButton("Terms", main, 525, 1527, "Buttons/Longed/longed_button_center_green.png", 738, 226, 670, 160, null, 0, 0, 68);
 
             FollowButton("FollowFacebook", main, 290, 1815, "Icons/facebook_icon.png", 102, 97, -128);
             FollowButton("FollowInstagram", main, 785, 1815, "Icons/instagram.png", 104, 93, -125);
@@ -183,10 +193,11 @@ namespace RoyalAves.EditorTools
             var prefs = (RectTransform)modal.Find("PrivacyPrefs/Center/Label");
             prefs.sizeDelta = new Vector2(500f * K, 130f * K);
             prefs.GetComponent<TMP_Text>().textWrappingMode = TextWrappingModes.Normal;
-            var delete = New("DeleteAccount", modal); delete.sizeDelta = new Vector2(480f * K, 80f * K); Top(delete, 550, 1360);
+            var delete = New("DeleteAccount", modal); delete.sizeDelta = new Vector2(480f * K, 80f * K); Top(delete, 550, 1336);
             var deleteImage = delete.gameObject.AddComponent<Image>(); deleteImage.color = new Color(1, 1, 1, 0);
             Plain(delete);
-            Label("Label", delete, 0, 0, 480, 80, 50, true);
+            var deleteLabel = Label("Label", delete, 0, 0, 480, 80, 50, true);
+            deleteLabel.GetComponent<TMP_Text>().fontStyle = FontStyles.Underline;
             CloseButton("Close", modal, 965, 397, 1.25f);
         }
 
@@ -210,9 +221,14 @@ namespace RoyalAves.EditorTools
             var ribbon = Picture("Ribbon", modal, "Ribbons.png", 2172, 724, 540, 372);
             ribbon.sizeDelta = new Vector2(970f * K, 323f * K);
             var title = Label("Title", ribbon, 0, 0, 760, 120, 72, true);
-            title.anchoredPosition = new Vector2(0f, 60f * K);
+            title.anchoredPosition = new Vector2(0f, 40f * K);
             var arc = title.gameObject.AddComponent<TextArc>();
-            arc.height = 38f * K;
+            // Parábola (4t(1-t)): acompanha a curva da faixa; as pontas do texto descem e giram junto.
+            arc.curve = new AnimationCurve(
+                new Keyframe(0f, 0f, 4f, 4f), new Keyframe(0.25f, 0.75f, 2f, 2f), new Keyframe(0.5f, 1f, 0f, 0f),
+                new Keyframe(0.75f, 0.75f, -2f, -2f), new Keyframe(1f, 0f, -4f, -4f));
+            arc.height = 80f;
+            arc.rotateLetters = true;
         }
 
         static void OptionButton(string name, RectTransform parent, float x, float y)
@@ -249,8 +265,11 @@ namespace RoyalAves.EditorTools
             center.anchorMin = center.anchorMax = new Vector2(0.5f, 0.5f); center.anchoredPosition = Vector2.zero;
             center.sizeDelta = new Vector2(centerW * K, centerH * K);
             var hasIcon = iconPath != null;
-            if (hasIcon) { var icon = Picture("Icon", center, iconPath, iconW, iconH); Mid(icon, -250, 4); }
-            var label = Label("Label", center, hasIcon ? 40 : 0, 0, centerW - 40, centerH - 20, fontSize, true);
+            if (hasIcon) { var icon = Picture("Icon", center, iconPath, iconW, iconH); Mid(icon, -240, 2); }
+            var label = Label("Label", center, hasIcon ? 62 : 0, 0, hasIcon ? centerW - 190 : centerW - 40, centerH - 20, fontSize, true);
+            var labelText = label.GetComponent<TMP_Text>();
+            labelText.enableAutoSizing = true;   // nunca passa da borda, em nenhum idioma
+            labelText.fontSizeMax = fontSize * K; labelText.fontSizeMin = 30f * K;
             MakeButton(border, center);
         }
 

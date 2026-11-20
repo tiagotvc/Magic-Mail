@@ -1,6 +1,10 @@
-// Curva um texto TextMeshPro (efeito de faixa/arco). Põe no mesmo objeto do texto.
-// Height > 0: o meio sobe (sorriso invertido); Height < 0: o meio desce (faixa de baixo para cima, como "Mais vidas!").
-// Rotate Letters: cada letra também gira acompanhando a curva.
+// Escreve um texto TextMeshPro sobre um arco de círculo (faixa de título). Põe no mesmo objeto do texto.
+// Height > 0: o meio sobe e as pontas descem (sorriso invertido); Height < 0: o contrário ("Mais vidas!").
+// Height é a diferença de altura entre o meio e as pontas, em unidades do canvas.
+//
+// Cada letra fica em pé sobre o arco: a linha de base de todas as letras cai exatamente no círculo e a letra gira
+// para apontar para fora dele (Rotate Letters). Letras altas ("L") ou com cauda ("g") não mudam de altura entre si,
+// porque o encaixe usa a linha de base, não o centro de cada letra.
 using TMPro;
 using UnityEngine;
 
@@ -11,9 +15,9 @@ namespace RoyalAves.Meta
     [AddComponentMenu("Royal Aves/Text Arc")]
     public class TextArc : MonoBehaviour
     {
-        [Tooltip("Forma da curva ao longo do texto (0 = início, 1 = fim). Padrão: sobe até o meio e desce.")]
+        [Tooltip("Não é mais usado: o arco agora é um círculo de verdade. Fica só para não quebrar prefabs antigos.")]
         public AnimationCurve curve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
-        [Tooltip("Quanto o ponto mais alto da curva desloca o texto, em unidades do canvas. Negativo inverte.")]
+        [Tooltip("Quanto o meio do texto fica mais alto que as pontas, em unidades do canvas. Negativo inverte.")]
         public float height = 40f;
         public bool rotateLetters = true;
 
@@ -55,6 +59,16 @@ namespace RoyalAves.Meta
 
                 var bounds = text.textBounds;
                 var width = Mathf.Max(1f, bounds.size.x);
+                var middle = bounds.center.x;
+                var sagitta = Mathf.Abs(height);
+                if (sagitta < 0.01f) return;
+
+                // Círculo que passa pelas duas pontas do texto e sobe "sagitta" no meio.
+                var half = width * 0.5f;
+                var radius = (half * half + sagitta * sagitta) / (2f * sagitta);
+                var sign = Mathf.Sign(height);
+                var endAngle = Mathf.Asin(Mathf.Clamp(half / radius, -1f, 1f));
+                var endDrop = Mathf.Cos(endAngle);
 
                 for (var i = 0; i < info.characterCount; i++)
                 {
@@ -64,26 +78,18 @@ namespace RoyalAves.Meta
                     var vi = c.vertexIndex;
 
                     var centerX = (c.bottomLeft.x + c.topRight.x) * 0.5f;
-                    var centerY = (c.baseLine + c.ascender) * 0.5f;
-                    var t = Mathf.Clamp01((centerX - bounds.min.x) / width);
-                    var offset = curve.Evaluate(t) * height;
+                    var baseline = c.baseLine;
+                    var phi = Mathf.Clamp((centerX - middle) / radius, -1.5f, 1.5f);   // ângulo no círculo
 
-                    var angle = 0f;
-                    if (rotateLetters)
-                    {
-                        var dt = 0.01f;
-                        var slope = (curve.Evaluate(Mathf.Clamp01(t + dt)) - curve.Evaluate(Mathf.Clamp01(t - dt))) * height / (2f * dt * width);
-                        angle = Mathf.Atan(slope) * Mathf.Rad2Deg;
-                    }
-                    var rotation = Quaternion.Euler(0f, 0f, angle);
-                    var center = new Vector3(centerX, centerY, 0f);
+                    // Onde o pé da letra (centro da base) vai parar no arco.
+                    var targetX = middle + radius * Mathf.Sin(phi);
+                    var targetY = baseline + sign * radius * (Mathf.Cos(phi) - endDrop);
+                    var rotation = rotateLetters ? Quaternion.Euler(0f, 0f, -sign * phi * Mathf.Rad2Deg) : Quaternion.identity;
+                    var foot = new Vector3(centerX, baseline, 0f);
+                    var target = new Vector3(targetX, targetY, 0f);
+
                     for (var k = 0; k < 4; k++)
-                    {
-                        var v = vertices[vi + k];
-                        v = rotation * (v - center) + center;
-                        v.y += offset;
-                        vertices[vi + k] = v;
-                    }
+                        vertices[vi + k] = target + rotation * (vertices[vi + k] - foot);
                 }
 
                 for (var i = 0; i < info.meshInfo.Length; i++)
